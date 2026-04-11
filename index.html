@@ -1333,6 +1333,41 @@ footer {
   line-height: 1;
 }
 </style>
+  .afuwa-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.afuwa-img {
+  width: 80px;
+  height: auto;
+}
+
+.afuwa-comment {
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255,26,26,0.25), rgba(255,26,26,0.08));
+  border: 1px solid rgba(255,26,26,0.4);
+  font-size: 14px;
+  line-height: 1.6;
+  color: #fff;
+  max-width: 240px;
+}
+  .afuwa-comment::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 20px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent rgba(255,26,26,0.25) transparent transparent;
+}
+.afuwa-comment {
+  position: relative;
+}
 </head>
 <body>
 
@@ -1378,6 +1413,14 @@ footer {
       <div class="hero-line-bar r"></div>
     </div>
 
+<div class="afuwa-wrap">
+  <img src="images/afuwa1.png" class="afuwa-img">
+
+  <div class="afuwa-comment">
+    アフワ：「迷ったらここ見て…予想もツールもあるよ…」
+  </div>
+</div>
+    
     <div class="hero-btns">
       <a href="#race-banner" class="btn-red full-btn">アフロ馬の予想・成績を見る</a>
       <a href="afrohorse_characters.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">Characters</a>
