@@ -1333,6 +1333,153 @@ footer {
   line-height: 1;
 }
 </style>
+
+<style>
+.value-strip {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  width:100%;
+  max-width:340px;
+  margin-top:18px;
+  animation: heroText 0.8s 0.75s both;
+}
+.value-pill {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:42px;
+  padding:10px 14px;
+  border:1px solid rgba(255,26,26,0.22);
+  border-radius:999px;
+  background:rgba(255,255,255,0.03);
+  color:rgba(255,255,255,0.86);
+  font-size:12px;
+  letter-spacing:0.03em;
+  text-align:center;
+}
+.afuwa-talk {
+  width:100%;
+  max-width:340px;
+  margin-top:18px;
+  padding:14px 16px;
+  background:linear-gradient(135deg, rgba(255,26,26,0.14), rgba(255,26,26,0.04));
+  border:1px solid rgba(255,26,26,0.24);
+  border-radius:14px;
+  color:#fff;
+  font-size:14px;
+  line-height:1.7;
+  animation: heroText 0.8s 0.72s both;
+  box-shadow:0 6px 22px rgba(255,26,26,0.12);
+}
+.afuwa-talk strong { color: #ff6b6b; }
+.hero-proof {
+  margin-top:10px;
+  font-size:12px;
+  color:rgba(255,255,255,0.48);
+  text-align:center;
+  line-height:1.7;
+  animation: heroText 0.8s 0.85s both;
+}
+.quick-links {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:28px;
+}
+.quick-card {
+  background:linear-gradient(135deg, #101010 0%, #0a0a0a 100%);
+  border:1px solid rgba(255,26,26,0.15);
+  border-radius:14px;
+  padding:18px 18px;
+}
+.quick-card h3 {
+  font-size:18px;
+  margin-bottom:6px;
+}
+.quick-card p {
+  font-size:13px;
+  line-height:1.7;
+  color:rgba(255,255,255,0.65);
+  margin-bottom:14px;
+}
+.follow-cta {
+  background:linear-gradient(135deg, rgba(255,26,26,0.16), rgba(255,26,26,0.06));
+  border:1px solid rgba(255,26,26,0.24);
+  border-radius:16px;
+  padding:24px 20px;
+  margin-top:24px;
+}
+.follow-cta h3 {
+  font-size:22px;
+  margin-bottom:8px;
+}
+.follow-cta p {
+  font-size:14px;
+  line-height:1.8;
+  color:rgba(255,255,255,0.72);
+  margin-bottom:16px;
+}
+.mini-note {
+  font-size:11px;
+  color:rgba(255,255,255,0.38);
+  line-height:1.7;
+  margin-top:10px;
+}
+
+.afuwa-talk {
+  position: relative;
+  border-radius: 18px;
+}
+.afuwa-talk::after {
+  content: "";
+  position: absolute;
+  left: 28px;
+  bottom: -10px;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, rgba(255,26,26,0.14), rgba(255,26,26,0.04));
+  border-right: 1px solid rgba(255,26,26,0.24);
+  border-bottom: 1px solid rgba(255,26,26,0.24);
+  transform: rotate(45deg);
+}
+.afuwa-label {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,26,26,0.18);
+  color: #ff8a8a;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.afuwa-mini {
+  display:block;
+  margin-top:8px;
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+}
+.quick-card .afuwa-mini {
+  margin-bottom: 12px;
+}
+.social-lead {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.7);
+  margin: -8px 0 22px;
+}
+.follow-cta h3 .soft {
+  color: #ff8a8a;
+}
+@media (min-width: 768px) {
+  .value-strip { grid-template-columns: repeat(3, 1fr); max-width:740px; }
+  .hero-proof { max-width:620px; }
+  .quick-links { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+
 </head>
 <body>
 
@@ -1370,7 +1517,15 @@ footer {
       <span class="title-horse">HORSE</span>
     </div>
 
-    <p class="hero-sub">競馬予想 × アフロスタイル<Br>完全無料の競馬ツールサイト</p>
+    <p class="hero-sub">アフワが、予想もツールも、まとめて案内するよ…。<br>ゆるいのに使える、競馬サポートサイト</p>
+
+    <div class="afuwa-talk"><span class="afuwa-label">AFUWA VOICE</span><br><strong>アフワ:</strong> 「むずかしいのは、ちょっと苦手だから…<br>予想も、計算も、ここから見ればだいじょうぶ…」</div>
+
+    <div class="value-strip">
+      <div class="value-pill">◎ 今週の本命をチェック…</div>
+      <div class="value-pill">◎ 買い目の点数を整理…</div>
+      <div class="value-pill">◎ アフワたちにも会える…</div>
+    </div>
 
     <div class="hero-line">
       <div class="hero-line-bar"></div>
@@ -1379,13 +1534,14 @@ footer {
     </div>
 
     <div class="hero-btns">
-      <a href="#race-banner" class="btn-red full-btn">アフロ馬の予想・成績を見る</a>
+      <a href="#race-banner" class="btn-red full-btn">アフワの今週予想を見る</a>
+      <a href="calc.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">買い目の点数を<br>計算する</a>
+      <a href="honmei_announcer.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">本命発表を<br>つくる</a>
+      <a href="https://www.instagram.com/ahuroma9/" target="_blank" rel="noopener noreferrer" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">アフワの<br>Instagram</a>
       <a href="afrohorse_characters.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">Characters</a>
-      <a href="honmei_announcer.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">本命発表<br>ツール</a>
-      <a href="calc.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">点数計算<br>ツール</a>
       <a href="sire.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">種牡馬<br>ランキング</a>
-     
     </div>
+    <p class="hero-proof">アフワのおすすめ順は、<strong style="color:#fff;">予想を見る → 点数を計算する → SNSで追いかける</strong>…です。</p>
   </div>
 
   <div class="scroll-arrow">
@@ -1427,14 +1583,38 @@ footer {
   <p class="sec-eyebrow">About</p>
   <h2 class="sec-title">アフロ馬<br>とは？</h2>
   <div class="about-card reveal reveal-d1">
-    <p>アフロ馬は、唯一無二のスタイルで競馬の世界を駆け抜ける個性派集団。</p>
-    <p>アフロ頭のキャラクターたちと一緒に、熱い予想・楽しい情報をお届けします</p>
-    <p>レースに勝つのは実力だけじゃない。スタイルも大事。それがアフロホース流。</p>
+    <p>アフワは、ちょっとおどおどしてるのに、競馬のことになるとちゃんと案内したいアフロ馬。</p>
+    <p><strong style="color:#fff;">今週の予想を見る、買い目の点数を整理する、キャラを楽しむ。</strong> それをひとつにまとめたのがこのサイトです。</p>
+    <p>ただの競馬サイトじゃなくて、<strong style="color:#fff;">“アフワが横でいっしょに見てくれる感じ”</strong>を目指してます…。</p>
 
   </div>
   <div class="corner-deco"></div>
 </section>
 
+<section class="section reveal">
+  <p class="sec-eyebrow">Start Here</p>
+  <h2 class="sec-title">まずは<br>ここから</h2>
+  <div class="quick-links">
+    <div class="quick-card reveal reveal-d1">
+      <h3>今週の本命を見たい…？</h3>
+      <p>アフワが「これかも…」って選んだ本命と、過去の成績をすぐ見れるようにしてあるよ。</p>
+      <span class="afuwa-mini">アフワ「まずはここからが、いちばんわかりやすい…」</span>
+      <a href="#race-banner" class="btn-red">予想をのぞく</a>
+    </div>
+    <div class="quick-card reveal reveal-d2">
+      <h3>点数でこんがらがる人へ…</h3>
+      <p>買い目の点数計算や本命発表づくりを、アフワが横から手伝う感じで使えるようにしたよ。</p>
+      <span class="afuwa-mini">アフワ「むずかしい計算は、ちょっと置いといて…ここ押して…」</span>
+      <a href="calc.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">計算してみる</a>
+    </div>
+  </div>
+  <div class="follow-cta reveal reveal-d3">
+    <h3>アフワのふだんを追うなら <span class="soft">Instagram</span></h3>
+    <p>サイトは“使う場所”、Instagramは“アフワを好きになる場所”。両方つながると、世界観がちゃんと伝わるようにしてるよ。</p>
+    <a href="https://www.instagram.com/ahuroma9/" target="_blank" rel="noopener noreferrer" class="btn-red">アフワを見にいく</a>
+    <p class="mini-note">アフワ「こっそり見にきてくれるだけでも…うれしい…」</p>
+  </div>
+</section>
 
 <!-- RACE BANNER -->
 <div class="race-banner" id="race-banner">
@@ -1448,7 +1628,7 @@ footer {
       <span class="badge-week">毎週更新</span>
     </div>
     <p class="race-title">今週の<br><span class="gold-accent">レース予想</span></p>
-    <p class="race-sub">アフロホースの本命はこれだ！<br>全力で選んだ渾身の一本</p>
+    <p class="race-sub">アフワが、ちゃんと考えて選んだ本命。<br>こわごわだけど、本気の一本…。</p>
   </div>
 
   <div class="banner-bottom">
@@ -1478,7 +1658,7 @@ footer {
   <div class="top-bar">
     <p class="eyebrow">Official Goods</p>
     <h2 class="sec-title">公式<span class="amber">グッズ</span></h2>
-    <p class="sec-desc">アフロホース公式グッズはこちら。<br>SUZURIにて販売中！</p>
+    <p class="sec-desc">アフワたちのグッズを、こっそり並べてるよ…。<br>SUZURIで見れます。</p>
   </div>
 
   <div class="bottom-row">
@@ -1486,9 +1666,9 @@ footer {
       <img class="chara-img" src="images/chafuwa1.png" alt="アフロホース">
     </div>
     <div class="btn-area">
-      <span class="tag-line">SUZURIで販売中</span>
+      <span class="tag-line">アフワグッズ、販売中…</span>
       <a href="https://suzuri.jp/AFUWA" target="_blank" rel="noopener noreferrer" class="btn-goods">
-        <span class="btn-icon">🛒</span>グッズを見る
+        <span class="btn-icon">🛒</span>のぞいてみる
       </a>
     </div>
   </div>
@@ -1504,14 +1684,14 @@ footer {
   <div class="top-bar">
     <p class="eyebrow">LINE Stamp</p>
     <h2 class="sec-title">LINEスタンプ<br><span class="green">発売中！</span></h2>
-    <p class="sec-desc">アフロホースのLINEスタンプ登場。<br>トークを盛り上げよう！</p>
+    <p class="sec-desc">アフワのLINEスタンプ、出てるよ…。<br>会話でそっと使ってほしい…。</p>
   </div>
 
   <div class="bottom-row">
     <div class="btn-area" style="padding-left:20px;padding-bottom:4px;">
-      <span class="tag-line">LINEストアで購入</span>
+      <span class="tag-line">LINEでつかえる…</span>
       <a href="https://store.line.me/stickershop/author/5824338/ja" target="_blank" rel="noopener noreferrer" class="btn-line">
-        <span class="line-logo">💬</span>スタンプを見る
+        <span class="line-logo">💬</span>スタンプを見る…
       </a>
     </div>
     <div class="stamp-wrap">
@@ -1524,14 +1704,15 @@ footer {
 <!-- SOCIAL -->
 <div class="social-section reveal" id="follow">
   <p class="sec-eyebrow">Follow</p>
-  <h2 class="sec-title">SNSで<br>フォローしよう</h2>
+  <h2 class="sec-title">SNSでも<br>アフワを見る？</h2>
+  <p class="social-lead">サイトでは競馬を助けて、SNSではアフワの日常とか空気感を見てもらう感じ…。<br>気になるのがあったら、のぞいてみて…。</p>
   <div class="social-grid">
     <a href="https://x.com/AFUWA12345" target="_blank" rel="noopener noreferrer" class="social-card sc-x">
       <div class="social-icon">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </div>
       <div>
-        <div class="social-name">Twitter / X</div>
+        <div class="social-name">Xでつぶやくアフワ</div>
         <div class="social-handle">@AFUWA12345</div>
       </div>
       <span class="social-arrow">›</span>
@@ -1541,7 +1722,7 @@ footer {
         <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1" fill="white"/></svg>
       </div>
       <div>
-        <div class="social-name">Instagram</div>
+        <div class="social-name">Instagramのアフワ</div>
         <div class="social-handle">ahurouma9</div>
       </div>
       <span class="social-arrow">›</span>
@@ -1551,7 +1732,7 @@ footer {
         <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 1.95C5.12 20 12 20 12 20s6.88 0 8.6-.47a2.78 2.78 0 0 0 1.94-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
       </div>
       <div>
-        <div class="social-name">YouTube</div>
+        <div class="social-name">YouTubeのアフワ</div>
         <div class="social-handle">アフワ - YouTube</div>
       </div>
       <span class="social-arrow">›</span>
