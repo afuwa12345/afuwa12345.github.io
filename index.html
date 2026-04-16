@@ -860,7 +860,7 @@ footer {
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 2;
+  z-index: 5;
   max-width: 155px;
 }
 .btn-choice-tag {
@@ -894,7 +894,7 @@ footer {
   position: absolute;
   right: 14px;
   bottom: 14px;
-  z-index: 2;
+  z-index: 5;
   font-family: 'Bebas Neue', cursive;
   font-size: 13px;
   letter-spacing: 2px;
@@ -913,15 +913,8 @@ footer {
   filter: drop-shadow(-8px 0 16px rgba(0,0,0,0.6));
 }
 
-/* グラデーションフェード（画像の左端を溶かす） */
-.btn-main-choice::after {
-  content: '';
-  position: absolute;
-  top: 0; right: 70px; bottom: 0;
-  width: 110px;
-  z-index: 3;
-  pointer-events: none;
-}
+/* グラデーションフェードなし */
+.btn-main-choice::after { display: none; }
 
 /* キャラクター */
 .btn-choice-chara-card {
