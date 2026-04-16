@@ -832,6 +832,165 @@ footer {
 }
 .tool-btn:active { transform: scale(0.97); border-color: var(--red); box-shadow: 0 0 32px rgba(255,26,26,0.25); }
 
+/* ===== HERO MAIN CHOICE BUTTONS ===== */
+.hero-btns-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 28px;
+  animation: heroText 0.8s 0.8s both;
+  width: 100%;
+  max-width: 340px;
+}
+
+.btn-main-choice {
+  display: block;
+  position: relative;
+  border-radius: 16px;
+  text-decoration: none;
+  overflow: hidden;
+  height: 100px;
+  border: 1px solid transparent;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-main-choice:active { transform: scale(0.97); }
+
+/* テキストエリア */
+.btn-choice-text {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+.btn-choice-tag {
+  font-size: 9px;
+  letter-spacing: 3px;
+  font-family: 'Bebas Neue', cursive;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 4px;
+}
+.btn-choice-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 28px;
+  letter-spacing: 3px;
+  line-height: 1;
+  display: block;
+}
+.btn-choice-sub {
+  font-size: 10px;
+  letter-spacing: 1px;
+  opacity: 0.5;
+  display: block;
+  margin-top: 5px;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+/* 矢印 */
+.btn-choice-arrow {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px;
+  letter-spacing: 2px;
+  opacity: 0.4;
+}
+
+/* キャラ画像 */
+.btn-choice-chara-img {
+  position: absolute;
+  right: -4px;
+  bottom: 0;
+  height: 108px;
+  width: auto;
+  z-index: 2;
+  object-fit: contain;
+  filter: drop-shadow(-8px 0 16px rgba(0,0,0,0.6));
+}
+
+/* グラデーションフェード（画像の左端を溶かす） */
+.btn-main-choice::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 60px; bottom: 0;
+  width: 80px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* キャラクター */
+.btn-choice-chara-card {
+  background: linear-gradient(135deg, #0f0f2a 0%, #0a0a1a 100%);
+  border-color: rgba(100,120,255,0.3);
+  box-shadow: 0 4px 24px rgba(80,100,255,0.12);
+  color: #c0ccff;
+}
+.btn-choice-chara-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, rgba(100,130,255,0.8), transparent);
+  z-index: 2;
+}
+.btn-choice-chara-card::after {
+  background: linear-gradient(90deg, #0f0f2a, transparent);
+}
+.btn-choice-chara-card .btn-choice-label { color: #aabbff; }
+
+/* アフロ馬予想 */
+.btn-choice-yoso-card {
+  background: linear-gradient(135deg, #1e0000 0%, #0e0000 100%);
+  border-color: rgba(255,26,26,0.4);
+  box-shadow: 0 4px 32px rgba(255,26,26,0.18);
+  color: rgba(255,200,200,0.8);
+}
+.btn-choice-yoso-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--red), transparent);
+  z-index: 2;
+}
+.btn-choice-yoso-card::after {
+  background: linear-gradient(90deg, #1e0000, transparent);
+}
+.btn-choice-yoso-card .btn-choice-label { color: #fff; }
+
+/* アフロ馬ツール */
+.btn-choice-tools-card {
+  background: linear-gradient(135deg, #061410 0%, #030a07 100%);
+  border-color: rgba(50,200,100,0.3);
+  box-shadow: 0 4px 24px rgba(50,200,100,0.1);
+  color: rgba(150,255,180,0.7);
+}
+.btn-choice-tools-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, rgba(50,200,100,0.8), transparent);
+  z-index: 2;
+}
+.btn-choice-tools-card::after {
+  background: linear-gradient(90deg, #061410, transparent);
+}
+.btn-choice-tools-card .btn-choice-label { color: #88ffaa; }
+
+/* ストライプ背景 */
+.btn-choice-stripes {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent, transparent 20px,
+    rgba(255,255,255,0.015) 20px, rgba(255,255,255,0.015) 22px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
 </style>
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700&display=swap');
@@ -1384,8 +1543,9 @@ footer {
 <!-- MENU OVERLAY -->
 <div class="menu-overlay" id="menuOverlay">
   <a href="#about" onclick="toggleMenu()">ABOUT</a>
-  <a href="honmei_announcer.html" onclick="toggleMenu()">本命ツール</a>
-  <a href="calc.html" onclick="toggleMenu()">計算ツール</a>
+  <a href="afrohorse_characters.html" onclick="toggleMenu()">キャラクター</a>
+  <a href="#race-banner" onclick="toggleMenu()">アフロ馬予想</a>
+  <a href="tools.html" onclick="toggleMenu()">ツール一覧</a>
   <a href="#goods" onclick="toggleMenu()">GOODS</a>
   <a href="#linestamp" onclick="toggleMenu()">LINEスタンプ</a>
 </div>
@@ -1423,14 +1583,44 @@ footer {
   </div>
 </div>
     
-    <div class="hero-btns">
-      <a href="#race-banner" class="btn-red full-btn">アフロ馬の予想・成績を見る</a>
-      <a href="afrohorse_characters.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">Characters</a>
-      <a href="honmei_announcer.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">本命発表<br>ツール</a>
-      <a href="calc.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">点数計算<br>ツール</a>
-      <a href="sire.html" class="btn-ghost" style="border-color:rgba(255,26,26,0.4);color:var(--red);">種牡馬<br>ランキング</a>
-      <a href="baken_sim.html" class="btn-red full-btn">馬券SIM（オリジナル馬券生成)</a>
-     
+    <div class="hero-btns hero-btns-main">
+
+      <!-- キャラクター -->
+      <a href="afrohorse_characters.html" class="btn-main-choice btn-choice-chara-card">
+        <div class="btn-choice-stripes"></div>
+        <div class="btn-choice-text">
+          <span class="btn-choice-tag">CHARACTERS</span>
+          <span class="btn-choice-label">キャラクター</span>
+          <span class="btn-choice-sub">6人の個性派アフロ馬たち</span>
+        </div>
+        <span class="btn-choice-arrow">VIEW →</span>
+        <img src="images/chafuwa1.png" class="btn-choice-chara-img" alt="">
+      </a>
+
+      <!-- アフロ馬予想 -->
+      <a href="#race-banner" class="btn-main-choice btn-choice-yoso-card">
+        <div class="btn-choice-stripes"></div>
+        <div class="btn-choice-text">
+          <span class="btn-choice-tag">PREDICTION</span>
+          <span class="btn-choice-label">アフロ馬予想</span>
+          <span class="btn-choice-sub">今週の本命・成績を見る</span>
+        </div>
+        <span class="btn-choice-arrow">CHECK →</span>
+        <img src="images/afuwa1.png" class="btn-choice-chara-img" alt="">
+      </a>
+
+      <!-- アフロ馬ツール -->
+      <a href="tools.html" class="btn-main-choice btn-choice-tools-card">
+        <div class="btn-choice-stripes"></div>
+        <div class="btn-choice-text">
+          <span class="btn-choice-tag">FREE TOOLS</span>
+          <span class="btn-choice-label">アフロ馬ツール</span>
+          <span class="btn-choice-sub">無料の競馬ツール一覧</span>
+        </div>
+        <span class="btn-choice-arrow">USE →</span>
+        <img src="images/afuwa3.png" class="btn-choice-chara-img" alt="">
+      </a>
+
     </div>
   </div>
 
