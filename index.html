@@ -855,13 +855,13 @@ footer {
 }
 .btn-main-choice:active { transform: scale(0.97); }
 
-/* テキストエリア */
 .btn-choice-text {
   position: absolute;
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
+  max-width: 155px;
 }
 .btn-choice-tag {
   font-size: 9px;
@@ -873,18 +873,20 @@ footer {
 }
 .btn-choice-label {
   font-family: 'Bebas Neue', cursive;
-  font-size: 28px;
-  letter-spacing: 3px;
+  font-size: 24px;
+  letter-spacing: 2px;
   line-height: 1;
   display: block;
+  white-space: nowrap;
 }
 .btn-choice-sub {
   font-size: 10px;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   opacity: 0.5;
   display: block;
   margin-top: 5px;
   font-family: 'Noto Sans JP', sans-serif;
+  white-space: nowrap;
 }
 
 /* 矢印 */
@@ -915,8 +917,8 @@ footer {
 .btn-main-choice::after {
   content: '';
   position: absolute;
-  top: 0; right: 60px; bottom: 0;
-  width: 80px;
+  top: 0; right: 70px; bottom: 0;
+  width: 110px;
   z-index: 3;
   pointer-events: none;
 }
@@ -936,7 +938,7 @@ footer {
   z-index: 2;
 }
 .btn-choice-chara-card::after {
-  background: linear-gradient(90deg, #0f0f2a, transparent);
+  background: linear-gradient(90deg, #0f0f2a 40%, transparent);
 }
 .btn-choice-chara-card .btn-choice-label { color: #aabbff; }
 
@@ -955,7 +957,7 @@ footer {
   z-index: 2;
 }
 .btn-choice-yoso-card::after {
-  background: linear-gradient(90deg, #1e0000, transparent);
+  background: linear-gradient(90deg, #1e0000 40%, transparent);
 }
 .btn-choice-yoso-card .btn-choice-label { color: #fff; }
 
@@ -974,7 +976,7 @@ footer {
   z-index: 2;
 }
 .btn-choice-tools-card::after {
-  background: linear-gradient(90deg, #061410, transparent);
+  background: linear-gradient(90deg, #061410 40%, transparent);
 }
 .btn-choice-tools-card .btn-choice-label { color: #88ffaa; }
 
