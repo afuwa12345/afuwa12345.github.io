@@ -25,8 +25,8 @@
 :root {
   --red: #FF1A1A;
   --red2: #cc0000;
-  --black: #080808;
-  --white: #FFFFFF;
+  --black: #ffffff;
+  --white: #111111;
   --gray: #888;
 }
 
@@ -284,7 +284,7 @@ animation: logoBreathe 3s ease-in-out infinite 1s;
   margin-top: 12px;
   font-size: 11px;
   letter-spacing: 4px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(0,0,0,0.5);
   text-transform: uppercase;
   animation: heroText 0.8s 0.6s both;
 }
@@ -662,7 +662,7 @@ animation: logoBreathe 3s ease-in-out infinite 1s;
 /* ===== SOCIAL ===== */
 .social-section {
   padding: 64px 24px;
-  background: #050505;
+  background: #111111;
 }
 .social-grid {
   display: flex;
@@ -674,12 +674,12 @@ animation: logoBreathe 3s ease-in-out infinite 1s;
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #0f0f0f;
-  border: 1px solid #1a1a1a;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
   border-radius: 12px;
   padding: 18px 20px;
   text-decoration: none;
-  color: var(--white);
+  color: #ffffff;
   transition: all 0.2s;
   position: relative;
   overflow: hidden;
@@ -690,11 +690,11 @@ animation: logoBreathe 3s ease-in-out infinite 1s;
   left: 0; top: 0; bottom: 0;
   width: 3px;
 }
-.sc-x::before { background: var(--white); }
+.sc-x::before { background: #ffffff; }
 .sc-ig::before { background: linear-gradient(180deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 .sc-yt::before { background: #ff0000; }
 .sc-line::before { background: #06c755; }
-.social-card:active { transform: scale(0.98); background: #141414; }
+.social-card:active { transform: scale(0.98); background: #222; }
 .social-icon {
   width: 44px;
   height: 44px;
@@ -713,16 +713,23 @@ animation: logoBreathe 3s ease-in-out infinite 1s;
   font-family: 'Bebas Neue', cursive;
   font-size: 20px;
   letter-spacing: 2px;
+  color: #ffffff;
 }
 .social-handle {
   font-size: 12px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.45);
   margin-top: 2px;
 }
-.social-arrow {
-  margin-left: auto;
-  color: rgba(255,255,255,0.2);
-  font-size: 18px;
+.nav-logo { color: #ffffff; }
+.nav-logo em { color: var(--red); }
+.footer-logo { color: #ffffff; }
+.footer-logo em { color: var(--red); }
+.social-section .sec-eyebrow,
+.social-section .sec-title {
+  color: #ffffff;
+}
+.social-section .sec-eyebrow::before {
+  background: var(--red);
 }
 
 /* ===== FOOTER ===== */
@@ -1506,7 +1513,7 @@ footer {
   border: 1px solid rgba(255,26,26,0.4);
   font-size: 14px;
   line-height: 1.6;
-  color: #fff;
+  color: #111;
   max-width: 240px;
 }
   .afuwa-comment::after {
