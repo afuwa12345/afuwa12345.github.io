@@ -986,6 +986,145 @@ footer {
   z-index: 1;
 }
 
+
+/* ===== DATA ANALYSIS SECTION ===== */
+.analysis-section{
+  background:#0d0d0d;
+  border-top:1px solid rgba(255,26,26,0.15);
+  border-bottom:1px solid rgba(255,26,26,0.15);
+  padding:40px 20px;
+  position:relative;
+  overflow:hidden;
+}
+.analysis-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,26,26,0.07) 0%,transparent 60%);
+  pointer-events:none;
+}
+.analysis-eyebrow{
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;letter-spacing:6px;
+  color:rgba(255,26,26,0.7);
+  text-align:center;margin-bottom:6px;
+}
+.analysis-title{
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(28px,8vw,44px);
+  letter-spacing:4px;text-align:center;
+  background:linear-gradient(135deg,#fff,rgba(255,255,255,0.7));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:6px;
+}
+.analysis-title em{
+  -webkit-text-fill-color:transparent;
+  background:linear-gradient(135deg,var(--red),#ff6b6b);
+  -webkit-background-clip:text;background-clip:text;
+  font-style:normal;
+}
+.analysis-date{
+  text-align:center;color:rgba(255,255,255,0.3);
+  font-family:'Bebas Neue',cursive;font-size:12px;letter-spacing:3px;
+  margin-bottom:28px;
+}
+.analysis-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  max-width:600px;margin:0 auto 24px;
+}
+@media(max-width:480px){
+  .analysis-grid{grid-template-columns:1fr;}
+}
+.analysis-card{
+  background:#111;
+  border:1px solid #1e1e1e;
+  border-radius:10px;padding:16px;
+  position:relative;overflow:hidden;
+}
+.analysis-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--red),transparent);
+}
+.ac-label{
+  font-family:'Bebas Neue',cursive;
+  font-size:10px;letter-spacing:3px;
+  color:rgba(255,26,26,0.7);margin-bottom:8px;
+}
+.ac-title{font-weight:900;font-size:.9rem;margin-bottom:10px;}
+.rec-horse-item{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 0;border-bottom:1px solid #1e1e1e;
+  font-size:.78rem;
+}
+.rec-horse-item:last-child{border-bottom:none;}
+.rec-hon{
+  width:20px;height:20px;background:var(--red);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',cursive;font-size:10px;flex-shrink:0;
+}
+.rec-race{color:rgba(255,255,255,0.4);font-size:.7rem;min-width:60px;}
+.rec-name{font-weight:700;flex:1;}
+.rec-gbm{color:var(--red);font-weight:700;font-size:.75rem;}
+.bias-row{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 0;font-size:.75rem;
+  border-bottom:1px solid #1a1a1a;
+}
+.bias-row:last-child{border-bottom:none;}
+.bias-place{color:rgba(255,255,255,0.5);width:44px;font-family:'Bebas Neue',cursive;font-size:11px;letter-spacing:1px;}
+.bias-tag{
+  padding:2px 7px;border-radius:10px;font-size:.65rem;font-weight:700;
+}
+.bias-tag.strong{background:rgba(255,26,26,0.2);color:var(--red);border:1px solid rgba(255,26,26,0.3);}
+.bias-tag.mild{background:#1a1a1a;color:rgba(255,255,255,0.4);border:1px solid #222;}
+.analysis-btn{
+  display:block;max-width:320px;margin:0 auto;
+  padding:18px 32px;
+  background:transparent;color:#fff;
+  font-family:'Bebas Neue',cursive;
+  font-size:20px;letter-spacing:4px;
+  text-align:center;text-decoration:none;
+  border-radius:4px;
+  border:1px solid rgba(255,26,26,0.6);
+  position:relative;overflow:hidden;
+  transition:all .25s;
+}
+.analysis-btn::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--red) 0%,#cc0000 100%);
+  transform:translateX(-100%);
+  transition:transform .3s ease;
+  z-index:0;
+}
+.analysis-btn::after{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  width:0;height:0;
+  background:rgba(255,255,255,0.15);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  transition:width .4s ease,height .4s ease,opacity .4s ease;
+  opacity:0;z-index:1;
+}
+.analysis-btn span{position:relative;z-index:2;}
+.analysis-btn:hover::before{transform:translateX(0);}
+.analysis-btn:hover{
+  border-color:var(--red);
+  box-shadow:0 0 30px rgba(255,26,26,0.35),inset 0 0 20px rgba(255,26,26,0.1);
+  letter-spacing:5px;
+}
+.analysis-btn:active::after{width:300px;height:300px;opacity:0;}
+.analysis-btn:active{transform:scale(0.97);}
+.analysis-stat-row{
+  display:flex;justify-content:space-between;
+  padding:6px 0;border-bottom:1px solid #1a1a1a;font-size:.78rem;
+}
+.analysis-stat-row:last-child{border-bottom:none;}
+.asr-label{color:rgba(255,255,255,0.4);}
+.asr-val{font-weight:700;color:#fff;}
+.asr-val.red{color:var(--red);}
 </style>
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700&display=swap');
@@ -1524,6 +1663,7 @@ footer {
   
 </style>
 
+<script src="week_data.js"></script>
 </head>
 <body>
 
@@ -1696,6 +1836,83 @@ footer {
 </div>
   </div>
 </div>
+
+
+<!-- DATA ANALYSIS SECTION -->
+<div class="analysis-section" id="analysis">
+  <div class="analysis-eyebrow">AI ANALYSIS</div>
+  <div class="analysis-title">今週の<em>データ分析</em></div>
+  <div class="analysis-date" id="analysis-date">読み込み中...</div>
+
+  <div class="analysis-grid">
+    <!-- GBM推奨馬 -->
+    <div class="analysis-card" style="grid-column:1/-1;">
+      <div class="ac-label">⭐ GBM RECOMMEND</div>
+      <div class="ac-title">今週の推奨馬</div>
+      <div id="rec-list">
+        <div style="color:rgba(255,255,255,0.3);font-size:.8rem;padding:12px 0;">データ読み込み中...</div>
+      </div>
+    </div>
+
+    <!-- 馬場傾向 -->
+    <div class="analysis-card" style="grid-column:1/-1;">
+      <div class="ac-label">🏟 LAST WEEK TRACK BIAS</div>
+      <div class="ac-title">先週の馬場傾向</div>
+      <div id="bias-list">
+        <div style="color:rgba(255,255,255,0.3);font-size:.8rem;padding:8px 0;">データ読み込み中...</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="afro_horse_site.html" class="analysis-btn"><span>詳細予想を見る →</span></a>
+</div>
+
+<script>
+// week_data.jsから読み込んでUIを更新
+(function(){
+  if(typeof WEEK_DATA === 'undefined') return;
+  const d = WEEK_DATA;
+
+  // 日付
+  document.getElementById('analysis-date').textContent = d.dates ? d.dates.join(' · ') : '';
+
+  // GBM推奨馬（上位5頭）
+  const recList = document.getElementById('rec-list');
+  if(d.recommendations && d.recommendations.length > 0){
+    recList.innerHTML = d.recommendations.slice(0,5).map(r =>
+      `<div class="rec-horse-item">
+        <div class="rec-hon">◎</div>
+        <span class="rec-race">${r.place} ${r.r}R</span>
+        <span class="rec-name">[${r.bango||'?'}番] ${r.name}</span>
+        <span class="rec-gbm">GBM ${(r.gbm*100).toFixed(0)}%</span>
+      </div>`
+    ).join('');
+  } else {
+    recList.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.8rem;padding:8px 0;">今週の推奨馬はありません</div>';
+  }
+
+  // 馬場傾向
+  const biasList = document.getElementById('bias-list');
+  if(d.bias && d.bias.length > 0){
+    biasList.innerHTML = d.bias.map(b => {
+      const tags = [];
+      if(b.inner > 1.15) tags.push('<span class="bias-tag strong">内有利</span>');
+      else if(b.outer > 1.15) tags.push('<span class="bias-tag strong">外有利</span>');
+      if(b.nige > 1.15) tags.push('<span class="bias-tag strong">逃有利</span>');
+      else if(b.sashi > 1.15) tags.push('<span class="bias-tag strong">差有利</span>');
+      if(tags.length===0) tags.push('<span class="bias-tag mild">フラット</span>');
+      return `<div class="bias-row">
+        <span class="bias-place">${b.place}${b.surf}</span>
+        ${tags.join('')}
+      </div>`;
+    }).join('');
+  } else {
+    biasList.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.8rem;padding:8px 0;">傾向データなし</div>';
+  }
+
+
+})();
+</script>
 
 <!-- GOODS -->
 
