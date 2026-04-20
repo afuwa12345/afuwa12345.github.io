@@ -97,6 +97,17 @@ body{background:var(--black);color:var(--white);font-family:'Noto Sans JP',sans-
 .week-payout{min-width:60px;text-align:right;font-family:'Bebas Neue',cursive;font-size:.9rem;}
 .week-payout.plus{color:#2ECC71;}
 .week-payout.minus{color:var(--red);}
+.week-row-full { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.week-row-full:last-child { border-bottom: none; }
+.week-row-main { display: flex; align-items: center; gap: 10px; font-size: .8rem; }
+.week-date { color: var(--red); font-weight: 700; font-size: .75rem; min-width: 44px; font-family: 'Bebas Neue', cursive; letter-spacing: 1px; }
+.week-race-name { color: rgba(255,255,255,0.6); flex: 1; font-size: .72rem; }
+.week-result { font-size: 1rem; min-width: 20px; text-align: center; }
+.week-horse-big { font-weight: 700; font-size: .85rem; margin-top: 4px; }
+.week-aite { font-size: .68rem; color: rgba(255,255,255,0.5); margin-top: 2px; padding-left: 18px; }
+.week-bet { font-size: .65rem; color: rgba(255,26,26,0.7); margin-top: 3px; padding-left: 18px; font-weight: 700; letter-spacing: .5px; }
+.week-row-detail { padding-left: 4px; }
+
 
 /* GRAPH */
 .graph-section{margin-bottom:24px;}
@@ -203,7 +214,7 @@ canvas{width:100%!important;height:380px!important;}
       </div>
 
       <div class="chara-intro-row" style="border-left-color:#F5A623;">
-        <img class="chara-intro-img" src="images/chafuwa.png" alt="チャフワ">
+        <img class="chara-intro-img" src="images/chahuwa.png" alt="チャフワ">
         <div class="chara-intro-info">
           <div class="chara-intro-name">チャフワ</div>
           <div class="chara-intro-persona">マイペース・騎手愛</div>
@@ -231,6 +242,34 @@ canvas{width:100%!important;height:380px!important;}
     </div>
   </div>
 </div>
+
+<!-- 今週の本命セクション -->
+<div class="pick-wrap">
+  <div class="pick-section">
+    <div class="pick-label">THIS WEEK'S PICKS / 今週の本命</div>
+    <div class="pick-week-label" id="pickWeekLabel"></div>
+    <div class="pick-list" id="pickList"></div>
+  </div>
+</div>
+
+<style>
+.pick-wrap{max-width:600px;margin:0 auto;padding:20px 16px 0;}
+.pick-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 16px;position:relative;overflow:hidden;}
+.pick-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),transparent);}
+.pick-label{font-family:'Bebas Neue',cursive;font-size:10px;letter-spacing:5px;color:rgba(255,26,26,0.7);margin-bottom:4px;}
+.pick-week-label{font-family:'Bebas Neue',cursive;font-size:16px;color:#fff;margin-bottom:14px;letter-spacing:2px;}
+.pick-list{display:flex;flex-direction:column;gap:8px;}
+.pick-card{display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;border-left:3px solid;}
+.pick-card-img{width:42px;height:42px;object-fit:contain;flex-shrink:0;}
+.pick-card-info{flex:1;min-width:0;}
+.pick-card-name{font-weight:900;font-size:.85rem;margin-bottom:2px;}
+.pick-card-race{font-size:.7rem;color:var(--muted);margin-bottom:3px;}
+.pick-card-horse{font-size:.8rem;font-weight:700;}
+.pick-card-horse .bango{color:var(--red);margin-right:4px;font-weight:900;}
+.pick-card-aite{font-size:.65rem;color:rgba(255,255,255,0.5);margin-top:3px;}
+.pick-card-bet{font-size:.65rem;color:rgba(255,26,26,0.85);margin-top:4px;font-weight:700;letter-spacing:.3px;}
+.pick-empty{padding:30px 20px;text-align:center;color:var(--muted);font-size:.8rem;line-height:1.7;}
+</style>
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('ranking',this)">ランキング</button>
@@ -299,7 +338,7 @@ function calcStats() {
       stats[id].weeklyBalance.push(stats[id].totalBalance);
       stats[id].total++;
       if (r.result==='○') stats[id].wins++;
-      stats[id].weeks.push({ week:w.week, date:w.date, race:r.race, horse:r.horse, result:r.result, payout:r.payout, balance });
+      stats[id].weeks.push({ week:w.week, date:r.date||w.date, race:r.race, horse:r.horse, result:r.result, payout:r.payout, balance, aite:r.aite||[], bet:r.bet||'', chaku:r.chaku });
     });
   });
 
@@ -369,14 +408,24 @@ function renderDetail(stats, focusId) {
     const c = chars[id]; const s = stats[id];
     const balStr = s.totalBalance>=0 ? `+${s.totalBalance.toLocaleString()}` : s.totalBalance.toLocaleString();
     const balClass = s.totalBalance>0?'plus':s.totalBalance<0?'minus':'zero';
-    const rows = s.weeks.map(w => `
-      <div class="week-row">
-        <div class="week-num">${w.week}W</div>
-        <div class="week-race">${w.race}</div>
-        <div class="week-horse">${w.horse}</div>
-        <div class="week-result">${w.result==='○'?'✅':'❌'}</div>
-        <div class="week-payout ${w.balance>=0?'plus':'minus'}">${w.balance>=0?'+':''}${w.balance.toLocaleString()}</div>
-      </div>`).join('') || `<div class="week-row" style="color:var(--muted);font-size:.75rem;padding:16px">まだ記録なし</div>`;
+    const rows = s.weeks.map(w => {
+      const aiteStr = (w.aite && w.aite.length>0) ? `<div class="week-aite">相手: ${w.aite.join('・')}</div>` : '';
+      const betStr = w.bet ? `<div class="week-bet">${w.bet}</div>` : '';
+      return `
+      <div class="week-row-full">
+        <div class="week-row-main">
+          <div class="week-date">${w.date||''}</div>
+          <div class="week-race-name">${w.race}</div>
+          <div class="week-result">${w.result==='○'?'✅':'❌'}</div>
+          <div class="week-payout ${w.balance>=0?'plus':'minus'}">${w.balance>=0?'+':''}${w.balance.toLocaleString()}</div>
+        </div>
+        <div class="week-row-detail">
+          <div class="week-horse-big">🐴 ${w.horse}${w.chaku?` <span style="color:var(--muted);font-size:.65rem">(${w.chaku}着)</span>`:''}</div>
+          ${aiteStr}
+          ${betStr}
+        </div>
+      </div>`;
+    }).join('') || `<div class="week-row" style="color:var(--muted);font-size:.75rem;padding:16px">まだ記録なし</div>`;
 
     return `<div class="detail-card" id="detail-${id}">
       <div class="detail-header" onclick="toggleDetail('${id}')">
@@ -424,8 +473,9 @@ function renderWeekly(stats) {
       const r = w.results?.[id]; if (!r) return '';
       const c = chars[id];
       const balance = (r.payout||0) - CHARA_DATA.bet_per_week;
+      const rDate = r.date || w.date;
       return `<div class="wt-row">
-        <div class="wt-week">${w.week}W</div>
+        <div class="wt-week">${rDate||''}</div>
         <div class="wt-chara"><img src="${c.img}" alt="${c.name}"><span>${c.name}</span></div>
         <div class="wt-horse">${r.race}<br>${r.horse}</div>
         <div class="wt-result">${r.result==='○'?'✅':'❌'}</div>
@@ -542,12 +592,50 @@ function switchTab(tabId, btn, focusId) {
 }
 
 // ── 初期化 ────────────────────────────────
+async function loadWeeklyPicks() {
+  try {
+    const res = await fetch('chara_picks.json?t=' + Date.now());
+    if (!res.ok) throw new Error('No picks');
+    const data = await res.json();
+    const picks = data.picks || {};
+    const chars = CHARA_DATA.characters;
+
+    document.getElementById('pickWeekLabel').textContent = data.week_label || '';
+
+    const list = document.getElementById('pickList');
+    const order = ['afuwa','yancha','buruma','chafuwa','kurofuwa','ginma'];
+    let html = '';
+    order.forEach(id => {
+      const p = picks[id]; const c = chars[id];
+      if (!p || !c) return;
+      const aite = (p.aite && p.aite.length>0)
+        ? `<div class="pick-card-aite">相手: ${p.aite.map(a=>a.name||a).join('・')}</div>` : '';
+      const bango = p.honmei.bango && p.honmei.bango !== '?' && p.honmei.bango !== '未'
+        ? `<span class="bango">[${p.honmei.bango}]</span>` : '';
+      html += `<div class="pick-card" style="border-left-color:${c.color}">
+        <img class="pick-card-img" src="${c.img}" alt="${c.name}">
+        <div class="pick-card-info">
+          <div class="pick-card-name">${c.name}</div>
+          <div class="pick-card-race">${p.race} (${p.date||''})</div>
+          <div class="pick-card-horse">${bango}🐴 ${p.honmei.name}</div>
+          ${aite}
+          <div class="pick-card-bet">${c.bet||''}</div>
+        </div>
+      </div>`;
+    });
+    list.innerHTML = html || '<div class="pick-empty">今週の本命はまだ出ていません</div>';
+  } catch(e) {
+    document.getElementById('pickList').innerHTML = '<div class="pick-empty">今週の本命はまだ出ていません<br><span style="font-size:.7rem">（金曜夜に更新されます）</span></div>';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   _stats = calcStats();
   document.getElementById('seasonBadge').textContent = (CHARA_DATA.season||'2026') + ' SEASON';
   renderRanking(_stats);
   renderDetail(_stats, null);
   renderWeekly(_stats);
+  loadWeeklyPicks();
 });
 </script>
 </body>
