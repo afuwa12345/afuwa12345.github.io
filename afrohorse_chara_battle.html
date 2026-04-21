@@ -259,15 +259,22 @@ canvas{width:100%!important;height:380px!important;}
 .pick-label{font-family:'Bebas Neue',cursive;font-size:10px;letter-spacing:5px;color:rgba(255,26,26,0.7);margin-bottom:4px;}
 .pick-week-label{font-family:'Bebas Neue',cursive;font-size:16px;color:#fff;margin-bottom:14px;letter-spacing:2px;}
 .pick-list{display:flex;flex-direction:column;gap:8px;}
-.pick-card{display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;border-left:3px solid;}
-.pick-card-img{width:42px;height:42px;object-fit:contain;flex-shrink:0;}
-.pick-card-info{flex:1;min-width:0;}
-.pick-card-name{font-weight:900;font-size:.85rem;margin-bottom:2px;}
-.pick-card-race{font-size:.7rem;color:var(--muted);margin-bottom:3px;}
-.pick-card-horse{font-size:.8rem;font-weight:700;}
-.pick-card-horse .bango{color:var(--red);margin-right:4px;font-weight:900;}
-.pick-card-aite{font-size:.65rem;color:rgba(255,255,255,0.5);margin-top:3px;}
-.pick-card-bet{font-size:.65rem;color:rgba(255,26,26,0.85);margin-top:4px;font-weight:700;letter-spacing:.3px;}
+.pick-compact{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,0.02);border-radius:6px;border-left:3px solid;cursor:pointer;transition:background .15s;}
+.pick-compact:active{background:rgba(255,255,255,0.05);}
+.pick-compact-img{width:32px;height:32px;object-fit:contain;flex-shrink:0;}
+.pick-compact-main{flex:1;min-width:0;}
+.pick-compact-top{display:flex;align-items:center;gap:6px;font-size:.7rem;}
+.pick-compact-name{font-weight:900;color:#fff;font-size:.75rem;}
+.pick-compact-race{color:var(--muted);font-size:.65rem;}
+.pick-compact-toggle{margin-left:auto;color:var(--muted);font-size:.7rem;transition:transform .2s;}
+.pick-compact.open .pick-compact-toggle{transform:rotate(180deg);}
+.pick-compact-horse{font-size:.8rem;font-weight:700;margin-top:1px;line-height:1.2;}
+.pick-compact-horse .bango{color:var(--red);margin-right:3px;font-weight:900;}
+.pick-compact-detail{max-height:0;overflow:hidden;transition:max-height .25s ease,margin-top .25s;}
+.pick-compact.open .pick-compact-detail{max-height:80px;margin-top:5px;}
+.pick-compact-aite{font-size:.62rem;color:rgba(255,255,255,0.55);line-height:1.4;}
+.pick-compact-bet{font-size:.62rem;color:rgba(255,26,26,0.85);font-weight:700;letter-spacing:.3px;margin-top:2px;}
+.pick-list{gap:4px!important;}
 .pick-empty{padding:30px 20px;text-align:center;color:var(--muted);font-size:.8rem;line-height:1.7;}
 </style>
 
@@ -612,14 +619,21 @@ async function loadWeeklyPicks() {
         ? `<div class="pick-card-aite">相手: ${p.aite.map(a=>a.name||a).join('・')}</div>` : '';
       const bango = p.honmei.bango && p.honmei.bango !== '?' && p.honmei.bango !== '未'
         ? `<span class="bango">[${p.honmei.bango}]</span>` : '';
-      html += `<div class="pick-card" style="border-left-color:${c.color}">
-        <img class="pick-card-img" src="${c.img}" alt="${c.name}">
-        <div class="pick-card-info">
-          <div class="pick-card-name">${c.name}</div>
-          <div class="pick-card-race">${p.race} (${p.date||''})</div>
-          <div class="pick-card-horse">${bango}🐴 ${p.honmei.name}</div>
-          ${aite}
-          <div class="pick-card-bet">${c.bet||''}</div>
+      const aiteInner = (p.aite && p.aite.length>0)
+        ? `<div class="pick-compact-aite">相手: ${p.aite.map(a=>a.name||a).join('・')}</div>` : '';
+      html += `<div class="pick-compact" style="border-left-color:${c.color}" onclick="this.classList.toggle('open')">
+        <img class="pick-compact-img" src="${c.img}" alt="${c.name}">
+        <div class="pick-compact-main">
+          <div class="pick-compact-top">
+            <span class="pick-compact-name">${c.name}</span>
+            <span class="pick-compact-race">${p.race}</span>
+            <span class="pick-compact-toggle">▾</span>
+          </div>
+          <div class="pick-compact-horse">${bango}🐴 ${p.honmei.name}</div>
+          <div class="pick-compact-detail">
+            ${aiteInner}
+            <div class="pick-compact-bet">${c.bet||''}</div>
+          </div>
         </div>
       </div>`;
     });
