@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FF1A1A">
+  <link rel="icon" href="favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="description" content="アフロ馬の競馬ツール一覧。本命発表ツール・点数計算・種牡馬ランキング・馬券SIMなど無料で使えるツールが揃っています。">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>ツール一覧｜AFRO Horse</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8NV6044LPZ');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #FF1A1A;
+  --red2: #cc0000;
+  --black: #080808;
+  --white: #FFFFFF;
+  --gray: #888;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Noto Sans JP', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(8,8,8,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,26,26,0.2);
+  transition: transform 0.3s;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 26px;
+  letter-spacing: 3px;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo em { color: var(--red); font-style: normal; }
+
+.hamburger {
+  width: 40px; height: 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-end;
+  gap: 6px; cursor: pointer;
+}
+.hamburger span {
+  display: block; height: 2px;
+  background: var(--white); border-radius: 2px;
+  transition: all 0.4s;
+}
+.hamburger span:nth-child(1) { width: 24px; }
+.hamburger span:nth-child(2) { width: 16px; background: var(--red); }
+.hamburger span:nth-child(3) { width: 20px; }
+.hamburger.open span:nth-child(1) { width: 22px; transform: translateY(8px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { width: 0; opacity: 0; }
+.hamburger.open span:nth-child(3) { width: 22px; transform: translateY(-8px) rotate(-45deg); }
+
+/* MENU */
+.menu-overlay {
+  position: fixed; inset: 0;
+  background: #080808;
+  z-index: 190;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  transform: translateY(-100%);
+  transition: transform 0.5s cubic-bezier(0.77,0,0.175,1);
+}
+.menu-overlay.open { transform: translateY(0); }
+.menu-overlay a {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 32px; letter-spacing: 4px;
+  color: var(--white); text-decoration: none;
+  padding: 14px 40px; width: 100%; text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: color 0.2s;
+}
+.menu-overlay a:active { color: var(--red); }
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  padding: 96px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,26,26,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-header-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.breadcrumb a {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.breadcrumb a:active { color: var(--red); }
+.breadcrumb-sep {
+  color: rgba(255,255,255,0.15);
+  font-size: 12px;
+}
+.breadcrumb-current {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--red);
+}
+
+.page-eyebrow {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.page-eyebrow::before {
+  content: '';
+  display: block;
+  width: 20px; height: 1px;
+  background: var(--red);
+}
+
+.page-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 72px;
+  letter-spacing: 6px;
+  line-height: 0.9;
+  color: var(--white);
+}
+.page-title em {
+  color: var(--red);
+  font-style: normal;
+}
+
+.page-desc {
+  margin-top: 14px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.8;
+}
+
+/* Divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--red), transparent);
+  margin: 0 24px 40px;
+  opacity: 0.3;
+}
+
+/* ===== TOOL GRID ===== */
+.tools-section {
+  padding: 0 20px 80px;
+}
+
+.tools-category {
+  margin-bottom: 40px;
+}
+.tools-category-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 14px;
+  padding-left: 4px;
+}
+
+.tool-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #0d0d0d;
+  border: 1px solid #1e1e1e;
+  border-radius: 16px;
+  padding: 20px 18px;
+  text-decoration: none;
+  color: var(--white);
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.tool-card:active {
+  transform: scale(0.98);
+  background: #141414;
+}
+.tool-card:active::before { opacity: 1; }
+
+/* カード左：アイコン */
+.tool-card-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* カード中：テキスト */
+.tool-card-body {
+  flex: 1;
+  min-width: 0;
+}
+.tool-card-name {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 22px;
+  letter-spacing: 2px;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.tool-card-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+/* カード右：矢印 */
+.tool-card-arrow {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.3);
+  font-size: 16px;
+  transition: all 0.2s;
+}
+.tool-card:active .tool-card-arrow {
+  border-color: currentColor;
+}
+
+/* ===== カラーバリエーション ===== */
+
+/* 本命発表 — RED */
+.tc-red { border-color: rgba(255,26,26,0.25); }
+.tc-red::before { background: linear-gradient(90deg, var(--red), transparent); }
+.tc-red .tool-card-icon { background: rgba(255,26,26,0.12); }
+.tc-red .tool-card-name { color: #fff; }
+.tc-red .tool-card-arrow { color: var(--red); border-color: rgba(255,26,26,0.3); }
+.tc-red:active { border-color: rgba(255,26,26,0.5); }
+
+/* 点数計算 — BLUE */
+.tc-blue { border-color: rgba(80,140,255,0.2); }
+.tc-blue::before { background: linear-gradient(90deg, rgba(80,140,255,0.8), transparent); }
+.tc-blue .tool-card-icon { background: rgba(80,140,255,0.1); }
+.tc-blue .tool-card-name { color: #aac4ff; }
+.tc-blue .tool-card-arrow { color: #80aaff; border-color: rgba(80,140,255,0.25); }
+.tc-blue:active { border-color: rgba(80,140,255,0.5); }
+
+/* 種牡馬 — GOLD */
+.tc-gold { border-color: rgba(200,150,0,0.2); }
+.tc-gold::before { background: linear-gradient(90deg, rgba(200,150,0,0.8), transparent); }
+.tc-gold .tool-card-icon { background: rgba(200,150,0,0.1); }
+.tc-gold .tool-card-name { color: #ffd700; }
+.tc-gold .tool-card-arrow { color: #ffd700; border-color: rgba(200,150,0,0.25); }
+.tc-gold:active { border-color: rgba(200,150,0,0.5); }
+
+/* 馬券SIM — GREEN */
+.tc-green { border-color: rgba(50,200,100,0.2); }
+.tc-green::before { background: linear-gradient(90deg, rgba(50,200,100,0.8), transparent); }
+.tc-green .tool-card-icon { background: rgba(50,200,100,0.1); }
+.tc-green .tool-card-name { color: #88ffaa; }
+.tc-green .tool-card-arrow { color: #66ee88; border-color: rgba(50,200,100,0.25); }
+.tc-green:active { border-color: rgba(50,200,100,0.5); }
+
+/* 収支ツール — PURPLE */
+.tc-purple { border-color: rgba(160,80,255,0.2); }
+.tc-purple::before { background: linear-gradient(90deg, rgba(160,80,255,0.8), transparent); }
+.tc-purple .tool-card-icon { background: rgba(160,80,255,0.1); }
+.tc-purple .tool-card-name { color: #cc99ff; }
+.tc-purple .tool-card-arrow { color: #bb88ff; border-color: rgba(160,80,255,0.25); }
+.tc-purple:active { border-color: rgba(160,80,255,0.5); }
+
+/* NEW バッジ */
+.tool-badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.tb-new { background: var(--red); color: #fff; }
+.tb-hot { background: #ff6600; color: #fff; }
+
+/* ===== BACK BUTTON ===== */
+.back-wrap {
+  padding: 20px 20px 0;
+}
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.btn-back:active { color: var(--red); }
+.btn-back-icon {
+  font-size: 14px;
+  transition: transform 0.2s;
+}
+.btn-back:active .btn-back-icon { transform: translateX(-3px); }
+
+/* ===== FOOTER ===== */
+footer {
+  background: #020202;
+  padding: 40px 24px 56px;
+  border-top: 1px solid rgba(255,26,26,0.1);
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 32px; letter-spacing: 4px; margin-bottom: 4px;
+}
+.footer-logo em { color: var(--red); font-style: normal; }
+.footer-tagline {
+  font-size: 11px; letter-spacing: 3px;
+  color: rgba(255,255,255,0.2);
+  text-transform: uppercase; margin-bottom: 24px;
+}
+.footer-nav {
+  display: flex; justify-content: center;
+  flex-wrap: wrap; gap: 16px 24px;
+  max-width: 400px; margin: 0 auto 24px;
+}
+.footer-nav a {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 14px; letter-spacing: 2px;
+  color: rgba(255,255,255,0.35); text-decoration: none;
+}
+.footer-copy { font-size: 11px; color: rgba(255,255,255,0.15); }
+
+/* Scanlines deco */
+.page-scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 2px,
+    rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.reveal.on { opacity: 1; transform: none; }
+.reveal-d1 { transition-delay: 0.08s; }
+.reveal-d2 { transition-delay: 0.16s; }
+.reveal-d3 { transition-delay: 0.24s; }
+.reveal-d4 { transition-delay: 0.32s; }
+.reveal-d5 { transition-delay: 0.40s; }
+</style>
+</head>
+<body>
+
+<div class="page-scanlines"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+  <div class="hamburger" id="ham" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menuOverlay">
+  <a href="index.html" onclick="toggleMenu()">HOME</a>
+  <a href="afrohorse_characters.html" onclick="toggleMenu()">キャラクター</a>
+  <a href="index.html#race-banner" onclick="toggleMenu()">アフロ馬予想</a>
+  <a href="tools.html" onclick="toggleMenu()">ツール一覧</a>
+  <a href="index.html#goods" onclick="toggleMenu()">GOODS</a>
+  <a href="index.html#follow" onclick="toggleMenu()">SNS</a>
+</div>
+
+<!-- BACK BUTTON -->
+<div class="back-wrap" style="padding-top:72px;">
+  <a href="index.html" class="btn-back">
+    <span class="btn-back-icon">←</span>
+    <span>BACK TO HOME</span>
+  </a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+
+    <p class="page-eyebrow">Free Tools</p>
+
+    <h1 class="page-title">AFRO<br><em>TOOLS</em></h1>
+
+    <p class="page-desc">
+      アフロ馬の競馬ツール一覧<br>
+      全部無料・ブラウザで即使える
+    </p>
+
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- TOOLS LIST -->
+<div class="tools-section">
+
+  <!-- 予想・発表系 -->
+  <div class="tools-category reveal">
+    <p class="tools-category-label">PREDICTION / ANNOUNCE</p>
+
+    <a href="honmei_announcer.html" class="tool-card tc-red reveal reveal-d1">
+      <div class="tool-card-icon">🎙️</div>
+      <div class="tool-card-body">
+        <div class="tool-card-name">本命発表ツール</div>
+        <div class="tool-card-desc">キャラクターが今週の本命を発表！<br>SNSシェア用の画像も生成できる</div>
+      </div>
+      <div class="tool-card-arrow">›</div>
+      <span class="tool-badge tb-hot">HOT</span>
+    </a>
+
+    <a href="yoso-cert.html" class="tool-card tc-purple reveal reveal-d2">
+      <div class="tool-card-icon">📜</div>
+      <div class="tool-card-body">
+        <div class="tool-card-name">予想証明システム</div>
+        <div class="tool-card-desc">予想の証明書を発行！<br>的中の証拠をSNSでシェアしよう</div>
+      </div>
+      <div class="tool-card-arrow">›</div>
+      <span class="tool-badge tb-new">NEW</span>
+    </a>
+
+  </div>
+
+  <!-- 計算・分析系 -->
+  <div class="tools-category reveal reveal-d1">
+    <p class="tools-category-label">CALCULATION / ANALYSIS</p>
+
+    <a href="calc.html" class="tool-card tc-blue reveal reveal-d1">
+      <div class="tool-card-icon">🧮</div>
+      <div class="tool-card-body">
+        <div class="tool-card-name">点数計算ツール</div>
+        <div class="tool-card-desc">馬券の買い目点数を素早く計算<br>三連複・三連単・馬連など全式別対応</div>
+      </div>
+      <div class="tool-card-arrow">›</div>
+    </a>
+
+    <a href="sire.html" class="tool-card tc-gold reveal reveal-d2">
+      <div class="tool-card-icon">🏆</div>
+      <div class="tool-card-body">
+        <div class="tool-card-name">種牡馬ランキング</div>
+        <div class="tool-card-desc">種牡馬別の成績データを確認<br>コース・条件別に絞り込み可能</div>
+      </div>
+      <div class="tool-card-arrow">›</div>
+    </a>
+
+  </div>
+
+  <!-- エンタメ系 -->
+  <div class="tools-category reveal reveal-d2">
+    <p class="tools-category-label">ENTERTAINMENT</p>
+
+    <a href="baken_sim.html" class="tool-card tc-green reveal reveal-d1">
+      <div class="tool-card-icon">🎫</div>
+      <div class="tool-card-body">
+        <div class="tool-card-name">馬券SIM</div>
+        <div class="tool-card-desc">オリジナルデザインの馬券を生成<br>SNSで自慢できる本物そっくりの馬券</div>
+      </div>
+      <div class="tool-card-arrow">›</div>
+      <span class="tool-badge tb-new">NEW</span>
+    </a>
+
+  </div>
+
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AFRO<em>Horse</em></div>
+  <p class="footer-tagline">Win with style</p>
+  <nav class="footer-nav">
+    <a href="index.html">Home</a>
+    <a href="afrohorse_characters.html">Characters</a>
+    <a href="index.html#race-banner">予想</a>
+    <a href="tools.html">ツール</a>
+    <a href="contact.html">お問い合わせ</a>
+    <a href="privacy.html">プライバシーポリシー</a>
+  </nav>
+  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
+</footer>
+
+<script>
+// Menu toggle
+function toggleMenu() {
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('menuOverlay').classList.toggle('open');
+  document.body.style.overflow = document.getElementById('menuOverlay').classList.contains('open') ? 'hidden' : '';
+}
+
+// Nav hide on scroll
+let lastY = 0;
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.style.transform = (y > lastY && y > 80) ? 'translateY(-100%)' : 'translateY(0)';
+  lastY = y;
+}, {passive: true});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+}, {threshold: 0.06});
+reveals.forEach(r => io.observe(r));
+</script>
+</body>
+</html>
