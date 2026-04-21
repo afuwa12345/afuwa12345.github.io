@@ -1,0 +1,122 @@
+{
+  "week_label": "04/18・04/19",
+  "generated_at": "2026/04/20 07:47",
+  "picks": {
+    "afuwa": {
+      "race": "中山 5R",
+      "race_name": "1勝",
+      "date": "04/19",
+      "honmei": {
+        "name": "マーゴットブロー",
+        "bango": "未"
+      },
+      "aite": [],
+      "gbm": 42.8,
+      "reason": "GBM42.8%で堅実"
+    },
+    "yancha": {
+      "race": "福島 1R",
+      "race_name": "未勝利",
+      "date": "04/19",
+      "honmei": {
+        "name": "スプリングドリーム",
+        "bango": "未"
+      },
+      "aite": [],
+      "gbm": 42.5,
+      "reason": "1位と2位の差24.0%で一発狙い"
+    },
+    "buruma": {
+      "race": "阪神 2R",
+      "race_name": "未勝利",
+      "date": "04/19",
+      "honmei": {
+        "name": "ヤマヤロード",
+        "bango": "未"
+      },
+      "aite": [
+        {
+          "name": "ルクスキャンディ",
+          "bango": "未"
+        },
+        {
+          "name": "カトマンズゴールド",
+          "bango": "未"
+        }
+      ],
+      "gbm": 8.1,
+      "reason": "スピード上昇中"
+    },
+    "chafuwa": {
+      "race": "中山 1R",
+      "race_name": "未勝利",
+      "date": "04/18",
+      "honmei": {
+        "name": "アドミ",
+        "bango": "4"
+      },
+      "aite": [
+        {
+          "name": "セントリアン",
+          "bango": "6"
+        },
+        {
+          "name": "クアロアランチ",
+          "bango": "15"
+        }
+      ],
+      "gbm": 25.2,
+      "reason": "騎手勝率7.1%"
+    },
+    "kurofuwa": {
+      "race": "阪神 8R",
+      "race_name": "1勝",
+      "date": "04/19",
+      "honmei": {
+        "name": "レヴァンテシチー",
+        "bango": "未"
+      },
+      "aite": [
+        {
+          "name": "オリジナルファイン",
+          "bango": "未"
+        },
+        {
+          "name": "メイショウオグマ",
+          "bango": "未"
+        },
+        {
+          "name": "レッドイステル",
+          "bango": "未"
+        },
+        {
+          "name": "メイショウカスガイ",
+          "bango": "未"
+        }
+      ],
+      "gbm": 40.4,
+      "reason": "上位5頭の合計スコア最高"
+    },
+    "ginma": {
+      "race": "中山 11R",
+      "race_name": "Ｇ１",
+      "date": "04/19",
+      "honmei": {
+        "name": "バステール",
+        "bango": "18"
+      },
+      "aite": [
+        {
+          "name": "アドマイヤクワッズ",
+          "bango": "17"
+        },
+        {
+          "name": "ゾロアストロ",
+          "bango": "14"
+        }
+      ],
+      "gbm": 5.7,
+      "reason": "血統◎だが評価低め"
+    }
+  }
+}
