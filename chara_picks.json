@@ -1,30 +1,30 @@
 {
   "week_label": "04/25・04/26",
-  "generated_at": "2026/04/24 21:19",
+  "generated_at": "2026/04/26 00:27",
   "picks": {
     "afuwa": {
-      "race": "東京 7R",
+      "race": "東京 6R",
       "race_name": "1勝",
-      "date": "04/25",
-      "honmei": {
-        "name": "クラリネットソナタ",
-        "bango": "16"
-      },
-      "aite": [],
-      "gbm": 40.5,
-      "reason": "GBM40.5%で堅実"
-    },
-    "yancha": {
-      "race": "東京 10R",
-      "race_name": "OP(L)",
       "date": "04/26",
       "honmei": {
-        "name": "ウェイワードアクト",
+        "name": "サレジオ",
         "bango": "未"
       },
       "aite": [],
-      "gbm": 36.4,
-      "reason": "1位と2位の差24.1%で一発狙い"
+      "gbm": 52.8,
+      "reason": "GBM52.8%で堅実"
+    },
+    "yancha": {
+      "race": "東京 6R",
+      "race_name": "1勝",
+      "date": "04/26",
+      "honmei": {
+        "name": "サレジオ",
+        "bango": "未"
+      },
+      "aite": [],
+      "gbm": 52.8,
+      "reason": "1位と2位の差31.8%で一発狙い"
     },
     "buruma": {
       "race": "東京 11R",
@@ -36,86 +36,86 @@
       },
       "aite": [
         {
-          "name": "テルヒコウ",
-          "bango": "6"
+          "name": "ブラックオリンピア",
+          "bango": "4"
         },
         {
-          "name": "ラストスマイル",
-          "bango": "8"
+          "name": "ゴーイントゥスカイ",
+          "bango": "16"
         }
       ],
-      "gbm": 10.9,
+      "gbm": 9.7,
       "reason": "スピード上昇中"
     },
     "chafuwa": {
-      "race": "京都 1R",
-      "race_name": "未勝利",
+      "race": "東京 11R",
+      "race_name": "Ｇ２",
       "date": "04/25",
       "honmei": {
-        "name": "ガイストライヒ",
+        "name": "ブラックオリンピア",
+        "bango": "4"
+      },
+      "aite": [
+        {
+          "name": "ゴーイントゥスカイ",
+          "bango": "16"
+        },
+        {
+          "name": "テルヒコウ",
+          "bango": "6"
+        }
+      ],
+      "gbm": 26.4,
+      "reason": "騎手勝率31.8%"
+    },
+    "kurofuwa": {
+      "race": "東京 9R",
+      "race_name": "2勝",
+      "date": "04/25",
+      "honmei": {
+        "name": "ダノンミッション",
         "bango": "6"
       },
       "aite": [
         {
-          "name": "ガトー",
+          "name": "ノビリシマビジョン",
           "bango": "9"
         },
         {
-          "name": "バケラッタ",
-          "bango": "11"
-        }
-      ],
-      "gbm": 19.2,
-      "reason": "騎手勝率7.1%"
-    },
-    "kurofuwa": {
-      "race": "福島 4R",
-      "race_name": "未勝利",
-      "date": "04/25",
-      "honmei": {
-        "name": "コウソクルリアン",
-        "bango": "3"
-      },
-      "aite": [
-        {
-          "name": "フィールマイプラン",
-          "bango": "16"
-        },
-        {
-          "name": "ニンジャトットリ",
-          "bango": "8"
-        },
-        {
-          "name": "ヴェントディルーナ",
-          "bango": "4"
-        },
-        {
-          "name": "ジーティーニッツァ",
-          "bango": "15"
-        }
-      ],
-      "gbm": 32.6,
-      "reason": "上位5頭の合計スコア最高"
-    },
-    "ginma": {
-      "race": "東京 11R",
-      "race_name": "Ｇ２",
-      "date": "04/26",
-      "honmei": {
-        "name": "エイシンウィスパー",
-        "bango": "10"
-      },
-      "aite": [
-        {
-          "name": "リアライズルミナス",
+          "name": "ビーオンザカバー",
           "bango": "7"
         },
         {
-          "name": "サムシングスイート",
-          "bango": "3"
+          "name": "レベルスルール",
+          "bango": "4"
+        },
+        {
+          "name": "アルゲンテウス",
+          "bango": "2"
         }
       ],
-      "gbm": 5.5,
+      "gbm": 45.7,
+      "reason": "上位5頭の合計スコア最高"
+    },
+    "ginma": {
+      "race": "福島 2R",
+      "race_name": "未勝利",
+      "date": "04/25",
+      "honmei": {
+        "name": "セイウンプーパ",
+        "bango": "6"
+      },
+      "aite": [
+        {
+          "name": "フクオトコ",
+          "bango": "4"
+        },
+        {
+          "name": "シルバーアックス",
+          "bango": "16"
+        }
+      ],
+      "gbm": 5.6,
       "reason": "血統◎だが評価低め"
     }
   }
