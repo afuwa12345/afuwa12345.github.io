@@ -130,8 +130,8 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  min-height: 540px;
-  padding: 80px 20px 70px;
+  min-height: 480px;
+  padding: 80px 20px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -238,9 +238,9 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
 .hero-title {
   font-family: 'Dela Gothic One', cursive;
   font-size: clamp(36px, 11vw, 64px);
-  letter-spacing: 1px;
+  letter-spacing: 0;
   line-height: 1;
-  margin-bottom: 14px;
+  margin: 0 auto 14px;
   position: relative; z-index: 1;
   color: var(--cream);
   text-shadow:
@@ -248,6 +248,9 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
     0 0 24px rgba(255,216,109,0.3);
   max-width: 100%;
   white-space: nowrap;
+  text-align: center;
+  display: block;
+  width: 100%;
 }
 .hero-title em {
   font-style: normal;
@@ -452,11 +455,21 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
 }
 .hub-card.hub-pred .hub-en {
   color: var(--red);
-  text-shadow: 0 0 12px rgba(197,41,42,0.2);
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 0 12px rgba(197,41,42,0.2);
 }
 .hub-card.hub-games .hub-en {
   color: var(--gold);
-  text-shadow: 0 0 12px rgba(200,148,29,0.3);
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 0 12px rgba(200,148,29,0.3);
 }
 .hub-ja {
   font-family: 'Dela Gothic One', cursive;
