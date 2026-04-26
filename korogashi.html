@@ -100,6 +100,20 @@ body::after {
   margin-bottom: 6px;
 }
 
+.hero-tagline {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+  margin: 0 auto 14px;
+  padding: 8px 18px;
+  background: rgba(0, 30, 60, 0.4);
+  border-left: 3px solid var(--yellow);
+  border-radius: 4px;
+  display: inline-block;
+}
+
 .hero-challenge-name {
   font-family: 'Dela Gothic One', cursive;
   font-size: 18px;
@@ -271,6 +285,75 @@ body::after {
 @keyframes glowChip {
   0%, 100% { box-shadow: 0 0 12px rgba(255, 214, 51, 0.4); }
   50% { box-shadow: 0 0 24px rgba(255, 214, 51, 0.8); }
+}
+
+/* ===== GOAL ===== */
+.goal-section {
+  margin-top: 14px;
+  position: relative;
+}
+
+.goal-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  color: var(--blue-light);
+  letter-spacing: 0.3em;
+  margin-bottom: 6px;
+}
+
+.goal-amount {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.goal-amount .target {
+  color: var(--yellow);
+  text-shadow: 0 0 10px rgba(255, 214, 51, 0.4);
+}
+
+.goal-progress {
+  width: 100%;
+  height: 10px;
+  background: rgba(0, 30, 60, 0.6);
+  border: 1px solid rgba(91, 192, 240, 0.3);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.goal-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--yellow));
+  border-radius: 6px;
+  transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  box-shadow: 0 0 10px rgba(255, 214, 51, 0.5);
+}
+
+.goal-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6));
+  animation: shineMove 2s ease-in-out infinite;
+}
+
+@keyframes shineMove {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.goal-percent {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  color: var(--yellow);
+  letter-spacing: 0.1em;
+  margin-top: 6px;
 }
 
 /* ===== NEXT TARGET ===== */
@@ -733,10 +816,67 @@ body::after {
   box-shadow: 0 0 50px rgba(30, 167, 232, 0.4);
 }
 
-.final.win {
-  border-color: var(--yellow);
-  background: linear-gradient(180deg, rgba(255, 214, 51, 0.15), rgba(30, 167, 232, 0.1));
-  box-shadow: 0 0 50px rgba(255, 214, 51, 0.4);
+.final.clear {
+  border: 3px solid var(--yellow);
+  background:
+    radial-gradient(ellipse at center, rgba(255, 214, 51, 0.25) 0%, rgba(30, 167, 232, 0.15) 50%, rgba(13, 29, 51, 0.8) 100%);
+  box-shadow:
+    0 0 80px rgba(255, 214, 51, 0.6),
+    0 0 120px rgba(255, 214, 51, 0.3),
+    inset 0 0 40px rgba(255, 214, 51, 0.1);
+  animation: clearGlow 2s ease-in-out infinite;
+}
+
+@keyframes clearGlow {
+  0%, 100% { box-shadow: 0 0 80px rgba(255, 214, 51, 0.6), 0 0 120px rgba(255, 214, 51, 0.3), inset 0 0 40px rgba(255, 214, 51, 0.1); }
+  50% { box-shadow: 0 0 100px rgba(255, 214, 51, 0.9), 0 0 160px rgba(255, 214, 51, 0.5), inset 0 0 60px rgba(255, 214, 51, 0.2); }
+}
+
+/* Star burst behind CHALLENGE CLEAR text */
+.final.clear::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  background:
+    conic-gradient(from 0deg,
+      transparent 0deg, rgba(255,214,51,0.15) 10deg, transparent 20deg,
+      transparent 30deg, rgba(255,214,51,0.15) 40deg, transparent 50deg,
+      transparent 60deg, rgba(255,214,51,0.15) 70deg, transparent 80deg,
+      transparent 90deg, rgba(255,214,51,0.15) 100deg, transparent 110deg,
+      transparent 120deg, rgba(255,214,51,0.15) 130deg, transparent 140deg,
+      transparent 150deg, rgba(255,214,51,0.15) 160deg, transparent 170deg,
+      transparent 180deg, rgba(255,214,51,0.15) 190deg, transparent 200deg,
+      transparent 210deg, rgba(255,214,51,0.15) 220deg, transparent 230deg,
+      transparent 240deg, rgba(255,214,51,0.15) 250deg, transparent 260deg,
+      transparent 270deg, rgba(255,214,51,0.15) 280deg, transparent 290deg,
+      transparent 300deg, rgba(255,214,51,0.15) 310deg, transparent 320deg,
+      transparent 330deg, rgba(255,214,51,0.15) 340deg, transparent 350deg);
+  animation: rotateBurst 8s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes rotateBurst {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.final-clear-trophy {
+  font-size: 60px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  animation: trophyBounce 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(255, 214, 51, 0.8));
+}
+
+@keyframes trophyBounce {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
 }
 
 .final-label {
@@ -745,6 +885,12 @@ body::after {
   letter-spacing: 0.5em;
   color: var(--blue-light);
   margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.final.clear .final-label {
+  color: var(--yellow);
 }
 
 .final-headline {
@@ -754,11 +900,66 @@ body::after {
   text-shadow: 0 0 24px rgba(30, 167, 232, 0.7), 2px 2px 0 #000;
   margin-bottom: 18px;
   letter-spacing: 0.05em;
+  position: relative;
+  z-index: 1;
 }
 
-.final.win .final-headline {
-  color: var(--yellow);
-  text-shadow: 0 0 24px rgba(255, 214, 51, 0.7), 2px 2px 0 #000;
+.final.clear .final-headline {
+  font-size: clamp(32px, 10vw, 48px);
+  background: linear-gradient(180deg, #fff 0%, var(--yellow) 50%, var(--yellow-deep) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 24px rgba(255, 214, 51, 0.6)) drop-shadow(2px 2px 0 #000);
+  animation: clearPulse 1.5s ease-in-out infinite;
+  letter-spacing: 0.08em;
+}
+
+@keyframes clearPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.final-clear-burst {
+  display: inline-block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.6em;
+  color: #0a1d33;
+  background: var(--yellow);
+  padding: 4px 14px 3px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+  animation: blinkTag 1s ease-in-out infinite;
+}
+
+@keyframes blinkTag {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.96); }
+}
+
+.final-buruma-clear {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 12px;
+  position: relative;
+  z-index: 1;
+  animation: burumaJump 0.8s ease-in-out infinite;
+}
+
+.final-buruma-clear img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 16px rgba(255, 214, 51, 0.6));
+}
+
+@keyframes burumaJump {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
 }
 
 .final-amount {
@@ -769,9 +970,16 @@ body::after {
   line-height: 1;
   margin-bottom: 8px;
   word-break: break-all;
+  position: relative;
+  z-index: 1;
 }
 
 .final-amount .yen { font-size: 0.4em; color: #fff; }
+
+.final.clear .final-amount {
+  font-size: clamp(54px, 18vw, 90px);
+  text-shadow: 0 0 40px rgba(255, 214, 51, 1), 0 0 60px rgba(255, 214, 51, 0.5), 3px 3px 0 #000;
+}
 
 .final-multi {
   display: inline-block;
@@ -784,12 +992,33 @@ body::after {
   letter-spacing: 0.15em;
   border: 1px solid var(--blue-light);
   margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
 }
 
-.final.win .final-multi {
-  background: rgba(255, 214, 51, 0.25);
-  border-color: var(--yellow);
+.final.clear .final-multi {
+  background: linear-gradient(135deg, var(--yellow), var(--yellow-deep));
+  border-color: #fff;
+  color: #0a1d33;
+  font-weight: 900;
+  box-shadow: 0 0 20px rgba(255, 214, 51, 0.6);
+}
+
+.final-message {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin: 16px 0 12px;
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 1;
+  line-height: 1.5;
+}
+
+.final.clear .final-message {
+  font-size: 15px;
   color: var(--yellow);
+  text-shadow: 0 0 12px rgba(255, 214, 51, 0.5);
 }
 
 .final-summary {
@@ -797,6 +1026,8 @@ body::after {
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-top: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .summary-box {
@@ -804,6 +1035,11 @@ body::after {
   border: 1px solid rgba(30, 167, 232, 0.25);
   border-radius: 8px;
   padding: 12px 6px 10px;
+}
+
+.final.clear .summary-box {
+  background: rgba(0, 30, 60, 0.7);
+  border-color: rgba(255, 214, 51, 0.4);
 }
 
 .summary-label {
@@ -1064,6 +1300,7 @@ body::after {
   <section class="hero">
     <img src="images/buruma_korogashi/buruma_logo.png" alt="ブルマの複勝転がし" class="hero-banner">
     <div class="hero-date" id="heroDate">—</div>
+    <div class="hero-tagline">勝利する可能性が高い馬を<br>転がしていく⚡</div>
     <div class="hero-challenge-name" id="heroChallengeName">読み込み中…</div>
   </section>
 
@@ -1082,6 +1319,14 @@ body::after {
     <div class="status-label">CURRENT</div>
     <div class="status-amount" id="statusAmount">¥—</div>
     <div class="status-meta" id="statusMeta"></div>
+    <div class="goal-section" id="goalSection" style="display:none;">
+      <div class="goal-label">⚡ GOAL</div>
+      <div class="goal-amount">目標 <span class="target" id="goalAmount">¥—</span></div>
+      <div class="goal-progress">
+        <div class="goal-progress-bar" id="goalProgressBar" style="width: 0%"></div>
+      </div>
+      <div class="goal-percent" id="goalPercent">0%</div>
+    </div>
   </section>
 
   <!-- 次の勝負 -->
@@ -1221,6 +1466,13 @@ const BURUMA_LINES = {
     '完走したでぇ！軍資金が{multi}倍に🎉',
     'ブルマの実力見たか〜！{multi}倍や✨',
   ],
+  // トップステータス：目標達成🏆
+  topCleared: [
+    '🏆 目標達成や〜！ブルマやったで〜！',
+    '🏆 ¥{goal}クリア！次は更に上を目指すで⚡',
+    '🏆 ミッションコンプリート！夢叶ったで✨',
+    '🏆 ブルマ伝説の幕開けや〜！',
+  ],
   // トップステータス：チャレンジ終了（ハズレ）
   topLost: [
     '夢は終わった…でも最高{max}円まで届いたで💧',
@@ -1315,6 +1567,7 @@ async function init() {
 
   const challengeName = rows[0]['チャレンジ名'] || `第${latestNo}回チャレンジ`;
   const initial = Number(rows[0]['軍資金']) || 1000;
+  const goal = Number(rows[0]['目標金額']) || 0; // 0なら目標表示なし
   const date = rows[0]['日付'] || '';
 
   document.getElementById('heroDate').textContent = date;
@@ -1330,6 +1583,7 @@ async function init() {
   let streak = 0;
   let bestStreak = 0;
   let gameOver = false;
+  let cleared = false; // 目標達成済みフラグ
   const journey = [];
 
   for (const r of finished) {
@@ -1343,23 +1597,25 @@ async function init() {
       streak++;
       if (streak > bestStreak) bestStreak = streak;
       if (after > maxAmount) maxAmount = after;
+      // 目標達成判定
+      if (goal > 0 && after >= goal) cleared = true;
     } else {
       after = 0;
       streak = 0;
       gameOver = true;
     }
-    journey.push({ ...r, before, after, odds, isWin, streakAtTime: streak });
+    journey.push({ ...r, before, after, odds, isWin, streakAtTime: streak, justCleared: cleared && before < goal && after >= goal });
     current = after;
   }
 
   // ===== ブルマ吹き出し（トップ）=====
-  renderBurumaTalks(journey, current, initial, streak, maxAmount, bestStreak, gameOver, !!nextRace);
+  renderBurumaTalks(journey, current, initial, streak, maxAmount, bestStreak, gameOver, !!nextRace, cleared, goal);
 
   // ===== 現在ステータス =====
-  renderStatus(current, initial, streak, gameOver);
+  renderStatus(current, initial, streak, gameOver, goal, cleared);
 
   // ===== 次の勝負 =====
-  if (nextRace && !gameOver) {
+  if (nextRace && !gameOver && !cleared) {
     renderNextTarget(nextRace);
   }
 
@@ -1369,11 +1625,10 @@ async function init() {
   }
 
   // ===== 最終結果 =====
-  if (gameOver) {
-    renderFinal(current, initial, maxAmount, bestStreak, journey, false);
-  } else if (!nextRace && journey.length > 0) {
-    // 全レース消化済み・成功で完走
-    renderFinal(current, initial, maxAmount, bestStreak, journey, true);
+  if (cleared) {
+    renderFinal(current, initial, maxAmount, bestStreak, journey, 'clear', goal);
+  } else if (gameOver) {
+    renderFinal(current, initial, maxAmount, bestStreak, journey, 'lost', goal);
   }
 
   // ===== アーカイブ（過去のチャレンジ） =====
@@ -1394,11 +1649,14 @@ async function init() {
 // =====================================================
 //  レンダリング各種
 // =====================================================
-function renderBurumaTalks(journey, current, initial, streak, maxAmount, bestStreak, gameOver, hasNext) {
+function renderBurumaTalks(journey, current, initial, streak, maxAmount, bestStreak, gameOver, hasNext, cleared, goal) {
   let category, mood;
   let raceCount = journey.length;
 
-  if (gameOver) {
+  if (cleared) {
+    category = 'topCleared';
+    mood = 'surprise';
+  } else if (gameOver) {
     category = 'topLost';
     mood = 'sad';
   } else if (raceCount === 0) {
@@ -1422,14 +1680,15 @@ function renderBurumaTalks(journey, current, initial, streak, maxAmount, bestStr
     .replace('{initial}', format(initial))
     .replace('{multi}', multi)
     .replace('{max}', format(maxAmount))
-    .replace('{best}', bestStreak);
+    .replace('{best}', bestStreak)
+    .replace('{goal}', format(goal || 0));
 
   document.getElementById('burumaTalks').style.display = 'flex';
   document.getElementById('burumaTopImg').src = BURUMA_IMG[mood];
   document.getElementById('burumaTopBubble').innerHTML = line;
 }
 
-function renderStatus(current, initial, streak, gameOver) {
+function renderStatus(current, initial, streak, gameOver, goal, cleared) {
   document.getElementById('statusBig').style.display = 'block';
   document.getElementById('statusAmount').innerHTML = `¥${format(current)}<span class="yen"></span>`;
 
@@ -1438,8 +1697,23 @@ function renderStatus(current, initial, streak, gameOver) {
   meta.innerHTML = `
     <span class="status-chip">×${multi} TIMES</span>
     ${streak >= 2 ? `<span class="status-chip streak">⚡ ${streak}連勝中</span>` : ''}
+    ${cleared ? '<span class="status-chip streak">🏆 目標達成</span>' : ''}
     ${gameOver ? '<span class="status-chip">💧 終了</span>' : ''}
   `;
+
+  // 目標金額表示
+  if (goal > 0) {
+    const goalSection = document.getElementById('goalSection');
+    goalSection.style.display = 'block';
+    document.getElementById('goalAmount').textContent = `¥${format(goal)}`;
+    const percent = Math.min(100, (current / goal) * 100);
+    const percentDisplay = ((current / goal) * 100).toFixed(1);
+    document.getElementById('goalPercent').textContent = `${percentDisplay}% 達成`;
+    // アニメーションで動かす
+    setTimeout(() => {
+      document.getElementById('goalProgressBar').style.width = `${percent}%`;
+    }, 300);
+  }
 }
 
 function renderNextTarget(race) {
@@ -1538,31 +1812,43 @@ function renderJourney(journey) {
   });
 }
 
-function renderFinal(current, initial, maxAmount, bestStreak, journey, isWin) {
+function renderFinal(current, initial, maxAmount, bestStreak, journey, mode, goal) {
   const final = document.getElementById('final');
   final.style.display = 'block';
   const multi = current / initial;
 
-  if (isWin) {
-    final.classList.add('win');
+  if (mode === 'clear') {
+    // 🏆 目標達成！超豪華演出
+    final.classList.add('clear');
     final.innerHTML = `
+      <div class="final-clear-trophy">🏆</div>
+      <div class="final-clear-burst">★ MISSION ACCOMPLISHED ★</div>
       <div class="final-label">FINAL RESULT</div>
-      <div class="final-headline">🏆 CHALLENGE COMPLETE</div>
+      <div class="final-buruma-clear">
+        <img src="${BURUMA_IMG.happy}" alt="ブルマ" onerror="this.outerHTML='<div style=&quot;font-size:60px&quot;>🎉</div>'">
+      </div>
+      <div class="final-headline">CHALLENGE<br>CLEAR!</div>
       <div class="final-amount">¥${format(current)}</div>
       <div class="final-multi">×${multi.toFixed(2)} TIMES</div>
+      <div class="final-message">🎯 目標 ¥${format(goal)} を達成！<br>ブルマの夢、叶ったで〜！</div>
       <div class="final-summary">
         <div class="summary-box"><div class="summary-label">RACES</div><div class="summary-value">${journey.length}</div></div>
         <div class="summary-box"><div class="summary-label">BEST 連勝</div><div class="summary-value">${bestStreak}</div></div>
         <div class="summary-box"><div class="summary-label">MAX</div><div class="summary-value">¥${format(maxAmount)}</div></div>
       </div>
     `;
-    if (multi >= 5) setTimeout(launchConfetti, 600);
+    // 大量のクラッカー
+    setTimeout(() => launchConfetti(true), 400);
+    setTimeout(() => launchConfetti(false), 1200);
+    setTimeout(() => launchConfetti(false), 2200);
   } else {
+    // 💧 ハズレで終了
     final.innerHTML = `
       <div class="final-label">FINAL RESULT</div>
       <div class="final-headline">💧 CHALLENGE END</div>
       <div class="final-amount">¥${format(maxAmount)}</div>
       <div class="final-multi">最高 ×${(maxAmount/initial).toFixed(2)} 到達</div>
+      ${goal > 0 ? `<div class="final-message">🎯 目標 ¥${format(goal)}<br>あと ¥${format(Math.max(0, goal - maxAmount))} だった…次やリベンジや！</div>` : ''}
       <div class="final-summary">
         <div class="summary-box"><div class="summary-label">RACES</div><div class="summary-value">${journey.length}</div></div>
         <div class="summary-box"><div class="summary-label">BEST 連勝</div><div class="summary-value">${bestStreak}</div></div>
@@ -1581,6 +1867,7 @@ function renderArchive(challenges) {
     rows.sort((a, b) => Number(a['レースNo']) - Number(b['レースNo']));
     const name = rows[0]['チャレンジ名'] || `第${no}回チャレンジ`;
     const initial = Number(rows[0]['軍資金']) || 1000;
+    const goal = Number(rows[0]['目標金額']) || 0;
     const date = rows[0]['日付'] || '';
 
     // 戦績計算
@@ -1591,6 +1878,7 @@ function renderArchive(challenges) {
     let wins = 0;
     let losses = 0;
     let gameOver = false;
+    let cleared = false;
 
     for (const r of rows) {
       if (gameOver) break;
@@ -1602,6 +1890,7 @@ function renderArchive(challenges) {
         streak++;
         if (streak > bestStreak) bestStreak = streak;
         if (current > maxAmount) maxAmount = current;
+        if (goal > 0 && current >= goal) cleared = true;
       } else {
         losses++;
         current = 0;
@@ -1610,14 +1899,14 @@ function renderArchive(challenges) {
       }
     }
 
-    const isWin = !gameOver && wins > 0;
-    const final = gameOver ? 0 : current;
     const displayAmount = gameOver ? maxAmount : current;
     const multi = (displayAmount / initial).toFixed(2);
     const totalRaces = wins + losses;
+    const statusClass = cleared ? 'win' : (gameOver ? 'lose' : 'win');
+    const statusTag = cleared ? '🏆 達成' : (gameOver ? '終了' : '進行中');
 
     const item = document.createElement('div');
-    item.className = 'archive-item ' + (isWin ? 'win' : 'lose');
+    item.className = 'archive-item ' + statusClass;
     item.innerHTML = `
       <div class="archive-top">
         <div class="archive-name">第${no}回・${escapeHtml(name)}</div>
@@ -1630,12 +1919,12 @@ function renderArchive(challenges) {
           <span class="final">¥${format(displayAmount)}</span>
         </div>
         <div class="archive-multi">×${multi}</div>
-        <div class="archive-status-tag">${isWin ? '完走' : '終了'}</div>
+        <div class="archive-status-tag">${statusTag}</div>
       </div>
       <div class="archive-stats">
+        ${goal > 0 ? `<div class="item"><span class="label">GOAL</span><span class="value">¥${format(goal)}</span></div>` : ''}
         <div class="item"><span class="label">RACES</span><span class="value">${totalRaces}</span></div>
         <div class="item"><span class="label">BEST 連勝</span><span class="value">${bestStreak}</span></div>
-        ${gameOver ? `<div class="item"><span class="label">MAX</span><span class="value">¥${format(maxAmount)}</span></div>` : ''}
       </div>
     `;
     list.appendChild(item);
@@ -1644,18 +1933,23 @@ function renderArchive(challenges) {
   section.style.display = 'block';
 }
 
-function launchConfetti() {
-  const colors = ['#ffd633', '#1ea7e8', '#5bc0f0', '#fff', '#ffb700'];
-  for (let i = 0; i < 80; i++) {
+function launchConfetti(big) {
+  const colors = ['#ffd633', '#1ea7e8', '#5bc0f0', '#fff', '#ffb700', '#ff8c00'];
+  const count = big ? 150 : 80;
+  for (let i = 0; i < count; i++) {
     const c = document.createElement('div');
     c.className = 'confetti';
     c.style.left = Math.random() * 100 + 'vw';
     c.style.background = colors[Math.floor(Math.random()*colors.length)];
-    c.style.animationDelay = Math.random() * 0.6 + 's';
-    c.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+    c.style.animationDelay = Math.random() * 0.8 + 's';
+    c.style.animationDuration = (2.5 + Math.random() * 3) + 's';
     c.style.transform = `rotate(${Math.random()*360}deg)`;
+    if (big) {
+      c.style.width = (6 + Math.random() * 10) + 'px';
+      c.style.height = (10 + Math.random() * 14) + 'px';
+    }
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 6000);
+    setTimeout(() => c.remove(), 7000);
   }
 }
 
