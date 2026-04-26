@@ -103,8 +103,7 @@ body {
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  min-height: 75vh;
-  padding: 90px 20px 50px;
+  padding: 80px 20px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -434,6 +433,113 @@ body {
   border-color: rgba(255,215,0,0.3);
 }
 
+/* ===== AFRO YOSO SECTION ===== */
+.afro-yoso {
+  background:
+    linear-gradient(135deg, rgba(255,26,26,0.15), rgba(0,0,0,0.6)),
+    radial-gradient(circle at 80% 20%, rgba(255,215,0,0.1), transparent 50%);
+  border: 1px solid rgba(255,26,26,0.4);
+  border-radius: 16px;
+  padding: 24px 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255,26,26,0.15);
+}
+.afro-yoso::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
+}
+.afro-yoso-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.afro-yoso-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(255,26,26,0.4));
+  animation: float 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.afro-yoso-titles { flex: 1; }
+.afro-yoso-eye {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: rgba(255,26,26,0.9);
+  margin-bottom: 2px;
+}
+.afro-yoso-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 17px;
+  letter-spacing: 1px;
+  background: linear-gradient(180deg, #fff, var(--red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.afro-yoso-desc {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.afro-yoso-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.afro-yoso-btn {
+  position: relative;
+  padding: 14px 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  transition: transform 0.1s, box-shadow 0.2s;
+  overflow: hidden;
+}
+.afro-yoso-btn:active { transform: scale(0.97); }
+.afro-yoso-btn.primary {
+  background: linear-gradient(135deg, var(--red), var(--red2));
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255,26,26,0.4);
+  border: 1px solid rgba(255,26,26,0.6);
+}
+.afro-yoso-btn.primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: btnShine 2.5s ease-in-out infinite;
+}
+@keyframes btnShine {
+  0%,100% { left: -100%; }
+  50% { left: 200%; }
+}
+.afro-yoso-btn.sub {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.9);
+}
+.afro-yoso-btn-en {
+  display: block;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
 /* ===== THIS WEEK PICK (GBM RECOMMEND auto-load) ===== */
 .pred-detail {
   background: linear-gradient(135deg, rgba(255,26,26,0.06), rgba(255,255,255,0.02));
@@ -646,15 +752,15 @@ body {
         </div>
       </div>
       <div class="hub-list">
+        <a href="#afro-yoso" class="hub-link">
+          <div class="hub-link-icon">🏇</div>
+          <div class="hub-link-name">アフロ馬<br>予想</div>
+          <div class="hub-link-tag">YOSO</div>
+        </a>
         <a href="#thisweek-pick" class="hub-link">
           <div class="hub-link-icon">⭐</div>
           <div class="hub-link-name">今週の<br>ピック</div>
           <div class="hub-link-tag">THIS WEEK</div>
-        </a>
-        <a href="yoso.html" class="hub-link">
-          <div class="hub-link-icon">🏇</div>
-          <div class="hub-link-name">アフロ馬<br>予想</div>
-          <div class="hub-link-tag">YOSO</div>
         </a>
       </div>
     </div>
@@ -682,6 +788,34 @@ body {
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- AFRO YOSO -->
+<section class="section" id="afro-yoso">
+  <div class="sec-label">AFRO HORSE PREDICTION</div>
+  <div class="afro-yoso">
+    <div class="afro-yoso-header">
+      <img class="afro-yoso-img" src="images/index/afuwa1.png" alt="アフワ">
+      <div class="afro-yoso-titles">
+        <div class="afro-yoso-eye">★ THIS WEEK</div>
+        <div class="afro-yoso-title">アフロ馬の<br>今週の予想</div>
+      </div>
+    </div>
+    <div class="afro-yoso-desc">
+      アフロホースの本命はこれだ！<br>
+      全力で選んだ渾身の一本と、過去の成績をチェック🔥
+    </div>
+    <div class="afro-yoso-btns">
+      <a href="yoso.html" class="afro-yoso-btn primary">
+        <span class="afro-yoso-btn-en">YOSO</span>
+        予想を見る →
+      </a>
+      <a href="afrohorse_seiseki.html" class="afro-yoso-btn sub">
+        <span class="afro-yoso-btn-en">RESULTS</span>
+        過去の結果 →
+      </a>
+    </div>
   </div>
 </section>
 
