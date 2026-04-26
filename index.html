@@ -291,38 +291,51 @@ body {
 /* Square cards (CHARA / TOOLS) */
 .main-card.square {
   aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  display: block;
+  padding: 0;
+  position: relative;
 }
 .main-card-chara {
-  width: 70%;
-  max-width: 110px;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  padding: 14px 14px 60px;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.6));
   transition: transform 0.3s;
 }
-.main-card.square:hover .main-card-chara { transform: scale(1.05) translateY(-2px); }
-.main-card-info { text-align: center; }
+.main-card.square:hover .main-card-chara {
+  transform: scale(1.06);
+}
+.main-card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 12px 12px;
+  text-align: center;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.95) 100%);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
 .main-card-en {
   font-family: 'Bebas Neue', cursive;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 3px;
   color: var(--red);
-  margin-bottom: 2px;
+  margin-bottom: 1px;
+  text-shadow: 0 0 10px rgba(255,26,26,0.5);
 }
 .main-card-ja {
   font-family: 'Dela Gothic One', cursive;
-  font-size: 14px;
-  margin-bottom: 6px;
+  font-size: 13px;
+  margin-bottom: 4px;
   letter-spacing: 1px;
+  color: #fff;
 }
 .main-card-arrow {
   font-family: 'Bebas Neue', cursive;
-  font-size: 11px;
-  color: var(--gray);
+  font-size: 10px;
+  color: rgba(255,255,255,0.6);
   letter-spacing: 2px;
 }
 
@@ -351,14 +364,15 @@ body {
   margin-bottom: 14px;
 }
 .hub-icon {
-  width: 44px;
-  height: 44px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(255,26,26,0.4));
+  filter: drop-shadow(0 4px 12px rgba(255,26,26,0.4));
   flex-shrink: 0;
+  animation: float 3s ease-in-out infinite;
 }
 .hub-card.hub-games .hub-icon {
-  filter: drop-shadow(0 2px 8px rgba(255,215,0,0.5));
+  filter: drop-shadow(0 4px 12px rgba(255,215,0,0.5));
 }
 .hub-titles { flex: 1; }
 .hub-en {
