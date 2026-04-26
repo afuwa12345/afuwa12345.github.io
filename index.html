@@ -68,11 +68,11 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   z-index: 200;
   padding: 0 20px; height: 56px;
   display: flex; align-items: center; justify-content: space-between;
-  background: rgba(139, 27, 27, 0.96);
+  background: rgba(14, 46, 31, 0.96);
   backdrop-filter: blur(16px);
   border-bottom: 2px solid var(--gold);
   transition: transform 0.3s;
-  box-shadow: 0 2px 12px rgba(139,27,27,0.25);
+  box-shadow: 0 2px 12px rgba(14,46,31,0.2);
 }
 .nav-logo {
   font-family: 'Dela Gothic One', cursive;
@@ -106,7 +106,7 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
 /* MENU */
 .menu-overlay {
   position: fixed; inset: 0;
-  background: rgba(139, 27, 27, 0.98);
+  background: rgba(14, 46, 31, 0.98);
   backdrop-filter: blur(20px);
   z-index: 150;
   transform: translateY(-100%);
@@ -139,7 +139,7 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   text-align: center;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 50% 30%, #d63838 0%, var(--red) 50%, var(--red-deep) 100%);
+    radial-gradient(ellipse at 50% 30%, var(--turf-light) 0%, var(--turf) 50%, var(--turf-deep) 100%);
   color: var(--cream);
   border-bottom: 6px solid var(--gold);
   margin-bottom: -10px;
@@ -755,7 +755,7 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
 .footer {
   text-align: center;
   padding: 40px 20px 30px;
-  background: var(--red-deep);
+  background: var(--turf-deep);
   color: rgba(248,241,222,0.7);
   font-size: 0.7rem;
   margin-top: 30px;
