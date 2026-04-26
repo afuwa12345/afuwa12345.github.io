@@ -86,7 +86,7 @@ body {
   transition: transform 0.4s ease;
   display: flex; flex-direction: column;
   justify-content: center; align-items: center;
-  gap: 28px; padding: 40px;
+  gap: 24px; padding: 40px;
 }
 .menu-overlay.open { transform: translateY(0); }
 .menu-overlay a {
@@ -103,8 +103,8 @@ body {
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  min-height: 70vh;
-  padding: 90px 20px 40px;
+  min-height: 75vh;
+  padding: 90px 20px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -112,6 +112,8 @@ body {
   text-align: center;
   overflow: hidden;
 }
+
+/* Big background text */
 .hero::before {
   content: 'AFRO HORSE';
   position: absolute;
@@ -132,18 +134,84 @@ body {
   0%,100% { opacity: 0.7; }
   50% { opacity: 1; }
 }
-.logo-img {
-  max-width: 220px;
-  width: 60%;
-  filter: drop-shadow(0 8px 30px rgba(255,26,26,0.4));
-  margin-bottom: 16px;
+
+/* Logo with rings */
+.logo-img-wrap {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  z-index: 2;
+}
+.logo-img-wrap img {
+  width: 220px;
+  max-width: 60vw;
+  filter: drop-shadow(0 8px 30px rgba(255,26,26,0.5));
   animation: float 3s ease-in-out infinite;
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 @keyframes float {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
+}
+
+/* Outer ring */
+.logo-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(255,26,26,0.4);
+  border-radius: 50%;
+  top: 0; left: 0;
+  animation: ringPulse 3s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%,100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 0.2; }
+}
+
+/* Inner ring (rotating) */
+.logo-ring2 {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border: 1px dashed rgba(255,26,26,0.5);
+  border-radius: 50%;
+  top: 5%; left: 5%;
+  animation: ringRotate 12s linear infinite;
+}
+@keyframes ringRotate {
+  to { transform: rotate(360deg); }
+}
+
+/* Glow behind logo */
+.logo-glow {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  top: 10%; left: 10%;
+  background: radial-gradient(circle, rgba(255,26,26,0.25) 0%, transparent 70%);
+  animation: glowPulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes glowPulse {
+  0%,100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.hero-eye {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: rgba(255,26,26,0.7);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
 }
 .hero-title {
   font-family: 'Bebas Neue', cursive;
@@ -159,36 +227,12 @@ body {
   color: rgba(255,255,255,0.7);
   font-size: 0.85rem;
   letter-spacing: 1px;
-  margin-bottom: 18px;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-}
-.hero-eye {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 11px;
-  letter-spacing: 5px;
-  color: rgba(255,26,26,0.7);
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 1;
-}
-.season-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 18px;
-  border: 1px solid rgba(255,26,26,0.4);
-  border-radius: 20px;
-  font-family: 'Bebas Neue', cursive;
-  font-size: 12px;
-  letter-spacing: 3px;
-  color: var(--red);
-  background: rgba(255,26,26,0.05);
+  line-height: 1.7;
   position: relative;
   z-index: 1;
 }
 
-/* ===== MAIN GRID ===== */
+/* ===== SECTIONS ===== */
 .section {
   max-width: 600px;
   margin: 0 auto;
@@ -213,29 +257,26 @@ body {
   background: var(--red);
 }
 
+/* ===== MAIN GRID ===== */
 .main-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
+/* Common card */
 .main-card {
   position: relative;
-  aspect-ratio: 1;
   background: linear-gradient(135deg, rgba(255,26,26,0.06), rgba(255,255,255,0.02));
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 18px 14px;
   text-decoration: none;
   color: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   overflow: hidden;
   transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
 }
-.main-card:active { transform: scale(0.97); }
+.main-card:active { transform: scale(0.98); }
 .main-card:hover {
   border-color: rgba(255,26,26,0.4);
   box-shadow: 0 8px 24px rgba(255,26,26,0.15);
@@ -247,6 +288,15 @@ body {
   height: 3px;
   background: linear-gradient(90deg, var(--red), transparent);
 }
+
+/* Square cards (CHARA / TOOLS) */
+.main-card.square {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
 .main-card-chara {
   width: 70%;
   max-width: 110px;
@@ -255,7 +305,7 @@ body {
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
   transition: transform 0.3s;
 }
-.main-card:hover .main-card-chara { transform: scale(1.05) translateY(-2px); }
+.main-card.square:hover .main-card-chara { transform: scale(1.05) translateY(-2px); }
 .main-card-info { text-align: center; }
 .main-card-en {
   font-family: 'Bebas Neue', cursive;
@@ -277,58 +327,68 @@ body {
   letter-spacing: 2px;
 }
 
-/* ===== GAMES CARD (special, contains 2 sub-items) ===== */
-.games-card {
+/* HUB card (PREDICTION / GAMES - span 2) */
+.hub-card {
   grid-column: span 2;
-  aspect-ratio: auto;
   padding: 18px 16px;
-  display: block;
+  cursor: default;
+}
+.hub-card:hover { transform: none; box-shadow: none; }
+.hub-card.hub-pred::before {
+  background: linear-gradient(90deg, var(--red), var(--red2), transparent);
+}
+.hub-card.hub-games {
   background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,26,26,0.04));
   border-color: rgba(255,215,0,0.3);
-  cursor: default;
-  transition: none;
 }
-.games-card:hover { transform: none; box-shadow: none; }
-.games-card::before {
+.hub-card.hub-games::before {
   background: linear-gradient(90deg, var(--gold), var(--red), transparent);
 }
-.games-header {
+
+.hub-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 14px;
 }
-.games-icon {
+.hub-icon {
   font-size: 28px;
+  filter: drop-shadow(0 0 10px rgba(255,26,26,0.4));
+}
+.hub-card.hub-games .hub-icon {
   filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
 }
-.games-titles { flex: 1; }
-.games-en {
+.hub-titles { flex: 1; }
+.hub-en {
   font-family: 'Bebas Neue', cursive;
   font-size: 18px;
   letter-spacing: 3px;
+  color: var(--red);
+}
+.hub-card.hub-games .hub-en {
   color: var(--gold);
   text-shadow: 0 0 10px rgba(255,215,0,0.3);
 }
-.games-ja {
+.hub-ja {
   font-family: 'Dela Gothic One', cursive;
   font-size: 13px;
   margin-top: 2px;
   color: #fff;
 }
-.games-list {
+
+.hub-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
-.game-link {
+.hub-link {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 14px 10px;
   background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(255,215,0,0.2);
+  border: 1px solid rgba(255,26,26,0.2);
   border-radius: 12px;
   text-decoration: none;
   color: inherit;
@@ -336,13 +396,18 @@ body {
   position: relative;
   overflow: hidden;
 }
-.game-link:active { transform: scale(0.96); }
-.game-link:hover { border-color: var(--gold); }
-.game-link-icon {
+.hub-card.hub-games .hub-link {
+  border-color: rgba(255,215,0,0.2);
+}
+.hub-link:active { transform: scale(0.96); }
+.hub-link:hover { border-color: var(--red); }
+.hub-card.hub-games .hub-link:hover { border-color: var(--gold); }
+
+.hub-link-icon {
   font-size: 26px;
   margin-bottom: 6px;
 }
-.game-link-name {
+.hub-link-name {
   font-family: 'Dela Gothic One', cursive;
   font-size: 12px;
   letter-spacing: 0.5px;
@@ -350,18 +415,23 @@ body {
   margin-bottom: 4px;
   line-height: 1.3;
 }
-.game-link-tag {
+.hub-link-tag {
   font-family: 'Bebas Neue', cursive;
   font-size: 9px;
-  color: var(--gold);
+  color: var(--red);
   letter-spacing: 2px;
-  background: rgba(255,215,0,0.1);
+  background: rgba(255,26,26,0.1);
   padding: 2px 8px 1px;
   border-radius: 3px;
-  border: 1px solid rgba(255,215,0,0.3);
+  border: 1px solid rgba(255,26,26,0.3);
+}
+.hub-card.hub-games .hub-link-tag {
+  color: var(--gold);
+  background: rgba(255,215,0,0.1);
+  border-color: rgba(255,215,0,0.3);
 }
 
-/* ===== PREDICTION DETAIL (GBM RECOMMEND) ===== */
+/* ===== THIS WEEK PICK (GBM RECOMMEND auto-load) ===== */
 .pred-detail {
   background: linear-gradient(135deg, rgba(255,26,26,0.06), rgba(255,255,255,0.02));
   border: 1px solid var(--border);
@@ -399,7 +469,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 14px;
 }
 .rec-horse-item {
   display: flex;
@@ -427,31 +496,6 @@ body {
 .rec-name {
   flex: 1;
   font-weight: 700;
-}
-.pred-btns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-.pred-btn {
-  padding: 11px 8px;
-  border-radius: 8px;
-  text-decoration: none;
-  text-align: center;
-  font-weight: 700;
-  font-size: 0.85rem;
-  transition: transform 0.1s, opacity 0.2s;
-}
-.pred-btn:active { transform: scale(0.98); }
-.pred-btn.primary {
-  background: linear-gradient(135deg, var(--red), var(--red2));
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(255,26,26,0.4);
-}
-.pred-btn.sub {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.85);
 }
 
 /* ===== MORE (GOODS / LINE / SNS) ===== */
@@ -552,11 +596,15 @@ body {
 
 <!-- HERO -->
 <section class="hero">
-  <img class="logo-img" src="images/logo.png" alt="AFRO Horse">
+  <div class="logo-img-wrap">
+    <div class="logo-glow"></div>
+    <div class="logo-ring"></div>
+    <div class="logo-ring2"></div>
+    <img src="images/logo.png" alt="AFRO Horse Logo">
+  </div>
   <div class="hero-eye">EST. 2025</div>
   <h1 class="hero-title">AFRO<em>HORSE</em></h1>
   <p class="hero-sub">競馬予想 × アフロスタイル<br>完全無料の競馬ツールサイト</p>
-  <div class="season-badge">2026 SEASON</div>
 </section>
 
 <!-- MAIN CONTENTS -->
@@ -565,8 +613,8 @@ body {
 
   <div class="main-grid">
 
-    <!-- CHARACTERS -->
-    <a href="afrohorse_characters.html" class="main-card">
+    <!-- CHARACTERS（正方形） -->
+    <a href="afrohorse_characters.html" class="main-card square">
       <img class="main-card-chara" src="images/afuwa.png" alt="アフワ">
       <div class="main-card-info">
         <div class="main-card-en">CHARACTERS</div>
@@ -575,18 +623,8 @@ body {
       </div>
     </a>
 
-    <!-- PREDICTION -->
-    <a href="#prediction" class="main-card">
-      <img class="main-card-chara" src="images/kurofuwa.png" alt="クロフワ" onerror="this.src='images/kurohuwa.png'">
-      <div class="main-card-info">
-        <div class="main-card-en">PREDICTION</div>
-        <div class="main-card-ja">予想</div>
-        <div class="main-card-arrow">CHECK →</div>
-      </div>
-    </a>
-
-    <!-- TOOLS -->
-    <a href="tools.html" class="main-card">
+    <!-- TOOLS（正方形） -->
+    <a href="tools.html" class="main-card square">
       <img class="main-card-chara" src="images/ginma.png" alt="ギンマ">
       <div class="main-card-info">
         <div class="main-card-en">TOOLS</div>
@@ -595,27 +633,48 @@ body {
       </div>
     </a>
 
-    <!-- (空セルは GAMES が span 2 で埋める) -->
-
-    <!-- GAMES -->
-    <div class="main-card games-card" id="games">
-      <div class="games-header">
-        <div class="games-icon">🎮</div>
-        <div class="games-titles">
-          <div class="games-en">GAMES</div>
-          <div class="games-ja">アフロ馬の遊び場</div>
+    <!-- PREDICTION（横長ハブ） -->
+    <div class="main-card hub-card hub-pred" id="prediction">
+      <div class="hub-header">
+        <div class="hub-icon">📊</div>
+        <div class="hub-titles">
+          <div class="hub-en">PREDICTION</div>
+          <div class="hub-ja">予想</div>
         </div>
       </div>
-      <div class="games-list">
-        <a href="afrohorse_chara_battle.html" class="game-link">
-          <div class="game-link-icon">⚔️</div>
-          <div class="game-link-name">アフロ馬<br>バトル</div>
-          <div class="game-link-tag">BATTLE</div>
+      <div class="hub-list">
+        <a href="#thisweek-pick" class="hub-link">
+          <div class="hub-link-icon">⭐</div>
+          <div class="hub-link-name">今週の<br>ピック</div>
+          <div class="hub-link-tag">THIS WEEK</div>
         </a>
-        <a href="korogashi.html" class="game-link">
-          <div class="game-link-icon">🎲</div>
-          <div class="game-link-name">ブルマの<br>複勝転がし</div>
-          <div class="game-link-tag">KOROGASHI</div>
+        <a href="yoso.html" class="hub-link">
+          <div class="hub-link-icon">🏇</div>
+          <div class="hub-link-name">アフロ馬<br>予想</div>
+          <div class="hub-link-tag">YOSO</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- GAMES（横長ハブ） -->
+    <div class="main-card hub-card hub-games" id="games">
+      <div class="hub-header">
+        <div class="hub-icon">🎮</div>
+        <div class="hub-titles">
+          <div class="hub-en">GAMES</div>
+          <div class="hub-ja">アフロ馬の遊び場</div>
+        </div>
+      </div>
+      <div class="hub-list">
+        <a href="afrohorse_chara_battle.html" class="hub-link">
+          <div class="hub-link-icon">⚔️</div>
+          <div class="hub-link-name">アフロ馬<br>バトル</div>
+          <div class="hub-link-tag">BATTLE</div>
+        </a>
+        <a href="korogashi.html" class="hub-link">
+          <div class="hub-link-icon">🎲</div>
+          <div class="hub-link-name">ブルマの<br>複勝転がし</div>
+          <div class="hub-link-tag">KOROGASHI</div>
         </a>
       </div>
     </div>
@@ -623,8 +682,8 @@ body {
   </div>
 </section>
 
-<!-- PREDICTION DETAIL -->
-<section class="section" id="prediction">
+<!-- THIS WEEK'S PICK (auto-load GBM RECOMMEND) -->
+<section class="section" id="thisweek-pick">
   <div class="sec-label">THIS WEEK'S PICK</div>
   <div class="pred-detail">
     <div class="pred-eye">⭐ GBM RECOMMEND</div>
@@ -632,10 +691,6 @@ body {
     <div class="pred-date" id="analysis-date">読み込み中...</div>
     <div class="pred-list" id="rec-list">
       <div style="color:rgba(255,255,255,0.3);font-size:.8rem;padding:8px 0;">データ読み込み中...</div>
-    </div>
-    <div class="pred-btns">
-      <a href="yoso.html" class="pred-btn primary">予想を見る →</a>
-      <a href="afrohorse_seiseki.html" class="pred-btn sub">過去の結果 →</a>
     </div>
   </div>
 </section>
