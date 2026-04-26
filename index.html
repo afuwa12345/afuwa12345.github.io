@@ -352,11 +352,14 @@ body {
   margin-bottom: 14px;
 }
 .hub-icon {
-  font-size: 28px;
-  filter: drop-shadow(0 0 10px rgba(255,26,26,0.4));
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(255,26,26,0.4));
+  flex-shrink: 0;
 }
 .hub-card.hub-games .hub-icon {
-  filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
+  filter: drop-shadow(0 2px 8px rgba(255,215,0,0.5));
 }
 .hub-titles { flex: 1; }
 .hub-en {
@@ -615,7 +618,7 @@ body {
 
     <!-- CHARACTERS（正方形） -->
     <a href="afrohorse_characters.html" class="main-card square">
-      <img class="main-card-chara" src="images/afuwa.png" alt="アフワ">
+      <img class="main-card-chara" src="images/index/afuwa_buruma.png" alt="キャラクター">
       <div class="main-card-info">
         <div class="main-card-en">CHARACTERS</div>
         <div class="main-card-ja">キャラクター</div>
@@ -625,7 +628,7 @@ body {
 
     <!-- TOOLS（正方形） -->
     <a href="tools.html" class="main-card square">
-      <img class="main-card-chara" src="images/ginma.png" alt="ギンマ">
+      <img class="main-card-chara" src="images/index/ginma1.png" alt="ギンマ">
       <div class="main-card-info">
         <div class="main-card-en">TOOLS</div>
         <div class="main-card-ja">ツール</div>
@@ -636,7 +639,7 @@ body {
     <!-- PREDICTION（横長ハブ） -->
     <div class="main-card hub-card hub-pred" id="prediction">
       <div class="hub-header">
-        <div class="hub-icon">📊</div>
+        <img class="hub-icon" src="images/index/chafuwa1.png" alt="チャフワ">
         <div class="hub-titles">
           <div class="hub-en">PREDICTION</div>
           <div class="hub-ja">予想</div>
@@ -659,7 +662,7 @@ body {
     <!-- GAMES（横長ハブ） -->
     <div class="main-card hub-card hub-games" id="games">
       <div class="hub-header">
-        <div class="hub-icon">🎮</div>
+        <img class="hub-icon" src="images/index/kurofuwa1.png" alt="クロフワ">
         <div class="hub-titles">
           <div class="hub-en">GAMES</div>
           <div class="hub-ja">アフロ馬の遊び場</div>
