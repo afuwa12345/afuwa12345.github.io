@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ブルマの複勝転がし | AFRO Horse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --blue: #1ea7e8;
+  --blue-light: #5bc0f0;
+  --blue-dark: #0d6ba8;
+  --yellow: #ffd633;
+  --yellow-deep: #ffb700;
+  --bg: #0a1d33;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background:
+    radial-gradient(ellipse at top, #1a4d7a 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 30%, #0d3a5e 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 70%, #1e5a8a 0%, transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: #f5f5f5;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(255,214,51,0.3), transparent),
+    radial-gradient(2px 2px at 80% 70%, rgba(91,192,240,0.4), transparent),
+    radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 30% 80%, rgba(255,214,51,0.3), transparent),
+    radial-gradient(2px 2px at 90% 40%, rgba(255,255,255,0.3), transparent);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 14px 60px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 24px 0 12px;
+}
+
+.hero-banner {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto 18px;
+  display: block;
+  filter: drop-shadow(0 8px 30px rgba(30, 167, 232, 0.5));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.hero-date {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  color: var(--blue-light);
+  letter-spacing: 0.3em;
+  margin-bottom: 6px;
+}
+
+.hero-challenge-name {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px;
+  color: #fff;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 12px rgba(30, 167, 232, 0.5);
+}
+
+/* ===== BURUMA TALKS (top status) ===== */
+.buruma-talks {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 0 4px;
+}
+
+.buruma-character {
+  flex-shrink: 0;
+  width: 110px;
+  height: 110px;
+  position: relative;
+}
+
+.buruma-character img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 16px rgba(30, 167, 232, 0.5));
+  animation: bobble 2.5s ease-in-out infinite;
+}
+
+@keyframes bobble {
+  0%, 100% { transform: rotate(-2deg) translateY(0); }
+  50% { transform: rotate(2deg) translateY(-4px); }
+}
+
+/* Placeholder when image is missing */
+.buruma-character .placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  border: 3px solid var(--yellow);
+}
+
+.speech-bubble {
+  flex: 1;
+  background: #fff;
+  color: #0a1d33;
+  padding: 14px 16px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: 700;
+  position: relative;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 16px;
+  left: -12px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 14px solid #fff;
+}
+
+.speech-bubble .strong {
+  color: var(--blue);
+  font-weight: 900;
+}
+
+.speech-bubble .gold {
+  color: var(--yellow-deep);
+  font-weight: 900;
+}
+
+/* ===== STATUS BIG ===== */
+.status-big {
+  background: linear-gradient(135deg, rgba(30, 167, 232, 0.2), rgba(13, 29, 51, 0.6));
+  border: 2px solid var(--blue);
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  margin-bottom: 28px;
+  box-shadow: 0 0 40px rgba(30, 167, 232, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.status-big::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 214, 51, 0.06) 0%, transparent 50%);
+  animation: shimmer 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, 30px); }
+}
+
+.status-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  color: var(--blue-light);
+  letter-spacing: 0.4em;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.status-amount {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: clamp(44px, 14vw, 64px);
+  color: var(--yellow);
+  text-shadow: 0 0 24px rgba(255, 214, 51, 0.6);
+  line-height: 1;
+  margin-bottom: 8px;
+  word-break: break-all;
+  position: relative;
+}
+
+.status-amount .yen { font-size: 0.4em; color: #fff; }
+
+.status-meta {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  position: relative;
+  margin-top: 10px;
+}
+
+.status-chip {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  padding: 4px 14px 3px;
+  border-radius: 16px;
+  letter-spacing: 0.1em;
+  background: rgba(0, 30, 60, 0.5);
+  border: 1px solid rgba(91, 192, 240, 0.4);
+  color: #fff;
+}
+
+.status-chip.streak {
+  background: linear-gradient(135deg, var(--yellow), var(--yellow-deep));
+  color: #0a1d33;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 12px;
+  border-color: var(--yellow);
+  animation: glowChip 2s ease-in-out infinite;
+}
+
+@keyframes glowChip {
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 214, 51, 0.4); }
+  50% { box-shadow: 0 0 24px rgba(255, 214, 51, 0.8); }
+}
+
+/* ===== NEXT TARGET ===== */
+.next-target {
+  background: linear-gradient(135deg, rgba(255, 214, 51, 0.15), rgba(30, 167, 232, 0.1));
+  border: 2px dashed var(--yellow);
+  border-radius: 14px;
+  padding: 20px 16px;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.next-target-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.next-target-label {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  color: var(--yellow);
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 12px rgba(255, 214, 51, 0.4);
+}
+
+.next-target-tag {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  background: var(--yellow);
+  color: #0a1d33;
+  padding: 3px 10px 2px;
+  border-radius: 4px;
+  letter-spacing: 0.2em;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.next-target-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.next-target-buruma {
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+}
+
+.next-target-buruma img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(255, 214, 51, 0.4));
+}
+
+.next-target-buruma .placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--yellow), var(--yellow-deep));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.next-target-bubble {
+  flex: 1;
+  background: #fff;
+  color: #0a1d33;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  position: relative;
+  line-height: 1.5;
+}
+
+.next-target-bubble::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -10px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 12px solid #fff;
+}
+
+.next-target-race {
+  background: rgba(0, 30, 60, 0.4);
+  border-radius: 10px;
+  padding: 14px;
+  border-left: 3px solid var(--yellow);
+}
+
+.next-race-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.next-race-venue {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  color: var(--blue);
+  letter-spacing: 0.05em;
+}
+
+.next-race-date {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  color: var(--blue-light);
+  letter-spacing: 0.1em;
+}
+
+.next-race-name {
+  font-size: 13px;
+  color: #ddd;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.next-race-horse {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(255, 214, 51, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 214, 51, 0.3);
+}
+
+.next-race-horse .label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  color: var(--yellow);
+  letter-spacing: 0.2em;
+}
+
+.next-race-horse .num {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px;
+  color: var(--yellow);
+  text-shadow: 0 0 10px rgba(255, 214, 51, 0.4);
+}
+
+.next-race-horse .name {
+  font-size: 15px;
+  font-weight: 900;
+  color: #fff;
+  flex: 1;
+}
+
+/* ===== JOURNEY ===== */
+.journey { padding: 20px 0 0; }
+
+.section-label {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.section-label .line {
+  display: inline-block;
+  width: 30px;
+  height: 1px;
+  background: var(--yellow);
+  vertical-align: middle;
+  margin: 0 12px;
+}
+
+.section-label .text {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px;
+  color: var(--yellow);
+  letter-spacing: 0.15em;
+  vertical-align: middle;
+  text-shadow: 0 0 12px rgba(255, 214, 51, 0.4);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 28px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--yellow), var(--blue));
+}
+
+.race {
+  position: relative;
+  margin-bottom: 22px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+
+.race.visible { opacity: 1; transform: translateY(0); }
+
+.race::before {
+  content: '';
+  position: absolute;
+  left: -23px;
+  top: 18px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  z-index: 2;
+}
+
+.race.win::before { background: var(--yellow); box-shadow: 0 0 14px rgba(255, 214, 51, 0.8); }
+.race.lose::before { background: #888; box-shadow: 0 0 12px rgba(255,255,255,0.4); }
+
+.race-card {
+  background: linear-gradient(135deg, rgba(30, 167, 232, 0.1), rgba(255,255,255,0.03));
+  border: 1px solid rgba(30, 167, 232, 0.25);
+  border-radius: 12px;
+  padding: 14px 16px;
+  position: relative;
+}
+
+.race.win .race-card {
+  border-color: rgba(255, 214, 51, 0.4);
+  background: linear-gradient(135deg, rgba(255, 214, 51, 0.08), rgba(30, 167, 232, 0.05));
+}
+
+.race.lose .race-card {
+  border-color: rgba(150, 150, 150, 0.3);
+  background: linear-gradient(135deg, rgba(50, 50, 70, 0.3), rgba(0,0,0,0.2));
+  opacity: 0.85;
+}
+
+.race-num-tag {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--blue-light);
+  position: absolute;
+  top: 12px;
+  right: 14px;
+}
+
+.race-meta {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 13px;
+  color: var(--blue);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.race-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.horse-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: rgba(0, 30, 60, 0.4);
+  border-radius: 8px;
+  border-left: 3px solid var(--yellow);
+}
+
+.horse-num {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px;
+  color: var(--yellow);
+  line-height: 1;
+}
+
+.horse-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+
+.horse-odds {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  color: var(--blue-light);
+  letter-spacing: 0.05em;
+}
+
+.horse-odds .label {
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 0.2em;
+  margin-right: 4px;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.money-flow {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  flex-wrap: wrap;
+}
+
+.money-flow .from { font-size: 14px; color: #888; }
+.money-flow .arrow { font-size: 14px; color: var(--blue-light); }
+.money-flow .to { font-size: 22px; }
+
+.race.win .money-flow .to { color: var(--yellow); text-shadow: 0 0 12px rgba(255, 214, 51, 0.5); }
+.race.lose .money-flow .to {
+  color: #777;
+  text-decoration: line-through;
+  text-decoration-color: #999;
+  text-decoration-thickness: 2px;
+}
+
+.stamp {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 12px;
+  padding: 5px 12px 3px;
+  border-radius: 4px;
+  letter-spacing: 0.2em;
+  transform: rotate(-6deg);
+  flex-shrink: 0;
+  border: 2px solid;
+}
+
+.race.win .stamp {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: rgba(255, 214, 51, 0.15);
+  box-shadow: 0 0 14px rgba(255, 214, 51, 0.3);
+}
+.race.lose .stamp {
+  color: #aaa;
+  border-color: #aaa;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.race-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.race-comment-buruma {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+}
+
+.race-comment-buruma img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.race-comment-buruma .placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  border: 2px solid var(--yellow);
+}
+
+.race-comment-bubble {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  color: #0a1d33;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  position: relative;
+  line-height: 1.4;
+}
+
+.race-comment-bubble::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 10px solid rgba(255, 255, 255, 0.95);
+}
+
+.streak-callout {
+  text-align: center;
+  margin: 14px 0 22px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.streak-callout.visible { opacity: 1; transform: scale(1); }
+
+.streak-callout-inner {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--yellow), var(--yellow-deep));
+  color: #0a1d33;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 30px rgba(255, 214, 51, 0.5);
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255, 214, 51, 0.5); }
+  50% { box-shadow: 0 0 50px rgba(255, 214, 51, 0.8); }
+}
+
+/* ===== FINAL ===== */
+.final {
+  margin-top: 30px;
+  padding: 36px 24px;
+  background: linear-gradient(180deg, rgba(30, 167, 232, 0.2), rgba(13, 29, 51, 0.6));
+  border: 2px solid var(--blue);
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(30, 167, 232, 0.4);
+}
+
+.final.win {
+  border-color: var(--yellow);
+  background: linear-gradient(180deg, rgba(255, 214, 51, 0.15), rgba(30, 167, 232, 0.1));
+  box-shadow: 0 0 50px rgba(255, 214, 51, 0.4);
+}
+
+.final-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.5em;
+  color: var(--blue-light);
+  margin-bottom: 12px;
+}
+
+.final-headline {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: clamp(24px, 8vw, 36px);
+  color: var(--blue);
+  text-shadow: 0 0 24px rgba(30, 167, 232, 0.7), 2px 2px 0 #000;
+  margin-bottom: 18px;
+  letter-spacing: 0.05em;
+}
+
+.final.win .final-headline {
+  color: var(--yellow);
+  text-shadow: 0 0 24px rgba(255, 214, 51, 0.7), 2px 2px 0 #000;
+}
+
+.final-amount {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: clamp(48px, 16vw, 80px);
+  color: var(--yellow);
+  text-shadow: 0 0 30px rgba(255, 214, 51, 0.7);
+  line-height: 1;
+  margin-bottom: 8px;
+  word-break: break-all;
+}
+
+.final-amount .yen { font-size: 0.4em; color: #fff; }
+
+.final-multi {
+  display: inline-block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: #fff;
+  background: rgba(30, 167, 232, 0.4);
+  padding: 6px 20px 4px;
+  border-radius: 20px;
+  letter-spacing: 0.15em;
+  border: 1px solid var(--blue-light);
+  margin-bottom: 20px;
+}
+
+.final.win .final-multi {
+  background: rgba(255, 214, 51, 0.25);
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+.final-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.summary-box {
+  background: rgba(0, 30, 60, 0.5);
+  border: 1px solid rgba(30, 167, 232, 0.25);
+  border-radius: 8px;
+  padding: 12px 6px 10px;
+}
+
+.summary-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  color: var(--blue-light);
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+}
+
+.summary-value {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px;
+  color: var(--yellow);
+  word-break: break-all;
+}
+
+/* SHARE */
+.share-section {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.share-btn {
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  border: 1px solid var(--blue-light);
+  color: #fff;
+  padding: 14px 30px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 900;
+  font-family: 'Noto Sans JP', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.15em;
+  box-shadow: 0 4px 16px rgba(30, 167, 232, 0.4);
+}
+
+.share-btn:active { transform: scale(0.97); }
+
+.footer {
+  margin-top: 40px;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 10px;
+  color: var(--blue-light);
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+  border-top: 1px solid rgba(30, 167, 232, 0.15);
+}
+
+.footer a { color: var(--yellow); text-decoration: none; }
+
+.confetti {
+  position: fixed;
+  top: -20px;
+  width: 8px;
+  height: 14px;
+  z-index: 9999;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0.4; }
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--blue-light);
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.3em;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <section class="hero">
+    <img src="images/buruma_korogashi/buruma_logo.png" alt="ブルマの複勝転がし" class="hero-banner">
+    <div class="hero-date" id="heroDate">—</div>
+    <div class="hero-challenge-name" id="heroChallengeName">読み込み中…</div>
+  </section>
+
+  <!-- ブルマがしゃべる風 トップステータス -->
+  <section class="buruma-talks" id="burumaTalks" style="display:none;">
+    <div class="buruma-character">
+      <img id="burumaTopImg" src="images/buruma_korogashi/buruma_normal.png" alt="ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>🐴</div>'">
+    </div>
+    <div class="speech-bubble" id="burumaTopBubble">
+      しゃべる準備中…
+    </div>
+  </section>
+
+  <!-- 現在の状況デカ表示 -->
+  <section class="status-big" id="statusBig" style="display:none;">
+    <div class="status-label">CURRENT</div>
+    <div class="status-amount" id="statusAmount">¥—</div>
+    <div class="status-meta" id="statusMeta"></div>
+  </section>
+
+  <!-- 次の勝負 -->
+  <section class="next-target" id="nextTarget" style="display:none;">
+    <div class="next-target-header">
+      <div class="next-target-label">⚡ NEXT TARGET</div>
+      <div class="next-target-tag">次の勝負</div>
+    </div>
+    <div class="next-target-info">
+      <div class="next-target-buruma">
+        <img id="burumaNextImg" src="images/buruma_korogashi/buruma_yaruki.png" alt="ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>💪</div>'">
+      </div>
+      <div class="next-target-bubble" id="burumaNextBubble">
+        次はこれで勝負や！
+      </div>
+    </div>
+    <div class="next-target-race" id="nextTargetRace"></div>
+  </section>
+
+  <!-- 履歴 -->
+  <section class="journey" id="journeySection" style="display:none;">
+    <div class="section-label">
+      <span class="line"></span><span class="text">THE JOURNEY</span><span class="line"></span>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <!-- 最終結果（チャレンジ終了時のみ） -->
+  <section class="final" id="final" style="display:none;"></section>
+
+  <div class="share-section">
+    <button class="share-btn" onclick="shareResult()">📸 この記録をシェア</button>
+  </div>
+
+  <div id="loadingScreen" class="loading">LOADING...</div>
+
+  <div class="footer">
+    ブルマの複勝転がし / AFRO Horse<br>
+    ※エンタメ目的 / 馬券購入は自己責任<br>
+    <a href="https://afuwa12345.github.io/AFRO-Horse/">AFRO Horse</a>
+  </div>
+
+</div>
+
+<script>
+// =====================================================
+//  🔧 GAS連携用URL（後でここに入れる）
+// =====================================================
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbytItkDyPGDoygn0jrTDD5UA3t7TuyS2lpzOOdu5wsn7aKwiQnGcdyo3U1UMlZUmfgMOA/exec';
+
+// =====================================================
+//  📦 モックデータ（GAS_URLが空のとき使われる）
+// =====================================================
+const MOCK_DATA = [
+  // チャレンジ1（進行中・次の勝負あり）
+  { 'チャレンジNo': 1, 'チャレンジ名': '第1回ブルマチャレンジ', '軍資金': 1000, 'レースNo': 1, '日付': '4/26', '競馬場': '東京', 'R': '11R', 'レース名': '皐月賞 G1', '馬番': 7,  '馬名': 'アフロホース',     '結果': '〇', '確定オッズ': 2.3 },
+  { 'チャレンジNo': 1, 'チャレンジ名': '第1回ブルマチャレンジ', '軍資金': 1000, 'レースNo': 2, '日付': '4/26', '競馬場': '中山', 'R': '9R',  'レース名': '雅Sエンジェル賞', '馬番': 3,  '馬名': 'ギンマシャイン',   '結果': '〇', '確定オッズ': 1.8 },
+  { 'チャレンジNo': 1, 'チャレンジ名': '第1回ブルマチャレンジ', '軍資金': 1000, 'レースNo': 3, '日付': '4/27', '競馬場': '阪神', 'R': '11R', 'レース名': '桜花賞 G1',     '馬番': 12, '馬名': 'クロフワブレード', '結果': '〇', '確定オッズ': 2.6 },
+  { 'チャレンジNo': 1, 'チャレンジ名': '第1回ブルマチャレンジ', '軍資金': 1000, 'レースNo': 4, '日付': '4/27', '競馬場': '東京', 'R': '10R', 'レース名': '青嵐賞',        '馬番': 5,  '馬名': 'チャフワロード',   '結果': '',   '確定オッズ': '' },
+];
+
+// =====================================================
+//  🎤 ブルマのセリフ集（場面別）
+// =====================================================
+const BURUMA_LINES = {
+  // 1戦目スタート
+  start: [
+    'よっしゃ、いくでぇ！ブルマの本気見せたるわ💪',
+    '今日は調子ええで！転がせ転がせ〜🔥',
+    'ドリーム掴むぞ！ついてこいや〜！',
+    'ブルマチャレンジ開幕や〜！',
+  ],
+  // 通常的中（連勝1〜2）
+  win: [
+    '的中ぅぅぅ！次もいくでぇ🔥',
+    '読み通り！ブルマの目に狂いなし✌️',
+    'やったでぇ！ええ感じやんけ！',
+    '当たり前体操や！',
+  ],
+  // 連勝中（3〜）
+  streak: [
+    'ノリにノってきた〜🔥もう止まらん！',
+    'ブルマ無双や！夢が広がる〜🌈',
+    '何連勝するか分からんで〜！',
+    '読みが冴えてるぅ✨',
+  ],
+  // 大連勝（5〜）or 高オッズ的中
+  bigwin: [
+    '🎉伝説の始まりや！',
+    '🎉ドリーム掴んだ…！',
+    '🎉これがブルマの実力や！まだまだ転がすで！',
+    '🎉夢じゃない、本当や！',
+  ],
+  // ハズレ
+  lose: [
+    'うわぁぁ…ここで夢は終わった😭',
+    '夢でしたw でも最高の旅やった！',
+    'これが競馬や…次こそリベンジや！',
+    'ドンマイドンマイ、また挑戦したるわ💧',
+  ],
+  // 次の勝負（やる気）
+  next: [
+    'これは買いやで！見とけよ〜👀',
+    'ブルマの本命や！気合入れていくでぇ💪',
+    '次はこれで勝負や！期待しとき⚡',
+    'よ〜く目に焼き付けときや！',
+    'これで勝てなかったら知らん（笑）',
+  ],
+  // トップステータス：チャレンジ進行中・連勝中
+  topGood: [
+    'ええ感じや〜！このまま転がせ💪',
+    'ブルマ絶好調！もっといくで〜🔥',
+    '夢が広がってきた…！',
+  ],
+  // トップステータス：チャレンジ進行中・1連勝
+  topNormal: [
+    '幸先のいいスタートや！次もいくで〜',
+    '一発目クリア！この調子や💫',
+    'ええ流れや、続けていこう！',
+  ],
+  // トップステータス：1戦目前
+  topStart: [
+    'チャレンジ開幕！軍資金は{initial}円や💰',
+    '今日からスタート！ブルマと一緒に夢見るで✨',
+  ],
+  // トップステータス：チャレンジ終了（成功・継続中）
+  topComplete: [
+    '完走したでぇ！軍資金が{multi}倍に🎉',
+    'ブルマの実力見たか〜！{multi}倍や✨',
+  ],
+  // トップステータス：チャレンジ終了（ハズレ）
+  topLost: [
+    '夢は終わった…でも最高{max}円まで届いたで💧',
+    'ここで終了や…でも{best}連勝の伝説残したで！',
+  ],
+};
+
+// =====================================================
+//  🎨 場面 → ブルマ画像 マッピング
+// =====================================================
+const IMG_BASE = 'images/buruma_korogashi/';
+const BURUMA_IMG = {
+  normal:   IMG_BASE + 'buruma_normal.png',   // 基本顔
+  happy:    IMG_BASE + 'buruma_happy.png',    // ガッツポーズ
+  peace:    IMG_BASE + 'buruma_peace.png',    // ピース/OK
+  sad:      IMG_BASE + 'buruma_sad.png',      // しょんぼり
+  yaruki:   IMG_BASE + 'buruma_yaruki.png',   // やる気
+  surprise: IMG_BASE + 'buruma_surprise.png', // びっくり
+};
+
+// =====================================================
+//  決定的にセリフを選ぶ（レースNoベース）
+// =====================================================
+function pickLine(category, seed) {
+  const arr = BURUMA_LINES[category] || ['…'];
+  return arr[Math.abs(seed) % arr.length];
+}
+
+function format(n) {
+  return Math.floor(n).toLocaleString();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// =====================================================
+//  データ読み込み
+// =====================================================
+async function loadData() {
+  if (GAS_URL && GAS_URL.startsWith('http')) {
+    try {
+      const res = await fetch(GAS_URL);
+      return await res.json();
+    } catch (e) {
+      console.error('GAS fetch error', e);
+      return MOCK_DATA;
+    }
+  }
+  return MOCK_DATA;
+}
+
+// =====================================================
+//  メイン処理
+// =====================================================
+async function init() {
+  const allRows = await loadData();
+
+  // チャレンジNoごとにグループ化
+  const challenges = {};
+  allRows.forEach(row => {
+    const no = row['チャレンジNo'];
+    if (no === '' || no == null) return;
+    if (!challenges[no]) challenges[no] = [];
+    challenges[no].push(row);
+  });
+
+  // 最新のチャレンジ（番号最大）を表示
+  const latestNo = Math.max(...Object.keys(challenges).map(Number));
+  const rows = challenges[latestNo] || [];
+  rows.sort((a, b) => Number(a['レースNo']) - Number(b['レースNo']));
+
+  if (rows.length === 0) {
+    document.getElementById('loadingScreen').textContent = 'データがありません';
+    return;
+  }
+
+  document.getElementById('loadingScreen').style.display = 'none';
+
+  const challengeName = rows[0]['チャレンジ名'] || `第${latestNo}回チャレンジ`;
+  const initial = Number(rows[0]['軍資金']) || 1000;
+  const date = rows[0]['日付'] || '';
+
+  document.getElementById('heroDate').textContent = date;
+  document.getElementById('heroChallengeName').textContent = challengeName;
+
+  // 結果判定（複数の丸・バツ記号に対応）
+  const WIN_CHARS = ['〇', '○', '◯', '◎', '●'];           // 漢数字ゼロ、丸、大きい丸、二重丸、黒丸
+  const LOSE_CHARS = ['✕', '×', 'x', 'X', '✖', '☓', '✗']; // 各種バツ
+  const isWinResult = (v) => WIN_CHARS.includes(String(v).trim());
+  const isLoseResult = (v) => LOSE_CHARS.includes(String(v).trim());
+  const hasResult = (v) => isWinResult(v) || isLoseResult(v);
+
+  // レースを「結果あり」と「結果なし（次の勝負）」に分ける
+  const finished = rows.filter(r => hasResult(r['結果']));
+  const nextRace = rows.find(r => !hasResult(r['結果']));
+
+  // 履歴計算
+  let current = initial;
+  let maxAmount = initial;
+  let streak = 0;
+  let bestStreak = 0;
+  let gameOver = false;
+  const journey = [];
+
+  for (const r of finished) {
+    if (gameOver) break;
+    const before = current;
+    const odds = Number(r['確定オッズ']) || 0;
+    const isWin = isWinResult(r['結果']);
+    let after;
+    if (isWin) {
+      after = before * odds;
+      streak++;
+      if (streak > bestStreak) bestStreak = streak;
+      if (after > maxAmount) maxAmount = after;
+    } else {
+      after = 0;
+      streak = 0;
+      gameOver = true;
+    }
+    journey.push({ ...r, before, after, odds, isWin, streakAtTime: streak });
+    current = after;
+  }
+
+  // ===== ブルマ吹き出し（トップ）=====
+  renderBurumaTalks(journey, current, initial, streak, maxAmount, bestStreak, gameOver, !!nextRace);
+
+  // ===== 現在ステータス =====
+  renderStatus(current, initial, streak, gameOver);
+
+  // ===== 次の勝負 =====
+  if (nextRace && !gameOver) {
+    renderNextTarget(nextRace);
+  }
+
+  // ===== 履歴 =====
+  if (journey.length > 0) {
+    renderJourney(journey);
+  }
+
+  // ===== 最終結果 =====
+  if (gameOver) {
+    renderFinal(current, initial, maxAmount, bestStreak, journey, false);
+  } else if (!nextRace && journey.length > 0) {
+    // 全レース消化済み・成功で完走
+    renderFinal(current, initial, maxAmount, bestStreak, journey, true);
+  }
+
+  // フェードイン
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.race, .streak-callout').forEach(el => observer.observe(el));
+}
+
+// =====================================================
+//  レンダリング各種
+// =====================================================
+function renderBurumaTalks(journey, current, initial, streak, maxAmount, bestStreak, gameOver, hasNext) {
+  let category, mood;
+  let raceCount = journey.length;
+
+  if (gameOver) {
+    category = 'topLost';
+    mood = 'sad';
+  } else if (raceCount === 0) {
+    category = 'topStart';
+    mood = 'yaruki';
+  } else if (!hasNext) {
+    category = 'topComplete';
+    mood = 'happy';
+  } else if (streak >= 3) {
+    category = 'topGood';
+    mood = 'happy';
+  } else {
+    category = 'topNormal';
+    mood = 'normal';
+  }
+
+  let line = pickLine(category, raceCount + initial);
+  // テンプレート置換
+  const multi = (current / initial).toFixed(2);
+  line = line
+    .replace('{initial}', format(initial))
+    .replace('{multi}', multi)
+    .replace('{max}', format(maxAmount))
+    .replace('{best}', bestStreak);
+
+  document.getElementById('burumaTalks').style.display = 'flex';
+  document.getElementById('burumaTopImg').src = BURUMA_IMG[mood];
+  document.getElementById('burumaTopBubble').innerHTML = line;
+}
+
+function renderStatus(current, initial, streak, gameOver) {
+  document.getElementById('statusBig').style.display = 'block';
+  document.getElementById('statusAmount').innerHTML = `¥${format(current)}<span class="yen"></span>`;
+
+  const multi = (current / initial).toFixed(2);
+  const meta = document.getElementById('statusMeta');
+  meta.innerHTML = `
+    <span class="status-chip">×${multi} TIMES</span>
+    ${streak >= 2 ? `<span class="status-chip streak">⚡ ${streak}連勝中</span>` : ''}
+    ${gameOver ? '<span class="status-chip">💧 終了</span>' : ''}
+  `;
+}
+
+function renderNextTarget(race) {
+  document.getElementById('nextTarget').style.display = 'block';
+
+  const seed = Number(race['レースNo']) + (race['馬名'] || '').length;
+  const line = pickLine('next', seed);
+  document.getElementById('burumaNextBubble').textContent = line;
+
+  const venueText = `${race['競馬場'] || ''} ${race['R'] || ''}`.trim();
+  const dateText = race['日付'] || '';
+  const raceName = race['レース名'] || '';
+
+  document.getElementById('nextTargetRace').innerHTML = `
+    <div class="next-race-meta">
+      <div class="next-race-venue">${escapeHtml(venueText)}</div>
+      <div class="next-race-date">${escapeHtml(dateText)}</div>
+    </div>
+    ${raceName ? `<div class="next-race-name">${escapeHtml(raceName)}</div>` : ''}
+    <div class="next-race-horse">
+      <span class="label">本命</span>
+      <span class="num">${escapeHtml(String(race['馬番'] || '?'))}</span>
+      <span class="name">${escapeHtml(race['馬名'] || '')}</span>
+    </div>
+  `;
+}
+
+function renderJourney(journey) {
+  document.getElementById('journeySection').style.display = 'block';
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+
+  let prevStreak = 0;
+  journey.forEach((r) => {
+    // 連勝バッジ挿入
+    if (r.isWin && r.streakAtTime >= 3 && r.streakAtTime > prevStreak) {
+      const callout = document.createElement('div');
+      callout.className = 'streak-callout';
+      callout.innerHTML = `<div class="streak-callout-inner">⚡ ${r.streakAtTime}連勝突破！</div>`;
+      timeline.appendChild(callout);
+    }
+    prevStreak = r.streakAtTime;
+
+    // ブルマのコメント決定
+    let category, mood;
+    if (!r.isWin) {
+      category = 'lose';
+      mood = 'sad';
+    } else if (r.streakAtTime >= 5 || r.odds >= 4) {
+      category = 'bigwin';
+      mood = 'surprise';
+    } else if (r.streakAtTime >= 3) {
+      category = 'streak';
+      mood = 'happy';
+    } else if (r.streakAtTime === 1 && Number(r['レースNo']) === 1) {
+      category = 'start';
+      mood = 'yaruki';
+    } else {
+      category = 'win';
+      mood = 'peace';
+    }
+
+    const seed = Number(r['レースNo']) + (r['馬名'] || '').length;
+    const comment = pickLine(category, seed);
+
+    const venueText = `${r['競馬場'] || ''} ${r['R'] || ''}`.trim();
+    const div = document.createElement('div');
+    div.className = 'race ' + (r.isWin ? 'win' : 'lose');
+    div.innerHTML = `
+      <div class="race-card">
+        <div class="race-num-tag">RACE ${String(r['レースNo']).padStart(2, '0')}</div>
+        <div class="race-meta">${escapeHtml(venueText)}</div>
+        ${r['レース名'] ? `<div class="race-name">${escapeHtml(r['レース名'])}</div>` : ''}
+        <div class="horse-line">
+          <div class="horse-num">${escapeHtml(String(r['馬番']))}</div>
+          <div class="horse-name">${escapeHtml(r['馬名'])}</div>
+          <div class="horse-odds"><span class="label">複勝</span>${r.odds.toFixed(1)}</div>
+        </div>
+        <div class="result-row">
+          <div class="money-flow">
+            <span class="from">¥${format(r.before)}</span>
+            <span class="arrow">→</span>
+            <span class="to">¥${format(r.after)}</span>
+          </div>
+          <div class="stamp">${r.isWin ? '的中' : 'ハズレ'}</div>
+        </div>
+        <div class="race-comment">
+          <div class="race-comment-buruma">
+            <img src="${BURUMA_IMG[mood]}" alt="ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>🐴</div>'">
+          </div>
+          <div class="race-comment-bubble">${escapeHtml(comment)}</div>
+        </div>
+      </div>
+    `;
+    timeline.appendChild(div);
+  });
+}
+
+function renderFinal(current, initial, maxAmount, bestStreak, journey, isWin) {
+  const final = document.getElementById('final');
+  final.style.display = 'block';
+  const multi = current / initial;
+
+  if (isWin) {
+    final.classList.add('win');
+    final.innerHTML = `
+      <div class="final-label">FINAL RESULT</div>
+      <div class="final-headline">🏆 CHALLENGE COMPLETE</div>
+      <div class="final-amount">¥${format(current)}</div>
+      <div class="final-multi">×${multi.toFixed(2)} TIMES</div>
+      <div class="final-summary">
+        <div class="summary-box"><div class="summary-label">RACES</div><div class="summary-value">${journey.length}</div></div>
+        <div class="summary-box"><div class="summary-label">BEST 連勝</div><div class="summary-value">${bestStreak}</div></div>
+        <div class="summary-box"><div class="summary-label">MAX</div><div class="summary-value">¥${format(maxAmount)}</div></div>
+      </div>
+    `;
+    if (multi >= 5) setTimeout(launchConfetti, 600);
+  } else {
+    final.innerHTML = `
+      <div class="final-label">FINAL RESULT</div>
+      <div class="final-headline">💧 CHALLENGE END</div>
+      <div class="final-amount">¥${format(maxAmount)}</div>
+      <div class="final-multi">最高 ×${(maxAmount/initial).toFixed(2)} 到達</div>
+      <div class="final-summary">
+        <div class="summary-box"><div class="summary-label">RACES</div><div class="summary-value">${journey.length}</div></div>
+        <div class="summary-box"><div class="summary-label">BEST 連勝</div><div class="summary-value">${bestStreak}</div></div>
+        <div class="summary-box"><div class="summary-label">FINAL</div><div class="summary-value">¥${format(current)}</div></div>
+      </div>
+    `;
+  }
+}
+
+function launchConfetti() {
+  const colors = ['#ffd633', '#1ea7e8', '#5bc0f0', '#fff', '#ffb700'];
+  for (let i = 0; i < 80; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDelay = Math.random() * 0.6 + 's';
+    c.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+    c.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 6000);
+  }
+}
+
+function shareResult() {
+  const amount = document.getElementById('statusAmount').textContent;
+  const name = document.getElementById('heroChallengeName').textContent;
+  const text = `🐴 ブルマの複勝転がし\n${name}\n現在 ${amount}！\n\n#AFROHorse #ブルマの複勝転がし #競馬`;
+  if (navigator.share) {
+    navigator.share({ text }).catch(() => copyText(text));
+  } else {
+    copyText(text);
+  }
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('結果をコピーしたよ！SNSに貼り付けてシェアしてね');
+  }).catch(() => {
+    prompt('結果をコピーしてください:', text);
+  });
+}
+
+init();
+</script>
+</body>
+</html>
