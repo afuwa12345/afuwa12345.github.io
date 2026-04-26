@@ -856,6 +856,183 @@ body::after {
 
 .footer a { color: var(--yellow); text-decoration: none; }
 
+/* ===== ARCHIVE ===== */
+.archive {
+  margin-top: 40px;
+  padding: 30px 0 10px;
+  border-top: 1px solid rgba(91, 192, 240, 0.2);
+}
+
+.archive-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.archive-header .label {
+  display: inline-block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--blue-light);
+  border: 1px solid var(--blue-light);
+  padding: 4px 14px 3px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+}
+
+.archive-header h2 {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px;
+  color: var(--yellow);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 12px rgba(255, 214, 51, 0.4);
+}
+
+.archive-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.archive-item {
+  background: linear-gradient(135deg, rgba(30, 167, 232, 0.08), rgba(255,255,255,0.02));
+  border: 1px solid rgba(30, 167, 232, 0.25);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.archive-item.win {
+  border-color: rgba(255, 214, 51, 0.4);
+  background: linear-gradient(135deg, rgba(255, 214, 51, 0.1), rgba(30, 167, 232, 0.05));
+  box-shadow: 0 2px 12px rgba(255, 214, 51, 0.15);
+}
+
+.archive-item.lose {
+  border-color: rgba(150, 150, 150, 0.3);
+  background: linear-gradient(135deg, rgba(50, 50, 70, 0.2), rgba(0,0,0,0.15));
+}
+
+.archive-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+.archive-name {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 0.05em;
+  flex: 1;
+}
+
+.archive-date {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  color: var(--blue-light);
+  letter-spacing: 0.1em;
+}
+
+.archive-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.archive-flow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  color: #888;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.archive-flow .arrow { color: var(--blue-light); }
+
+.archive-flow .final {
+  font-size: 18px;
+  font-family: 'Dela Gothic One', cursive;
+}
+
+.archive-item.win .archive-flow .final {
+  color: var(--yellow);
+  text-shadow: 0 0 8px rgba(255, 214, 51, 0.4);
+}
+
+.archive-item.lose .archive-flow .final {
+  color: #999;
+}
+
+.archive-multi {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  padding: 3px 10px 2px;
+  border-radius: 12px;
+  letter-spacing: 0.08em;
+}
+
+.archive-item.win .archive-multi {
+  background: rgba(255, 214, 51, 0.2);
+  color: var(--yellow);
+  border: 1px solid rgba(255, 214, 51, 0.4);
+}
+
+.archive-item.lose .archive-multi {
+  background: rgba(150, 150, 150, 0.15);
+  color: #aaa;
+  border: 1px solid rgba(150, 150, 150, 0.3);
+}
+
+.archive-stats {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #aaa;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.archive-stats .item {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.archive-stats .label {
+  color: #666;
+}
+
+.archive-stats .value {
+  color: var(--blue-light);
+  font-weight: 700;
+}
+
+.archive-status-tag {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 10px;
+  padding: 3px 8px 2px;
+  border-radius: 3px;
+  letter-spacing: 0.15em;
+}
+
+.archive-item.win .archive-status-tag {
+  background: var(--yellow);
+  color: #0a1d33;
+}
+
+.archive-item.lose .archive-status-tag {
+  background: rgba(150, 150, 150, 0.3);
+  color: #ccc;
+}
+
 .confetti {
   position: fixed;
   top: -20px;
@@ -934,6 +1111,15 @@ body::after {
 
   <!-- 最終結果（チャレンジ終了時のみ） -->
   <section class="final" id="final" style="display:none;"></section>
+
+  <!-- アーカイブ（過去のチャレンジ） -->
+  <section class="archive" id="archiveSection" style="display:none;">
+    <div class="archive-header">
+      <div class="label">ARCHIVE</div>
+      <h2>過去のチャレンジ</h2>
+    </div>
+    <div class="archive-list" id="archiveList"></div>
+  </section>
 
   <div class="share-section">
     <button class="share-btn" onclick="shareResult()">📸 この記録をシェア</button>
@@ -1071,6 +1257,13 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// 結果判定（複数の丸・バツ記号に対応）
+const WIN_CHARS = ['〇', '○', '◯', '◎', '●'];
+const LOSE_CHARS = ['✕', '×', 'x', 'X', '✖', '☓', '✗'];
+const isWinResult = (v) => WIN_CHARS.includes(String(v).trim());
+const isLoseResult = (v) => LOSE_CHARS.includes(String(v).trim());
+const hasResult = (v) => isWinResult(v) || isLoseResult(v);
+
 // =====================================================
 //  データ読み込み
 // =====================================================
@@ -1102,8 +1295,14 @@ async function init() {
     challenges[no].push(row);
   });
 
+  const challengeNos = Object.keys(challenges).map(Number).sort((a, b) => a - b);
+  if (challengeNos.length === 0) {
+    document.getElementById('loadingScreen').textContent = 'データがありません';
+    return;
+  }
+
   // 最新のチャレンジ（番号最大）を表示
-  const latestNo = Math.max(...Object.keys(challenges).map(Number));
+  const latestNo = Math.max(...challengeNos);
   const rows = challenges[latestNo] || [];
   rows.sort((a, b) => Number(a['レースNo']) - Number(b['レースNo']));
 
@@ -1120,13 +1319,6 @@ async function init() {
 
   document.getElementById('heroDate').textContent = date;
   document.getElementById('heroChallengeName').textContent = challengeName;
-
-  // 結果判定（複数の丸・バツ記号に対応）
-  const WIN_CHARS = ['〇', '○', '◯', '◎', '●'];           // 漢数字ゼロ、丸、大きい丸、二重丸、黒丸
-  const LOSE_CHARS = ['✕', '×', 'x', 'X', '✖', '☓', '✗']; // 各種バツ
-  const isWinResult = (v) => WIN_CHARS.includes(String(v).trim());
-  const isLoseResult = (v) => LOSE_CHARS.includes(String(v).trim());
-  const hasResult = (v) => isWinResult(v) || isLoseResult(v);
 
   // レースを「結果あり」と「結果なし（次の勝負）」に分ける
   const finished = rows.filter(r => hasResult(r['結果']));
@@ -1182,6 +1374,12 @@ async function init() {
   } else if (!nextRace && journey.length > 0) {
     // 全レース消化済み・成功で完走
     renderFinal(current, initial, maxAmount, bestStreak, journey, true);
+  }
+
+  // ===== アーカイブ（過去のチャレンジ） =====
+  const pastNos = challengeNos.filter(n => n !== latestNo);
+  if (pastNos.length > 0) {
+    renderArchive(pastNos.reverse().map(n => ({ no: n, rows: challenges[n] })));
   }
 
   // フェードイン
@@ -1372,6 +1570,78 @@ function renderFinal(current, initial, maxAmount, bestStreak, journey, isWin) {
       </div>
     `;
   }
+}
+
+function renderArchive(challenges) {
+  const section = document.getElementById('archiveSection');
+  const list = document.getElementById('archiveList');
+  list.innerHTML = '';
+
+  challenges.forEach(({ no, rows }) => {
+    rows.sort((a, b) => Number(a['レースNo']) - Number(b['レースNo']));
+    const name = rows[0]['チャレンジ名'] || `第${no}回チャレンジ`;
+    const initial = Number(rows[0]['軍資金']) || 1000;
+    const date = rows[0]['日付'] || '';
+
+    // 戦績計算
+    let current = initial;
+    let maxAmount = initial;
+    let bestStreak = 0;
+    let streak = 0;
+    let wins = 0;
+    let losses = 0;
+    let gameOver = false;
+
+    for (const r of rows) {
+      if (gameOver) break;
+      if (!hasResult(r['結果'])) continue;
+      const odds = Number(r['確定オッズ']) || 0;
+      if (isWinResult(r['結果'])) {
+        current *= odds;
+        wins++;
+        streak++;
+        if (streak > bestStreak) bestStreak = streak;
+        if (current > maxAmount) maxAmount = current;
+      } else {
+        losses++;
+        current = 0;
+        streak = 0;
+        gameOver = true;
+      }
+    }
+
+    const isWin = !gameOver && wins > 0;
+    const final = gameOver ? 0 : current;
+    const displayAmount = gameOver ? maxAmount : current;
+    const multi = (displayAmount / initial).toFixed(2);
+    const totalRaces = wins + losses;
+
+    const item = document.createElement('div');
+    item.className = 'archive-item ' + (isWin ? 'win' : 'lose');
+    item.innerHTML = `
+      <div class="archive-top">
+        <div class="archive-name">第${no}回・${escapeHtml(name)}</div>
+        <div class="archive-date">${escapeHtml(date)}</div>
+      </div>
+      <div class="archive-result">
+        <div class="archive-flow">
+          <span>¥${format(initial)}</span>
+          <span class="arrow">→</span>
+          <span class="final">¥${format(displayAmount)}</span>
+        </div>
+        <div class="archive-multi">×${multi}</div>
+        <div class="archive-status-tag">${isWin ? '完走' : '終了'}</div>
+      </div>
+      <div class="archive-stats">
+        <div class="item"><span class="label">RACES</span><span class="value">${totalRaces}</span></div>
+        <div class="item"><span class="label">BEST 連勝</span><span class="value">${bestStreak}</span></div>
+        ${gameOver ? `<div class="item"><span class="label">MAX</span><span class="value">¥${format(maxAmount)}</span></div>` : ''}
+      </div>
+    `;
+    list.appendChild(item);
+  });
+
+  section.style.display = 'block';
 }
 
 function launchConfetti() {
