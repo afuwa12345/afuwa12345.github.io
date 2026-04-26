@@ -67,9 +67,53 @@ body::after {
 .container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 0 14px 60px;
+  padding: 56px 14px 60px;
   position: relative;
   z-index: 2;
+}
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 56px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10, 29, 51, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(30, 167, 232, 0.3);
+  box-shadow: 0 4px 20px rgba(30, 167, 232, 0.05);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: #fff;
+}
+.nav-logo em {
+  color: var(--blue);
+  font-style: normal;
+  text-shadow: 0 0 12px rgba(30, 167, 232, 0.5);
+}
+.nav-back {
+  color: var(--blue-light);
+  font-size: 0.75rem;
+  text-decoration: none;
+  letter-spacing: 1px;
+  border: 1px solid rgba(30, 167, 232, 0.4);
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.nav-back:hover, .nav-back:active {
+  border-color: var(--yellow);
+  color: var(--yellow);
 }
 
 /* ===== HERO ===== */
@@ -1377,6 +1421,12 @@ body::after {
 </style>
 </head>
 <body>
+
+<nav class="nav">
+  <div class="nav-logo">AFRO<em>HORSE</em></div>
+  <a href="index.html" class="nav-back">← HOME</a>
+</nav>
+
 <div class="container">
 
   <section class="hero">
