@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0e2e1f">
+<link rel="icon" href="../favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="AFRO Horse 種牡馬ランキング。JRA実績データからアフロ馬が独自で算出したコース別・距離別の種牡馬ランキング。">
+<title>種牡馬ランキング｜AFRO Horse</title>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --turf:#1a4731;
+  --turf-deep:#0e2e1f;
+  --turf-light:#2d6b4a;
+  --turf-bright:#4ca57a;
+  --cream:#f8f1de;
+  --cream-deep:#ede0bd;
+  --cream-soft:#fcf7e8;
+  --gold:#c8941d;
+  --gold-light:#e8b952;
+  --gold-glow:#ffd86d;
+  --red:#c5292a;
+  --red-deep:#8b1b1b;
+  --text:#2a2419;
+  --text-soft:#5a4f3d;
+  --gray:#7a6e5a;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:0.5;
+}
+.nav, .hero, .selector-wrap, .search-wrap, #resultArea, .ticker-outer, footer { position:relative; z-index:2; }
+
+/* ===== NAV ===== */
+.nav {
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:rgba(14,46,31,0.96);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--gold);
+  box-shadow:0 2px 12px rgba(14,46,31,0.2);
+}
+.nav-logo {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);text-decoration:none;
+}
+.nav-logo em { font-style:normal; color:var(--gold-light); }
+.nav-back {
+  color:var(--cream);font-size:0.7rem;
+  text-decoration:none;
+  letter-spacing:2px;
+  border:1px solid var(--gold);
+  padding:5px 11px;border-radius:4px;
+  font-family:'Bebas Neue',cursive;
+  background:rgba(200,148,29,0.10);
+  transition:all 0.2s;
+}
+.nav-back:hover, .nav-back:active { background:var(--gold); color:var(--turf-deep); }
+
+/* ===== HERO ===== */
+.hero {
+  margin-top:56px;
+  padding:20px 20px 24px;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 50%, var(--turf-light) 0%, var(--turf) 60%, var(--turf-deep) 100%);
+  color:var(--cream);
+  border-bottom:6px solid var(--gold);
+  position:relative;
+}
+.hero::before {
+  content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(2px 2px at 15% 25%, rgba(255,216,109,0.5), transparent),
+    radial-gradient(2px 2px at 85% 30%, rgba(255,216,109,0.4), transparent),
+    radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 25% 80%, rgba(255,216,109,0.4), transparent),
+    radial-gradient(2px 2px at 75% 75%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 60% 15%, rgba(255,216,109,0.4), transparent);
+  pointer-events:none;
+  animation:twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity:0.5; } 50% { opacity:0.95; } }
+.hero-title-img {
+  display:block;
+  width:100%;
+  max-width:560px;
+  height:auto;
+  margin:0 auto;
+  position:relative;z-index:1;
+  border-radius:12px;
+  filter:
+    drop-shadow(0 0 32px rgba(232,185,82,0.45))
+    drop-shadow(0 0 8px rgba(255,216,109,0.35))
+    drop-shadow(0 10px 22px rgba(0,0,0,0.55));
+}
+
+/* ===== TICKER ===== */
+.ticker-outer {
+  overflow:hidden;
+  background:var(--turf-deep);
+  padding:12px 0;
+  border-bottom:4px solid var(--gold);
+}
+.ticker-track { display:flex; animation:tick 22s linear infinite; width:max-content; }
+.ticker-item {
+  font-family:'Bebas Neue',cursive;
+  font-size:14px;letter-spacing:4px;
+  padding:0 22px;white-space:nowrap;
+  color:var(--cream);
+}
+.ticker-item.dot { color:var(--gold-light); }
+@keyframes tick { to { transform:translateX(-50%); } }
+
+/* ===== Section / cat-label ===== */
+.cat-label { text-align:center; margin:24px auto 14px; max-width:640px; padding:0 16px; }
+.cat-label-en {
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;letter-spacing:5px;
+  color:var(--gold);margin-bottom:4px;
+}
+.cat-label-ja {
+  font-family:'Dela Gothic One',cursive;
+  font-size:18px;color:var(--turf-deep);
+  letter-spacing:0.1em;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+}
+.cat-label-ja::before, .cat-label-ja::after {
+  content:'';width:30px;height:2px;
+  background:var(--turf);border-radius:1px;
+}
+
+/* ===== SELECTORS ===== */
+.selector-wrap { padding:0 16px 14px; max-width:640px; margin:0 auto; }
+.sel-section {
+  background:var(--cream-soft);
+  border:2px solid var(--turf);
+  border-radius:14px;
+  padding:18px 16px 16px;
+  margin-bottom:12px;
+  box-shadow:0 4px 0 var(--turf-deep), 0 6px 12px rgba(14,46,31,0.10);
+  position:relative;
+}
+.sel-section::before {
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:5px;
+  border-top-left-radius:12px;border-top-right-radius:12px;
+  background:linear-gradient(90deg, var(--turf-deep), var(--turf-light));
+}
+.sel-label {
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;letter-spacing:3px;
+  color:var(--gold);font-weight:900;
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.sel-label::after {
+  content:'';flex:1;height:1px;
+  background:rgba(200,148,29,0.4);
+}
+
+.chip-grid-5 { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; }
+.chip-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.dist-grid { display:flex; flex-wrap:wrap; gap:7px; }
+.chip-grid-baba { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; }
+
+.chip {
+  background:#fff;
+  border:2px solid var(--turf);
+  border-radius:8px;
+  padding:9px 4px;
+  text-align:center;
+  cursor:pointer;
+  font-size:13px;
+  color:var(--turf-deep);
+  font-weight:700;
+  font-family:'Noto Sans JP',sans-serif;
+  transition:all 0.15s;
+  user-select:none;
+  box-shadow:0 2px 0 var(--turf-deep);
+}
+.chip:active { transform:translateY(1px); box-shadow:0 1px 0 var(--turf-deep); }
+.chip.active {
+  background:var(--gold);
+  color:var(--turf-deep);
+  border-color:var(--gold);
+  box-shadow:0 2px 0 #8a6411, 0 0 12px rgba(200,148,29,0.25);
+}
+.chip.surface { padding:14px; font-size:15px; font-weight:900; }
+.chip.dist-chip { padding:10px 16px; font-size:13px; min-width:74px; flex-shrink:0; }
+
+.course-char {
+  border-left:3px solid var(--gold);
+  border-radius:0 8px 8px 0;
+  padding:10px 14px;
+  font-size:12px;
+  color:var(--text-soft);
+  margin-top:12px;
+  line-height:1.7;
+  background:rgba(200,148,29,0.08);
+  display:none;
+  font-weight:700;
+}
+#surfaceSection { display:none; }
+#distSection { display:none; margin-top:10px; }
+#babaSection { display:none; margin-top:10px; }
+
+/* ===== SEARCH BUTTON ===== */
+.search-wrap { padding:0 16px 24px; max-width:640px; margin:0 auto; }
+.search-btn {
+  width:100%;
+  background:linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  color:var(--cream);
+  border:2px solid var(--turf-deep);
+  border-radius:14px;
+  padding:18px 14px 14px;
+  font-family:'Dela Gothic One',cursive;
+  font-size:18px;letter-spacing:3px;
+  cursor:pointer;
+  text-shadow:0 2px 0 rgba(0,0,0,0.35);
+  box-shadow:0 5px 0 var(--turf-deep), 0 8px 18px rgba(139,27,27,0.25);
+  position:relative;transition:all 0.12s;
+}
+.search-btn::before {
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:5px;
+  background:linear-gradient(90deg, var(--gold), var(--gold-glow), var(--gold));
+  border-top-left-radius:12px;border-top-right-radius:12px;
+}
+.search-btn:active:not(:disabled) { transform:translateY(4px); box-shadow:0 1px 0 var(--turf-deep); }
+.search-btn:disabled {
+  background:var(--cream-deep);
+  color:var(--gray);
+  border-color:var(--turf-light);
+  cursor:not-allowed;
+  text-shadow:none;
+  box-shadow:0 3px 0 rgba(14,46,31,0.18);
+}
+.search-btn:disabled::before { background:var(--turf-light); opacity:0.5; }
+
+/* ===== RESULTS ===== */
+.result-wrap {
+  padding:0 16px 40px;
+  max-width:640px;
+  margin:0 auto;
+  animation:fadeUp 0.4s ease;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+.result-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.result-title {
+  font-family:'Dela Gothic One',cursive;
+  font-size:14px;letter-spacing:1px;
+  color:var(--turf-deep);
+  white-space:nowrap;
+}
+.result-line {
+  flex:1;height:2px;
+  background:linear-gradient(90deg, var(--gold), transparent);
+  border-radius:1px;
+}
+
+.sire-card {
+  background:var(--cream-soft);
+  border:2px solid var(--turf);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:10px;
+  position:relative;
+  box-shadow:0 4px 0 var(--turf-deep), 0 6px 12px rgba(14,46,31,0.10);
+}
+.sire-card::before {
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-top-left-radius:12px;border-top-right-radius:12px;
+}
+.sire-top { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+.rank-badge {
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Dela Gothic One',cursive;
+  font-size:16px;flex-shrink:0;
+}
+.rank-1 {
+  background:linear-gradient(135deg, var(--gold-glow), var(--gold));
+  color:var(--turf-deep);
+  box-shadow:0 0 14px rgba(232,185,82,0.55);
+}
+.rank-2 {
+  background:linear-gradient(135deg, #c5c5c5, #909090);
+  color:var(--turf-deep);
+  box-shadow:0 0 8px rgba(0,0,0,0.15);
+}
+.rank-3 {
+  background:linear-gradient(135deg, #cd7f32, #8B5A00);
+  color:var(--cream);
+}
+.rank-n {
+  background:var(--cream-deep);
+  color:var(--text-soft);
+  border:1.5px solid var(--turf-light);
+}
+.sire-name {
+  font-family:'Dela Gothic One',cursive;
+  font-size:18px;
+  color:var(--turf-deep);
+  flex:1;line-height:1.2;
+}
+.sire-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.stat-item {
+  background:#fff;
+  border:1.5px solid var(--cream-deep);
+  border-radius:8px;
+  padding:9px 6px;
+  text-align:center;
+}
+.stat-label {
+  font-family:'Bebas Neue',cursive;
+  font-size:9px;
+  color:var(--gold);
+  letter-spacing:0.1em;
+  margin-bottom:4px;
+  font-weight:900;
+}
+.stat-value {
+  font-family:'Dela Gothic One',cursive;
+  font-size:16px;
+  color:var(--turf-deep);
+  letter-spacing:0.5px;
+}
+.stat-value.hl { color:var(--red); }
+.sire-runs {
+  text-align:right;
+  font-size:10px;
+  color:var(--text-soft);
+  margin-top:8px;
+  font-weight:700;
+}
+
+.spinner {
+  width:32px;height:32px;
+  border:3px solid var(--cream-deep);
+  border-top-color:var(--gold);
+  border-radius:50%;
+  animation:spin 0.7s linear infinite;
+  margin:0 auto 10px;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.loading-msg {
+  text-align:center;
+  padding:24px;
+  font-size:13px;
+  color:var(--text-soft);
+  letter-spacing:0.05em;
+  font-weight:700;
+}
+.no-data {
+  text-align:center;
+  padding:36px 20px;
+  color:var(--text-soft);
+  font-size:14px;
+  line-height:1.8;
+  background:var(--cream-soft);
+  border:2px dashed var(--turf-light);
+  border-radius:14px;
+  font-weight:700;
+  max-width:640px;margin:0 auto;
+}
+.note {
+  font-size:10px;
+  color:var(--gray);
+  text-align:center;
+  margin-top:18px;
+  line-height:1.8;
+  padding:0 8px;
+  font-weight:700;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align:center;
+  padding:40px 20px 30px;
+  background:var(--turf-deep);
+  color:rgba(248,241,222,0.7);
+  font-size:0.7rem;
+  border-top:6px solid var(--gold);
+  margin-top:40px;
+}
+.footer-logo {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);margin-bottom:6px;
+}
+.footer-logo em { font-style:normal; color:var(--gold-light); }
+.footer-tag {
+  font-family:'Bebas Neue',cursive;
+  font-size:0.75rem;letter-spacing:4px;
+  color:var(--gold-light);margin-bottom:14px;
+}
+.footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:14px; }
+.footer-links a { color:rgba(248,241,222,0.7); text-decoration:none; font-size:0.7rem; letter-spacing:1px; }
+.footer-links a:hover { color:var(--gold-light); }
+.footer-copy { color:rgba(248,241,222,0.45); margin-top:10px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
+  <a href="../index.html" class="nav-back">← HOME</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-title-img" src="../images/sire_title.png" alt="AFRO HORSE 種牡馬ランキング">
+</section>
+
+<!-- TICKER -->
+<div class="ticker-outer">
+  <div class="ticker-track">
+    <span class="ticker-item">★ SIRE RANKING</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">種牡馬ランキング</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">DATA-DRIVEN</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">JRA STATS</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">★ SIRE RANKING</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">種牡馬ランキング</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">DATA-DRIVEN</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">JRA STATS</span><span class="ticker-item dot">◆</span>
+  </div>
+</div>
+
+<!-- CAT LABEL -->
+<div class="cat-label">
+  <div class="cat-label-en">FILTER YOUR SEARCH</div>
+  <div class="cat-label-ja">条件を選んでね</div>
+</div>
+
+<!-- SELECTORS -->
+<div class="selector-wrap">
+  <div class="sel-section">
+    <div class="sel-label">競馬場を選択</div>
+    <div class="chip-grid-5" id="courseGrid"></div>
+    <div class="course-char" id="courseChar"></div>
+  </div>
+  <div class="sel-section" id="surfaceSection">
+    <div class="sel-label">馬場を選択</div>
+    <div class="chip-grid-2" id="surfaceGrid"></div>
+    <div id="distSection">
+      <div class="sel-label" style="margin-top:14px;">距離を選択</div>
+      <div class="dist-grid" id="distGrid"></div>
+    </div>
+    <div id="babaSection">
+      <div class="sel-label" style="margin-top:14px;">馬場状態を選択</div>
+      <div class="chip-grid-baba" id="babaGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH BUTTON -->
+<div class="search-wrap">
+  <button class="search-btn" id="searchBtn" disabled onclick="showRanking()">
+    ▶ ランキングを見る
+  </button>
+</div>
+
+<!-- RESULT -->
+<div id="resultArea"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AFRO<em>Horse</em></div>
+  <div class="footer-tag">WIN WITH STYLE</div>
+  <div class="footer-links">
+    <a href="../index.html">ホーム</a>
+    <a href="../afrohorse_characters.html">キャラクター</a>
+    <a href="../index.html#prediction">予想</a>
+    <a href="../tools.html">ツール</a>
+    <a href="../contact.html">お問い合わせ</a>
+    <a href="../privacy.html">プライバシーポリシー</a>
+  </div>
+  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
+</footer>
+
+<script>
+const COURSES = ["東京","中山","阪神","京都","中京","小倉","函館","札幌","福島","新潟"];
+const COURSE_CHARS = {
+  東京:"直線525m・広いコース。末脚・瞬発力が問われる",
+  中山:"小回り・アップダウンあり。パワーとスタミナが必要",
+  阪神:"内回り・外回りあり。差し馬も台頭しやすい",
+  京都:"淀の坂あり。先行有利で持続力が重要",
+  中京:"改修後は直線長く差し有利。瞬発力が問われる",
+  小倉:"直線293m・小回り。先行・逃げが断然有利",
+  函館:"小回り・洋芝。スタミナと洋芝適性が重要",
+  札幌:"平坦・洋芝。先行型が有利",
+  福島:"直線292m・小回り。先行有利",
+  新潟:"直線658m。差し・追込みが決まりやすい",
+};
+const DISTANCES = {
+  芝:[
+    {label:"短距離（〜1400m）",value:"短距離"},
+    {label:"マイル（〜1800m）",value:"マイル"},
+    {label:"中距離（〜2200m）",value:"中距離"},
+    {label:"長距離（2200m〜）",value:"長距離"},
+  ],
+  ダ:[
+    {label:"短距離（〜1400m）",value:"短距離"},
+    {label:"マイル（〜1800m）",value:"マイル"},
+    {label:"中距離（〜2200m）",value:"中距離"},
+    {label:"長距離（2200m〜）",value:"長距離"},
+  ],
+};
+
+let jsonData = null;
+let state = {course:"", surface:"", distance:"", baba:""};
+
+window.addEventListener("DOMContentLoaded", () => {
+  buildCourseChips();
+  fetch("result.json")
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    .then(data => { jsonData = data; })
+    .catch(() => {});
+});
+
+function checkReady() {
+  document.getElementById("searchBtn").disabled =
+    !(state.course && state.surface && state.distance && state.baba);
+}
+
+function buildCourseChips() {
+  const grid = document.getElementById("courseGrid");
+  COURSES.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "chip";
+    div.textContent = c;
+    div.addEventListener("click", () => {
+      state.course = c;
+      state.surface = "";
+      state.distance = "";
+      grid.querySelectorAll(".chip").forEach(el => el.classList.remove("active"));
+      div.classList.add("active");
+      const el = document.getElementById("courseChar");
+      el.textContent = "📍 " + (COURSE_CHARS[c] || "");
+      el.style.display = "block";
+      buildSurfaceChips(c);
+      document.getElementById("distSection").style.display = "none";
+      document.getElementById("resultArea").innerHTML = "";
+      checkReady();
+    });
+    grid.appendChild(div);
+  });
+  document.getElementById("surfaceSection").style.display = "none";
+}
+
+function buildSurfaceChips(course) {
+  const grid = document.getElementById("surfaceGrid");
+  grid.innerHTML = "";
+  ["芝","ダ"].forEach(s => {
+    const div = document.createElement("div");
+    div.className = "chip surface";
+    div.textContent = s === "芝" ? "🌿 芝" : "🟤 ダート";
+    div.addEventListener("click", () => {
+      state.surface = s;
+      state.distance = "";
+      state.baba = "";
+      grid.querySelectorAll(".chip").forEach(el => el.classList.remove("active"));
+      div.classList.add("active");
+      buildDistChips(course, s);
+      document.getElementById("babaSection").style.display = "none";
+      document.getElementById("resultArea").innerHTML = "";
+      checkReady();
+    });
+    grid.appendChild(div);
+  });
+  document.getElementById("surfaceSection").style.display = "block";
+}
+
+function buildDistChips(course, surface) {
+  const grid = document.getElementById("distGrid");
+  grid.innerHTML = "";
+  let dists;
+  if (jsonData && jsonData[course] && jsonData[course][surface]) {
+    dists = Object.keys(jsonData[course][surface]).sort((a,b) => parseInt(a) - parseInt(b));
+  } else {
+    const defaults = {
+      東京:{ 芝:["1400m","1600m","1800m","2000m","2400m","2500m"], ダ:["1300m","1400m","1600m","2100m"] },
+      中山:{ 芝:["1200m","1600m","1800m","2000m","2200m","2500m"], ダ:["1200m","1800m"] },
+      阪神:{ 芝:["1200m","1400m","1600m","1800m","2000m","2200m","2400m"], ダ:["1200m","1400m","1800m","2000m"] },
+      京都:{ 芝:["1200m","1400m","1600m","1800m","2000m","2200m","2400m"], ダ:["1200m","1400m","1800m","1900m"] },
+      中京:{ 芝:["1200m","1400m","1600m","2000m"], ダ:["1200m","1400m","1800m","1900m"] },
+      小倉:{ 芝:["1200m","1700m","1800m","2000m","2600m"], ダ:["1000m","1700m"] },
+      函館:{ 芝:["1000m","1200m","1800m","2000m","2600m"], ダ:["1000m","1700m"] },
+      札幌:{ 芝:["1200m","1500m","1800m","2000m","2600m"], ダ:["1000m","1700m"] },
+      福島:{ 芝:["1200m","1800m","2000m","2600m"], ダ:["1150m","1700m"] },
+      新潟:{ 芝:["1000m","1200m","1400m","1600m","1800m","2000m","2200m"], ダ:["1200m","1800m"] },
+    };
+    dists = (defaults[course] && defaults[course][surface]) || [];
+  }
+  dists.forEach(d => {
+    const div = document.createElement("div");
+    div.className = "chip dist-chip";
+    div.textContent = d;
+    div.addEventListener("click", () => {
+      state.distance = d;
+      state.baba = "";
+      grid.querySelectorAll(".chip").forEach(el => el.classList.remove("active"));
+      div.classList.add("active");
+      buildBabaChips(course, surface, d);
+      document.getElementById("resultArea").innerHTML = "";
+      checkReady();
+    });
+    grid.appendChild(div);
+  });
+  document.getElementById("distSection").style.display = "block";
+}
+
+
+function buildBabaChips(course, surface, dist) {
+  const grid = document.getElementById("babaGrid");
+  grid.innerHTML = "";
+  const allOptions = ["全天候", "良", "稍重", "重", "不良"];
+  // JSONから実際にあるものだけ表示
+  let available = allOptions.filter(b => {
+    if (!jsonData) return true;
+    return jsonData[course]?.[surface]?.[dist]?.[b];
+  });
+  if (available.length === 0) available = allOptions;
+  available.forEach(b => {
+    const div = document.createElement("div");
+    div.className = "chip";
+    div.textContent = b === "全天候" ? "🌤 全天候" :
+                      b === "良"   ? "☀️ 良" :
+                      b === "稍重" ? "🌦 稍重" :
+                      b === "重"   ? "🌧 重" : "⛈ 不良";
+    div.style.fontSize = "12px";
+    div.addEventListener("click", () => {
+      state.baba = b;
+      grid.querySelectorAll(".chip").forEach(el => el.classList.remove("active"));
+      div.classList.add("active");
+      checkReady();
+    });
+    grid.appendChild(div);
+  });
+  document.getElementById("babaSection").style.display = "block";
+}
+
+function showRanking() {
+  const resultArea = document.getElementById("resultArea");
+  if (!jsonData) {
+    resultArea.innerHTML = '<div class="loading-msg"><div class="spinner"></div>データを読み込み中…<br><span style="font-size:11px;margin-top:6px;display:block;color:rgba(255,255,255,0.3)">result.jsonをsire.htmlと同じフォルダに置いてください</span></div>';
+    fetch("result.json").then(r=>r.json()).then(data=>{jsonData=data;showRanking();}).catch(()=>{
+      resultArea.innerHTML='<div class="no-data">⚠️ result.jsonが読み込めません</div>';
+    });
+    return;
+  }
+  try {
+    const sires = jsonData[state.course]?.[state.surface]?.[state.distance]?.[state.baba];
+    if (!sires || sires.length === 0) {
+      resultArea.innerHTML='<div class="no-data">🏇<br>該当データがありません</div>';
+      return;
+    }
+    const label = state.course+" / "+(state.surface==="芝"?"芝":"ダート")+" / "+state.distance+" / "+state.baba;
+    let html='<div class="result-wrap"><div class="result-header"><div class="result-title">'+label+'</div><div class="result-line"></div></div>';
+    sires.forEach((sire,i)=>{
+      const rc=i===0?"rank-1":i===1?"rank-2":i===2?"rank-3":"rank-n";
+      html+='<div class="sire-card"><div class="sire-top"><div class="rank-badge '+rc+'">'+(sire.rank)+'</div><div class="sire-name">'+sire.種牡馬+'</div></div><div class="sire-stats"><div class="stat-item"><div class="stat-label">勝率</div><div class="stat-value hl">'+sire.勝率+'</div></div><div class="stat-item"><div class="stat-label">複勝率</div><div class="stat-value">'+sire.複勝率+'</div></div><div class="stat-item"><div class="stat-label">単勝回収率</div><div class="stat-value">'+sire.単勝回収率+'</div></div></div><div class="sire-runs">出走数: '+sire.出走数+'レース</div></div>';
+    });
+    html+='<p class="note">※ 直近データ重視・直近2年以内に出走実績がある種牡馬のみ表示<br>※ 本データは参考情報です。馬券購入は自己責任でお願いします。</p></div>';
+    resultArea.innerHTML=html;
+    resultArea.scrollIntoView({behavior:"smooth",block:"start"});
+  } catch(e) {
+    resultArea.innerHTML='<div class="no-data">表示エラー: '+e.message+'</div>';
+  }
+}
+
+</script>
+</body>
+</html>
