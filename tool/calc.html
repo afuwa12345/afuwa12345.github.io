@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>競馬買目ツール｜AFRO Horse</title>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0e2e1f">
+<link rel="icon" href="../favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --turf: #1a4731;
+  --turf-deep: #0e2e1f;
+  --turf-light: #2d6b4a;
+  --turf-bright: #4ca57a;
+  --cream: #f8f1de;
+  --cream-deep: #ede0bd;
+  --cream-soft: #fcf7e8;
+  --gold: #c8941d;
+  --gold-light: #e8b952;
+  --gold-glow: #ffd86d;
+  --red: #c5292a;
+  --red-deep: #8b1b1b;
+  --text: #2a2419;
+  --text-soft: #5a4f3d;
+  --gray: #7a6e5a;
+
+  /* dynamic per-bet (set by JS) */
+  --accent: #c8941d;
+  --accent2: #8a6411;
+  --glow: #ffd86d;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 56px;
+  position: relative;
+}
+body::before {
+  content:'';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.5;
+}
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed; top:0; left:0; right:0;
+  z-index: 200;
+  padding: 0 20px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(14,46,31,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 2px solid var(--gold);
+  box-shadow: 0 2px 12px rgba(14,46,31,0.2);
+}
+.nav-logo {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px; letter-spacing: 2px;
+  color: var(--cream); text-decoration: none;
+}
+.nav-logo em { font-style: normal; color: var(--gold-light); }
+.nav-back {
+  color: var(--cream); font-size: 0.7rem; text-decoration: none;
+  letter-spacing: 2px; border: 1px solid var(--gold);
+  padding: 5px 11px; border-radius: 4px;
+  font-family: 'Bebas Neue', cursive; transition: all 0.2s;
+}
+.nav-back:hover, .nav-back:active { background: var(--gold); color: var(--turf-deep); }
+
+/* ===== APP CONTAINER ===== */
+.page-wrap {
+  width: 100%;
+  max-width: 460px;
+  padding: 12px;
+  position: relative; z-index: 2;
+  flex: 1;
+}
+.app-wrap {
+  width: 100%;
+  background: var(--cream-soft);
+  border: 2px solid var(--turf);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 4px 0 var(--turf-deep),
+    0 8px 20px rgba(14,46,31,0.18);
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  width: 100%; height: 200px;
+  overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: var(--turf-deep);
+}
+.hero-bg { position:absolute; inset:0; transition: background .5s; }
+.hero-glow { position:absolute; inset:0; transition: background .5s; }
+.hero-char {
+  position: absolute; bottom: -8px; left: 50%;
+  transform: translateX(-50%);
+  height: 190px; object-fit: contain; z-index: 2;
+  transition: filter .4s;
+}
+.hero-char.pop { animation: cPop .38s cubic-bezier(.34,1.56,.64,1); }
+@keyframes cPop {
+  0% { transform: translateX(-50%) scale(.65); opacity: 0; }
+  100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+.hero-label {
+  position: absolute; right: 14px; top: 50%;
+  transform: translateY(-55%);
+  z-index: 3; text-align: right;
+}
+.hero-pts {
+  display: inline-block;
+  background: rgba(14,46,31,0.7);
+  border: 1.5px solid var(--gold);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px; font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 1px;
+  box-shadow: 0 0 14px var(--glow)55;
+}
+
+/* ===== TAB BAR ===== */
+.tab-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--cream);
+  border-top: 2px solid var(--gold);
+}
+.tab-scroll::-webkit-scrollbar { display: none; }
+.tab-bar {
+  display: flex; gap: 4px;
+  padding: 8px 8px 0;
+}
+.tab {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 4px 8px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  background: var(--cream-soft);
+  border: 1.5px solid var(--turf-light);
+  border-bottom: none;
+  min-width: 0;
+  transition: all .2s;
+}
+.tab:hover { background: #fff; }
+.tab.active {
+  background: var(--cream-soft);
+  border-color: var(--accent);
+  border-bottom: 1px solid var(--cream-soft);
+  margin-bottom: -1px;
+  z-index: 1;
+  box-shadow: 0 -2px 8px var(--glow)33;
+}
+.tab img { width: 32px; height: 32px; object-fit: contain; transition: transform .2s; }
+.tab:hover img, .tab.active img { transform: scale(1.1); }
+.tab-lbl {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px; font-weight: 700;
+  color: var(--gray); letter-spacing: .04em;
+}
+.tab.active .tab-lbl { color: var(--accent); }
+
+/* ===== PANEL ===== */
+.panel {
+  background: var(--cream-soft);
+  padding: 14px;
+  border-top: 1px solid var(--turf-light);
+}
+
+/* mode buttons */
+.mode-row {
+  display: flex; gap: 5px;
+  margin-bottom: 10px; flex-wrap: wrap;
+}
+.mode-btn {
+  padding: 5px 14px; border-radius: 18px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 11px; font-weight: 800;
+  cursor: pointer;
+  background: var(--cream);
+  border: 1.5px solid var(--turf-light);
+  color: var(--text-soft);
+  transition: all .2s;
+}
+.mode-btn:hover { color: var(--turf-deep); border-color: var(--turf); }
+.mode-btn.active {
+  background: var(--accent)22;
+  border-color: var(--accent);
+  color: var(--accent2);
+  font-weight: 900;
+  box-shadow: 0 2px 0 var(--accent2), 0 0 10px var(--glow)55;
+}
+
+/* slot selector (formation A/B/C, WIN5 R1-R5) */
+.slot-sel {
+  display: flex; gap: 5px; margin-bottom: 9px;
+  align-items: center; flex-wrap: wrap;
+}
+.slot-lbl {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px; letter-spacing: 2px;
+  color: var(--gold);
+}
+.slot-btn {
+  padding: 4px 12px;
+  border-radius: 7px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 11px; font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid var(--turf-light);
+  background: var(--cream);
+  color: var(--text-soft);
+  transition: all .2s;
+}
+.slot-btn:hover { border-color: var(--turf); color: var(--turf-deep); }
+
+/* slot active states (s1-s5 = 5 distinct colors for formation/WIN5 legs) */
+.slot-btn.active.s1 { border-color:#3580d6; color:#1a4d8c; background:rgba(74,158,255,0.16); box-shadow:0 2px 0 #1a4d8c; }
+.slot-btn.active.s2 { border-color:#2d8a4f; color:#1e6b3a; background:rgba(78,203,113,0.18); box-shadow:0 2px 0 #1e6b3a; }
+.slot-btn.active.s3 { border-color:var(--gold); color:#7d5910; background:rgba(245,166,35,0.20); box-shadow:0 2px 0 #7d5910; }
+.slot-btn.active.s4 { border-color:#d63d8a; color:#a01b66; background:rgba(255,105,180,0.16); box-shadow:0 2px 0 #a01b66; }
+.slot-btn.active.s5 { border-color:#8b5cd9; color:#5e3b9c; background:rgba(192,132,252,0.18); box-shadow:0 2px 0 #5e3b9c; }
+
+/* row inputs */
+.row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px;
+}
+.row label {
+  font-size: 12px; font-weight: 700;
+  color: var(--text-soft); letter-spacing: 0.5px;
+}
+.num-input {
+  width: 56px; height: 32px;
+  background: #fff;
+  border: 1.5px solid var(--turf-light);
+  border-radius: 7px;
+  color: var(--text);
+  text-align: center;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 16px; font-weight: 700;
+  padding: 0 5px;
+  transition: border-color .2s;
+}
+.num-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent)22; }
+.row span { font-size: 12px; color: var(--text-soft); font-weight: 700; }
+
+/* legend */
+.leg-row {
+  display: flex; gap: 6px; margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.leg-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700;
+  color: var(--text-soft);
+  background: var(--cream);
+  border: 1px solid var(--turf-light);
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+.ldot {
+  width: 10px; height: 10px;
+  border-radius: 2px; flex-shrink: 0;
+}
+.lc1 { background: #3580d6; }
+.lc2 { background: #2d8a4f; }
+.lc3 { background: var(--gold); }
+.lc4 { background: #d63d8a; }
+.lc5 { background: #8b5cd9; }
+
+/* horses grid */
+.horses-grid {
+  display: grid; grid-template-columns: repeat(9, 1fr);
+  gap: 5px; margin-bottom: 10px;
+}
+.horse-btn {
+  aspect-ratio: 1;
+  border-radius: 7px;
+  border: 1.5px solid var(--turf-light);
+  font-family: 'Bebas Neue', cursive;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  background: var(--cream);
+  color: var(--text-soft);
+  transition: all .12s;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 0;
+}
+.horse-btn:hover { border-color: var(--turf); color: var(--turf-deep); }
+.horse-btn .btn-num {
+  position: relative; z-index: 1;
+  pointer-events: none; line-height: 1;
+}
+/* horse selected states (s1-s3 used in formation/nagashi) */
+.horse-btn.s1 { background:rgba(74,158,255,0.18); border-color:#3580d6; color:#1a4d8c; box-shadow:0 2px 0 #1a4d8c, 0 0 8px rgba(74,158,255,0.35); }
+.horse-btn.s2 { background:rgba(78,203,113,0.20); border-color:#2d8a4f; color:#1e6b3a; box-shadow:0 2px 0 #1e6b3a, 0 0 8px rgba(78,203,113,0.35); }
+.horse-btn.s3 { background:rgba(245,166,35,0.22); border-color:var(--gold); color:#7d5910; box-shadow:0 2px 0 #7d5910, 0 0 8px rgba(245,166,35,0.35); }
+
+/* WIN5 horse states (sw1-sw5) */
+.horse-btn.sw1 { background:rgba(74,158,255,0.18); border-color:#3580d6; color:#1a4d8c; box-shadow:0 2px 0 #1a4d8c, 0 0 8px rgba(74,158,255,0.35); }
+.horse-btn.sw2 { background:rgba(78,203,113,0.20); border-color:#2d8a4f; color:#1e6b3a; box-shadow:0 2px 0 #1e6b3a, 0 0 8px rgba(78,203,113,0.35); }
+.horse-btn.sw3 { background:rgba(245,166,35,0.22); border-color:var(--gold); color:#7d5910; box-shadow:0 2px 0 #7d5910, 0 0 8px rgba(245,166,35,0.35); }
+.horse-btn.sw4 { background:rgba(255,105,180,0.18); border-color:#d63d8a; color:#a01b66; box-shadow:0 2px 0 #a01b66, 0 0 8px rgba(255,105,180,0.35); }
+.horse-btn.sw5 { background:rgba(192,132,252,0.20); border-color:#8b5cd9; color:#5e3b9c; box-shadow:0 2px 0 #5e3b9c, 0 0 8px rgba(192,132,252,0.35); }
+
+.win5-leg-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px; letter-spacing: 0.08em;
+  color: var(--gold);
+  margin-bottom: 6px;
+  padding: 3px 0;
+  font-weight: 700;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--gray);
+  margin-bottom: 10px;
+  min-height: 16px;
+  font-weight: 600;
+}
+
+/* preview button (CTA) */
+.preview-trigger {
+  width: 100%;
+  padding: 14px;
+  border-radius: 11px;
+  border: 2px solid var(--gold);
+  cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px; font-weight: 900;
+  letter-spacing: 0.05em;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: linear-gradient(135deg, var(--turf), var(--turf-deep));
+  color: var(--cream);
+  margin-bottom: 10px;
+  transition: all .2s;
+  box-shadow:
+    0 4px 0 var(--turf-deep),
+    0 6px 14px rgba(14,46,31,0.25),
+    inset 0 0 14px rgba(255,216,109,0.12);
+  position: relative;
+  overflow: hidden;
+}
+.preview-trigger::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,216,109,0.3), transparent);
+  animation: btnShine 3s ease-in-out infinite;
+}
+@keyframes btnShine { 0%,100% { left: -100%; } 50% { left: 200%; } }
+.preview-trigger:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--turf-deep), 0 2px 6px rgba(14,46,31,0.2);
+}
+.pt-badge {
+  background: var(--gold);
+  color: var(--turf-deep);
+  border-radius: 12px;
+  padding: 3px 12px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px; font-weight: 900;
+  letter-spacing: 1px;
+  position: relative; z-index: 1;
+}
+
+/* action buttons */
+.btns { display: flex; gap: 8px; }
+.btn {
+  flex: 1; padding: 11px;
+  border-radius: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 13px; font-weight: 800;
+  cursor: pointer; border: none;
+  transition: all .15s;
+}
+.btn-clear {
+  background: var(--cream);
+  color: var(--text-soft);
+  border: 1.5px solid var(--turf-light);
+  box-shadow: 0 2px 0 var(--turf-light);
+}
+.btn-clear:hover { border-color: var(--turf); color: var(--turf-deep); }
+.btn-clear:active { transform: translateY(2px); box-shadow: none; }
+
+/* ═══════════════════════════════
+   FULLSCREEN POPUP (overlays app-wrap)
+═══════════════════════════════ */
+.popup {
+  position: absolute; inset: 0; z-index: 50;
+  display: flex; flex-direction: column;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.popup.open { pointer-events: all; opacity: 1; }
+.popup-bg {
+  position: absolute; inset: 0;
+  background: var(--turf-deep);
+  background-image: radial-gradient(ellipse at 50% 0%, var(--turf) 0%, var(--turf-deep) 70%);
+}
+.popup-glow-bot, .popup-glow-top, .popup-char-bg { display: none; }
+
+.popup-header {
+  position: relative; z-index: 2;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px 0;
+}
+.popup-close-btn {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  background: rgba(248,241,222,0.1);
+  border: 1px solid var(--gold);
+  color: var(--cream);
+  font-size: 18px;
+  border-radius: 50%;
+  margin-top: 8px;
+  font-family: 'Bebas Neue', cursive;
+}
+.popup-close-btn:hover, .popup-close-btn:active { background: rgba(248,241,222,0.2); }
+
+/* popup hero strip */
+.popup-hero {
+  position: relative; z-index: 2;
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 18px 0 0;
+  height: 130px;
+  overflow: hidden;
+}
+.popup-hero-char {
+  height: 130px; width: 130px;
+  object-fit: contain; flex-shrink: 0; z-index: 2;
+  filter: drop-shadow(0 0 26px var(--glow));
+}
+.popup-hero-char.pop { animation: cPop .38s cubic-bezier(.34,1.56,.64,1); }
+.popup-hero-info { flex: 1; z-index: 2; }
+.popup-betname {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 24px; font-weight: 900;
+  letter-spacing: 0.02em; line-height: 1.1;
+  color: var(--accent);
+  text-shadow: 0 0 16px var(--glow);
+}
+.popup-betdesc {
+  font-size: 12px;
+  color: rgba(248,241,222,0.65);
+  margin-top: 6px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.popup-mode-tag {
+  display: inline-block;
+  margin-top: 6px;
+  background: rgba(255,216,109,0.12);
+  border: 1px solid var(--gold);
+  border-radius: 14px;
+  padding: 2px 10px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px; font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+}
+.popup-pts-area { text-align: right; flex-shrink: 0; z-index: 2; }
+.popup-pts-num {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 44px; font-weight: 900;
+  line-height: 1;
+  color: var(--gold-glow);
+  text-shadow: 0 0 24px var(--glow)aa;
+}
+.popup-pts-lbl {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  color: rgba(248,241,222,0.4);
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.popup-divider {
+  position: relative; z-index: 2;
+  flex-shrink: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 20px;
+}
+
+/* popup body (netkeiba-style display) */
+.popup-body {
+  position: relative; z-index: 2;
+  flex: 1; overflow-y: auto;
+  padding: 16px 18px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+
+/* summary cards */
+.nk-summary {
+  display: flex; align-items: stretch; gap: 10px;
+  margin-bottom: 14px;
+}
+.nk-sum-card {
+  flex: 1;
+  background: rgba(248,241,222,0.06);
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.nk-sum-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+.nk-sum-val {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px; font-weight: 900;
+  color: var(--gold-glow);
+}
+.nk-sum-unit {
+  font-size: 11px;
+  color: rgba(248,241,222,0.5);
+  margin-left: 2px;
+  font-weight: 600;
+}
+
+/* format box */
+.nk-format-box {
+  background: rgba(248,241,222,0.04);
+  border: 1px solid rgba(255,216,109,0.3);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.nk-format-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 700;
+}
+.nk-format-title::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: rgba(255,216,109,0.2);
+}
+
+.nk-formula {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 6px; margin-bottom: 12px;
+}
+.nk-slot {
+  display: flex; align-items: center; gap: 4px;
+  flex-wrap: wrap;
+}
+.nk-sep {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 22px;
+  color: var(--gold-light);
+  padding: 0 2px;
+}
+
+/* horse badge in formula (c1=blue, c2=green, c3=gold, cbox=purple) */
+.nk-horse-badge {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 14px; font-weight: 900;
+  border: 2px solid;
+}
+.nk-horse-badge.c1 { background:#0c2040; border-color:#4a9eff; color:#7ab8ff; }
+.nk-horse-badge.c2 { background:#0a2818; border-color:#4ecb71; color:#7adb8f; }
+.nk-horse-badge.c3 { background:#3a2a0c; border-color:var(--gold); color:var(--gold-glow); }
+.nk-horse-badge.cbox { background:#1a1040; border-color:#9370db; color:#c0a0ff; }
+/* WIN5 (cw1-cw5) */
+.nk-horse-badge.cw1 { background:#0c2040; border-color:#4a9eff; color:#7ab8ff; }
+.nk-horse-badge.cw2 { background:#0a2818; border-color:#4ecb71; color:#7adb8f; }
+.nk-horse-badge.cw3 { background:#3a2a0c; border-color:var(--gold); color:var(--gold-glow); }
+.nk-horse-badge.cw4 { background:#280a1a; border-color:#FF69B4; color:#ff8fc4; }
+.nk-horse-badge.cw5 { background:#1a0a28; border-color:#c084fc; color:#d4a8ff; }
+
+/* expand toggle */
+.nk-expand-toggle {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  color: var(--gold-light);
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255,216,109,0.08);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: 4px 12px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  transition: all .2s;
+}
+.nk-expand-toggle:hover { background: rgba(255,216,109,0.18); }
+
+.nk-tickets-wrap { margin-top: 10px; display: none; }
+.nk-tickets-wrap.open { display: block; }
+.nk-tickets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 5px;
+}
+.nk-ticket {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(248,241,222,0.04);
+  border: 1px solid rgba(255,216,109,0.15);
+  border-radius: 7px;
+  padding: 5px 9px;
+}
+.nk-t-idx {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px;
+  color: rgba(255,216,109,0.4);
+  width: 18px; text-align: right; flex-shrink: 0;
+  font-weight: 700;
+}
+.nk-t-pills { display: flex; align-items: center; gap: 4px; }
+.sm-pill {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px; font-weight: 800;
+  flex-shrink: 0;
+}
+.sm-pill.p1 { background:#0c2040; border:1.5px solid #4a9eff; color:#7ab8ff; }
+.sm-pill.p2 { background:#0a2818; border:1.5px solid #4ecb71; color:#7adb8f; }
+.sm-pill.p3 { background:#3a2a0c; border:1.5px solid var(--gold); color:var(--gold-glow); }
+.sm-pill.pb { background:#1a1040; border:1.5px solid #9370db; color:#c0a0ff; }
+.sm-arr {
+  color: var(--red);
+  font-size: 11px; font-weight: 900;
+  flex-shrink: 0;
+}
+.sm-dash {
+  color: rgba(255,216,109,0.3);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.more-note {
+  text-align: center;
+  font-size: 11px;
+  color: rgba(248,241,222,0.4);
+  padding: 8px 0;
+  font-weight: 600;
+}
+
+.empty-pop {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 180px; gap: 10px; opacity: 0.5;
+}
+.empty-pop p {
+  font-size: 13px;
+  color: rgba(248,241,222,0.7);
+  font-weight: 700;
+}
+
+.popup-footer {
+  position: relative; z-index: 2;
+  flex-shrink: 0;
+  padding: 10px 18px 18px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  width: 100%;
+  text-align: center;
+  padding: 36px 20px 28px;
+  background: var(--turf-deep);
+  color: rgba(248,241,222,0.7);
+  font-size: 0.7rem;
+  border-top: 6px solid var(--gold);
+  position: relative; z-index: 2;
+}
+.footer-logo {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px; letter-spacing: 2px;
+  color: var(--cream); margin-bottom: 6px;
+}
+.footer-logo em { font-style: normal; color: var(--gold-light); }
+.footer-tag {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  color: var(--gold-light);
+  margin-bottom: 14px;
+}
+.footer-links {
+  display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 14px;
+  margin-bottom: 14px;
+}
+.footer-links a {
+  color: rgba(248,241,222,0.7);
+  text-decoration: none;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+}
+.footer-links a:hover { color: var(--gold-light); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
+  <a href="../index.html" class="nav-back">← HOME</a>
+</nav>
+
+<main class="page-wrap">
+<div class="app-wrap">
+  <div class="hero" id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-glow" id="heroGlow"></div>
+    <img class="hero-char" id="heroChar" src="" alt="">
+    <div class="hero-label">
+      <div class="hero-pts" id="heroPts">0点</div>
+    </div>
+  </div>
+  <div class="tab-scroll"><div class="tab-bar" id="tabBar"></div></div>
+  <div class="panel">
+    <div class="mode-row" id="modeRow"></div>
+    <div class="slot-sel" id="slotSel" style="display:none"><span class="slot-lbl">SLOT：</span></div>
+    <div class="row">
+      <label>出走頭数</label>
+      <input type="number" class="num-input" id="horseCount" min="2" max="18" value="16">
+      <span>頭</span>
+    </div>
+    <div class="row">
+      <label>1点あたり</label>
+      <input type="number" class="num-input" id="betAmount" min="100" max="100000" step="100" value="100" style="width:78px">
+      <span>円</span>
+    </div>
+    <div class="leg-row" id="legRow"></div>
+    <div class="horses-grid" id="horsesGrid"></div>
+    <p class="hint" id="hint"></p>
+    <button class="preview-trigger" onclick="openPopup()">
+      <span>買目プレビュー</span>
+      <span class="pt-badge" id="ptBadge">0点 ／ 0円</span>
+    </button>
+    <div class="btns">
+      <button class="btn btn-clear" onclick="clearAll()">クリア</button>
+    </div>
+  </div>
+
+  <!-- FULLSCREEN POPUP -->
+  <div class="popup" id="popup">
+    <div class="popup-bg" id="popupBg"></div>
+    <div class="popup-glow-bot" id="popupGlowBot"></div>
+    <div class="popup-glow-top" id="popupGlowTop"></div>
+    <img class="popup-char-bg" id="popupCharBg" src="" alt="">
+    <div class="popup-header">
+      <div style="width:40px"></div>
+      <button class="popup-close-btn" onclick="closePopup()">✕</button>
+    </div>
+    <div class="popup-hero">
+      <img class="popup-hero-char" id="popHeroChar" src="" alt="">
+      <div class="popup-hero-info">
+        <div class="popup-betname" id="popBetName"></div>
+        <div class="popup-betdesc" id="popBetDesc"></div>
+        <span class="popup-mode-tag" id="popModeTag"></span>
+      </div>
+      <div class="popup-pts-area">
+        <div class="popup-pts-num" id="popPtsNum">0</div>
+        <div class="popup-pts-lbl">点</div>
+      </div>
+    </div>
+    <div class="popup-divider"></div>
+    <div class="popup-body" id="popupBody"></div>
+    <div class="popup-footer" style="display:none"></div>
+  </div>
+
+</div><!-- /app-wrap -->
+</main>
+
+<footer class="footer">
+  <div class="footer-logo">AFRO<em>Horse</em></div>
+  <div class="footer-tag">WIN WITH STYLE</div>
+  <div class="footer-links">
+    <a href="../index.html">ホーム</a>
+    <a href="../afrohorse_characters.html">キャラクター</a>
+    <a href="../tools.html">ツール</a>
+    <a href="../index.html#prediction">予想</a>
+    <a href="../contact.html">お問い合わせ</a>
+    <a href="../privacy.html">プライバシーポリシー</a>
+  </div>
+  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
+</footer>
+
+<script>
+const IMGS={
+  'tan': '../images/calc/calc1.png',
+  'fuku':'../images/calc/calc2.png' ,
+  'santan': '../images/calc/calc3.png',
+  'sanfuku':'../images/calc/calc4.png' ,
+  'umatan': '../images/calc/calc5.png',
+  'umaren': '../images/calc/calc6.png',
+  'wide': '../images/calc/calc7.png',
+  'win5': '../images/calc/calc8.png'
+};
+
+const BETS=[
+  {id:'tan',   label:'単勝', img:'tan',    kanji:'単勝',  desc:'1着馬を当てる',                glow:'#FFD700',accent:'#FFD700',accent2:'#FFA500',modes:null},
+  {id:'fuku',  label:'複勝', img:'fuku',   kanji:'複勝',  desc:'3着以内の馬を当てる',            glow:'#00BFFF',accent:'#00BFFF',accent2:'#0080ff',modes:null},
+  {id:'wide',  label:'ワイド',img:'wide',  kanji:'ワイド',desc:'3着以内の2頭を当てる（順不同）',  glow:'#c084fc',accent:'#c084fc',accent2:'#7B68EE',
+   modes:[{id:'box',label:'ボックス',slots:1,need:2,ordered:false,box:true},{id:'nag1',label:'軸1頭流し',slots:1,need:1,ordered:false,nagashi:1},{id:'form',label:'フォーメーション',slots:2,need:1,ordered:false,formation:true,labels:['軸A','軸B']}]},
+  {id:'umaren',label:'馬連', img:'umaren', kanji:'馬連',  desc:'1・2着の組み合わせ（順不同）',    glow:'#4a9eff',accent:'#4a9eff',accent2:'#2060cc',
+   modes:[{id:'box',label:'ボックス',slots:1,need:2,ordered:false,box:true},{id:'nag1',label:'軸1頭流し',slots:1,need:1,ordered:false,nagashi:1},{id:'form',label:'フォーメーション',slots:2,need:1,ordered:false,formation:true,labels:['軸A','軸B']}]},
+  {id:'umatan',label:'馬単', img:'umatan', kanji:'馬単',  desc:'1・2着を着順通りに当てる',        glow:'#FF6347',accent:'#FF6347',accent2:'#CC2200',
+   modes:[{id:'box',label:'ボックス',slots:1,need:2,ordered:true,box:true},{id:'nag1',label:'軸1頭流し',slots:1,need:1,ordered:true,nagashi:1},{id:'nag2',label:'軸2頭流し',slots:1,need:2,ordered:true,nagashi:2},{id:'form',label:'フォーメーション',slots:2,need:1,ordered:true,formation:true,labels:['1着','2着']}]},
+  {id:'sanfuku',label:'3連複',img:'sanfuku',kanji:'三連複',desc:'1・2・3着を当てる（順不同）',    glow:'#32CD32',accent:'#32CD32',accent2:'#008800',
+   modes:[{id:'box',label:'ボックス',slots:1,need:3,ordered:false,box:true},{id:'nag1',label:'軸1頭流し',slots:1,need:1,ordered:false,nagashi:1},{id:'nag2',label:'軸2頭流し',slots:1,need:2,ordered:false,nagashi:2},{id:'form',label:'フォーメーション',slots:3,need:1,ordered:false,formation:true,labels:['軸A','軸B','軸C']}]},
+  {id:'santan',label:'3連単',img:'santan', kanji:'三連単',desc:'1・2・3着を着順通りに当てる',     glow:'#FF4500',accent:'#FF4500',accent2:'#880000',
+   modes:[{id:'box',label:'ボックス',slots:1,need:3,ordered:true,box:true},{id:'nag1',label:'軸1頭流し',slots:1,need:1,ordered:true,nagashi:1},{id:'nag2',label:'軸2頭流し',slots:1,need:2,ordered:true,nagashi:2},{id:'form',label:'フォーメーション',slots:3,need:1,ordered:true,formation:true,labels:['1着','2着','3着']}]},
+  {id:'win5',  label:'WIN5',  img:'win5',   kanji:'WIN5',  desc:'5レースの1着馬を全て当てる',       glow:'#FF69B4',accent:'#FF69B4',accent2:'#CC1077',modes:null,win5:true},
+];
+
+const circled=['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱'];
+function cn(n){ return circled[n-1]||String(n); }
+
+let curBet=BETS[3],curMode=BETS[3].modes[0],activeSlot=0,slots=[[]];
+
+function setVars(bt){
+  const r=document.documentElement.style;
+  r.setProperty('--accent',bt.accent);
+  r.setProperty('--accent2',bt.accent2||bt.accent);
+  r.setProperty('--glow',bt.glow);
+}
+function initSlots(){ const m=curMode,bt=curBet; if(bt&&bt.win5) return [[],[],[],[],[]]; if(!m||!m.formation) return [[]]; return Array.from({length:m.slots},()=>[]); }
+function init(){ setVars(curBet); renderTabBar(); renderModeRow(); renderAll(); }
+function renderAll(){ renderHero(); renderSlotSel(); renderLegend(); renderGrid(); updateBadge(); }
+
+function renderTabBar(){
+  const bar=document.getElementById('tabBar'); bar.innerHTML='';
+  BETS.forEach(bt=>{
+    const d=document.createElement('div');
+    d.className='tab'+(bt.id===curBet.id?' active':'');
+    d.style.setProperty('--accent',bt.accent);
+    d.innerHTML=`<img src="${IMGS[bt.img]}" alt=""><span class="tab-lbl">${bt.label}</span>`;
+    d.onclick=()=>{curBet=bt;curMode=bt.modes?bt.modes[0]:null;activeSlot=0;slots=initSlots();init();};
+    bar.appendChild(d);
+  });
+}
+function renderModeRow(){
+  const row=document.getElementById('modeRow'); row.innerHTML='';
+  if(!curBet.modes){row.style.display='none';return;} row.style.display='flex';
+  curBet.modes.forEach(m=>{
+    const b=document.createElement('button');
+    b.className='mode-btn'+(curMode&&m.id===curMode.id?' active':'');
+    b.textContent=m.label;
+    b.onclick=()=>{curMode=m;activeSlot=0;slots=initSlots();renderModeRow();renderAll();};
+    row.appendChild(b);
+  });
+}
+function renderHero(){
+  const bt=curBet;
+  document.getElementById('heroBg').style.background=`radial-gradient(ellipse at 50% 120%,${bt.glow}22 0%,#0e2e1f 65%)`;
+  document.getElementById('heroGlow').style.background=`radial-gradient(ellipse at 50% 100%,${bt.glow}44,transparent 70%)`;
+  const img=document.getElementById('heroChar');
+  img.src=IMGS[bt.img]; img.style.filter=`drop-shadow(0 0 32px ${bt.glow}cc)`;
+  img.classList.remove('pop');void img.offsetWidth;img.classList.add('pop');
+}
+function renderSlotSel(){
+  const wrap=document.getElementById('slotSel'); const m=curMode,bt=curBet;
+  if(bt&&bt.win5){
+    wrap.style.display='flex';
+    const existing=wrap.querySelectorAll('.slot-btn'); existing.forEach(e=>e.remove());
+    const slotCls=['s1','s2','s3','s4','s5'];
+    for(let i=0;i<5;i++){
+      const b=document.createElement('button');
+      b.className='slot-btn'+(i===activeSlot?' active '+slotCls[i]:'');
+      b.textContent=`R${i+1}`;
+      const ii=i; b.onclick=()=>{activeSlot=ii;renderSlotSel();renderGrid();}; wrap.appendChild(b);
+    }
+    return;
+  }
+  if(!m||!m.formation){wrap.style.display='none';return;} wrap.style.display='flex';
+  const existing=wrap.querySelectorAll('.slot-btn'); existing.forEach(e=>e.remove());
+  const cls=['s1','s2','s3']; const labels=m.labels||['A','B','C'];
+  for(let i=0;i<m.slots;i++){
+    const b=document.createElement('button');
+    b.className='slot-btn'+(i===activeSlot?' active '+cls[i]:''); b.textContent=labels[i];
+    const ii=i; b.onclick=()=>{activeSlot=ii;renderSlotSel();renderGrid();}; wrap.appendChild(b);
+  }
+}
+function renderLegend(){
+  const el=document.getElementById('legRow'); el.innerHTML='';
+  const m=curMode,bt=curBet; if(bt&&bt.win5) return;
+  if(!m||m.box) return;
+  const colors=['lc1','lc2','lc3'];
+  if(m.nagashi){ const fc=m.nagashi; const fixLbl=fc===1?['軸']:['軸A','軸B']; for(let i=0;i<fc;i++) el.innerHTML+=`<div class="leg-item"><div class="ldot ${colors[i]}"></div>${fixLbl[i]}</div>`; el.innerHTML+=`<div class="leg-item"><div class="ldot lc3"></div>相手</div>`; }
+  else if(m.formation){ const labels=m.labels||['A','B','C']; for(let i=0;i<m.slots;i++) el.innerHTML+=`<div class="leg-item"><div class="ldot ${colors[i]}"></div>${labels[i]}</div>`; }
+}
+function getHint(){
+  const m=curMode,bt=curBet;
+  if(bt&&bt.win5){
+    const counts=slots.map((s,i)=>`R${i+1}:${s.length}頭`).join('　');
+    const missing=slots.filter(s=>!s.length).length;
+    if(missing) return `${missing}レース未選択　${counts}`;
+    return `選択済み　${counts}`;
+  }
+  if(!m) return bt.id==='tan'||bt.id==='fuku'?'1頭を選択':'';
+  if(m.box) return `${m.need}頭以上を選択（ボックス）`;
+  if(m.nagashi){ const fc=m.nagashi,arr=slots[0]||[]; if(arr.length<fc) return `軸を${fc}頭選択してください`; return `相手${Math.max(0,arr.length-fc)}頭選択中`; }
+  if(m.formation){ const labels=m.labels||['A','B','C']; const missing=[]; for(let i=0;i<m.slots;i++) if(!(slots[i]||[]).length) missing.push(labels[i]); if(missing.length) return `${missing.join('・')}を選択してください`; return `${labels[activeSlot]}を選択中`; }
+  return '';
+}
+function renderGrid(){
+  const hc=parseInt(document.getElementById('horseCount').value)||16;
+  const grid=document.getElementById('horsesGrid'); grid.innerHTML='';
+  const m=curMode,bt=curBet,isTF=bt.id==='tan'||bt.id==='fuku';
+  const scls=['s1','s2','s3'];
+  const swcls=['sw1','sw2','sw3','sw4','sw5'];
+  // slot colors: bg, border, text
+  const SC=[
+    {bg:'#0c2040',bd:'#4a9eff',tx:'#4a9eff'},
+    {bg:'#0a2818',bd:'#4ecb71',tx:'#4ecb71'},
+    {bg:'#28180a',bd:'#f5a623',tx:'#f5a623'},
+  ];
+
+  // WIN5: show current leg's selected horses
+  if(bt.win5){
+    const legArr=slots[activeSlot]||[];
+    for(let i=1;i<=hc;i++){
+      const b=document.createElement('button'); b.className='horse-btn';
+      if(legArr.includes(i)) b.classList.add(swcls[activeSlot]||'sw1');
+      b.textContent=i;
+      b.onclick=()=>toggleHorse(i); grid.appendChild(b);
+    }
+    document.getElementById('hint').textContent=getHint();
+    return;
+  }
+
+  for(let i=1;i<=hc;i++){
+    const b=document.createElement('button'); b.className='horse-btn';
+
+    if(isTF||!m){
+      const inSlot=(slots[0]||[]).includes(i);
+      if(inSlot) b.classList.add('s1');
+      b.textContent=i;
+    } else if(m.box){
+      const inSlot=(slots[0]||[]).includes(i);
+      if(inSlot) b.classList.add('s1');
+      b.textContent=i;
+    } else if(m.nagashi){
+      const arr=slots[0]||[],idx=arr.indexOf(i),fc=m.nagashi;
+      if(idx!==-1) b.classList.add(idx<fc?'s1':'s3');
+      b.textContent=i;
+    } else if(m.formation){
+      // collect all slots this horse belongs to
+      const inSlots=[];
+      for(let si=0;si<m.slots;si++) if((slots[si]||[]).includes(i)) inSlots.push(si);
+
+      if(inSlots.length===0){
+        b.textContent=i;
+      } else if(inSlots.length===1){
+        b.classList.add(scls[inSlots[0]]);
+        b.textContent=i;
+      } else {
+        // multiple slots: draw diagonal split background
+        const c0=SC[inSlots[0]], c1=SC[inSlots[1]];
+        // top-left triangle = first slot color, bottom-right = second
+        b.style.background=`linear-gradient(135deg, ${c0.bg} 50%, ${c1.bg} 50%)`;
+        b.style.borderColor=c0.bd;
+        // if 3 slots, add third color as bottom strip (rare but handle gracefully)
+        if(inSlots.length===3){
+          const c2=SC[inSlots[2]];
+          b.style.background=`linear-gradient(135deg, ${c0.bg} 33%, ${c1.bg} 33% 66%, ${c2.bg} 66%)`;
+        }
+        // number with text-shadow to stay visible on both halves
+        const span=document.createElement('span');
+        span.className='btn-num';
+        span.textContent=i;
+        span.style.color='#fff';
+        span.style.textShadow=`0 0 4px #000, 0 0 4px #000`;
+        b.appendChild(span);
+
+        // show both border colors as a two-tone border via outline trick
+        b.style.boxShadow=`0 0 0 1.5px ${c1.bd}, inset 0 0 0 1.5px ${c0.bd}`;
+        b.style.border='none';
+
+        b.onclick=()=>toggleHorse(i); grid.appendChild(b);
+        continue;
+      }
+    }
+
+    b.onclick=()=>toggleHorse(i); grid.appendChild(b);
+  }
+  document.getElementById('hint').textContent=getHint();
+}
+function toggleHorse(n){
+  const m=curMode,bt=curBet,isTF=bt.id==='tan'||bt.id==='fuku';
+  if(bt.win5){ const arr=slots[activeSlot]||[]; const idx=arr.indexOf(n); if(idx!==-1) arr.splice(idx,1); else arr.push(n); slots[activeSlot]=arr; renderGrid(); updateBadge(); updateHeroPts(); return; }
+  if(isTF||!m){ const arr=slots[0]||[]; if(isTF){ slots=[[arr.includes(n)?null:n].filter(Boolean)]; } else{ arr.includes(n)?arr.splice(arr.indexOf(n),1):arr.push(n);slots=[arr]; } }
+  else if(m.box){ const arr=slots[0]||[]; arr.includes(n)?arr.splice(arr.indexOf(n),1):arr.push(n); slots=[arr]; }
+  else if(m.nagashi){ const arr=[...(slots[0]||[])],fc=m.nagashi,idx=arr.indexOf(n); if(idx!==-1){ arr.splice(idx,1); } else if(arr.length<fc){ arr.unshift(n); } else{ arr.push(n); } slots=[arr]; }
+  else if(m.formation){ const si=activeSlot; if(!slots[si]) slots[si]=[]; const arr=slots[si],idx=arr.indexOf(n); if(idx!==-1){ arr.splice(idx,1); } else{ arr.push(n); } }
+  renderGrid(); updateBadge(); updateHeroPts();
+}
+function generateTickets(){
+  const m=curMode,bt=curBet,isTF=bt.id==='tan'||bt.id==='fuku';
+  // WIN5: product of all 5 legs
+  if(bt.win5){
+    let result=[[]];
+    for(let i=0;i<5;i++){
+      const leg=(slots[i]||[]).slice().sort((a,b)=>a-b);
+      if(!leg.length) return [];
+      const next=[];
+      result.forEach(r=>leg.forEach(h=>next.push([...r,h])));
+      result=next;
+    }
+    return result;
+  }
+  if(isTF||!m){ const arr=slots[0]||[]; return arr.length===1?[[arr[0]]]:[];}
+  if(m.box){
+    const s=[...(slots[0]||[])].sort((a,b)=>a-b); if(s.length<m.need) return [];
+    const res=[];
+    if(m.need===2){ for(let i=0;i<s.length;i++) for(let j=i+1;j<s.length;j++) res.push([s[i],s[j]]); }
+    else{ for(let i=0;i<s.length;i++) for(let j=i+1;j<s.length;j++) for(let k=j+1;k<s.length;k++) res.push([s[i],s[j],s[k]]); }
+    if(m.ordered){ const r2=[]; if(m.need===2) res.forEach(([a,b])=>{r2.push([a,b]);r2.push([b,a]);}); else res.forEach(([a,b,c])=>{[[a,b,c],[a,c,b],[b,a,c],[b,c,a],[c,a,b],[c,b,a]].forEach(p=>r2.push(p));}); return r2; }
+    return res;
+  }
+  if(m.nagashi){
+    const arr=slots[0]||[],fc=m.nagashi; if(arr.length<=fc) return [];
+    const fixed=arr.slice(0,fc),aite=arr.slice(fc); const res=[];
+    if(fc===1){ aite.forEach(a=>{ res.push(m.ordered?[fixed[0],a]:[Math.min(fixed[0],a),Math.max(fixed[0],a)]); }); }
+    else{ aite.forEach(a=>{ const t=[...fixed,a];res.push(m.ordered?t:t.sort((x,y)=>x-y)); }); }
+    return res;
+  }
+  if(m.formation){
+    const sls=slots.map(s=>[...(s||[])]); for(let i=0;i<m.slots;i++) if(!sls[i]||!sls[i].length) return [];
+    const seen=new Set(),res=[];
+    if(m.slots===2){ sls[0].forEach(a=>sls[1].forEach(b=>{ if(a===b) return; const arr=m.ordered?[a,b]:[Math.min(a,b),Math.max(a,b)]; const key=arr.join('-'); if(!seen.has(key)){seen.add(key);res.push(arr);} })); }
+    else{ sls[0].forEach(a=>sls[1].forEach(b=>sls[2].forEach(c=>{ if(a===b||b===c||a===c) return; const arr=m.ordered?[a,b,c]:[a,b,c].sort((x,y)=>x-y); const key=arr.join('-'); if(!seen.has(key)){seen.add(key);res.push(arr);} }))); }
+    return res;
+  }
+  return [];
+}
+
+/* ── NETKEIBA FORMAT ── */
+function buildNetkeibaHTML(bt, m, tickets){
+  if(!tickets.length) return `<div class="empty-pop"><p>馬番を選んでください</p></div>`;
+
+  // WIN5 special display
+  if(bt.win5){
+    const totalPts=tickets.length;
+    const amt=getBetAmount();
+    const amtLabel=amt===100?'100円購入時':`${amt.toLocaleString()}円購入時`;
+    let html=`<div class="nk-summary">
+      <div class="nk-sum-card"><div class="nk-sum-label">買目点数</div><div class="nk-sum-val">${totalPts}<span class="nk-sum-unit">点</span></div></div>
+      <div class="nk-sum-card"><div class="nk-sum-label">${amtLabel}</div><div class="nk-sum-val">${(totalPts*amt).toLocaleString()}<span class="nk-sum-unit">円</span></div></div>
+    </div>`;
+    html+=`<div class="nk-format-box">`;
+    html+=`<div class="nk-format-title">買目フォーマット（5レース）</div>`;
+    const legCls=['cw1','cw2','cw3','cw4','cw5'];
+    const legNames=['R1','R2','R3','R4','R5'];
+    for(let i=0;i<5;i++){
+      const leg=(slots[i]||[]).slice().sort((a,b)=>a-b);
+      html+=`<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">`;
+      html+=`<span style="font-size:10px;color:rgba(255,255,255,.4);min-width:22px;letter-spacing:.04em">${legNames[i]}</span>`;
+      html+=`<div class="nk-slot">`;
+      leg.forEach(h=>{ html+=`<span class="nk-horse-badge ${legCls[i]}">${h}</span>`; });
+      html+=`</div>`;
+      html+=`<span style="font-size:10px;color:rgba(255,255,255,.3)">${leg.length}頭</span>`;
+      html+=`</div>`;
+    }
+    html+=`</div>`;
+    html+=`<span class="nk-expand-toggle" onclick="toggleExpand(this)">▶ 全買目を展開（${totalPts}点）</span>`;
+    html+=`<div class="nk-tickets-wrap" id="nkTickets"><div class="nk-tickets-grid" style="margin-top:8px">`;
+    const MAX=100;
+    tickets.slice(0,MAX).forEach((hs,i)=>{
+      const pillsHtml=hs.map((h,hi)=>{
+        const s=hi<hs.length-1?`<span class="sm-dash">–</span>`:'';
+        return `<span class="sm-pill" style="background:${['#0c2040','#0a2818','#28180a','#280a1a','#1a0a28'][hi]};border:1.5px solid ${['#4a9eff','#4ecb71','#f5a623','#FF69B4','#c084fc'][hi]};color:${['#4a9eff','#4ecb71','#f5a623','#FF69B4','#c084fc'][hi]}">${h}</span>${s}`;
+      }).join('');
+      html+=`<div class="nk-ticket"><span class="nk-t-idx">${i+1}</span><div class="nk-t-pills">${pillsHtml}</div></div>`;
+    });
+    html+=`</div>`;
+    if(totalPts>MAX) html+=`<div class="more-note">…他 ${totalPts-MAX} 点</div>`;
+    html+=`</div>`;
+    return html;
+  }
+  const isOrd = m&&m.ordered&&!m.box;
+  const isNag = m&&m.nagashi;
+  const isBox = m&&m.box;
+  const isForm = m&&m.formation;
+  const isSingle = !m||(bt.id==='tan'||bt.id==='fuku');
+  const sep = isOrd ? '<span class="nk-sep">→</span>' : '<span class="nk-sep">－</span>';
+
+  // Summary cards
+  const totalPts = tickets.length;
+  const amt = getBetAmount();
+  const amount100 = (totalPts * amt).toLocaleString();
+  const amtLabel = amt===100 ? '100円購入時' : `${amt.toLocaleString()}円購入時`;
+  let html = `<div class="nk-summary">
+    <div class="nk-sum-card"><div class="nk-sum-label">買目点数</div><div class="nk-sum-val">${totalPts}<span class="nk-sum-unit">点</span></div></div>
+    <div class="nk-sum-card"><div class="nk-sum-label">${amtLabel}</div><div class="nk-sum-val">${amount100}<span class="nk-sum-unit">円</span></div></div>
+  </div>`;
+
+  // Main format box — the netkeiba-style formula
+  html += `<div class="nk-format-box">`;
+  html += `<div class="nk-format-title">買目フォーマット</div>`;
+  html += `<div class="nk-formula">`;
+
+  if(isSingle){
+    // tan/fuku: single horse
+    tickets.forEach(([h])=>{
+      html+=`<span class="nk-horse-badge c1">${h}</span>`;
+    });
+  } else if(isBox){
+    // BOX: ①②③④⑤ (all same color, no sep)
+    const horses=[...(slots[0]||[])].sort((a,b)=>a-b);
+    html+=`<div class="nk-slot">`;
+    horses.forEach(h=>{ html+=`<span class="nk-horse-badge cbox">${h}</span>`; });
+    html+=`</div>`;
+    html+=`<div style="font-size:11px;color:rgba(255,255,255,.4);margin-left:4px">${horses.length}頭ボックス</div>`;
+  } else if(isNag){
+    // NAGASHI: ①②－③④⑤⑥  (軸 sep 相手)
+    const fc=m.nagashi;
+    const arr=slots[0]||[];
+    const fixed=arr.slice(0,fc), aite=arr.slice(fc);
+    const fixCls=['c1','c2'];
+    html+=`<div class="nk-slot">`;
+    fixed.forEach((h,i)=>{ html+=`<span class="nk-horse-badge ${fixCls[i]}">${h}</span>`; });
+    html+=`</div>`;
+    html+=sep;
+    html+=`<div class="nk-slot">`;
+    aite.sort((a,b)=>a-b).forEach(h=>{ html+=`<span class="nk-horse-badge c3">${h}</span>`; });
+    html+=`</div>`;
+  } else if(isForm){
+    // FORMATION: column labels instead of arrows
+    const colors=['c1','c2','c3'];
+    const colLabels=['1列目','2列目','3列目'];
+    for(let si=0;si<m.slots;si++){
+      if(si>0) html+=`<span class="nk-sep" style="font-size:13px;opacity:.5">／</span>`;
+      html+=`<div style="display:flex;flex-direction:column;align-items:center;gap:4px">`;
+      html+=`<span style="font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.04em">${colLabels[si]}</span>`;
+      html+=`<div class="nk-slot">`;
+      (slots[si]||[]).sort((a,b)=>a-b).forEach(h=>{ html+=`<span class="nk-horse-badge ${colors[si]}">${h}</span>`; });
+      html+=`</div></div>`;
+    }
+  }
+
+  html+=`</div>`; // nk-formula
+
+  // Circled notation string (like ①-②③-③④⑤)
+  let formulaStr = '';
+  if(isSingle){
+    formulaStr = tickets.map(([h])=>cn(h)).join('');
+  } else if(isBox){
+    const horses=[...(slots[0]||[])].sort((a,b)=>a-b);
+    formulaStr = horses.map(cn).join('');
+  } else if(isNag){
+    const fc=m.nagashi; const arr=slots[0]||[];
+    const fixed=arr.slice(0,fc),aite=arr.slice(fc).sort((a,b)=>a-b);
+    const fsep=isOrd?'→':'－';
+    formulaStr=fixed.map(cn).join('')+fsep+aite.map(cn).join('');
+  } else if(isForm){
+    const colLbls=['1列目','2列目','3列目'];
+    formulaStr=slots.map((sl,si)=>colLbls[si]+':'+[...(sl||[])].sort((a,b)=>a-b).map(cn).join('')).join('　');
+  }
+  html+=`<div style="font-size:12px;color:rgba(255,255,255,.35);margin-top:6px;letter-spacing:.04em">${formulaStr}</div>`;
+  html+=`</div>`; // nk-format-box
+
+  // Expand toggle + individual tickets
+  html+=`<span class="nk-expand-toggle" onclick="toggleExpand(this)">▶ 全買目を展開（${totalPts}点）</span>`;
+  html+=`<div class="nk-tickets-wrap" id="nkTickets">`;
+  html+=`<div class="nk-tickets-grid" style="margin-top:8px">`;
+  const MAX=100;
+  const shown=tickets.slice(0,MAX);
+  shown.forEach((hs,i)=>{
+    const pillsHtml=hs.map((h,hi)=>{
+      let cls='pb';
+      if(isBox) cls='pb';
+      else if(isNag) cls=hi<m.nagashi?'p1':'p3';
+      else if(isForm) cls=['p1','p2','p3'][hi]||'pb';
+      else if(isOrd) cls=['p1','p2','p3'][hi]||'pb';
+      const s=hi<hs.length-1?`<span class="sm-dash">–</span>`:'';
+      return `<span class="sm-pill ${cls}">${h}</span>${s}`;
+    }).join('');
+    html+=`<div class="nk-ticket"><span class="nk-t-idx">${i+1}</span><div class="nk-t-pills">${pillsHtml}</div></div>`;
+  });
+  html+=`</div>`;
+  if(totalPts>MAX) html+=`<div class="more-note">…他 ${totalPts-MAX} 点</div>`;
+  html+=`</div>`; // nk-tickets-wrap
+
+  return html;
+}
+
+function toggleExpand(el){
+  const wrap=document.getElementById('nkTickets');
+  const open=wrap.classList.toggle('open');
+  el.textContent=(open?'▼ 全買目を折りたたむ':'▶ 全買目を展開（'+generateTickets().length+'点）');
+}
+
+function getBetAmount(){ return parseInt(document.getElementById('betAmount').value)||100; }
+function updateHeroPts(){
+  const n=generateTickets().length;
+  const amt=getBetAmount();
+  const total=(n*amt).toLocaleString();
+  document.getElementById('heroPts').textContent=n+' 点';
+  document.getElementById('ptBadge').textContent=n+'点 ／ '+total+'円';
+}
+function updateBadge(){
+  const n=generateTickets().length;
+  const amt=getBetAmount();
+  const total=(n*amt).toLocaleString();
+  document.getElementById('ptBadge').textContent=n+'点 ／ '+total+'円';
+  document.getElementById('heroPts').textContent=n+' 点';
+}
+
+function openPopup(){
+  const bt=curBet, m=curMode;
+  const n=document.getElementById('heroPts').textContent.replace('点','');
+  const modeLabel = m ? (m.box ? 'ボックス' : (m.format==='formation' ? 'フォーメーション' : 'ながし')) : '';
+  const tickets=generateTickets();
+
+  // 1. まず画像をセットする（この時はまだポップアップは非表示）
+  document.getElementById('popHeroChar').src = IMGS[bt.id];
+  
+  // 2. その他のテキストなどをセット
+  document.getElementById('popBetName').textContent=bt.label;
+  document.getElementById('popBetName').style.textShadow=`0 0 20px ${bt.glow}55`;
+  document.getElementById('popBetDesc').textContent=bt.desc;
+  document.getElementById('popModeTag').textContent=modeLabel;
+  document.getElementById('popPtsNum').textContent=n;
+  document.getElementById('popPtsNum').style.color=bt.accent;
+  document.getElementById('popPtsNum').style.textShadow=`0 0 30px ${bt.glow}aa`;
+  document.getElementById('popupBody').innerHTML=buildNetkeibaHTML(bt,m,tickets);
+
+  // 3. ほんの少しだけ（0.01秒）待ってから表示クラスを追加する
+  // これにより、画像が切り替わる「準備」が整ってからアニメーションが始まります
+  setTimeout(() => {
+    document.getElementById('popup').classList.add('open');
+  }, 10);
+}
+function closePopup(){ document.getElementById('popup').classList.remove('open'); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePopup(); });
+
+function doCopy(fromPopup){
+  const bt=curBet,m=curMode;
+  const tickets=generateTickets(); if(!tickets.length) return;
+  const isOrd=m&&m.ordered&&!m.box;
+  const lines=tickets.map((h,i)=>`${i+1}. ${h.join(isOrd?'→':'-')}`);
+  const text=`【${bt.label}】${tickets.length}点\n`+lines.join('\n');
+  navigator.clipboard.writeText(text).catch(()=>{});
+  const btn=document.getElementById(fromPopup?'popCopyBtn':'copyBtn');
+  const orig=btn.textContent; btn.textContent='コピーしました！';
+  setTimeout(()=>btn.textContent=orig,1500);
+}
+function clearAll(){ slots=initSlots(); activeSlot=0; renderAll(); }
+document.getElementById('horseCount').addEventListener('change',()=>{ slots=initSlots(); renderAll(); });
+document.getElementById('betAmount').addEventListener('change',()=>{ updateBadge(); });
+init();
+    // --- ここから追加 ---
+// ページを開いた瞬間に全てのキャラクター画像をバックグラウンドで読み込みます
+window.addEventListener('load', () => {
+  Object.values(IMGS).forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+});
+// --- ここまで追加 ---
+</script>
+</body>
+</html>
