@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0e2e1f">
+<link rel="icon" href="../favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>今週の予想｜AFRO Horse</title>
+<meta name="description" content="AFRO Horse の今週の競馬予想。本命馬・買い目・キャラクターのコメント付きで毎週更新。">
+<script>
+// GAS iframe内でもモバイル幅を強制適用
+(function(){
+  var w = window.innerWidth || document.documentElement.clientWidth;
+  if(w < 600) document.documentElement.style.fontSize = '14px';
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@700;900&family=RocknRoll+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --turf:#1a4731;
+  --turf-deep:#0e2e1f;
+  --turf-light:#2d6b4a;
+  --turf-bright:#4ca57a;
+  --cream:#f8f1de;
+  --cream-deep:#ede0bd;
+  --cream-soft:#fcf7e8;
+  --gold:#c8941d;
+  --gold-light:#e8b952;
+  --gold-glow:#ffd86d;
+  --red:#c5292a;
+  --red-deep:#8b1b1b;
+  --red-glow:rgba(197,41,42,0.30);
+  --text:#2a2419;
+  --text-soft:#5a4f3d;
+  --gray:#7a6e5a;
+  --border:rgba(26,71,49,0.25);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.5;
+}
+header, .hero, main, footer { position:relative; z-index:1; }
+
+/* ===== HEADER (master spec) ===== */
+header {
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:rgba(14,46,31,0.96);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--gold);
+  box-shadow:0 2px 12px rgba(14,46,31,0.2);
+}
+.logo {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);text-decoration:none;
+}
+.logo span { color:var(--gold-light); }
+.nav-back {
+  color:var(--cream);font-size:0.7rem;
+  text-decoration:none;
+  letter-spacing:2px;
+  border:1px solid var(--gold);
+  padding:5px 11px;border-radius:4px;
+  font-family:'Bebas Neue',cursive;
+  background:rgba(200,148,29,0.10);
+  transition:all 0.2s;
+}
+.nav-back:hover, .nav-back:active { background:var(--gold); color:var(--turf-deep); }
+.header-badge {
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;font-weight:700;letter-spacing:3px;
+  color:var(--gold-light);
+  border:1px solid var(--gold);
+  padding:4px 9px;border-radius:3px;
+}
+
+/* ===== HERO (warm bright with title image) ===== */
+.hero {
+  margin-top:56px;
+  padding:20px 20px 24px;
+  text-align:center;
+  overflow:hidden;
+  background:radial-gradient(ellipse 90% 75% at 50% 50%, var(--cream-soft) 0%, var(--cream-deep) 60%, var(--gold-light) 100%);
+  border-bottom:6px solid var(--gold);
+  position:relative;
+}
+.hero::before {
+  content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(2px 2px at 12% 22%, rgba(255,255,255,0.85), transparent),
+    radial-gradient(3px 3px at 88% 28%, rgba(255,216,109,0.8), transparent),
+    radial-gradient(1.5px 1.5px at 50% 65%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 22% 78%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 78% 75%, rgba(255,216,109,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 62% 12%, rgba(255,255,255,0.65), transparent);
+  pointer-events:none;
+  animation:twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity:0.55; } 50% { opacity:1; } }
+.hero-title-img {
+  display:block;
+  width:100%;
+  max-width:580px;
+  height:auto;
+  margin:0 auto;
+  position:relative;z-index:1;
+  border-radius:14px;
+  filter:
+    drop-shadow(0 0 24px rgba(197,41,42,0.35))
+    drop-shadow(0 6px 14px rgba(200,148,29,0.25))
+    drop-shadow(0 10px 22px rgba(0,0,0,0.30));
+}
+
+/* ===== MAIN ===== */
+main {
+  padding:0 14px 60px;
+  max-width:680px;margin:0 auto;
+}
+
+/* ===== QUEST BANNER (game-style section header) ===== */
+.quest-banner {
+  margin:24px 0 22px;
+  padding:18px 24px;
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 8px, transparent 8px 16px),
+    linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  color:var(--cream);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  position:relative;
+  border:3px solid var(--turf-deep);
+  border-radius:0;
+  clip-path:polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+  box-shadow:0 6px 0 var(--turf-deep), 0 10px 18px rgba(139,27,27,0.30);
+}
+.quest-banner::before {
+  content:'';position:absolute;
+  top:6px;left:6px;right:6px;
+  height:3px;
+  background:linear-gradient(90deg, transparent, var(--gold-glow), transparent);
+}
+.quest-banner-en {
+  font-family:'Bebas Neue',cursive;
+  font-size:13px;letter-spacing:6px;
+  color:var(--gold-light);font-weight:700;
+  text-shadow:0 2px 0 rgba(0,0,0,0.4);
+}
+.quest-banner-ja {
+  font-family:'Dela Gothic One',cursive;
+  font-size:24px;letter-spacing:3px;
+  color:var(--cream);
+  text-shadow:0 2px 0 var(--red-deep), 0 4px 0 rgba(0,0,0,0.4), 0 6px 12px rgba(0,0,0,0.3);
+}
+.quest-banner-meta {
+  display:flex;align-items:center;gap:10px;
+  margin-top:4px;
+  font-family:'Bebas Neue',cursive;
+  font-size:10px;letter-spacing:3px;
+  color:rgba(255,255,255,0.7);font-weight:700;
+}
+.quest-banner-meta::before, .quest-banner-meta::after {
+  content:'★'; color:var(--gold-glow); font-size:11px;
+}
+.last-updated {
+  text-align:right;
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;color:var(--text-soft);
+  margin-bottom:18px;letter-spacing:2px;
+  font-weight:700;
+}
+
+/* ===== STAGE CARD (race group) ===== */
+.race-group {
+  margin-bottom:24px;
+  position:relative;
+  animation:fadeUp 0.4s ease both;
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+/* race-header becomes the STAGE BANNER strip (top of each card) */
+.race-header {
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  margin-bottom:0;
+  padding:24px 12px 12px;
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0 6px, transparent 6px 12px),
+    linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  border:3px solid var(--turf-deep);
+  border-bottom:none;
+  position:relative;
+  clip-path:polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px);
+}
+.race-header::before {
+  content:'★ STAGE';
+  position:absolute;
+  top:6px;left:14px;
+  background:var(--gold);
+  color:var(--turf-deep);
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  padding:2px 9px;
+  border:2px solid var(--turf-deep);
+  z-index:1;
+  line-height:1.3;
+}
+.race-date {
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;font-weight:700;letter-spacing:1px;
+  color:var(--cream);
+  background:rgba(0,0,0,0.25);
+  border:1.5px solid rgba(255,255,255,0.30);
+  padding:2px 7px;border-radius:3px;
+  margin-left:auto;
+}
+.race-venue {
+  font-family:'RocknRoll One','Noto Sans JP',sans-serif;
+  font-size:12px;font-weight:400;letter-spacing:2px;
+  color:var(--turf-deep);
+  background:var(--gold-light);
+  padding:2px 8px;border-radius:3px;
+  border:1.5px solid var(--turf-deep);
+  text-shadow:0 1px 0 rgba(255,255,255,0.4);
+}
+.race-r {
+  font-family:'Bebas Neue',cursive;
+  font-size:13px;letter-spacing:2px;
+  color:var(--gold-glow);
+  background:rgba(0,0,0,0.30);
+  border:1.5px solid var(--gold-light);
+  padding:2px 8px;border-radius:3px;font-weight:700;
+}
+.race-name {
+  font-family:'RocknRoll One','Noto Sans JP',sans-serif;
+  font-size:17px;letter-spacing:1px;line-height:1.25;
+  color:var(--cream);
+  font-weight:400;
+  width:100%;margin-top:2px;
+  text-shadow:0 2px 0 var(--red-deep), 0 3px 6px rgba(0,0,0,0.35);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.race-line { display:none; }
+
+/* ===== PICK CARD (bet-card) ===== */
+.bet-card {
+  background:var(--cream-soft);
+  border:3px solid var(--turf-deep);
+  border-top:none;
+  border-radius:0;
+  padding:12px 14px 10px;
+  margin-bottom:0;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 5px 0 var(--turf-deep), 0 8px 14px rgba(14,46,31,0.15);
+  clip-path:polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.bet-card + .bet-card { border-top:1px dashed var(--red); }
+.bet-card::before {
+  content:'';position:absolute;
+  top:3px;left:4px;right:4px;height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold-glow), transparent);
+}
+.bet-top {
+  display:grid;grid-template-columns:50px 1fr auto;
+  align-items:center;gap:12px;
+}
+.horse-num {
+  width:50px;height:50px;
+  background:linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  color:var(--cream);
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  border-radius:0;
+  border:3px solid var(--turf-deep);
+  box-shadow:inset 0 3px 0 rgba(255,255,255,0.22), inset 0 -3px 0 rgba(0,0,0,0.18), 0 3px 0 var(--turf-deep);
+  position:relative;
+  text-shadow:0 2px 0 rgba(0,0,0,0.3);
+  clip-path:polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+}
+.horse-num::after {
+  content:'No.';
+  position:absolute;
+  top:-7px;left:-3px;
+  font-family:'Bebas Neue',cursive;
+  font-size:8px;font-weight:700;letter-spacing:1px;
+  background:var(--gold);
+  color:var(--turf-deep);
+  padding:1px 4px;
+  border:1.5px solid var(--turf-deep);
+  line-height:1.3;
+}
+.horse-name {
+  font-family:'RocknRoll One','Noto Sans JP',sans-serif;
+  font-size:16px;font-weight:400;
+  color:var(--turf-deep);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  letter-spacing:0.5px;line-height:1.25;
+}
+.shiki-badge {
+  display:inline-block;
+  font-family:'RocknRoll One','Noto Sans JP',sans-serif;
+  font-size:11px;font-weight:400;letter-spacing:1px;
+  background:linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 100%);
+  border:2px solid var(--turf-deep);
+  color:var(--turf-deep);
+  padding:2px 8px;border-radius:0;
+  margin-top:4px;
+  box-shadow:0 2px 0 var(--turf-deep);
+  text-shadow:0 1px 0 rgba(255,255,255,0.4);
+}
+.kaime {
+  font-family:'Dela Gothic One',cursive;
+  font-size:24px;letter-spacing:1px;
+  color:var(--red-deep);
+  text-align:right;line-height:1.15;
+  word-break:break-all;max-width:160px;
+  font-weight:900;
+  text-shadow:0 2px 0 rgba(255,255,255,0.6), 0 3px 0 rgba(200,148,29,0.25);
+}
+.kaime small {
+  display:block;
+  font-family:'Bebas Neue',cursive;
+  font-size:10px;font-weight:700;
+  color:var(--text-soft);letter-spacing:2px;
+  text-shadow:none;
+}
+
+/* ===== BATTLE QUOTE (chara wrap) ===== */
+.chara-wrap {
+  display:flex;align-items:flex-end;gap:8px;
+  margin-top:10px;padding:0;
+  position:relative;
+  animation:charaPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes charaPop {
+  from { opacity:0; transform:scale(0.85) translateY(8px); }
+  to { opacity:1; transform:scale(1) translateY(0); }
+}
+.chara-img {
+  width:60px;height:auto;
+  flex-shrink:0;
+  filter:drop-shadow(0 3px 5px rgba(14,46,31,0.25));
+  align-self:flex-end;
+}
+.speech-bubble {
+  position:relative;
+  background:#fff;
+  border:3px solid var(--turf-deep);
+  border-radius:0;
+  padding:9px 12px;
+  font-family:'RocknRoll One','Noto Sans JP',sans-serif;
+  font-size:12px;font-weight:400;
+  color:var(--turf-deep);
+  line-height:1.55;
+  flex:1;
+  box-shadow:0 3px 0 var(--turf-deep);
+  clip-path:polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.speech-bubble::before {
+  content:'';position:absolute;
+  bottom:-3px;left:-12px;width:0;height:0;
+  border-style:solid;border-width:0 0 14px 12px;
+  border-color:transparent transparent var(--turf-deep) transparent;
+}
+.speech-bubble::after {
+  content:'';position:absolute;
+  bottom:1px;left:-7px;width:0;height:0;
+  border-style:solid;border-width:0 0 11px 9px;
+  border-color:transparent transparent #fff transparent;
+}
+
+/* ===== STAMP (game-style burst) ===== */
+.stamp-wrap { position:relative; }
+.stamp {
+  position:absolute;
+  top:50%;right:10px;left:auto;
+  transform:translate(0,-50%) rotate(-12deg) scale(0);
+  width:78px;height:78px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Dela Gothic One',cursive;
+  font-size:18px;font-weight:900;
+  letter-spacing:2px;
+  border:5px double;
+  opacity:0;
+  pointer-events:none;
+  z-index:10;
+  line-height:1.1;
+  text-align:center;
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(2px);
+  text-shadow:0 2px 0 rgba(255,255,255,0.7);
+}
+.stamp.atari {
+  color:var(--red);
+  border-color:var(--red);
+  box-shadow:inset 0 0 0 2px rgba(197,41,42,0.20), 0 6px 20px rgba(197,41,42,0.45);
+}
+.stamp.hazure {
+  color:var(--gray);
+  border-color:var(--gray);
+  box-shadow:inset 0 0 0 2px rgba(122,110,90,0.20), 0 4px 12px rgba(0,0,0,0.15);
+}
+.stamp.show {
+  animation:stampIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes stampIn {
+  0% { transform:translate(0,-50%) rotate(20deg) scale(2); opacity:0; }
+  60% { opacity:1; }
+  100% { transform:translate(0,-50%) rotate(-12deg) scale(1); opacity:0.95; }
+}
+
+/* ===== JUSHO BADGE ===== */
+.juso-badge {
+  font-family:'Dela Gothic One',cursive;
+  font-size:11px;font-weight:900;letter-spacing:1px;
+  padding:2px 8px;border-radius:3px;
+  vertical-align:middle;
+  border:2px solid var(--turf-deep);
+  display:inline-block;
+  box-shadow:0 2px 0 var(--turf-deep);
+}
+.juso-badge.g1 { background:linear-gradient(180deg, #ffe55c, #ffd700); color:#1a1000; }
+.juso-badge.g2 { background:linear-gradient(180deg, #d8d8d8, #a8a8a8); color:#1a1000; }
+.juso-badge.g3 { background:linear-gradient(180deg, #de9a4d, #cd7f32); color:#fff; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align:center;padding:50px 20px;
+  color:var(--cream);
+  background:linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  border:3px solid var(--turf-deep);
+  border-radius:0;
+  font-weight:700;
+  clip-path:polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+  box-shadow:0 6px 0 var(--turf-deep);
+  font-family:'Noto Sans JP',sans-serif;
+}
+.empty-state .big {
+  font-family:'Dela Gothic One',cursive;
+  font-size:38px;font-weight:900;
+  color:var(--gold-glow);
+  margin-bottom:10px;
+  letter-spacing:4px;
+  text-shadow:0 3px 0 var(--red-deep), 0 5px 8px rgba(0,0,0,0.4);
+}
+
+/* ===== TICKER ===== */
+.ticker-outer {
+  overflow:hidden;
+  background:var(--turf-deep);
+  padding:12px 0;
+  border-top:4px solid var(--gold);
+  border-bottom:4px solid var(--gold);
+  margin-top:30px;
+}
+.ticker-track { display:flex; animation:tick 22s linear infinite; width:max-content; }
+.ticker-item {
+  font-family:'Bebas Neue',cursive;
+  font-size:14px;letter-spacing:4px;
+  padding:0 22px;white-space:nowrap;
+  color:var(--cream);
+}
+.ticker-item.dot { color:var(--gold-light); }
+@keyframes tick { to { transform:translateX(-50%); } }
+
+/* ===== FOOTER (master spec) ===== */
+footer {
+  text-align:center;
+  padding:40px 20px 30px;
+  background:var(--turf-deep);
+  color:rgba(248,241,222,0.7);
+  font-size:0.7rem;
+  border-top:6px solid var(--gold);
+}
+.footer-logo {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);margin-bottom:6px;
+}
+.footer-logo em { font-style:normal; color:var(--gold-light); }
+.footer-tag {
+  font-family:'Bebas Neue',cursive;
+  font-size:0.75rem;letter-spacing:4px;
+  color:var(--gold-light);margin-bottom:14px;
+}
+.footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:14px; }
+.footer-links a { color:rgba(248,241,222,0.7); text-decoration:none; font-size:0.7rem; letter-spacing:1px; }
+.footer-links a:hover { color:var(--gold-light); }
+.footer-copy { color:rgba(248,241,222,0.45); margin-top:8px; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  header { padding:0 14px; }
+  .logo { font-size:20px; }
+  .hero { padding:18px 16px 22px; }
+  main { padding:0 12px 60px; }
+  .quest-banner-ja { font-size:20px; letter-spacing:2px; }
+  .quest-banner-en { font-size:11px; letter-spacing:4px; }
+  .race-header { padding:24px 10px 10px; gap:5px; }
+  .race-name { font-size:15px; letter-spacing:0.5px; }
+  .race-venue, .race-r, .race-date { font-size:10px; padding:2px 6px; }
+  .bet-top { grid-template-columns:44px 1fr auto; gap:10px; }
+  .horse-num { width:44px; height:44px; font-size:19px; }
+  .horse-num::after { font-size:8px; padding:1px 3px; }
+  .horse-name { font-size:14px; letter-spacing:0; }
+  .kaime { font-size:21px; max-width:120px; }
+  .chara-img { width:52px; }
+  .speech-bubble { font-size:11px; padding:8px 10px; }
+  .bet-card { padding:10px 12px 9px; }
+  .stamp { width:68px; height:68px; font-size:16px; right:6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="../index.html" class="logo">AFRO<span>Horse</span></a>
+  <a href="../index.html" class="nav-back">← HOME</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-week" id="weekLabel" style="display:none"></div>
+  <img class="hero-title-img" src="images/yoso_title.png" alt="今週のアフロ馬予想 — AFRO HORSE">
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="quest-banner">
+    <div class="quest-banner-en">WEEKLY QUESTS</div>
+    <div class="quest-banner-ja">今週のステージ</div>
+    <div class="quest-banner-meta">アフロ馬たちの本命を見届けろ</div>
+  </div>
+  <div class="last-updated" id="lastUpdated"></div>
+  <div id="content"></div>
+</main>
+
+<!-- TICKER -->
+<div class="ticker-outer">
+  <div class="ticker-track">
+    <span class="ticker-item">★ THIS WEEK'S PICKS</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">今週の予想</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">AFRO HORSE OFFICIAL</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">WIN WITH STYLE</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">★ THIS WEEK'S PICKS</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">今週の予想</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">AFRO HORSE OFFICIAL</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">WIN WITH STYLE</span><span class="ticker-item dot">◆</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AFRO<em>Horse</em></div>
+  <div class="footer-tag">WIN WITH STYLE</div>
+  <div class="footer-links">
+    <a href="../index.html">ホーム</a>
+    <a href="../afrohorse_characters.html">キャラクター</a>
+    <a href="../tools.html">ツール</a>
+    <a href="../contact.html">お問い合わせ</a>
+    <a href="../privacy.html">プライバシーポリシー</a>
+  </div>
+  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
+</footer>
+
+<script>
+// ── キャラクター画像 ──
+const CHARS = [
+  "images/afuwa.png",
+  "images/ginma.png",
+  "images/kurohuwa.png",
+  "images/chahuwa.png",
+  "images/buruma.png",
+  "images/yanchaahuwa.png"
+];
+
+// キャラクターインデックス対応
+// 0:アフワ 1:ギンマ 2:クロフワ 3:チャフワ 4:ブルマ 5:やんちゃアフワ
+const CHAR_COMMENTS = [
+  // アフワ（ビビり・優しい）
+  ["ぼ、ぼくが選んだから…たぶん来ると思う…🥺","ちゃんと調べたよ…信じてほしいな…","こ、この馬…来てくれるといいな…","うまくいくといいけど…ドキドキする…","自己責任でね…でもきっと大丈夫！","がんばれ〜！…あ、ワシもドキドキしとる"],
+  // ギンマ（ニヤリ系策士）
+  ["ふっ…データは完璧だ","この買い目、間違いない…フフ","ニヤリ…ここが勝負どころだ","全てはひらめきと観察の結果だ","見ておけ、この予想の精度を","なぜかわかるか？経験だよ経験"],
+  // クロフワ（クール・負けず嫌い）
+  ["負けは認めない","この馬で勝つ。以上。","外したら筋トレで忘れる","クールに行こう","次は絶対取り返す","黙って信じろ"],
+  // チャフワ（天真爛漫・テンション高め）
+  ["この馬めっちゃ好きー！！🎉","来い来い来い来いー！！","みんなで当てようよ〜！","テンション上がってきたー！","絶対来るって！信じてるよ！","わあああ楽しみすぎる〜🐴"],
+  // ブルマ（元気ポジティブ）
+  ["絶対当たるよ！一緒に応援しよ！","ポジティブに行こう！！","この馬、なんかいい感じがする！","友達も誘って盛り上がろう！","全力で応援したら来るはず！","負けても次があるよ！ファイト！"],
+  // やんちゃアフワ（反骨精神MAX）
+  ["知らんけど買え","外れたら文句言うなよ？","俺の勘は外れたことない…ほぼ","刺激がないと生きてる気がしない","負けてもまた来い。それだけだ","うるさい、買え"]
+];
+
+function randChar() {
+  return CHARS[Math.floor(Math.random() * CHARS.length)];
+}
+
+function getComment(charIdx) {
+  const comments = CHAR_COMMENTS[charIdx];
+  return comments[Math.floor(Math.random() * comments.length)];
+}
+
+// ── サンプルデータ（GAS組み込み時はここを差し替え）──
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyNMiCrpiMqYm3VbZ4kc4TMmOJWhdapZmk4VFI2wS_QkRPPfJN_DChOVQI_Ku3nob70nw/exec';
+
+async function loadData() {
+  try {
+    document.getElementById('content').innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">読み込み中...</div>';
+    const res = await fetch(GAS_URL);
+    const rows = await res.json();
+    renderPredictions(rows);
+    document.getElementById('lastUpdated').textContent = '最終更新: ' + new Date().toLocaleString('ja-JP');
+  } catch(e) {
+    document.getElementById('content').innerHTML = '<div style="text-align:center;padding:40px;color:var(--red)">データの読み込みに失敗しました</div>';
+    console.error(e);
+  }
+}
+
+function updateWeekLabel(){
+  const now=new Date(),y=now.getFullYear(),day=now.getDay();
+  const sun=new Date(now);sun.setDate(now.getDate()-day);
+  const sat=new Date(sun);sat.setDate(sun.getDate()+6);
+  const fmt=d=>d.getMonth()+1+'/'+d.getDate();
+  document.getElementById('weekLabel').textContent=y+' '+fmt(sun)+' - '+fmt(sat)+' PREDICTION';
+}
+
+function formatDate(v){
+  if(!v) return '';
+  const d=new Date(v);
+  if(isNaN(d)) return String(v);
+  return (d.getMonth()+1)+'/'+d.getDate()+'('+['日','月','火','水','木','金','土'][d.getDay()]+')';
+}
+
+function renderPredictions(rows){
+  const content=document.getElementById('content');
+  if(!rows.length){
+    content.innerHTML='<div class="empty-state"><div class="big">NO DATA</div><div>データがありません</div></div>';
+    return;
+  }
+  const groups={}, order=[];
+  rows.forEach(row=>{
+    const key=(row['日付']||'')+'_'+(row['競馬場']||'')+'_'+(row['R']||'');
+    if(!groups[key]){groups[key]=[];order.push(key);}
+    groups[key].push(row);
+  });
+  let html='';
+  order.forEach((key,gi)=>{
+    const bets=groups[key];
+    const r0=bets[0];
+    const dateStr=formatDate(r0['日付']);
+    const venue=r0['競馬場']||'';
+    const rNum=r0['R']?r0['R']+'R':'';
+    const raceName=r0['レース名']||'';
+    html+='<div class="race-group" style="animation-delay:'+gi*0.07+'s">';
+    html+='<div class="race-header">';
+    if(dateStr) html+='<div class="race-date">'+dateStr+'</div>';
+    if(venue)   html+='<div class="race-venue">'+venue+'</div>';
+    if(rNum)    html+='<div class="race-r">'+rNum+'</div>';
+    const jushoVal = String(r0['重/平']||'').trim().toUpperCase();
+    const jushoBadge = jushoVal==='G1'?'<span class="juso-badge g1">G1</span>':jushoVal==='G2'?'<span class="juso-badge g2">G2</span>':jushoVal==='G3'?'<span class="juso-badge g3">G3</span>':'';
+    if(raceName)html+='<div class="race-name">'+raceName+jushoBadge+'</div>';
+    html+='<div class="race-line"></div></div>';
+    bets.forEach(row=>{
+      const uma   = row['本命馬名']||'---';
+      const num   = row['馬番']||'?';
+      const shiki = row['式別']||'';
+      const kaime = row['買い目']||'-';
+      const comment = row['コメント']||'';
+      const charIdx = Math.floor(Math.random()*CHARS.length);
+      const result = row['結果']||'';
+      const stampClass = result==='〇'?'atari':result==='✕'?'hazure':'';
+      const stampText = result==='〇'?'的中':result==='✕'?'ハズレ':'';
+      const shiki2 = row['式別2']||'';
+      const kaime2 = row['買い目2']||'';
+      html+='<div class="bet-card stamp-wrap"><div class="bet-top">';
+      html+='<div class="horse-num">'+num+'</div>';
+      html+='<div><div class="horse-name">'+uma+'</div></div>';
+      html+='<div style="text-align:right;flex-shrink:0">';
+      html+='<div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">'+(shiki?'<span class="shiki-badge">'+shiki+'</span>':'')+'<div class="kaime">'+kaime+'</div></div>';
+      if(kaime2) html+='<div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:4px;border-top:1px solid var(--border);padding-top:4px">'+(shiki2?'<span class="shiki-badge">'+shiki2+'</span>':'')+'<div class="kaime">'+kaime2+'</div></div>';
+      html+='</div>';
+      html+='</div>';
+      if(stampClass) html+='<div class="stamp '+stampClass+' show">'+stampText+'</div>';
+      const charaComment = getComment(charIdx);
+      html+='<div class="chara-wrap" style="animation-delay:'+(gi*0.07+0.15)+'s">';
+      html+='<img class="chara-img" src="'+CHARS[charIdx]+'" alt="character">';
+      html+='<div class="speech-bubble">'+charaComment+'</div>';
+      html+='</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  content.innerHTML=html;
+}
+
+updateWeekLabel();
+loadData();
+</script>
+</body>
+</html>
