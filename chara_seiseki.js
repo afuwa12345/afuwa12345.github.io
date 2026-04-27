@@ -1,5 +1,5 @@
 // キャラ対決成績データ（自動更新）
-// 最終更新: 2026/04/27 19:34
+// 最終更新: 2026/04/27 19:59
 
 const CHARA_DATA = {
   "season": 2026,
@@ -129,42 +129,74 @@ const CHARA_DATA = {
       "results": {
         "afuwa": {
           "race": "東京 6R",
+          "date": "04/26",
           "horse": "サレジオ",
+          "aite": [],
+          "bet": "単勝500円＋複勝1500円",
           "result": "○",
           "payout": 1650,
           "chaku": 3
         },
         "yancha": {
           "race": "東京 7R",
+          "date": "04/25",
           "horse": "クラリネットソナタ",
+          "aite": [],
+          "bet": "単勝2000円1点",
           "result": "×",
           "payout": 0,
           "chaku": 2
         },
         "buruma": {
           "race": "東京 11R",
+          "date": "04/25",
           "horse": "ミッキーファルコン",
+          "aite": [
+            "ブラックオリンピア",
+            "ゴーイントゥスカイ"
+          ],
+          "bet": "ワイド3頭BOX＋単勝200円",
           "result": "○",
           "payout": 2130,
           "chaku": 5
         },
         "chafuwa": {
           "race": "東京 11R",
+          "date": "04/25",
           "horse": "ブラックオリンピア",
+          "aite": [
+            "ゴーイントゥスカイ",
+            "テルヒコウ"
+          ],
+          "bet": "馬連3頭BOX＋単勝200円",
           "result": "×",
           "payout": 0,
           "chaku": 3
         },
         "kurofuwa": {
           "race": "東京 9R",
+          "date": "04/25",
           "horse": "ダノンミッション",
+          "aite": [
+            "ノビリシマビジョン",
+            "ビーオンザカバー",
+            "レベルスルール",
+            "アルゲンテウス"
+          ],
+          "bet": "三連複5頭BOX",
           "result": "○",
           "payout": 760,
           "chaku": 1
         },
         "ginma": {
           "race": "福島 2R",
+          "date": "04/25",
           "horse": "セイウンプーパ",
+          "aite": [
+            "フクオトコ",
+            "シルバーアックス"
+          ],
+          "bet": "馬単BOX＋三連単BOX＋単勝200円",
           "result": "×",
           "payout": 0,
           "chaku": 4
