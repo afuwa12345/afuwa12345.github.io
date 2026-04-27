@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0e2e1f">
+<link rel="icon" href="../favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="アフロホースのキャラが本命馬を発表してくれるツール。レース名・馬番・馬名を入れて発表ボタンを押すだけ。">
+<title>本命発表｜AFRO Horse</title>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --turf:#1a4731;
+  --turf-deep:#0e2e1f;
+  --turf-light:#2d6b4a;
+  --turf-bright:#4ca57a;
+  --cream:#f8f1de;
+  --cream-deep:#ede0bd;
+  --cream-soft:#fcf7e8;
+  --gold:#c8941d;
+  --gold-light:#e8b952;
+  --gold-glow:#ffd86d;
+  --red:#c5292a;
+  --red-deep:#8b1b1b;
+  --text:#2a2419;
+  --text-soft:#5a4f3d;
+  --gray:#7a6e5a;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  background:linear-gradient(180deg,var(--cream) 0%,var(--cream-deep) 100%);
+  background-attachment:fixed;
+  color:var(--text);
+  font-family:'Noto Sans JP',sans-serif;
+  overflow-x:hidden;
+  min-height:100vh;
+  position:relative;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:0.5;
+}
+nav,.hero,.section,.gen-wrap,.footer,.ticker-outer{position:relative;z-index:2;}
+
+/* ===== NAV ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:56px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:rgba(14,46,31,0.96);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--gold);
+  box-shadow:0 2px 12px rgba(14,46,31,0.2);
+}
+.nav-logo{
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);text-decoration:none;
+}
+.nav-logo em{font-style:normal;color:var(--gold-light);}
+.nav-back{
+  color:var(--cream);font-size:0.7rem;text-decoration:none;
+  letter-spacing:2px;
+  border:1px solid var(--gold);
+  padding:5px 11px;border-radius:4px;
+  font-family:'Bebas Neue',cursive;
+  transition:all 0.2s;
+}
+.nav-back:hover,.nav-back:active{background:var(--gold);color:var(--turf-deep);}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:280px;
+  padding:80px 20px 36px;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 35%, var(--turf-light) 0%, var(--turf) 55%, var(--turf-deep) 100%);
+  color:var(--cream);
+  border-bottom:6px solid var(--gold);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(2px 2px at 15% 25%, rgba(255,216,109,0.5), transparent),
+    radial-gradient(2px 2px at 85% 30%, rgba(255,216,109,0.4), transparent),
+    radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 25% 80%, rgba(255,216,109,0.4), transparent),
+    radial-gradient(2px 2px at 75% 75%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 60% 15%, rgba(255,216,109,0.4), transparent);
+  pointer-events:none;
+  animation:twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle{0%,100%{opacity:0.5;}50%{opacity:0.95;}}
+.hero-eye{
+  font-family:'Bebas Neue',cursive;
+  font-size:12px;letter-spacing:6px;
+  color:var(--gold-light);margin-bottom:10px;
+  position:relative;z-index:1;
+  text-shadow:0 0 12px rgba(255,216,109,0.5);
+}
+.hero-title-img{
+  display:block;
+  width:100%;
+  max-width:540px;
+  height:auto;
+  margin:6px auto 0;
+  position:relative;z-index:1;
+  border-radius:12px;
+  filter:
+    drop-shadow(0 0 32px rgba(232,185,82,0.45))
+    drop-shadow(0 0 8px rgba(255,216,109,0.35))
+    drop-shadow(0 10px 22px rgba(0,0,0,0.55));
+}
+.hero-title{
+  font-family:'Dela Gothic One',cursive;
+  font-size:clamp(38px,11vw,58px);
+  letter-spacing:4px;line-height:0.95;
+  color:var(--cream);margin-bottom:8px;
+  position:relative;z-index:1;
+  text-shadow:0 2px 0 var(--turf-deep),0 6px 14px rgba(0,0,0,0.35);
+}
+.hero-title em{
+  font-style:normal;color:var(--gold-light);
+}
+.hero-sub{
+  font-family:'Bebas Neue',cursive;
+  color:rgba(248,241,222,0.7);
+  font-size:0.78rem;letter-spacing:5px;
+  position:relative;z-index:1;margin-top:4px;
+}
+
+/* ===== SECTION ===== */
+.section{
+  max-width:600px;margin:0 auto;
+  padding:30px 16px 6px;
+}
+.cat-label{text-align:center;margin-bottom:18px;}
+.cat-label-en{
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;letter-spacing:5px;
+  color:var(--gold);margin-bottom:4px;
+}
+.cat-label-ja{
+  font-family:'Dela Gothic One',cursive;
+  font-size:18px;color:var(--turf-deep);
+  letter-spacing:0.1em;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+}
+.cat-label-ja::before,.cat-label-ja::after{
+  content:'';width:30px;height:2px;
+  background:var(--turf);border-radius:1px;
+}
+
+/* ===== CHAR PILLS ===== */
+.char-pills{
+  display:flex;gap:8px;flex-wrap:wrap;
+  justify-content:center;
+}
+.char-pill{
+  font-family:'Bebas Neue',cursive;
+  font-size:13px;letter-spacing:1.5px;
+  padding:9px 16px;border-radius:30px;
+  border:2px solid var(--turf);
+  background:var(--cream-soft);
+  color:var(--turf-deep);
+  font-weight:700;
+  cursor:pointer;transition:all 0.15s;
+  box-shadow:0 3px 0 var(--turf-deep);
+}
+.char-pill.selected{
+  background:var(--gold);
+  border-color:var(--gold);
+  color:var(--turf-deep);
+  box-shadow:0 3px 0 #8a6411;
+}
+.char-pill:active{transform:translateY(2px);box-shadow:0 1px 0 var(--turf-deep);}
+
+/* ===== PANEL ===== */
+.panel{
+  background:var(--cream-soft);
+  border:2px solid var(--turf);
+  border-radius:14px;
+  padding:18px 16px 16px;
+  box-shadow:0 4px 0 var(--turf-deep),0 6px 12px rgba(14,46,31,0.12);
+  position:relative;
+}
+.panel::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:5px;
+  border-top-left-radius:12px;border-top-right-radius:12px;
+  background:linear-gradient(90deg,var(--turf-deep),var(--turf-light));
+}
+
+/* ===== INPUTS ===== */
+.input-group{display:flex;flex-direction:column;gap:14px;}
+.input-wrap{display:flex;flex-direction:column;gap:5px;flex:1;}
+.input-wrap.sm{flex:0 0 88px;}
+.input-label{
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;letter-spacing:2px;
+  color:var(--gold);font-weight:900;
+}
+.input-field{
+  background:#fff;
+  border:2px solid var(--turf);
+  border-radius:8px;
+  padding:11px 13px;
+  color:var(--text);
+  font-size:15px;
+  font-family:'Noto Sans JP',sans-serif;
+  font-weight:700;
+  outline:none;width:100%;
+  transition:all 0.15s;
+  -webkit-appearance:none;appearance:none;
+  box-shadow:inset 0 2px 0 rgba(14,46,31,0.06);
+}
+.input-field:focus{
+  border-color:var(--gold);
+  box-shadow:inset 0 2px 0 rgba(200,148,29,0.10),0 0 0 3px rgba(200,148,29,0.18);
+}
+.input-field::placeholder{color:rgba(14,46,31,0.30);font-weight:400;}
+.row{display:flex;gap:10px;}
+.num-field{
+  text-align:center;
+  font-family:'Bebas Neue',cursive;
+  font-size:24px;letter-spacing:2px;
+  padding:9px 6px;
+}
+
+/* ===== GEN BTN ===== */
+.gen-wrap{padding:24px 16px 30px;max-width:600px;margin:0 auto;}
+.gen-btn{
+  width:100%;
+  padding:22px 18px 18px;
+  background:linear-gradient(180deg,var(--red) 0%,var(--red-deep) 100%);
+  color:var(--cream);
+  border:2px solid var(--turf-deep);
+  border-radius:14px;
+  font-family:'Dela Gothic One',cursive;
+  font-size:18px;letter-spacing:2px;
+  cursor:pointer;
+  box-shadow:0 5px 0 var(--turf-deep),0 8px 18px rgba(139,27,27,0.30);
+  text-shadow:0 2px 0 rgba(0,0,0,0.35);
+  transition:all 0.12s;
+  position:relative;
+}
+.gen-btn::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:5px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-glow),var(--gold));
+  border-top-left-radius:12px;border-top-right-radius:12px;
+}
+.gen-btn:active{
+  transform:translateY(4px);
+  box-shadow:0 1px 0 var(--turf-deep),0 3px 6px rgba(139,27,27,0.30);
+}
+
+/* ===== TICKER ===== */
+.ticker-outer{
+  overflow:hidden;
+  background:var(--turf-deep);
+  padding:12px 0;margin-top:24px;
+  border-top:4px solid var(--gold);
+  border-bottom:4px solid var(--gold);
+}
+.ticker-track{
+  display:flex;
+  animation:tick 22s linear infinite;
+  width:max-content;
+}
+.ticker-item{
+  font-family:'Bebas Neue',cursive;
+  font-size:14px;letter-spacing:4px;
+  padding:0 22px;white-space:nowrap;
+  color:var(--cream);
+}
+.ticker-item.dot{color:var(--gold-light);}
+@keyframes tick{to{transform:translateX(-50%);}}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;
+  padding:40px 20px 30px;
+  background:var(--turf-deep);
+  color:rgba(248,241,222,0.7);
+  font-size:0.7rem;
+  border-top:6px solid var(--gold);
+}
+.footer-logo{
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);margin-bottom:6px;
+}
+.footer-logo em{font-style:normal;color:var(--gold-light);}
+.footer-tag{
+  font-family:'Bebas Neue',cursive;
+  font-size:0.75rem;letter-spacing:4px;
+  color:var(--gold-light);margin-bottom:14px;
+}
+.footer-links{
+  display:flex;flex-wrap:wrap;
+  justify-content:center;gap:14px;margin-bottom:14px;
+}
+.footer-links a{
+  color:rgba(248,241,222,0.7);
+  text-decoration:none;font-size:0.7rem;letter-spacing:1px;
+}
+.footer-links a:hover{color:var(--gold-light);}
+
+/* ============================================
+   STAGE (フルスクリーン発表 — 深緑ベース版)
+============================================ */
+.stage{
+  position:fixed;inset:0;z-index:300;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.35s;
+}
+.stage.show{opacity:1;pointer-events:all;}
+
+.announce-card{
+  flex:1;position:relative;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  background:var(--turf-deep);
+}
+
+/* 背景: 深緑 + 赤/金グロー */
+.stage-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 100%,rgba(197,41,42,0.30) 0%,transparent 65%),
+    radial-gradient(ellipse 60% 40% at 50% 0%,rgba(232,185,82,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 50% at 50% 50%,rgba(45,107,74,0.25) 0%,transparent 70%),
+    var(--turf-deep);
+}
+.stage-bg::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 6px);
+  pointer-events:none;
+}
+
+/* スポットライト */
+.spotlight{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:100%;height:100%;
+  background:conic-gradient(from 180deg at 50% -10%,transparent 60deg,rgba(255,216,109,0.06) 90deg,transparent 120deg);
+  pointer-events:none;
+  animation:spotSpin 8s linear infinite;
+}
+@keyframes spotSpin{to{transform:translateX(-50%) rotate(360deg);}}
+
+/* ブランドロゴ */
+.stage-logo{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  font-family:'Dela Gothic One',cursive;font-size:13px;letter-spacing:3px;
+  color:rgba(232,185,82,0.35);white-space:nowrap;z-index:2;pointer-events:none;
+}
+.stage-logo em{font-style:normal;color:rgba(248,241,222,0.35);}
+
+/* ========== 上ゾーン ========== */
+.pick-zone{
+  flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:44px 20px 4px;
+  position:relative;z-index:2;
+  transform:translateY(-14px);opacity:0;
+  transition:all 0.5s 0.2s;
+  min-height:0;
+}
+.stage.show .pick-zone{transform:none;opacity:1;}
+
+/* レース名バナー */
+.race-banner-inner{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Bebas Neue',cursive;font-size:13px;letter-spacing:5px;
+  color:var(--gold-light);
+  border:1px solid rgba(232,185,82,0.5);
+  background:rgba(200,148,29,0.10);
+  padding:6px 22px;border-radius:4px;
+  margin-bottom:6px;
+}
+.race-banner-inner::before,.race-banner-inner::after{content:'◆';font-size:8px;opacity:0.6;}
+
+/* 区切りライン */
+.pick-divider{
+  display:flex;align-items:center;gap:10px;
+  width:100%;max-width:280px;margin:6px auto;
+}
+.pick-divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(197,41,42,0.6));}
+.pick-divider-line.r{background:linear-gradient(270deg,transparent,rgba(197,41,42,0.6));}
+.pick-divider-dot{width:6px;height:6px;background:var(--red);border-radius:50%;box-shadow:0 0 10px rgba(197,41,42,0.9);}
+
+/* 馬番 */
+.pick-num-wrap{position:relative;display:inline-block;}
+.pick-num-bg{
+  position:absolute;inset:-10px;
+  background:radial-gradient(ellipse,rgba(197,41,42,0.22) 0%,transparent 70%);
+  filter:blur(10px);
+}
+.pick-num-big{
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(70px,18vw,110px);
+  line-height:1;letter-spacing:2px;
+  color:var(--red);position:relative;
+  text-shadow:
+    0 0 40px rgba(197,41,42,0.95),
+    0 0 80px rgba(197,41,42,0.55),
+    4px 4px 0 rgba(70,0,0,0.7);
+}
+.pick-num-label{
+  font-family:'Bebas Neue',cursive;font-size:11px;letter-spacing:5px;
+  color:rgba(248,241,222,0.4);margin-top:-4px;margin-bottom:4px;text-align:center;
+}
+.pick-horse-name{
+  font-family:'Dela Gothic One',cursive;
+  font-size:clamp(28px,8vw,46px);
+  letter-spacing:4px;line-height:1.05;
+  position:relative;text-align:center;
+  background:linear-gradient(180deg,#fff 0%,var(--gold-glow) 50%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:drop-shadow(0 0 12px rgba(232,185,82,0.7)) drop-shadow(0 0 30px rgba(232,185,82,0.35));
+  padding:0 6px;
+}
+.pick-horse-name::before{
+  content:'';display:block;height:1px;margin:0 auto 8px;width:40%;
+  background:linear-gradient(90deg,transparent,var(--gold-light),transparent);
+}
+.pick-horse-name::after{
+  content:'';display:block;height:2px;margin:8px auto 0;width:60%;
+  background:linear-gradient(90deg,transparent,var(--gold-light),transparent);
+}
+
+/* ========== 下ゾーン: キャラ + 吹き出し ========== */
+.char-zone{
+  flex:0 0 auto;
+  position:relative;
+  display:flex;align-items:flex-end;justify-content:center;
+  height:min(55vw,240px);
+}
+
+.speech-bubble{
+  position:relative;
+  left:auto;bottom:auto;transform:scale(0.85);
+  width:calc(100% - 40px);max-width:320px;
+  margin:0 auto 0;
+  background:var(--cream);
+  border:2px solid var(--gold);
+  border-radius:18px;
+  padding:14px 16px 12px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);
+  opacity:0;z-index:4;
+  flex-shrink:0;
+  transition:all 0.5s 0.7s cubic-bezier(0.34,1.56,0.64,1);
+}
+.stage.show .speech-bubble{transform:scale(1);opacity:1;}
+.speech-bubble::after{
+  content:'';position:absolute;
+  bottom:-13px;left:50%;transform:translateX(-50%);
+  border:7px solid transparent;border-top-color:var(--cream);border-bottom:none;
+}
+.speech-bubble::before{
+  content:'';position:absolute;
+  bottom:-16px;left:50%;transform:translateX(-50%);
+  border:8px solid transparent;border-top-color:var(--gold);border-bottom:none;
+  z-index:-1;
+}
+.bubble-name{
+  font-family:'Dela Gothic One',cursive;
+  font-size:12px;letter-spacing:1px;
+  color:var(--red);margin-bottom:4px;
+}
+.bubble-text{
+  font-size:13px;line-height:1.65;
+  color:var(--text);font-weight:700;
+}
+
+/* キャラ */
+.char-wrap{
+  width:min(55vw,240px);
+  position:relative;z-index:3;
+  transform:translateY(30px);opacity:0;
+  transition:all 0.7s 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  flex-shrink:0;
+}
+.stage.show .char-wrap{transform:translateY(0);opacity:1;animation:charBob 2.2s ease-in-out 1.2s infinite;}
+@keyframes charBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.char-wrap img{width:100%;filter:drop-shadow(0 12px 40px rgba(0,0,0,0.85));display:block;}
+
+/* 紙吹雪 */
+.confetti-wrap{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden;}
+.conf{position:absolute;top:-10px;animation:confFall linear forwards;}
+@keyframes confFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+
+/* アクションバー */
+.action-bar{
+  background:var(--turf-deep);
+  border-top:3px solid var(--gold);
+  padding:14px 14px;
+  display:flex;gap:8px;
+  z-index:6;position:relative;
+  transform:translateY(100%);
+  transition:transform 0.4s 0.4s;
+}
+.stage.show .action-bar{transform:none;}
+.action-btn{
+  flex:1;padding:14px 6px;
+  border:2px solid var(--turf-deep);
+  border-radius:10px;
+  font-family:'Dela Gothic One',cursive;
+  font-size:13px;letter-spacing:1px;
+  cursor:pointer;transition:all 0.12s;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  box-shadow:0 4px 0 #051a10;
+}
+.action-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #051a10;}
+.btn-save{background:var(--cream);color:var(--turf-deep);}
+.btn-share{background:var(--red);color:var(--cream);}
+.btn-x{background:var(--turf-light);color:var(--cream);}
+.btn-close{background:rgba(248,241,222,0.08);color:var(--cream);flex:0 0 48px;padding:14px 0;font-size:18px;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
+  <a href="../index.html" class="nav-back">← HOME</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eye">★ PICK ANNOUNCER</div>
+  <img class="hero-title-img" src="../images/honmei_title.png" alt="本命発表">
+</section>
+
+<!-- STEP 1: キャラ選択 -->
+<section class="section">
+  <div class="cat-label">
+    <div class="cat-label-en">STEP 01 — ANNOUNCER</div>
+    <div class="cat-label-ja">発表キャラ</div>
+  </div>
+  <div class="char-pills">
+    <button class="char-pill selected" data-char="random" onclick="selectChar(this)">🎲 ランダム</button>
+    <button class="char-pill" data-char="afu"  onclick="selectChar(this)">アフワ</button>
+    <button class="char-pill" data-char="yan"  onclick="selectChar(this)">やんちゃアフワ</button>
+    <button class="char-pill" data-char="blue" onclick="selectChar(this)">ブルマ</button>
+    <button class="char-pill" data-char="cha"  onclick="selectChar(this)">チャフワ</button>
+    <button class="char-pill" data-char="kuro" onclick="selectChar(this)">クロフワ</button>
+    <button class="char-pill" data-char="gin"  onclick="selectChar(this)">ギンマ</button>
+  </div>
+</section>
+
+<!-- STEP 2: レース情報 -->
+<section class="section">
+  <div class="cat-label">
+    <div class="cat-label-en">STEP 02 — RACE INFO</div>
+    <div class="cat-label-ja">レース情報</div>
+  </div>
+  <div class="panel">
+    <div class="input-group">
+      <div class="input-wrap">
+        <label class="input-label">レース名</label>
+        <input class="input-field" id="raceName" type="text" placeholder="例）日本ダービー" maxlength="20"/>
+      </div>
+      <div class="row">
+        <div class="input-wrap sm">
+          <label class="input-label">馬番</label>
+          <input class="input-field num-field" id="horseNum" type="number" placeholder="1" min="1" max="18"/>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">馬名</label>
+          <input class="input-field" id="horseName" type="text" placeholder="例）アフロキング" maxlength="12"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GENERATE -->
+<div class="gen-wrap">
+  <button class="gen-btn" onclick="announce()">🏇 発表する</button>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-outer">
+  <div class="ticker-track">
+    <span class="ticker-item">★ HONMEI ANNOUNCE</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">本命発表</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">PICK YOUR HORSE</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">WIN WITH STYLE 🏇</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">★ HONMEI ANNOUNCE</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">本命発表</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">PICK YOUR HORSE</span><span class="ticker-item dot">◆</span>
+    <span class="ticker-item">WIN WITH STYLE 🏇</span><span class="ticker-item dot">◆</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">AFRO<em>Horse</em></div>
+  <div class="footer-tag">WIN WITH STYLE</div>
+  <div class="footer-links">
+    <a href="../index.html">ホーム</a>
+    <a href="../afrohorse_characters.html">キャラクター</a>
+    <a href="../index.html#prediction">予想</a>
+    <a href="../tools.html">ツール</a>
+    <a href="../index.html#games">GAMES</a>
+    <a href="../contact.html">お問い合わせ</a>
+    <a href="../privacy.html">プライバシーポリシー</a>
+  </div>
+  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
+</footer>
+
+<!-- STAGE -->
+<div class="stage" id="stage">
+  <div class="announce-card" id="announceCard">
+    <div class="stage-bg"></div>
+    <div class="spotlight"></div>
+    <div class="confetti-wrap" id="confetti"></div>
+    <div class="stage-logo">AFRO<em>Horse</em> · 本命発表</div>
+
+    <!-- 上ゾーン -->
+    <div class="pick-zone">
+      <span class="race-banner-inner" id="stageRace">日本ダービー</span>
+      <div class="pick-divider">
+        <div class="pick-divider-line"></div>
+        <div class="pick-divider-dot"></div>
+        <div class="pick-divider-line r"></div>
+      </div>
+      <div class="pick-num-wrap">
+        <div class="pick-num-bg"></div>
+        <div class="pick-num-big" id="stageNum">1</div>
+      </div>
+      <div class="pick-num-label">番</div>
+      <div class="pick-horse-name" id="stageName">アフロキング</div>
+      <div class="pick-divider">
+        <div class="pick-divider-line"></div>
+        <div class="pick-divider-dot"></div>
+        <div class="pick-divider-line r"></div>
+      </div>
+    </div>
+
+    <!-- 吹き出し -->
+    <div class="speech-bubble" id="bubble">
+      <div class="bubble-name" id="bubbleName">アフワ</div>
+      <div class="bubble-text" id="bubbleText">本命は…！</div>
+    </div>
+
+    <!-- 下ゾーン: キャラ -->
+    <div class="char-zone">
+      <div class="char-wrap">
+        <img id="charImg" src="" alt="character"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- アクションバー -->
+  <div class="action-bar">
+    <button class="action-btn btn-save" onclick="saveImage()">💾 保存</button>
+    <button class="action-btn btn-share" onclick="shareNative()">📤 シェア</button>
+    <button class="action-btn btn-x" onclick="shareX()">𝕏 ポスト</button>
+    <button class="action-btn btn-close" onclick="closeStage()">✕</button>
+  </div>
+</div>
+
+<script>
+const CHARS = {
+  afu: {
+    name:'アフワ',
+    img:'../images/afuwa.png',
+    lines:[
+      'ぼ、ぼくの本命は…これ！',
+      '今回はこの子を信じてみる…！',
+      '直感で…えいっ！'
+    ]
+  },
+  yan: {
+    name:'やんちゃアフワ',
+    img:'../images/yanchaahuwa.png',
+    lines:[
+      'こいつしかいねぇだろ！',
+      'みんな知らねぇだろうけど、これが本命だ。',
+      '勝つのはこの一頭だ！'
+    ]
+  },
+  blue: {
+    name:'ブルマ',
+    img:'../images/buruma.png',
+    lines:[
+      'これっ！絶対くるよ〜！',
+      '今日のラッキーはこの子！',
+      '応援するなら絶対この子！'
+    ]
+  },
+  cha: {
+    name:'チャフワ',
+    img:'../images/chahuwa.png',
+    lines:[
+      'なんとなくこの子！楽しそう！',
+      'みんなで応援しよ〜！',
+      'この馬、好き！本命にしちゃう！'
+    ]
+  },
+  kuro: {
+    name:'クロフワ',
+    img:'../images/kurohuwa.png',
+    lines:[
+      '勝つのはこの一頭。',
+      '俺の見立てに狂いはない。',
+      'この勝負、決まった。'
+    ]
+  },
+  gin: {
+    name:'ギンマ',
+    img:'../images/ginma.png',
+    lines:[
+      'フッ…見えたぞ、勝ち筋。',
+      '気づいた者だけが、この本命にたどり着く。',
+      'これは…おもしろくなりそうだ。'
+    ]
+  }
+};
+
+let selectedChar = 'random';
+let currentShareText = '';
+
+function selectChar(btn){
+  document.querySelectorAll('.char-pill').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedChar = btn.dataset.char;
+}
+
+function announce(){
+  const race  = document.getElementById('raceName').value.trim() || '本日のレース';
+  const num   = document.getElementById('horseNum').value.trim() || '?';
+  const horse = document.getElementById('horseName').value.trim() || '本命馬';
+  const keys  = Object.keys(CHARS);
+  const key   = selectedChar==='random' ? keys[Math.floor(Math.random()*keys.length)] : selectedChar;
+  const c     = CHARS[key];
+  const line  = c.lines[Math.floor(Math.random()*c.lines.length)];
+
+  document.getElementById('stageRace').textContent = race;
+  document.getElementById('stageNum').textContent  = num;
+  document.getElementById('stageName').textContent = horse;
+  document.getElementById('bubbleName').textContent= c.name;
+  document.getElementById('bubbleText').textContent= line;
+  document.getElementById('charImg').src = c.img;
+
+  currentShareText = `🐴 AFRO Horse 本命発表！\n【${race}】\n${num}番 ${horse}\n\n「${line}」\n\n#AFROHorse #競馬 #本命`;
+
+  document.getElementById('stage').classList.add('show');
+  document.body.style.overflow='hidden';
+  fireConfetti();
+}
+
+function closeStage(){
+  document.getElementById('stage').classList.remove('show');
+  document.body.style.overflow='';
+  document.getElementById('confetti').innerHTML='';
+}
+
+/* グラデーションテキストをソリッドカラーに一時切替 */
+function fixGradientForCapture(){
+  const el = document.getElementById('stageName');
+  el.dataset.origStyle = el.getAttribute('style') || '';
+  el.style.cssText += ';background:none;-webkit-background-clip:unset;background-clip:unset;-webkit-text-fill-color:#e8b952;color:#e8b952;filter:none;';
+  return el;
+}
+function restoreGradient(el){
+  el.style.cssText = el.dataset.origStyle;
+}
+
+/* キャプチャ共通 */
+async function captureCard(){
+  const card = document.getElementById('announceCard');
+  const nameEl = fixGradientForCapture();
+  await new Promise(r => requestAnimationFrame(r));
+  const canvas = await html2canvas(card,{
+    backgroundColor:'#0e2e1f',
+    scale:2,
+    useCORS:true,
+    allowTaint:true,
+    ignoreElements: el => el.classList.contains('confetti-wrap')
+  });
+  restoreGradient(nameEl);
+  return canvas;
+}
+
+/* 画像保存 */
+async function saveImage(){
+  const now = new Date();
+  const ts = now.getFullYear().toString().slice(2)
+    + String(now.getMonth()+1).padStart(2,'0')
+    + String(now.getDate()).padStart(2,'0')
+    + '_'
+    + String(now.getHours()).padStart(2,'0')
+    + String(now.getMinutes()).padStart(2,'0');
+  const defaultName = 'afrohorse_honmei_' + ts;
+  const input = prompt('保存ファイル名を入力（拡張子不要）', defaultName);
+  if(input === null) return;
+  const filename = (input.trim() || defaultName) + '.png';
+  const canvas = await captureCard();
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* ネイティブシェア */
+async function shareNative(){
+  const canvas = await captureCard();
+  canvas.toBlob(async blob=>{
+    const file = new File([blob],'afrohorse_honmei.png',{type:'image/png'});
+    if(navigator.share && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:'AFRO Horse 本命発表',text:currentShareText});
+    } else {
+      window.open(URL.createObjectURL(blob),'_blank');
+    }
+  },'image/png');
+}
+
+/* X (Twitter) ポスト */
+function shareX(){
+  const text = encodeURIComponent(currentShareText);
+  window.open(`https://twitter.com/intent/tweet?text=${text}`,'_blank');
+}
+
+/* 紙吹雪 */
+function fireConfetti(){
+  const wrap = document.getElementById('confetti');
+  wrap.innerHTML='';
+  const colors=['#c5292a','#e8b952','#ffd86d','#fcf7e8','#4ca57a','#c8941d','#ffffff'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    el.className='conf';
+    const size=4+Math.random()*10;
+    el.style.cssText=`
+      left:${Math.random()*100}%;
+      width:${size}px;height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+      animation-duration:${1.8+Math.random()*2.5}s;
+      animation-delay:${Math.random()*0.8}s;
+    `;
+    wrap.appendChild(el);
+  }
+}
+</script>
+</body>
+</html>
