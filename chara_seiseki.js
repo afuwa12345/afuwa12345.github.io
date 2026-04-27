@@ -1,5 +1,5 @@
 // キャラ対決成績データ（自動更新）
-// 最終更新: 2026/04/20 11:58
+// 最終更新: 2026/04/27 19:34
 
 const CHARA_DATA = {
   "season": 2026,
@@ -120,6 +120,54 @@ const CHARA_DATA = {
           "result": "×",
           "payout": 0,
           "chaku": 11
+        }
+      }
+    },
+    {
+      "week": 2,
+      "date": "04/25・04/26",
+      "results": {
+        "afuwa": {
+          "race": "東京 6R",
+          "horse": "サレジオ",
+          "result": "○",
+          "payout": 1650,
+          "chaku": 3
+        },
+        "yancha": {
+          "race": "東京 7R",
+          "horse": "クラリネットソナタ",
+          "result": "×",
+          "payout": 0,
+          "chaku": 2
+        },
+        "buruma": {
+          "race": "東京 11R",
+          "horse": "ミッキーファルコン",
+          "result": "○",
+          "payout": 2130,
+          "chaku": 5
+        },
+        "chafuwa": {
+          "race": "東京 11R",
+          "horse": "ブラックオリンピア",
+          "result": "×",
+          "payout": 0,
+          "chaku": 3
+        },
+        "kurofuwa": {
+          "race": "東京 9R",
+          "horse": "ダノンミッション",
+          "result": "○",
+          "payout": 760,
+          "chaku": 1
+        },
+        "ginma": {
+          "race": "福島 2R",
+          "horse": "セイウンプーパ",
+          "result": "×",
+          "payout": 0,
+          "chaku": 4
         }
       }
     }
