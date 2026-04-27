@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2e1f">
+<link rel="icon" href="favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お問い合わせ｜AFRO Horse</title>
+<meta name="description" content="AFRO Horse へのお問い合わせはこちらから。">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --turf:#1a4731;
+  --turf-deep:#0e2e1f;
+  --turf-light:#2d6b4a;
+  --turf-bright:#4ca57a;
+  --cream:#f8f1de;
+  --cream-deep:#ede0bd;
+  --cream-soft:#fcf7e8;
+  --gold:#c8941d;
+  --gold-light:#e8b952;
+  --gold-glow:#ffd86d;
+  --red:#c5292a;
+  --red-deep:#8b1b1b;
+  --text:#2a2419;
+  --text-soft:#5a4f3d;
+  --gray:#7a6e5a;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  display:flex;flex-direction:column;
+  position: relative;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.5;
+}
+.nav, main, footer { position:relative; z-index:1; }
+
+/* ===== NAV ===== */
+.nav {
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:rgba(14,46,31,0.96);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--gold);
+  box-shadow:0 2px 12px rgba(14,46,31,0.2);
+}
+.nav-logo {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);text-decoration:none;
+}
+.nav-logo em { font-style:normal; color:var(--gold-light); }
+.nav-back {
+  color:var(--cream);font-size:0.7rem;
+  text-decoration:none;
+  letter-spacing:2px;
+  border:1px solid var(--gold);
+  padding:5px 11px;border-radius:4px;
+  font-family:'Bebas Neue',cursive;
+  background:rgba(200,148,29,0.10);
+  transition:all 0.2s;
+}
+.nav-back:hover, .nav-back:active { background:var(--gold); color:var(--turf-deep); }
+
+/* ===== MAIN ===== */
+main {
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  padding:90px 20px 40px;
+  width:100%;
+}
+.container {
+  width:100%;
+  max-width:520px;
+}
+
+.cat-label { text-align:center; margin-bottom:24px; }
+.cat-label-en {
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;letter-spacing:5px;
+  color:var(--gold);margin-bottom:4px;
+}
+.cat-label-ja {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;color:var(--turf-deep);
+  letter-spacing:0.1em;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+}
+.cat-label-ja::before, .cat-label-ja::after {
+  content:'';width:30px;height:2px;
+  background:var(--turf);border-radius:1px;
+}
+
+.panel {
+  background:var(--cream-soft);
+  border:2px solid var(--turf);
+  border-radius:14px;
+  padding:36px 28px;
+  text-align:center;
+  box-shadow:0 5px 0 var(--turf-deep), 0 8px 14px rgba(14,46,31,0.12);
+  position:relative;
+}
+.panel::before {
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:5px;
+  border-top-left-radius:12px;border-top-right-radius:12px;
+  background:linear-gradient(90deg, var(--turf-deep), var(--turf-light));
+}
+.panel-text {
+  font-size:14px;line-height:1.9;
+  color:var(--text);
+  margin-bottom:24px;font-weight:700;
+}
+
+.cta-btn {
+  display:inline-block;
+  background:linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  color:var(--cream);
+  border:2px solid var(--turf-deep);
+  border-radius:14px;
+  padding:18px 32px 14px;
+  font-family:'Dela Gothic One',cursive;
+  font-size:16px;letter-spacing:2px;
+  text-decoration:none;
+  text-shadow:0 2px 0 rgba(0,0,0,0.35);
+  box-shadow:0 5px 0 var(--turf-deep), 0 8px 18px rgba(139,27,27,0.25);
+  position:relative;
+  transition:transform 0.12s;
+}
+.cta-btn::before {
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:5px;
+  background:linear-gradient(90deg, var(--gold), var(--gold-glow), var(--gold));
+  border-top-left-radius:12px;border-top-right-radius:12px;
+}
+.cta-btn:active { transform:translateY(4px); box-shadow:0 1px 0 var(--turf-deep); }
+
+/* ===== FOOTER ===== */
+footer {
+  text-align:center;
+  padding:40px 20px 30px;
+  background:var(--turf-deep);
+  color:rgba(248,241,222,0.7);
+  font-size:0.7rem;
+  border-top:6px solid var(--gold);
+}
+.footer-logo {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);margin-bottom:6px;
+}
+.footer-logo em { font-style:normal; color:var(--gold-light); }
+.footer-tag {
+  font-family:'Bebas Neue',cursive;
+  font-size:0.75rem;letter-spacing:4px;
+  color:var(--gold-light);margin-bottom:14px;
+}
+.footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:14px; }
+.footer-links a { color:rgba(248,241,222,0.7); text-decoration:none; font-size:0.7rem; letter-spacing:1px; }
+.footer-links a:hover { color:var(--gold-light); }
+.footer-copy { color:rgba(248,241,222,0.45); margin-top:8px; }
+
+@media (max-width: 600px) {
+  .nav { padding:0 14px; }
+  .nav-logo { font-size:20px; }
+  main { padding:80px 16px 30px; }
+  .panel { padding:28px 20px; }
+  .cat-label-ja { font-size:18px; }
+  .cta-btn { font-size:14px; padding:16px 24px 12px; letter-spacing:1px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+  <a href="index.html" class="nav-back">← HOME</a>
+</nav>
+
+<main>
+  <div class="container">
+    <div class="cat-label">
+      <div class="cat-label-en">CONTACT US</div>
+      <div class="cat-label-ja">お問い合わせ</div>
+    </div>
+    <div class="panel">
+      <p class="panel-text">
+        ご質問・ご依頼・ご感想など<br>
+        下記フォームよりお気軽にどうぞ。
+      </p>
+      <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSe_wFjTSPJrGwgDOib2gqs6ZI2d0PcrdL95Os25t2A9xeiUjQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">
+        フォームへ進む →
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">AFRO<em>Horse</em></div>
+  <div class="footer-tag">WIN WITH STYLE</div>
+  <div class="footer-links">
+    <a href="index.html">ホーム</a>
+    <a href="afrohorse_characters.html">キャラクター</a>
+    <a href="tools.html">ツール</a>
+    <a href="contact.html">お問い合わせ</a>
+    <a href="privacy.html">プライバシーポリシー</a>
+  </div>
+  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
