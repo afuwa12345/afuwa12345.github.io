@@ -681,6 +681,23 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   height: 6px;
   background: linear-gradient(90deg, var(--turf), var(--gold), var(--turf));
 }
+.pred-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pred-header-text {
+  flex: 1;
+  min-width: 0;
+}
+.pred-header-img {
+  width: 90px;
+  height: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 3px 6px rgba(14,46,31,0.20));
+  margin-bottom: 4px;
+}
 .pred-eye {
   font-family: 'Bebas Neue', cursive;
   font-size: 11px;
@@ -721,6 +738,15 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   font-size: 1.2rem;
   font-weight: 900;
   flex-shrink: 0;
+}
+.rec-date {
+  color: var(--gray);
+  font-size: 0.65rem;
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 0.5px;
+  min-width: 38px;
+  flex-shrink: 0;
+  font-weight: 700;
 }
 .rec-race {
   color: var(--gray);
@@ -953,9 +979,14 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
     <div class="sec-label-ja">今週のピック</div>
   </div>
   <div class="pred-detail">
-    <div class="pred-eye">⭐ GBM RECOMMEND</div>
-    <div class="pred-title">今週の推奨馬</div>
-    <div class="pred-date" id="analysis-date">読み込み中...</div>
+    <div class="pred-header">
+      <div class="pred-header-text">
+        <div class="pred-eye">⭐ GBM RECOMMEND</div>
+        <div class="pred-title">今週の推奨馬</div>
+        <div class="pred-date" id="analysis-date">読み込み中...</div>
+      </div>
+      <img class="pred-header-img" src="images/kuro_gin_cya.png" alt="">
+    </div>
     <div class="pred-list" id="rec-list">
       <div style="color:var(--gray);font-size:.8rem;padding:8px 0;">データ読み込み中...</div>
     </div>
@@ -970,13 +1001,16 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   if(dateEl) dateEl.textContent = d.dates ? d.dates.join(' · ') : '';
   const recList = document.getElementById('rec-list');
   if(d.recommendations && d.recommendations.length > 0){
-    recList.innerHTML = d.recommendations.slice(0,5).map(r =>
-      `<div class="rec-horse-item">
+    recList.innerHTML = d.recommendations.slice(0,5).map(r => {
+      const dateVal = r.date_label || r.date || '';
+      const dateStr = dateVal ? `<span class="rec-date">${dateVal}</span>` : '';
+      return `<div class="rec-horse-item">
         <div class="rec-hon">◎</div>
+        ${dateStr}
         <span class="rec-race">${r.place} ${r.r}R</span>
         <span class="rec-name">${r.name}</span>
-      </div>`
-    ).join('');
+      </div>`;
+    }).join('');
   } else {
     recList.innerHTML = '<div style="color:var(--gray);font-size:.8rem;padding:8px 0;">今週の推奨馬はありません</div>';
   }
