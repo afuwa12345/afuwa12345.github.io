@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2e1f">
+<link rel="icon" href="favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プライバシーポリシー｜AFRO Horse</title>
+<meta name="description" content="AFRO Horse のプライバシーポリシー。広告・アクセス解析・Cookie・個人情報の取り扱いについて。">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --turf:#1a4731;
+  --turf-deep:#0e2e1f;
+  --turf-light:#2d6b4a;
+  --turf-bright:#4ca57a;
+  --cream:#f8f1de;
+  --cream-deep:#ede0bd;
+  --cream-soft:#fcf7e8;
+  --gold:#c8941d;
+  --gold-light:#e8b952;
+  --gold-glow:#ffd86d;
+  --red:#c5292a;
+  --red-deep:#8b1b1b;
+  --text:#2a2419;
+  --text-soft:#5a4f3d;
+  --gray:#7a6e5a;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  position: relative;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.5;
+}
+.nav, main, footer { position:relative; z-index:1; }
+
+.nav {
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:rgba(14,46,31,0.96);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--gold);
+  box-shadow:0 2px 12px rgba(14,46,31,0.2);
+}
+.nav-logo {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);text-decoration:none;
+}
+.nav-logo em { font-style:normal; color:var(--gold-light); }
+.nav-back {
+  color:var(--cream);font-size:0.7rem;
+  text-decoration:none;
+  letter-spacing:2px;
+  border:1px solid var(--gold);
+  padding:5px 11px;border-radius:4px;
+  font-family:'Bebas Neue',cursive;
+  background:rgba(200,148,29,0.10);
+  transition:all 0.2s;
+}
+.nav-back:hover, .nav-back:active { background:var(--gold); color:var(--turf-deep); }
+
+main {
+  padding:90px 20px 40px;
+  max-width:760px;margin:0 auto;
+}
+
+.page-head {
+  text-align:center;
+  margin-bottom:30px;
+}
+.page-head-en {
+  font-family:'Bebas Neue',cursive;
+  font-size:13px;letter-spacing:6px;
+  color:var(--gold);font-weight:700;
+  margin-bottom:6px;
+}
+.page-head-ja {
+  font-family:'Dela Gothic One',cursive;
+  font-size:26px;color:var(--turf-deep);
+  letter-spacing:0.1em;
+}
+.page-head-rule {
+  display:flex;align-items:center;gap:10px;
+  margin:14px auto 0;max-width:240px;
+  font-family:'Bebas Neue',cursive;
+  color:var(--gold);font-size:11px;letter-spacing:4px;font-weight:700;
+}
+.page-head-rule::before, .page-head-rule::after {
+  content:'';flex:1;height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold));
+  border-radius:1px;
+}
+.page-head-rule::after { background:linear-gradient(-90deg, transparent, var(--gold)); }
+
+.intro {
+  background:var(--cream-soft);
+  border:2px solid var(--turf);
+  border-radius:14px;
+  padding:18px 20px;
+  margin-bottom:26px;
+  box-shadow:0 4px 0 var(--turf-deep), 0 6px 12px rgba(14,46,31,0.10);
+  position:relative;
+  font-size:14px;line-height:1.9;
+  color:var(--text);
+  font-weight:700;
+}
+.intro::before {
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:5px;
+  border-top-left-radius:12px;border-top-right-radius:12px;
+  background:linear-gradient(90deg, var(--turf-deep), var(--turf-light));
+}
+
+h2 {
+  font-family:'Dela Gothic One',cursive;
+  font-size:18px;color:var(--turf-deep);
+  letter-spacing:2px;
+  margin:30px 0 12px;
+  padding-bottom:8px;
+  border-bottom:2px solid var(--gold);
+  position:relative;
+  display:flex;align-items:center;gap:10px;
+}
+h2::before {
+  content:'';
+  display:inline-block;
+  width:8px;height:18px;
+  background:linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  border:1.5px solid var(--turf-deep);
+  flex-shrink:0;
+}
+.section-en {
+  display:block;
+  font-family:'Bebas Neue',cursive;
+  font-size:10px;letter-spacing:3px;
+  color:var(--gold);font-weight:700;
+  margin-bottom:6px;
+}
+
+p {
+  line-height:1.95;
+  font-size:14px;
+  color:var(--text);
+  font-weight:400;
+  margin-bottom:14px;
+}
+p:last-child { margin-bottom:0; }
+
+p a {
+  color:var(--red-deep);
+  font-weight:700;
+  text-decoration:none;
+  border-bottom:1px solid var(--red-deep);
+}
+p a:hover { color:var(--red); }
+
+ul {
+  margin:8px 0 14px 20px;
+  padding-left:8px;
+}
+ul li {
+  font-size:14px;
+  line-height:1.85;
+  color:var(--text);
+  margin-bottom:6px;
+}
+
+.last-rev {
+  margin-top:36px;padding-top:18px;
+  border-top:1px dashed var(--turf-light);
+  text-align:right;
+  font-family:'Bebas Neue',cursive;
+  font-size:11px;letter-spacing:2px;
+  color:var(--text-soft);font-weight:700;
+}
+
+footer {
+  text-align:center;
+  padding:40px 20px 30px;
+  background:var(--turf-deep);
+  color:rgba(248,241,222,0.7);
+  font-size:0.7rem;
+  border-top:6px solid var(--gold);
+  margin-top:50px;
+}
+.footer-logo {
+  font-family:'Dela Gothic One',cursive;
+  font-size:22px;letter-spacing:2px;
+  color:var(--cream);margin-bottom:6px;
+}
+.footer-logo em { font-style:normal; color:var(--gold-light); }
+.footer-tag {
+  font-family:'Bebas Neue',cursive;
+  font-size:0.75rem;letter-spacing:4px;
+  color:var(--gold-light);margin-bottom:14px;
+}
+.footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:14px; }
+.footer-links a { color:rgba(248,241,222,0.7); text-decoration:none; font-size:0.7rem; letter-spacing:1px; }
+.footer-links a:hover { color:var(--gold-light); }
+.footer-copy { color:rgba(248,241,222,0.45); margin-top:8px; }
+
+@media (max-width: 600px) {
+  .nav { padding:0 14px; }
+  .nav-logo { font-size:20px; }
+  main { padding:80px 16px 30px; }
+  .page-head-ja { font-size:22px; }
+  h2 { font-size:16px; letter-spacing:1px; }
+  .intro { padding:14px 16px; font-size:13px; }
+  p { font-size:13px; }
+  ul li { font-size:13px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+  <a href="index.html" class="nav-back">← HOME</a>
+</nav>
+
+<main>
+  <div class="page-head">
+    <div class="page-head-en">PRIVACY POLICY</div>
+    <div class="page-head-ja">プライバシーポリシー</div>
+    <div class="page-head-rule">★ AFRO HORSE ★</div>
+  </div>
+
+  <div class="intro">
+    当サイト（AFRO Horse、以下「当サイト」）は、ユーザーの個人情報・プライバシーの保護を重視し、
+    関連法令を遵守して以下の通り取り扱います。当サイトをご利用いただく前に、本ポリシーをご確認ください。
+  </div>
+
+  <h2><span class="section-en">PERSONAL INFO</span>個人情報の取り扱い</h2>
+  <p>
+    当サイトでは、お問い合わせフォームのご利用時にお名前・メールアドレス等の個人情報を取得する場合があります。
+    取得した個人情報は、お問い合わせへの返信目的のみに使用し、ご本人の同意なく第三者に提供することはありません。
+  </p>
+  <p>
+    法令に基づく場合や、人の生命・身体・財産の保護のために必要がある場合等を除き、個人情報を第三者に開示することはありません。
+  </p>
+
+  <h2><span class="section-en">ABOUT ADS</span>広告の配信について</h2>
+  <p>
+    当サイトでは、第三者配信の広告サービス（Google AdSense、A8.net、楽天アフィリエイト、もしもアフィリエイト等）を利用しています。
+    これらの広告配信事業者は、ユーザーの興味に応じた商品・サービスの広告を表示するため、当サイトや他のサイトへのアクセスに関する情報「Cookie（クッキー）」を使用することがあります。
+  </p>
+  <p>
+    Cookie（クッキー）は、ユーザーのコンピュータを識別するためのデータで、個人を特定する情報は含まれていません。
+  </p>
+  <p>
+    Google による広告の配信について詳しくは、以下のリンクをご覧ください。
+  </p>
+  <ul>
+    <li><a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank" rel="noopener noreferrer">Google ポリシーと規約 - 広告</a></li>
+  </ul>
+  <p>
+    ユーザーは、Google の <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">広告設定</a> ページにアクセスすることで、パーソナライズ広告を無効にすることができます。
+    また、ブラウザの設定により Cookie を無効にすることも可能です。
+  </p>
+
+  <h2><span class="section-en">ANALYTICS</span>アクセス解析ツールについて</h2>
+  <p>
+    当サイトでは、Google が提供するアクセス解析ツール「Google アナリティクス」を利用しています。
+    Google アナリティクスは、Cookie を使用してトラフィックデータを収集します。このトラフィックデータは匿名で収集されており、個人を特定するものではありません。
+  </p>
+  <p>
+    この機能は Cookie を無効にすることで収集を拒否することができますので、お使いのブラウザの設定をご確認ください。
+  </p>
+  <p>
+    Google アナリティクスの利用規約・プライバシーポリシーについて、詳しくは以下をご覧ください。
+  </p>
+  <ul>
+    <li><a href="https://marketingplatform.google.com/about/analytics/terms/jp/" target="_blank" rel="noopener noreferrer">Google アナリティクス利用規約</a></li>
+    <li><a href="https://policies.google.com/privacy?hl=ja" target="_blank" rel="noopener noreferrer">Google プライバシーポリシー</a></li>
+  </ul>
+
+  <h2><span class="section-en">COOKIE</span>Cookie（クッキー）の使用について</h2>
+  <p>
+    当サイトでは、より良いサービス提供のため Cookie を使用することがあります。Cookie は、ユーザーがサイトを訪問した際の閲覧情報をユーザーのコンピュータに保存する仕組みです。
+  </p>
+  <p>
+    Cookie には個人を特定できる情報は含まれず、ユーザーのプライバシーを侵害するものではありません。Cookie の受け入れを希望されない場合は、ブラウザの設定にて無効化することができます。
+  </p>
+
+  <h2><span class="section-en">DISCLAIMER</span>免責事項</h2>
+  <p>
+    当サイトの情報については、できる限り正確な情報を提供するよう努めておりますが、内容の正確性・完全性を保証するものではありません。
+    掲載内容によって生じた損害等の一切の責任を負いかねます。詳しくは <a href="disclaimer.html">免責事項</a> ページをご確認ください。
+  </p>
+  <p>
+    当サイトのコンテンツ・ツール・キャラクターはエンタメを目的としており、特定の商品・サービスの購入や馬券購入を推奨するものではありません。
+  </p>
+
+  <h2><span class="section-en">CONTACT</span>お問い合わせ</h2>
+  <p>
+    本ポリシーに関するお問い合わせは、<a href="contact.html">お問い合わせフォーム</a> よりご連絡ください。
+  </p>
+
+  <h2><span class="section-en">REVISIONS</span>改定について</h2>
+  <p>
+    本ポリシーの内容は、法令の改正やサービス内容の変更等に伴い、必要に応じて変更されることがあります。
+    変更後のポリシーは、当サイトに掲載した時点から効力を生じるものとします。
+  </p>
+
+  <div class="last-rev">最終更新: 2026年</div>
+</main>
+
+<footer>
+  <div class="footer-logo">AFRO<em>Horse</em></div>
+  <div class="footer-tag">WIN WITH STYLE</div>
+  <div class="footer-links">
+    <a href="index.html">ホーム</a>
+    <a href="about.html">運営者情報</a>
+    <a href="contact.html">お問い合わせ</a>
+    <a href="privacy.html">プライバシーポリシー</a>
+    <a href="terms.html">利用規約</a>
+    <a href="disclaimer.html">免責事項</a>
+  </div>
+  <p class="footer-copy">© 2026 AFRO Horse. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
