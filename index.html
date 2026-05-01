@@ -8,8 +8,8 @@
 <meta name="description" content="競馬の回収率や馬券の点数を簡単に計算できる無料ツールサイト。初心者でも使いやすいアフロホースの競馬サポートツールです。">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>AFRO Horse｜競馬ツール＆予想サイト</title>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
-<script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949"
+     crossorigin="anonymous"></script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -836,9 +836,230 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   letter-spacing: 1px;
 }
 .footer-links a:hover { color: var(--gold-light); }
+
+/* ===== 今週の騎手（週替わり） ===== */
+.weekly-jockey-section {
+  padding-top: 30px;
+}
+.weekly-jockey {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.jockey-card {
+  background: linear-gradient(135deg, var(--cream-soft, #fcf7e8) 0%, var(--cream, #f8f1de) 100%);
+  border: 3px solid var(--turf, #1a4731);
+  border-radius: 16px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 18px;
+  align-items: center;
+  box-shadow: 0 5px 0 var(--turf-deep, #0e2e1f), 0 8px 16px rgba(14,46,31,0.15);
+  position: relative;
+  overflow: hidden;
+}
+.jockey-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--gold, #c8941d), var(--gold-light, #e8b952), var(--gold, #c8941d));
+}
+.jockey-img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  background: rgba(255,255,255,0.6);
+  border-radius: 12px;
+  border: 2px solid var(--gold, #c8941d);
+  padding: 4px;
+}
+.jockey-info {
+  min-width: 0;
+}
+.jockey-week-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold, #c8941d);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.jockey-name {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px;
+  color: var(--turf-deep, #0e2e1f);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.jockey-bubble {
+  background: var(--turf-deep, #0e2e1f);
+  color: var(--cream, #f8f1de);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  position: relative;
+  font-weight: 500;
+}
+.jockey-bubble::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 8px 10px 8px 0;
+  border-color: transparent var(--turf-deep, #0e2e1f) transparent transparent;
+}
+
+@media (max-width: 600px) {
+  .jockey-card {
+    grid-template-columns: 100px 1fr;
+    gap: 14px;
+    padding: 16px;
+  }
+  .jockey-img { width: 100px; height: 100px; }
+  .jockey-name { font-size: 18px; }
+  .jockey-bubble { font-size: 12px; padding: 9px 12px; }
+  .jockey-bubble::before {
+    border-width: 6px 8px 6px 0;
+    left: -7px;
+  }
+}
+
+/* ===== 今週末の重賞 ===== */
+.weekend-races-section { padding-top: 30px; }
+.weekend-races {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.weekend-empty {
+  background: var(--cream-soft, #fcf7e8);
+  border: 2px dashed var(--turf-light, #2d6b4a);
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--text-soft, #5a4f3d);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.weekend-loading {
+  text-align: center;
+  color: var(--gray, #7a6e5a);
+  font-size: 13px;
+  padding: 20px;
+}
+.weekend-card {
+  background: var(--cream-soft, #fcf7e8);
+  border: 2px solid var(--turf, #1a4731);
+  border-left: 6px solid var(--turf, #1a4731);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  box-shadow: 0 3px 0 var(--turf-deep, #0e2e1f), 0 5px 10px rgba(14,46,31,0.10);
+  transition: transform 0.2s;
+}
+.weekend-card:hover {
+  transform: translateY(-2px);
+}
+.weekend-card.g1-card {
+  border-left-color: var(--red, #c5292a);
+  background: linear-gradient(90deg, rgba(197,41,42,0.10) 0%, var(--cream-soft, #fcf7e8) 35%);
+}
+.weekend-card.g2-card {
+  border-left-color: var(--gold, #c8941d);
+}
+.weekend-date {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--turf-deep, #0e2e1f);
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: center;
+  line-height: 1.2;
+}
+.weekend-date small {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--gray, #7a6e5a);
+  font-weight: 700;
+}
+.weekend-info { min-width: 0; }
+.weekend-name {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text, #2a2419);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+.weekend-card.g1-card .weekend-name {
+  color: var(--red-deep, #8b1b1b);
+  font-size: 17px;
+}
+.weekend-course {
+  font-size: 11px;
+  color: var(--text-soft, #5a4f3d);
+  font-weight: 500;
+}
+.weekend-grade {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  padding: 6px 11px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.wg-g1 { background: var(--red-deep, #8b1b1b); color: var(--cream, #f8f1de); }
+.wg-g2 { background: var(--gold, #c8941d); color: var(--turf-deep, #0e2e1f); }
+.wg-g3 { background: var(--turf-light, #2d6b4a); color: var(--cream, #f8f1de); }
+.wg-jg { background: var(--text, #2a2419); color: var(--cream, #f8f1de); }
+
+.weekend-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+.weekend-more {
+  display: inline-block;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--turf-deep, #0e2e1f);
+  text-decoration: none;
+  background: var(--cream-soft, #fcf7e8);
+  border: 2px solid var(--turf, #1a4731);
+  border-radius: 25px;
+  padding: 8px 18px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.weekend-more:hover {
+  background: var(--turf, #1a4731);
+  color: var(--cream, #f8f1de);
+}
+
+@media (max-width: 600px) {
+  .weekend-card { padding: 12px 14px; gap: 10px; }
+  .weekend-name { font-size: 14px; }
+  .weekend-card.g1-card .weekend-name { font-size: 15px; }
+  .weekend-date { font-size: 14px; }
+  .weekend-grade { font-size: 11px; padding: 5px 8px; }
+}
 </style>
 
 <script src="week_data.js"></script>
+<script src="race-data.js"></script>
 </head>
 <body>
 
@@ -869,6 +1090,31 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   <div class="hero-eye">EST. 2025</div>
   <h1 class="hero-title">AFRO<em>HORSE</em></h1>
   <p class="hero-sub">競馬予想 × アフロスタイル<br>完全無料の競馬ツールサイト</p>
+</section>
+
+<!-- ===== 今週の騎手（週替わりキャラ） ===== -->
+<section class="section weekly-jockey-section">
+  <div class="sec-label">
+    <div class="sec-label-en">JOCKEY OF THE WEEK</div>
+    <div class="sec-label-ja">今週の騎手</div>
+  </div>
+  <div id="weekly-jockey-container" class="weekly-jockey">
+    <!-- JS で挿入 -->
+  </div>
+</section>
+
+<!-- ===== 今週末の重賞（自動更新） ===== -->
+<section class="section weekend-races-section">
+  <div class="sec-label">
+    <div class="sec-label-en">THIS WEEKEND'S RACES</div>
+    <div class="sec-label-ja">今週末の重賞</div>
+  </div>
+  <div id="weekend-races-container" class="weekend-races">
+    <div class="weekend-loading">読み込み中...</div>
+  </div>
+  <div class="weekend-footer">
+    <a href="schedule.html" class="weekend-more">▶ 年間スケジュールを見る</a>
+  </div>
 </section>
 
 <section class="section">
@@ -1077,6 +1323,162 @@ window.addEventListener('scroll', () => {
   nav.style.transition = 'transform 0.3s';
   lastY = y;
 }, {passive:true});
+</script>
+
+<!-- ===== 今週の騎手（週替わり） ===== -->
+<script>
+(function(){
+  const container = document.getElementById('weekly-jockey-container');
+  if (!container) return;
+
+  // 6体のキャラクター定義
+  const JOCKEYS = [
+    {
+      name: 'アフワ',
+      img: 'images/index/afuwa2.png',
+      msgs: [
+        '今週の重賞、ボクと一緒に予想しよ。ビビリだから慎重派でいくよ…',
+        '無理せず、堅く狙うのが今週のスタイル。あと昼寝も大事ね。',
+        'ガツガツしないで、優しい気持ちで馬券買おうね。'
+      ]
+    },
+    {
+      name: 'やんちゃアフワ',
+      img: 'images/index/yancha2.png',
+      msgs: [
+        'よっしゃ今週は大穴狙いだぜ！？常識？知らねぇな！',
+        '人気馬？逆らうのが俺のスタイルだ！来いよ刺激！',
+        'ガチガチの予想なんてつまんねぇ。ぶっ飛んだ馬券で勝負だ！'
+      ]
+    },
+    {
+      name: 'ブルマ',
+      img: 'images/index/buruma2.png',
+      msgs: [
+        '今週もハッピー予想いくよ〜♪ 元気が一番！',
+        'ポジティブに、おしゃれに、勝負しちゃお！',
+        'ハズレても気にしない、また来週笑顔で会えるから！'
+      ]
+    },
+    {
+      name: 'チャフワ',
+      img: 'images/index/chafuwa2.png',
+      msgs: [
+        '競馬って楽しいよね〜！みんなで盛り上がろっ！',
+        'お馬さんありがとう〜！今週も全力で応援するぞ〜！',
+        '勝っても負けても、競馬場って最高だよね！'
+      ]
+    },
+    {
+      name: 'クロフワ',
+      img: 'images/index/kurofuwa2.png',
+      msgs: [
+        'フン、今週も負ける気はない。データは全部頭に入ってる。',
+        '勝つために必要なのは冷静さと筋力だ。準備は万全。',
+        '甘い予想は許さない。本気で勝ちにいくぞ。'
+      ]
+    },
+    {
+      name: 'ギンマ',
+      img: 'images/index/ginma2.png',
+      msgs: [
+        'フフ…今週もいい配当が転がってますよ。観察あるのみ。',
+        'みんなが見落とすところに、勝機は潜んでるんですよねぇ。',
+        'ひらめきと冷静さ、両方使い分けるのが私の流儀です。'
+      ]
+    }
+  ];
+
+  // 年初からの週番号を取得（ISO週番号風に簡易計算）
+  function getWeekNumber() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 1);
+    const diff = (now - start) / (1000 * 60 * 60 * 24);
+    return Math.floor(diff / 7);
+  }
+
+  const week = getWeekNumber();
+  const jockey = JOCKEYS[week % JOCKEYS.length];
+  // セリフは週ごとに3パターンをローテ
+  const msg = jockey.msgs[week % jockey.msgs.length];
+
+  container.innerHTML = `
+    <div class="jockey-card">
+      <img class="jockey-img" src="${jockey.img}" alt="${jockey.name}">
+      <div class="jockey-info">
+        <div class="jockey-week-label">★ THIS WEEK</div>
+        <div class="jockey-name">${jockey.name}</div>
+        <div class="jockey-bubble">${msg}</div>
+      </div>
+    </div>
+  `;
+})();
+</script>
+
+<!-- ===== 今週末の重賞 自動表示 ===== -->
+<script>
+(function(){
+  if (typeof RACE_DATA === 'undefined') return;
+
+  const container = document.getElementById('weekend-races-container');
+  if (!container) return;
+
+  // 今週末＋来週末（次の重賞があるまで）を取得
+  let races = getThisWeekendRaces();
+  let label = '今週末';
+
+  // 今週末になければ来週末
+  if (races.length === 0) {
+    races = getNextWeekendRaces();
+    label = '来週末';
+  }
+
+  if (races.length === 0) {
+    container.innerHTML = '<div class="weekend-empty">直近の重賞情報はありません。<br>年間スケジュールから今後のレースをチェック！</div>';
+    return;
+  }
+
+  // グレード判定
+  function gradeClass(grade) {
+    if (grade.includes('Ⅰ') && grade.includes('J')) return 'jg';
+    if (grade.includes('Ⅰ')) return 'g1';
+    if (grade.includes('Ⅱ')) return 'g2';
+    if (grade.includes('Ⅲ')) return 'g3';
+    return 'g3';
+  }
+
+  // 日付ソート
+  races.sort((a, b) => a.date.localeCompare(b.date));
+
+  let html = '';
+  races.forEach(r => {
+    const cls = gradeClass(r.grade);
+    const cardCls = (cls === 'g1' || cls === 'jg') ? 'g1-card' : (cls === 'g2' ? 'g2-card' : '');
+    const d = new Date(r.date);
+    const md = (d.getMonth()+1) + '/' + d.getDate();
+    const w = ['日','月','火','水','木','金','土'][d.getDay()];
+
+    html += `
+      <div class="weekend-card ${cardCls}">
+        <div class="weekend-date">${md}<small>${w}曜</small></div>
+        <div class="weekend-info">
+          <div class="weekend-name">${r.name}</div>
+          <div class="weekend-course">${r.course}競馬場</div>
+        </div>
+        <div class="weekend-grade wg-${cls}">${r.grade}</div>
+      </div>
+    `;
+  });
+
+  // 「来週末」のときラベル表示
+  if (label === '来週末') {
+    container.insertAdjacentHTML('beforebegin',
+      '<div style="text-align:center; font-size:12px; color:var(--gray); margin-bottom:10px; letter-spacing:1px;">※今週末の重賞はないので来週末を表示</div>'
+    );
+  }
+
+  container.innerHTML = html;
+})();
 </script>
 </body>
 </html>
