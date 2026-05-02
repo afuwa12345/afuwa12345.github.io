@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2e1f">
+<link rel="icon" href="favicon.ico">
+<meta charset="UTF-8">
+<meta name="description" content="競馬の回収率や馬券の点数を簡単に計算できる無料ツールサイト。初心者でも使いやすいアフロホースの競馬サポートツールです。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AFRO Horse｜競馬ツール＆予想サイト</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949"
+   crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --turf: #1a4731;
+  --turf-deep: #0e2e1f;
+  --turf-light: #2d6b4a;
+  --turf-bright: #4ca57a;
+  --cream: #f8f1de;
+  --cream-deep: #ede0bd;
+  --cream-soft: #fcf7e8;
+  --gold: #c8941d;
+  --gold-light: #e8b952;
+  --gold-glow: #ffd86d;
+  --red: #c5292a;
+  --red-deep: #8b1b1b;
+  --text: #2a2419;
+  --text-soft: #5a4f3d;
+  --gray: #7a6e5a;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior: smooth; }
+body {
+  background:
+    linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Subtle grain on cream */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 0 20px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(14, 46, 31, 0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 2px solid var(--gold);
+  transition: transform 0.3s;
+  box-shadow: 0 2px 12px rgba(14,46,31,0.2);
+}
+.nav-logo {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--cream);
+}
+.nav-logo em {
+  font-style: normal;
+  color: var(--gold-light);
+}
+
+.hamburger {
+  width: 40px; height: 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-end;
+  gap: 6px; cursor: pointer;
+}
+.hamburger span {
+  display: block; height: 3px;
+  background: var(--cream); border-radius: 2px;
+  transition: all 0.4s;
+}
+.hamburger span:nth-child(1) { width: 24px; }
+.hamburger span:nth-child(2) { width: 16px; background: var(--gold-light); }
+.hamburger span:nth-child(3) { width: 20px; background: var(--red); }
+.hamburger.open span:nth-child(1) { width: 22px; transform: translateY(8.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { width: 0; opacity: 0; }
+.hamburger.open span:nth-child(3) { width: 22px; transform: translateY(-8.5px) rotate(-45deg); background: var(--cream); }
+
+/* MENU */
+.menu-overlay {
+  position: fixed; inset: 0;
+  background: rgba(14, 46, 31, 0.98);
+  backdrop-filter: blur(20px);
+  z-index: 150;
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  gap: 22px; padding: 40px;
+}
+.menu-overlay.open { transform: translateY(0); }
+.menu-overlay a {
+  color: var(--cream); text-decoration: none;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 24px; letter-spacing: 3px;
+  transition: color 0.2s, transform 0.2s;
+}
+.menu-overlay a:active {
+  color: var(--gold-light);
+  transform: scale(1.08);
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 480px;
+  padding: 80px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 30%, var(--turf-light) 0%, var(--turf) 50%, var(--turf-deep) 100%);
+  color: var(--cream);
+  border-bottom: 6px solid var(--gold);
+  margin-bottom: -10px;
+}
+
+/* Stadium light specks */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 15% 20%, rgba(255,216,109,0.5), transparent),
+    radial-gradient(2px 2px at 85% 30%, rgba(255,216,109,0.4), transparent),
+    radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 25% 80%, rgba(255,216,109,0.4), transparent),
+    radial-gradient(2px 2px at 75% 75%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 60% 15%, rgba(255,216,109,0.4), transparent);
+  pointer-events: none;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.5; } 50% { opacity: 0.95; } }
+
+/* big background text */
+.hero::after {
+  content: 'AFRO HORSE';
+  position: absolute;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 220px;
+  color: rgba(255,216,109,0.05);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  letter-spacing: 14px;
+  pointer-events: none;
+}
+
+/* Logo */
+.logo-img-wrap {
+  position: relative;
+  width: 240px; height: 240px;
+  display: flex;
+  align-items: center; justify-content: center;
+  margin-bottom: 8px;
+  z-index: 2;
+}
+.logo-img-wrap img {
+  width: 220px; max-width: 60vw;
+  filter: drop-shadow(0 8px 24px rgba(255,216,109,0.5)) drop-shadow(0 0 20px rgba(0,0,0,0.4));
+  animation: float 3s ease-in-out infinite;
+  position: relative;
+  z-index: 3;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.logo-ring {
+  position: absolute;
+  width: 100%; height: 100%;
+  border: 2px solid rgba(255,216,109,0.5);
+  border-radius: 50%;
+  top: 0; left: 0;
+  animation: ringPulse 3s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%,100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 0.2; }
+}
+.logo-ring2 {
+  position: absolute;
+  width: 90%; height: 90%;
+  border: 1px dashed rgba(255,255,255,0.4);
+  border-radius: 50%;
+  top: 5%; left: 5%;
+  animation: ringRotate 14s linear infinite;
+}
+@keyframes ringRotate { to { transform: rotate(360deg); } }
+.logo-glow {
+  position: absolute;
+  width: 90%; height: 90%;
+  border-radius: 50%;
+  top: 5%; left: 5%;
+  background: radial-gradient(circle, rgba(255,216,109,0.35) 0%, transparent 70%);
+  animation: glowPulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes glowPulse { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+
+.hero-eye {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px; letter-spacing: 6px;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+  position: relative; z-index: 1;
+  text-shadow: 0 0 12px rgba(255,216,109,0.5);
+}
+.hero-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: clamp(36px, 11vw, 64px);
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0 auto 14px;
+  position: relative; z-index: 1;
+  color: var(--cream);
+  text-shadow:
+    0 4px 0 rgba(0,0,0,0.3),
+    0 0 24px rgba(255,216,109,0.3);
+  max-width: 100%;
+  white-space: nowrap;
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--gold-light);
+  text-shadow:
+    0 4px 0 rgba(0,0,0,0.3),
+    0 0 24px rgba(255,216,109,0.6);
+}
+.hero-sub {
+  color: rgba(248,241,222,0.85);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  line-height: 1.7;
+  position: relative; z-index: 1;
+  font-weight: 700;
+}
+
+/* Decorative wave at bottom of hero */
+.hero-wave {
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 30px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 16px;
+}
+.sec-label {
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+}
+.sec-label-en {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.sec-label-ja {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px;
+  color: var(--turf-deep);
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.sec-label-ja::before, .sec-label-ja::after {
+  content: '';
+  width: 30px;
+  height: 2px;
+  background: var(--turf);
+  border-radius: 1px;
+}
+
+/* ===== MAIN GRID ===== */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.main-card {
+  position: relative;
+  background: var(--cream-soft);
+  border: 2px solid var(--turf);
+  border-radius: 14px;
+  padding: 18px 14px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.2s;
+  box-shadow:
+    0 4px 0 var(--turf-deep),
+    0 6px 14px rgba(14,46,31,0.15);
+}
+.main-card:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 1px 0 var(--turf-deep),
+    0 2px 6px rgba(14,46,31,0.15);
+}
+.main-card:hover {
+  box-shadow:
+    0 6px 0 var(--turf-deep),
+    0 10px 20px rgba(14,46,31,0.2);
+}
+
+/* Square cards (CHARA / TOOLS) */
+.main-card.square {
+  aspect-ratio: 1;
+  display: block; padding: 0;
+  position: relative;
+}
+.main-card-chara {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 14px 14px 60px;
+  filter: drop-shadow(0 4px 8px rgba(14,46,31,0.2));
+  transition: transform 0.3s;
+}
+.main-card.square:hover .main-card-chara {
+  transform: scale(1.06);
+}
+.main-card-info {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 10px 12px 12px;
+  text-align: center;
+  background: linear-gradient(180deg, transparent 0%, var(--turf-deep) 50%, var(--turf-deep) 100%);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.main-card-en {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: var(--gold-light);
+  margin-bottom: 1px;
+  line-height: 1;
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 0 12px rgba(255,216,109,0.4);
+}
+.main-card-ja {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 13px;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+  color: var(--cream);
+}
+.main-card-arrow {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  color: rgba(248,241,222,0.6);
+  letter-spacing: 2px;
+}
+
+/* HUB cards */
+.hub-card {
+  grid-column: span 2;
+  padding: 18px 16px;
+  cursor: default;
+}
+
+/* Same green border style for both hubs but different accent */
+.hub-card.hub-pred {
+  background: var(--cream-soft);
+  border: 2px solid var(--red);
+  box-shadow:
+    0 4px 0 var(--red-deep),
+    0 6px 14px rgba(139,27,27,0.15);
+}
+.hub-card.hub-pred:hover {
+  box-shadow:
+    0 6px 0 var(--red-deep),
+    0 10px 20px rgba(139,27,27,0.2);
+}
+
+.hub-card.hub-games {
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2px solid var(--gold);
+  box-shadow:
+    0 4px 0 #8a6411,
+    0 6px 14px rgba(200,148,29,0.18);
+}
+.hub-card.hub-games:hover {
+  box-shadow:
+    0 6px 0 #8a6411,
+    0 10px 20px rgba(200,148,29,0.25);
+}
+
+.hub-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.hub-icon {
+  width: 64px; height: 64px;
+  object-fit: contain;
+  flex-shrink: 0;
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(14,46,31,0.25));
+}
+.hub-titles { flex: 1; }
+.hub-en {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 24px;
+  letter-spacing: 3px;
+  line-height: 1;
+}
+.hub-card.hub-pred .hub-en {
+  color: var(--red);
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 0 12px rgba(197,41,42,0.2);
+}
+.hub-card.hub-games .hub-en {
+  color: var(--gold);
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 0 12px rgba(200,148,29,0.3);
+}
+.hub-ja {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  margin-top: 4px;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+
+.hub-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.hub-link {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 14px 10px;
+  background: var(--turf-deep);
+  border: 2px solid var(--turf);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--cream);
+  transition: transform 0.15s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.hub-link:active { transform: scale(0.96); }
+.hub-card.hub-pred .hub-link {
+  border-color: var(--red);
+  background: var(--turf-deep);
+}
+.hub-card.hub-pred .hub-link:hover {
+  background: var(--red-deep);
+}
+.hub-card.hub-games .hub-link {
+  border-color: var(--gold);
+  background: var(--turf-deep);
+}
+.hub-card.hub-games .hub-link:hover {
+  background: #6b5210;
+}
+
+.hub-link-icon { font-size: 26px; margin-bottom: 6px; }
+.hub-link-name {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: var(--cream);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.hub-link-tag {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 2px 8px 1px;
+  border-radius: 3px;
+}
+.hub-card.hub-pred .hub-link-tag {
+  color: var(--cream);
+  background: var(--red);
+  border: 1px solid var(--cream);
+}
+.hub-card.hub-games .hub-link-tag {
+  color: var(--turf-deep);
+  background: var(--gold-light);
+  border: 1px solid var(--gold);
+}
+
+/* ===== AFRO YOSO ===== */
+.afro-yoso {
+  background: var(--cream-soft);
+  border: 2px solid var(--red);
+  border-radius: 14px;
+  padding: 24px 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 4px 0 var(--red-deep),
+    0 8px 20px rgba(139,27,27,0.15);
+}
+.afro-yoso::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
+}
+.afro-yoso-header {
+  display: flex; align-items: center;
+  gap: 14px; margin-bottom: 14px;
+  margin-top: 4px;
+}
+.afro-yoso-img {
+  width: 64px; height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(139,27,27,0.3));
+  animation: float 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.afro-yoso-titles { flex: 1; }
+.afro-yoso-eye {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px; letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 2px;
+  font-weight: 700;
+}
+.afro-yoso-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 19px;
+  letter-spacing: 1px;
+  color: var(--text);
+  line-height: 1.3;
+}
+.afro-yoso-title em {
+  font-style: normal;
+  color: var(--red);
+}
+.afro-yoso-desc {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+.afro-yoso-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.afro-yoso-btn {
+  position: relative;
+  padding: 14px 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 900;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: transform 0.1s, box-shadow 0.2s;
+  overflow: hidden;
+  line-height: 1.3;
+}
+.afro-yoso-btn:active { transform: translateY(2px); }
+.afro-yoso-btn.primary {
+  background: linear-gradient(135deg, var(--red), var(--red-deep));
+  color: var(--cream);
+  box-shadow:
+    0 4px 0 var(--red-deep),
+    0 6px 14px rgba(197,41,42,0.4);
+  border: 2px solid var(--gold);
+}
+.afro-yoso-btn.primary:active {
+  box-shadow:
+    0 1px 0 var(--red-deep),
+    0 2px 6px rgba(197,41,42,0.3);
+}
+.afro-yoso-btn.primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,216,109,0.4), transparent);
+  animation: btnShine 2.5s ease-in-out infinite;
+}
+@keyframes btnShine { 0%,100% { left: -100%; } 50% { left: 200%; } }
+.afro-yoso-btn.sub {
+  background: var(--cream);
+  border: 2px solid var(--turf);
+  color: var(--turf-deep);
+  box-shadow:
+    0 4px 0 var(--turf),
+    0 6px 14px rgba(14,46,31,0.15);
+}
+.afro-yoso-btn.sub:active {
+  box-shadow:
+    0 1px 0 var(--turf),
+    0 2px 6px rgba(14,46,31,0.1);
+}
+.afro-yoso-btn-en {
+  display: block;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  opacity: 0.85;
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+/* ===== THIS WEEK PICK ===== */
+.pred-detail {
+  background: var(--cream-soft);
+  border: 2px solid var(--turf);
+  border-radius: 14px;
+  padding: 22px 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 4px 0 var(--turf-deep),
+    0 6px 14px rgba(14,46,31,0.12);
+}
+.pred-detail::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--turf), var(--gold), var(--turf));
+}
+.pred-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pred-header-text {
+  flex: 1;
+  min-width: 0;
+}
+.pred-header-img {
+  width: 90px;
+  height: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 3px 6px rgba(14,46,31,0.20));
+  margin-bottom: 4px;
+}
+.pred-eye {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 4px;
+  margin-top: 4px;
+  font-weight: 700;
+}
+.pred-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+.pred-date {
+  color: var(--gray);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+  font-family: 'Bebas Neue', cursive;
+}
+.pred-list {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.rec-horse-item {
+  display: flex; align-items: center;
+  gap: 10px; padding: 10px 12px;
+  background: var(--cream);
+  border-radius: 8px;
+  border-left: 4px solid var(--red);
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 700;
+}
+.rec-hon {
+  color: var(--red);
+  font-size: 1.2rem;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+.rec-date {
+  color: var(--gray);
+  font-size: 0.65rem;
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 0.5px;
+  min-width: 38px;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.rec-race {
+  color: var(--gray);
+  font-size: 0.7rem;
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 1px;
+  min-width: 60px;
+}
+.rec-name {
+  flex: 1;
+  font-weight: 700;
+}
+
+/* ===== MORE ===== */
+.more-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.more-card {
+  background: var(--cream-soft);
+  border: 2px solid var(--turf);
+  border-radius: 12px;
+  padding: 16px 8px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  transition: transform 0.15s;
+  box-shadow: 0 3px 0 var(--turf-deep);
+}
+.more-card:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--turf-deep);
+}
+.more-icon { font-size: 24px; }
+.more-name {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--turf-deep);
+}
+.more-ja {
+  font-size: 10px;
+  color: var(--text-soft);
+  font-weight: 700;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 40px 20px 30px;
+  background: var(--turf-deep);
+  color: rgba(248,241,222,0.7);
+  font-size: 0.7rem;
+  margin-top: 30px;
+  border-top: 6px solid var(--gold);
+}
+.footer-logo {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--cream);
+  margin-bottom: 6px;
+}
+.footer-logo em {
+  font-style: normal;
+  color: var(--gold-light);
+}
+.footer-tag {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  color: var(--gold-light);
+  margin-bottom: 14px;
+}
+.footer-links {
+  display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 14px;
+  margin-bottom: 14px;
+}
+.footer-links a {
+  color: rgba(248,241,222,0.7);
+  text-decoration: none;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+}
+.footer-links a:hover { color: var(--gold-light); }
+
+  }
+}
+
+/* ===== 今週末の重賞 ===== */
+.weekend-races-section { padding-top: 30px; }
+.weekend-races {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.weekend-empty {
+  background: var(--cream-soft, #fcf7e8);
+  border: 2px dashed var(--turf-light, #2d6b4a);
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--text-soft, #5a4f3d);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.weekend-loading {
+  text-align: center;
+  color: var(--gray, #7a6e5a);
+  font-size: 13px;
+  padding: 20px;
+}
+.weekend-card {
+  background: var(--cream-soft, #fcf7e8);
+  border: 2px solid var(--turf, #1a4731);
+  border-left: 6px solid var(--turf, #1a4731);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: auto 64px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  box-shadow: 0 3px 0 var(--turf-deep, #0e2e1f), 0 5px 10px rgba(14,46,31,0.10);
+  transition: transform 0.2s;
+}
+.weekend-card:hover {
+  transform: translateY(-2px);
+}
+.weekend-card.g1-card {
+  border-left-color: var(--red, #c5292a);
+  background: linear-gradient(90deg, rgba(197,41,42,0.10) 0%, var(--cream-soft, #fcf7e8) 35%);
+}
+.weekend-card.g2-card {
+  border-left-color: var(--gold, #c8941d);
+}
+.weekend-jockey {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  background: rgba(255,255,255,0.5);
+  border-radius: 8px;
+  border: 1.5px solid var(--gold, #c8941d);
+  padding: 2px;
+}
+.weekend-date {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--turf-deep, #0e2e1f);
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: center;
+  line-height: 1.2;
+}
+.weekend-date small {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--gray, #7a6e5a);
+  font-weight: 700;
+}
+.weekend-info { min-width: 0; }
+.weekend-name {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text, #2a2419);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+.weekend-card.g1-card .weekend-name {
+  color: var(--red-deep, #8b1b1b);
+  font-size: 17px;
+}
+.weekend-course {
+  font-size: 11px;
+  color: var(--text-soft, #5a4f3d);
+  font-weight: 500;
+}
+.weekend-grade {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  padding: 6px 11px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.wg-g1 { background: var(--red-deep, #8b1b1b); color: var(--cream, #f8f1de); }
+.wg-g2 { background: var(--gold, #c8941d); color: var(--turf-deep, #0e2e1f); }
+.wg-g3 { background: var(--turf-light, #2d6b4a); color: var(--cream, #f8f1de); }
+.wg-jg { background: var(--text, #2a2419); color: var(--cream, #f8f1de); }
+
+.weekend-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+.weekend-more {
+  display: inline-block;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--turf-deep, #0e2e1f);
+  text-decoration: none;
+  background: var(--cream-soft, #fcf7e8);
+  border: 2px solid var(--turf, #1a4731);
+  border-radius: 25px;
+  padding: 8px 18px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.weekend-more:hover {
+  background: var(--turf, #1a4731);
+  color: var(--cream, #f8f1de);
+}
+
+@media (max-width: 600px) {
+  .weekend-card {
+    padding: 10px 12px;
+    gap: 8px;
+    grid-template-columns: auto 50px 1fr auto;
+  }
+  .weekend-jockey { width: 50px; height: 50px; }
+  .weekend-name { font-size: 13px; }
+  .weekend-card.g1-card .weekend-name { font-size: 14px; }
+  .weekend-date { font-size: 13px; }
+  .weekend-grade { font-size: 10px; padding: 4px 7px; }
+  .weekend-course { font-size: 10px; }
+}
+</style>
+
+<script src="week_data.js"></script>
+<script src="race-data.js"></script>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-logo">AFRO<em>Horse</em></div>
+  <div class="hamburger" id="ham" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay">
+  <a href="afrohorse_characters.html" onclick="toggleMenu()">CHARACTERS</a>
+  <a href="#prediction" onclick="toggleMenu()">PREDICTION</a>
+  <a href="tools.html" onclick="toggleMenu()">TOOLS</a>
+  <a href="#games" onclick="toggleMenu()">GAMES</a>
+  <a href="#goods" onclick="toggleMenu()">GOODS</a>
+  <a href="#linestamp" onclick="toggleMenu()">LINE STAMP</a>
+  <a href="#follow" onclick="toggleMenu()">SNS</a>
+</div>
+
+<section class="hero">
+  <div class="logo-img-wrap">
+    <div class="logo-glow"></div>
+    <div class="logo-ring"></div>
+    <div class="logo-ring2"></div>
+    <img src="images/logo.png" alt="AFRO Horse Logo">
+  </div>
+  <div class="hero-eye">EST. 2025</div>
+  <h1 class="hero-title">AFRO<em>HORSE</em></h1>
+  <p class="hero-sub">競馬予想 × アフロスタイル<br>完全無料の競馬ツールサイト</p>
+</section>
+
+<!-- ===== 今週末の重賞（自動更新） ===== -->
+<section class="section weekend-races-section">
+  <div class="sec-label">
+    <div class="sec-label-en">THIS WEEKEND'S RACES</div>
+    <div class="sec-label-ja">今週末の重賞</div>
+  </div>
+  <div id="weekend-races-container" class="weekend-races">
+    <div class="weekend-loading">読み込み中...</div>
+  </div>
+  <div class="weekend-footer">
+    <a href="schedule.html" class="weekend-more">▶ 年間スケジュールを見る</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sec-label">
+    <div class="sec-label-en">MAIN CONTENTS</div>
+    <div class="sec-label-ja">主な内容</div>
+  </div>
+  <div class="main-grid">
+
+    <a href="afrohorse_characters.html" class="main-card square">
+      <img class="main-card-chara" src="images/index/afuwa_buruma.png" alt="キャラクター">
+      <div class="main-card-info">
+        <div class="main-card-en">CHARACTERS</div>
+        <div class="main-card-ja">キャラクター</div>
+        <div class="main-card-arrow">VIEW →</div>
+      </div>
+    </a>
+
+    <a href="tools.html" class="main-card square">
+      <img class="main-card-chara" src="images/index/ginma1.png" alt="ギンマ">
+      <div class="main-card-info">
+        <div class="main-card-en">TOOLS</div>
+        <div class="main-card-ja">ツール</div>
+        <div class="main-card-arrow">USE →</div>
+      </div>
+    </a>
+
+    <div class="main-card hub-card hub-pred" id="prediction">
+      <div class="hub-header">
+        <img class="hub-icon" src="images/index/chafuwa1.png" alt="チャフワ">
+        <div class="hub-titles">
+          <div class="hub-en">PREDICTION</div>
+          <div class="hub-ja">予想</div>
+        </div>
+      </div>
+      <div class="hub-list">
+        <a href="#afro-yoso" class="hub-link">
+          <div class="hub-link-icon">🏇</div>
+          <div class="hub-link-name">アフロ馬<br>予想</div>
+          <div class="hub-link-tag">YOSO</div>
+        </a>
+        <a href="#thisweek-pick" class="hub-link">
+          <div class="hub-link-icon">⭐</div>
+          <div class="hub-link-name">今週の<br>ピック</div>
+          <div class="hub-link-tag">THIS WEEK</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="main-card hub-card hub-games" id="games">
+      <div class="hub-header">
+        <img class="hub-icon" src="images/index/kurofuwa1.png" alt="クロフワ">
+        <div class="hub-titles">
+          <div class="hub-en">GAMES</div>
+          <div class="hub-ja">遊び場</div>
+        </div>
+      </div>
+      <div class="hub-list">
+        <a href="afrohorse_chara_battle.html" class="hub-link">
+          <div class="hub-link-icon">⚔️</div>
+          <div class="hub-link-name">アフロ馬<br>バトル</div>
+          <div class="hub-link-tag">BATTLE</div>
+        </a>
+        <a href="korogashi.html" class="hub-link">
+          <div class="hub-link-icon">🎲</div>
+          <div class="hub-link-name">ブルマの<br>複勝転がし</div>
+          <div class="hub-link-tag">KOROGASHI</div>
+        </a>
+        <a href="afuwa_quiz.html" class="hub-link">
+          <div class="hub-link-icon">🐴</div>
+          <div class="hub-link-name">アフワの<br>馬Quiz</div>
+          <div class="hub-link-tag">QUIZ</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="afro-yoso">
+  <div class="sec-label">
+    <div class="sec-label-en">AFRO HORSE PREDICTION</div>
+    <div class="sec-label-ja">今週の予想</div>
+  </div>
+  <div class="afro-yoso">
+    <div class="afro-yoso-header">
+      <img class="afro-yoso-img" src="images/index/afuwa1.png" alt="アフワ">
+      <div class="afro-yoso-titles">
+        <div class="afro-yoso-eye">★ THIS WEEK</div>
+        <div class="afro-yoso-title">アフロ馬の<br><em>今週の予想</em></div>
+      </div>
+    </div>
+    <div class="afro-yoso-desc">
+      アフロホースの本命はこれだ！<br>
+      全力で選んだ渾身の一本と、過去の成績をチェック🔥
+    </div>
+    <div class="afro-yoso-btns">
+      <a href="yoso.html" class="afro-yoso-btn primary">
+        <span class="afro-yoso-btn-en">YOSO</span>
+        予想を見る →
+      </a>
+      <a href="afrohorse_seiseki.html" class="afro-yoso-btn sub">
+        <span class="afro-yoso-btn-en">RESULTS</span>
+        過去の結果 →
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="thisweek-pick">
+  <div class="sec-label">
+    <div class="sec-label-en">THIS WEEK'S PICK</div>
+    <div class="sec-label-ja">今週のピック</div>
+  </div>
+  <div class="pred-detail">
+    <div class="pred-header">
+      <div class="pred-header-text">
+        <div class="pred-eye">⭐ GBM RECOMMEND</div>
+        <div class="pred-title">今週の推奨馬</div>
+        <div class="pred-date" id="analysis-date">読み込み中...</div>
+      </div>
+      <img class="pred-header-img" src="images/kuro_gin_cya.png" alt="">
+    </div>
+    <div class="pred-list" id="rec-list">
+      <div style="color:var(--gray);font-size:.8rem;padding:8px 0;">データ読み込み中...</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  if(typeof WEEK_DATA === 'undefined') return;
+  const d = WEEK_DATA;
+  const dateEl = document.getElementById('analysis-date');
+  if(dateEl) dateEl.textContent = d.dates ? d.dates.join(' · ') : '';
+  const recList = document.getElementById('rec-list');
+  if(d.recommendations && d.recommendations.length > 0){
+    recList.innerHTML = d.recommendations.slice(0,5).map(r => {
+      const dateVal = r.date_label || r.date || '';
+      const dateStr = dateVal ? `<span class="rec-date">${dateVal}</span>` : '';
+      return `<div class="rec-horse-item">
+        <div class="rec-hon">◎</div>
+        ${dateStr}
+        <span class="rec-race">${r.place} ${r.r}R</span>
+        <span class="rec-name">${r.name}</span>
+      </div>`;
+    }).join('');
+  } else {
+    recList.innerHTML = '<div style="color:var(--gray);font-size:.8rem;padding:8px 0;">今週の推奨馬はありません</div>';
+  }
+})();
+</script>
+
+<section class="section">
+  <div class="sec-label">
+    <div class="sec-label-en">MORE</div>
+    <div class="sec-label-ja">その他</div>
+  </div>
+  <div class="more-grid">
+    <a href="https://suzuri.jp/AFUWA" class="more-card" id="goods" target="_blank" rel="noopener">
+      <div class="more-icon">🛒</div>
+      <div class="more-name">GOODS</div>
+      <div class="more-ja">グッズ</div>
+    </a>
+    <a href="https://store.line.me/stickershop/author/5824338/ja" class="more-card" id="linestamp" target="_blank" rel="noopener">
+      <div class="more-icon">💬</div>
+      <div class="more-name">LINE</div>
+      <div class="more-ja">スタンプ</div>
+    </a>
+    <a href="https://x.com/AFUWA12345" class="more-card" id="follow" target="_blank" rel="noopener">
+      <div class="more-icon">📱</div>
+      <div class="more-name">FOLLOW</div>
+      <div class="more-ja">SNS</div>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-logo">AFRO<em>Horse</em></div>
+  <div class="footer-tag">WIN WITH STYLE</div>
+  <div class="footer-links">
+    <a href="afrohorse_characters.html">キャラクター</a>
+    <a href="#prediction">予想</a>
+    <a href="tools.html">ツール</a>
+    <a href="#games">GAMES</a>
+    <a href="about.html">運営者情報</a>
+    <a href="contact.html">お問い合わせ</a>
+    <a href="privacy.html">プライバシーポリシー</a>
+    <a href="terms.html">利用規約</a>
+    <a href="disclaimer.html">免責事項</a>
+  </div>
+  <p class="footer-copy">© 2026 AFRO Horse. All rights reserved.</p>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('menuOverlay').classList.toggle('open');
+  document.body.style.overflow = document.getElementById('menuOverlay').classList.contains('open') ? 'hidden' : '';
+}
+let lastY = 0;
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.style.transform = (y > lastY && y > 80) ? 'translateY(-100%)' : 'translateY(0)';
+  nav.style.transition = 'transform 0.3s';
+  lastY = y;
+}, {passive:true});
+</script>
+
+<!-- ===== 今週末の重賞 自動表示 ===== -->
+<script>
+(function(){
+  if (typeof RACE_DATA === 'undefined') return;
+
+  const container = document.getElementById('weekend-races-container');
+  if (!container) return;
+
+  // 6体のキャラクター画像
+  const JOCKEY_IMAGES = [
+    'images/index/afuwa2.png',
+    'images/index/yancha2.png',
+    'images/index/buruma2.png',
+    'images/index/chafuwa2.png',
+    'images/index/kurofuwa2.png',
+    'images/index/ginma2.png'
+  ];
+  const JOCKEY_NAMES = ['アフワ','やんちゃアフワ','ブルマ','チャフワ','クロフワ','ギンマ'];
+
+  // 年初からの週番号
+  function getWeekNumber() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 1);
+    const diff = (now - start) / (1000 * 60 * 60 * 24);
+    return Math.floor(diff / 7);
+  }
+
+  // 今週末＋来週末（次の重賞があるまで）を取得
+  let races = getThisWeekendRaces();
+  let label = '今週末';
+
+  // 今週末になければ来週末
+  if (races.length === 0) {
+    races = getNextWeekendRaces();
+    label = '来週末';
+  }
+
+  if (races.length === 0) {
+    container.innerHTML = '<div class="weekend-empty">直近の重賞情報はありません。<br>年間スケジュールから今後のレースをチェック！</div>';
+    return;
+  }
+
+  // グレード判定
+  function gradeClass(grade) {
+    if (grade.includes('Ⅰ') && grade.includes('J')) return 'jg';
+    if (grade.includes('Ⅰ')) return 'g1';
+    if (grade.includes('Ⅱ')) return 'g2';
+    if (grade.includes('Ⅲ')) return 'g3';
+    return 'g3';
+  }
+
+  // 日付ソート
+  races.sort((a, b) => a.date.localeCompare(b.date));
+
+  // 週番号でローテのオフセットを決定（毎週キャラの並び順がズレる）
+  const weekOffset = getWeekNumber();
+
+  let html = '';
+  races.forEach((r, i) => {
+    const cls = gradeClass(r.grade);
+    const cardCls = (cls === 'g1' || cls === 'jg') ? 'g1-card' : (cls === 'g2' ? 'g2-card' : '');
+    const d = new Date(r.date);
+    const md = (d.getMonth()+1) + '/' + d.getDate();
+    const w = ['日','月','火','水','木','金','土'][d.getDay()];
+
+    // レースインデックス + 週オフセット で6人を割り当て（毎週変わる）
+    const jockeyIdx = (i + weekOffset) % 6;
+    const jockeyImg = JOCKEY_IMAGES[jockeyIdx];
+    const jockeyName = JOCKEY_NAMES[jockeyIdx];
+
+    html += `
+      <div class="weekend-card ${cardCls}">
+        <div class="weekend-date">${md}<small>${w}曜</small></div>
+        <img class="weekend-jockey" src="${jockeyImg}" alt="${jockeyName}">
+        <div class="weekend-info">
+          <div class="weekend-name">${r.name}</div>
+          <div class="weekend-course">${r.course}競馬場</div>
+        </div>
+        <div class="weekend-grade wg-${cls}">${r.grade}</div>
+      </div>
+    `;
+  });
+
+  // 「来週末」のときラベル表示
+  if (label === '来週末') {
+    container.insertAdjacentHTML('beforebegin',
+      '<div style="text-align:center; font-size:12px; color:var(--gray); margin-bottom:10px; letter-spacing:1px;">※今週末の重賞はないので来週末を表示</div>'
+    );
+  }
+
+  container.innerHTML = html;
+})();
+</script>
+</body>
+</html>
