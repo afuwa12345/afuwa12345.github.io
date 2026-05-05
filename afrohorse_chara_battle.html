@@ -1044,7 +1044,7 @@ function renderDetail(stats, focusId) {
     const c = chars[id]; const s = stats[id];
     const balStr = s.totalBalance>=0 ? `+${s.totalBalance.toLocaleString()}` : s.totalBalance.toLocaleString();
     const balClass = s.totalBalance>0?'plus':s.totalBalance<0?'minus':'zero';
-    const rows = s.weeks.map(w => {
+    const rows = [...s.weeks].reverse().map(w => {
       const aiteStr = (w.aite && w.aite.length>0) ? `<div class="week-aite">相手: ${w.aite.join('・')}</div>` : '';
       const betStr = w.bet ? `<div class="week-bet">${w.bet}</div>` : '';
       return `

@@ -1,5 +1,5 @@
 // キャラ対決成績データ（自動更新）
-// 最終更新: 2026/05/05 22:09
+// 最終更新: 2026/05/05 22:14
 
 const CHARA_DATA = {
   "season": 2026,
@@ -9,37 +9,37 @@ const CHARA_DATA = {
       "name": "アフワ",
       "img": "images/afuwa.png",
       "color": "#4A90E2",
-      "bet": "単勝500円＋複勝1500円"
+      "bet": "単勝500 + 複勝1500"
     },
     "yancha": {
       "name": "やんちゃ",
       "img": "images/yanchaahuwa.png",
       "color": "#FF1A1A",
-      "bet": "単勝2000円1点"
+      "bet": "単勝2000×1点"
     },
     "buruma": {
       "name": "ブルマ",
       "img": "images/buruma.png",
       "color": "#FF69B4",
-      "bet": "ワイド3頭BOX＋単勝200円"
+      "bet": "ワイド3頭BOX(3点×600) + 本命単勝200"
     },
     "chafuwa": {
       "name": "チャフワ",
       "img": "images/chahuwa.png",
       "color": "#F5A623",
-      "bet": "馬連3頭BOX＋単勝200円"
+      "bet": "馬連3頭BOX(3点×600) + 本命単勝200"
     },
     "kurofuwa": {
       "name": "クロフワ",
       "img": "images/kurohuwa.png",
       "color": "#9B59B6",
-      "bet": "三連複5頭BOX"
+      "bet": "三連複5頭BOX(10点×200)"
     },
     "ginma": {
       "name": "ギンマ",
       "img": "images/ginma.png",
       "color": "#2ECC71",
-      "bet": "馬単BOX＋三連単BOX＋単勝200円"
+      "bet": "馬単3頭BOX(3点×400) + 三連単3頭BOX(6点×100) + 本命単200"
     }
   },
   "weekly": [
@@ -52,7 +52,7 @@ const CHARA_DATA = {
           "date": "04/19",
           "horse": "マーゴットブロー",
           "aite": [],
-          "bet": "単勝500円＋複勝1500円",
+          "bet": "単勝500 + 複勝1500",
           "result": "○",
           "payout": 5300,
           "chaku": 1
@@ -62,7 +62,7 @@ const CHARA_DATA = {
           "date": "04/19",
           "horse": "スプリングドリーム",
           "aite": [],
-          "bet": "単勝2000円1点",
+          "bet": "単勝2000×1点",
           "result": "×",
           "payout": 0,
           "chaku": 9
@@ -75,7 +75,7 @@ const CHARA_DATA = {
             "ルクスキャンディ",
             "カトマンズゴールド"
           ],
-          "bet": "ワイド3頭BOX＋単勝200円",
+          "bet": "ワイド3頭BOX(3点×600) + 本命単勝200",
           "result": "×",
           "payout": 0,
           "chaku": 12
@@ -88,7 +88,7 @@ const CHARA_DATA = {
             "セントリアン",
             "クアロアランチ"
           ],
-          "bet": "馬連3頭BOX＋単勝200円",
+          "bet": "馬連3頭BOX(3点×600) + 本命単勝200",
           "result": "×",
           "payout": 0,
           "chaku": 3
@@ -103,7 +103,7 @@ const CHARA_DATA = {
             "レッドイステル",
             "メイショウカスガイ"
           ],
-          "bet": "三連複5頭BOX",
+          "bet": "三連複5頭BOX(10点×200)",
           "result": "×",
           "payout": 0,
           "chaku": 1
@@ -116,7 +116,7 @@ const CHARA_DATA = {
             "アドマイヤクワッズ",
             "ゾロアストロ"
           ],
-          "bet": "馬単BOX＋三連単BOX＋単勝200円",
+          "bet": "馬単3頭BOX(3点×400) + 三連単3頭BOX(6点×100) + 本命単200",
           "result": "×",
           "payout": 0,
           "chaku": 11
@@ -132,7 +132,7 @@ const CHARA_DATA = {
           "date": "04/26",
           "horse": "サレジオ",
           "aite": [],
-          "bet": "単勝500円＋複勝1500円",
+          "bet": "単勝500 + 複勝1500",
           "result": "○",
           "payout": 1650,
           "chaku": 3
@@ -142,7 +142,7 @@ const CHARA_DATA = {
           "date": "04/25",
           "horse": "クラリネットソナタ",
           "aite": [],
-          "bet": "単勝2000円1点",
+          "bet": "単勝2000×1点",
           "result": "×",
           "payout": 0,
           "chaku": 2
@@ -155,7 +155,7 @@ const CHARA_DATA = {
             "ブラックオリンピア",
             "ゴーイントゥスカイ"
           ],
-          "bet": "ワイド3頭BOX＋単勝200円",
+          "bet": "ワイド3頭BOX(3点×600) + 本命単勝200",
           "result": "○",
           "payout": 2130,
           "chaku": 5
@@ -168,7 +168,7 @@ const CHARA_DATA = {
             "ゴーイントゥスカイ",
             "テルヒコウ"
           ],
-          "bet": "馬連3頭BOX＋単勝200円",
+          "bet": "馬連3頭BOX(3点×600) + 本命単勝200",
           "result": "×",
           "payout": 0,
           "chaku": 3
@@ -183,7 +183,7 @@ const CHARA_DATA = {
             "レベルスルール",
             "アルゲンテウス"
           ],
-          "bet": "三連複5頭BOX",
+          "bet": "三連複5頭BOX(10点×200)",
           "result": "○",
           "payout": 760,
           "chaku": 1
@@ -196,7 +196,7 @@ const CHARA_DATA = {
             "フクオトコ",
             "シルバーアックス"
           ],
-          "bet": "馬単BOX＋三連単BOX＋単勝200円",
+          "bet": "馬単3頭BOX(3点×400) + 三連単3頭BOX(6点×100) + 本命単200",
           "result": "×",
           "payout": 0,
           "chaku": 4
