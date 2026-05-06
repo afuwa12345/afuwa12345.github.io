@@ -73,7 +73,7 @@ textarea{resize:vertical;min-height:50px}
 .cover-divider{width:60px;height:3px;background:var(--accent);margin:12px auto 12px}
 .cover-date{font-family:'Bebas Neue';color:var(--text-sub);font-size:14px;text-align:center;letter-spacing:2px;margin-bottom:12px}
 .cover-races{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-.cover-race-item{background:var(--bg2);padding:10px 14px;display:flex;align-items:center;gap:10px;border-left:4px solid var(--accent2)}
+.cover-race-item{background:var(--bg2);padding:7px 10px;display:flex;align-items:center;gap:9px;border-left:3px solid var(--accent2)}
 .cover-race-grade{display:inline-block;background:var(--accent);color:#fff;font-family:'Dela Gothic One';padding:3px 9px;font-size:11px;letter-spacing:1px;flex-shrink:0;min-width:36px;text-align:center}
 .cover-race-name{font-family:'Dela Gothic One',serif;font-size:18px;color:var(--text);line-height:1.1;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cover-chars{display:flex;justify-content:center;align-items:flex-end;gap:4px;margin:8px 0 10px}
@@ -105,7 +105,7 @@ textarea{resize:vertical;min-height:50px}
 .focus-sub{font-size:13px;color:var(--text-sub);text-align:center;margin-top:4px}
 .focus-divider{width:50px;height:3px;background:var(--accent);margin:10px auto 14px}
 .focus-list{display:flex;flex-direction:column;gap:10px;flex:1}
-.focus-item{background:var(--bg2);padding:14px 16px;border-left:4px solid var(--accent);position:relative}
+.focus-item{background:var(--bg2);padding:7px 10px;border-left:3px solid var(--accent);position:relative}
 .focus-race-tag{display:inline-block;background:var(--accent2);color:var(--bg);font-family:'Dela Gothic One';padding:3px 9px;font-size:11px;letter-spacing:1px;margin-right:6px}
 .focus-name{font-family:'Dela Gothic One',serif;font-size:20px;color:var(--text);line-height:1.2;display:inline}
 .focus-info{font-size:12px;color:var(--text-sub);margin-top:5px;font-weight:700}
@@ -608,6 +608,7 @@ async function downloadAll(){
   for(let i=0;i<slides.length;i++){
     const canvas = await html2canvas(slides[i],{
       width:540,height:540,scale:3,
+      windowWidth:540,windowHeight:540,
       backgroundColor:null,useCORS:true,allowTaint:true
     });
     const link = document.createElement('a');
