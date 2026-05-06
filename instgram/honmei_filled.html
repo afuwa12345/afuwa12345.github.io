@@ -605,24 +605,71 @@ ${racesContext}
 
 async function downloadAll(){
   const slides = document.querySelectorAll('.slide');
-  for(let i=0;i<slides.length;i++){
-    const el = slides[i];
-    const canvas = await html2canvas(el,{
-      width:540,height:540,scale:2,
-      x:0,y:0,
-      backgroundColor:null,useCORS:true,allowTaint:true,
-      removeContainer:true
+  if(slides.length === 0) return;
+
+  // キャラ画像を事前にプリロード
+  const charNames = ['afuwa1.png','ginma1.png','kurofuwa1.png','chafuwa1.png','buruma1.png','yanchaahuwa1.png'];
+  await Promise.all(charNames.map(n => new Promise(resolve => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = resolve;
+    img.onerror = resolve;
+    img.src = './Images/' + n + '?t=' + Date.now();
+  })));
+
+  // 1. 全スライドの実寸を測って最大サイズを取得
+  let maxW = 0, maxH = 0;
+  slides.forEach(s => {
+    const r = s.getBoundingClientRect();
+    maxW = Math.max(maxW, Math.round(r.width));
+    maxH = Math.max(maxH, Math.round(r.height));
+  });
+
+  // 2. 各スライドのスタイルを一時保存して最大サイズに揃える
+  const original = [];
+  slides.forEach(s => {
+    original.push({
+      el: s,
+      height: s.style.height,
+      minHeight: s.style.minHeight,
+      width: s.style.width,
+      minWidth: s.style.minWidth
     });
-    // 念のため、強制的に正方形でcropする
-    const out = document.createElement('canvas');
-    out.width = 1080; out.height = 1080;
-    const ctx = out.getContext('2d');
-    ctx.drawImage(canvas, 0, 0, 1080, 1080);
-    const link = document.createElement('a');
-    link.download = `afro_honmei_${currentTheme}_${String(i+1).padStart(2,'0')}.png`;
-    link.href = out.toDataURL('image/png');
-    link.click();
-    await new Promise(r=>setTimeout(r,500));
+    s.style.height = maxH + 'px';
+    s.style.minHeight = maxH + 'px';
+    s.style.width = maxW + 'px';
+    s.style.minWidth = maxW + 'px';
+  });
+
+  await new Promise(r => setTimeout(r, 150));
+
+  try {
+    for(let i=0;i<slides.length;i++){
+      const canvas = await html2canvas(slides[i], {
+        width: maxW,
+        height: maxH,
+        scale: 3,
+        backgroundColor: null,
+        useCORS: true,
+        windowWidth: maxW,
+        windowHeight: maxH,
+        letterRendering: true,
+        imageTimeout: 0,
+        logging: false
+      });
+      const link = document.createElement('a');
+      link.download = `afro_honmei_${currentTheme}_${String(i+1).padStart(2,'0')}.png`;
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.click();
+      await new Promise(r=>setTimeout(r,500));
+    }
+  } finally {
+    original.forEach(o => {
+      o.el.style.height = o.height;
+      o.el.style.minHeight = o.minHeight;
+      o.el.style.width = o.width;
+      o.el.style.minWidth = o.minWidth;
+    });
   }
 }
 
