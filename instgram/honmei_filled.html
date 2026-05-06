@@ -606,14 +606,21 @@ ${racesContext}
 async function downloadAll(){
   const slides = document.querySelectorAll('.slide');
   for(let i=0;i<slides.length;i++){
-    const canvas = await html2canvas(slides[i],{
-      width:540,height:540,scale:3,
-      windowWidth:540,windowHeight:540,
-      backgroundColor:null,useCORS:true,allowTaint:true
+    const el = slides[i];
+    const canvas = await html2canvas(el,{
+      width:540,height:540,scale:2,
+      x:0,y:0,
+      backgroundColor:null,useCORS:true,allowTaint:true,
+      removeContainer:true
     });
+    // 念のため、強制的に正方形でcropする
+    const out = document.createElement('canvas');
+    out.width = 1080; out.height = 1080;
+    const ctx = out.getContext('2d');
+    ctx.drawImage(canvas, 0, 0, 1080, 1080);
     const link = document.createElement('a');
     link.download = `afro_honmei_${currentTheme}_${String(i+1).padStart(2,'0')}.png`;
-    link.href = canvas.toDataURL('image/png');
+    link.href = out.toDataURL('image/png');
     link.click();
     await new Promise(r=>setTimeout(r,500));
   }
