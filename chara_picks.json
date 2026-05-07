@@ -1,6 +1,6 @@
 {
   "week_label": "05/09・05/10",
-  "generated_at": "2026/05/07 19:41",
+  "generated_at": "2026/05/07 19:56",
   "picks": {
     "afuwa": {
       "race": "京都 5R",
@@ -10,44 +10,41 @@
         "name": "ダークマルス",
         "bango": "未"
       },
-      "aite": [],
+      "aite": [
+        {
+          "name": "ルートサーティーン",
+          "bango": "未"
+        },
+        {
+          "name": "コルテオソレイユ",
+          "bango": "未"
+        }
+      ],
       "gbm": 62.7,
       "reason": "GBM62.7%で堅実"
     },
     "yancha": {
-      "race": "京都 1R",
+      "race": "京都 5R",
       "race_name": "未勝利",
       "date": "05/10",
       "honmei": {
-        "name": "ミルボナー",
-        "bango": "未"
-      },
-      "aite": [],
-      "gbm": 48.9,
-      "reason": "1位と2位の差29.0%で一発狙い"
-    },
-    "buruma": {
-      "race": "京都 5R",
-      "race_name": "1勝",
-      "date": "05/09",
-      "honmei": {
-        "name": "マイリトルヒーロー",
+        "name": "フレアオブセンス",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ダークマルス",
+          "name": "アトレッタ",
           "bango": "未"
         },
         {
-          "name": "ルートサーティーン",
+          "name": "ベルアズーロ",
           "bango": "未"
         }
       ],
-      "gbm": 6.8,
-      "reason": "スピード上昇中"
+      "gbm": 40.2,
+      "reason": "1位と2位の差32.4%で一発狙い"
     },
-    "chafuwa": {
+    "buruma": {
       "race": "京都 4R",
       "race_name": "未勝利",
       "date": "05/09",
@@ -66,35 +63,56 @@
         }
       ],
       "gbm": 30.8,
-      "reason": "騎手勝率31.8%"
+      "reason": "スピード上昇中"
     },
-    "kurofuwa": {
-      "race": "京都 5R",
-      "race_name": "1勝",
+    "chafuwa": {
+      "race": "京都 10R",
+      "race_name": "2勝",
       "date": "05/09",
       "honmei": {
-        "name": "ダークマルス",
+        "name": "アオイタケル",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ルートサーティーン",
+          "name": "クラヴァンス",
           "bango": "未"
         },
         {
-          "name": "コルテオソレイユ",
-          "bango": "未"
-        },
-        {
-          "name": "ラヴリーティアラ",
-          "bango": "未"
-        },
-        {
-          "name": "レッドリガーレ",
+          "name": "メディテラニアン",
           "bango": "未"
         }
       ],
-      "gbm": 62.7,
+      "gbm": 36.2,
+      "reason": "騎手勝率31.8%"
+    },
+    "kurofuwa": {
+      "race": "京都 7R",
+      "race_name": "1勝",
+      "date": "05/10",
+      "honmei": {
+        "name": "ショコラプリン",
+        "bango": "未"
+      },
+      "aite": [
+        {
+          "name": "シュネルアンジュ",
+          "bango": "未"
+        },
+        {
+          "name": "ベルソテイラ",
+          "bango": "未"
+        },
+        {
+          "name": "マヴィ",
+          "bango": "未"
+        },
+        {
+          "name": "ミティリーニ",
+          "bango": "未"
+        }
+      ],
+      "gbm": 38.2,
       "reason": "上位5頭の合計スコア最高"
     },
     "ginma": {
