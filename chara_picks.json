@@ -1,121 +1,121 @@
 {
-  "week_label": "05/02・05/03",
-  "generated_at": "2026/05/01 12:53",
+  "week_label": "05/09・05/10",
+  "generated_at": "2026/05/07 19:41",
   "picks": {
     "afuwa": {
-      "race": "東京 6R",
+      "race": "京都 5R",
       "race_name": "1勝",
-      "date": "05/02",
+      "date": "05/09",
       "honmei": {
-        "name": "ノクターン",
-        "bango": "6"
+        "name": "ダークマルス",
+        "bango": "未"
       },
       "aite": [],
-      "gbm": 45.3,
-      "reason": "GBM45.3%で堅実"
+      "gbm": 62.7,
+      "reason": "GBM62.7%で堅実"
     },
     "yancha": {
-      "race": "京都 9R",
-      "race_name": "1勝",
-      "date": "05/02",
+      "race": "京都 1R",
+      "race_name": "未勝利",
+      "date": "05/10",
       "honmei": {
-        "name": "ロングトールサリー",
-        "bango": "1"
+        "name": "ミルボナー",
+        "bango": "未"
       },
       "aite": [],
-      "gbm": 41.5,
-      "reason": "1位と2位の差23.6%で一発狙い"
+      "gbm": 48.9,
+      "reason": "1位と2位の差29.0%で一発狙い"
     },
     "buruma": {
       "race": "京都 5R",
-      "race_name": "未勝利",
-      "date": "05/02",
+      "race_name": "1勝",
+      "date": "05/09",
       "honmei": {
-        "name": "ロードスタニング",
-        "bango": "6"
+        "name": "マイリトルヒーロー",
+        "bango": "未"
       },
       "aite": [
         {
-          "name": "ダノンワンダー",
-          "bango": "1"
+          "name": "ダークマルス",
+          "bango": "未"
         },
         {
-          "name": "シャイニングスター",
-          "bango": "7"
+          "name": "ルートサーティーン",
+          "bango": "未"
         }
       ],
-      "gbm": 29.9,
+      "gbm": 6.8,
       "reason": "スピード上昇中"
     },
     "chafuwa": {
-      "race": "京都 5R",
+      "race": "京都 4R",
       "race_name": "未勝利",
-      "date": "05/02",
+      "date": "05/09",
       "honmei": {
-        "name": "ロードスタニング",
-        "bango": "6"
+        "name": "プレスバーン",
+        "bango": "未"
       },
       "aite": [
         {
-          "name": "ダノンワンダー",
-          "bango": "1"
+          "name": "ルクスキャンディ",
+          "bango": "未"
         },
         {
-          "name": "シャイニングスター",
-          "bango": "7"
+          "name": "カトマンズゴールド",
+          "bango": "未"
         }
       ],
-      "gbm": 29.9,
+      "gbm": 30.8,
       "reason": "騎手勝率31.8%"
     },
     "kurofuwa": {
-      "race": "京都 9R",
+      "race": "京都 5R",
       "race_name": "1勝",
-      "date": "05/02",
+      "date": "05/09",
       "honmei": {
-        "name": "ロングトールサリー",
-        "bango": "1"
+        "name": "ダークマルス",
+        "bango": "未"
       },
       "aite": [
         {
-          "name": "エイズルブルーム",
-          "bango": "6"
+          "name": "ルートサーティーン",
+          "bango": "未"
         },
         {
-          "name": "レイクラシック",
-          "bango": "9"
+          "name": "コルテオソレイユ",
+          "bango": "未"
         },
         {
-          "name": "クリスレジーナ",
-          "bango": "5"
+          "name": "ラヴリーティアラ",
+          "bango": "未"
         },
         {
-          "name": "ララオウ",
-          "bango": "3"
+          "name": "レッドリガーレ",
+          "bango": "未"
         }
       ],
-      "gbm": 41.5,
+      "gbm": 62.7,
       "reason": "上位5頭の合計スコア最高"
     },
     "ginma": {
-      "race": "京都 3R",
-      "race_name": "未勝利",
-      "date": "05/02",
+      "race": "新潟 8R",
+      "race_name": "1勝",
+      "date": "05/09",
       "honmei": {
-        "name": "カモメガトンダ",
-        "bango": "16"
+        "name": "オブシディアーナ",
+        "bango": "未"
       },
       "aite": [
         {
-          "name": "セコンドトゥベスト",
-          "bango": "1"
+          "name": "カルネヴァーレ",
+          "bango": "未"
         },
         {
-          "name": "オーロラボレアリス",
-          "bango": "9"
+          "name": "ベルフィーヌ",
+          "bango": "未"
         }
       ],
-      "gbm": 5.3,
+      "gbm": 6.0,
       "reason": "血統◎だが評価低め"
     }
   }
