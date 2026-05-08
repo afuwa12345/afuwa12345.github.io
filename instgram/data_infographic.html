@@ -1073,48 +1073,19 @@ async function aiGenerate(){
 }`;
 
   try {
-    // 自動リトライ（最大3回、間に2秒・5秒・10秒の待機）
-    const tryFetch = async () => {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(key)}`,
-        {
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            contents:[{parts:[{text:prompt}]}],
-            generationConfig:{responseMimeType:"application/json",maxOutputTokens:2500,temperature:0.9}
-          })
-        }
-      );
-      return await res.json();
-    };
-
-    let result;
-    const waits = [0, 2000, 5000, 10000]; // 初回0秒、2回目2秒、3回目5秒、4回目10秒
-    let lastError = null;
-    for(let attempt = 0; attempt < waits.length; attempt++){
-      if(waits[attempt] > 0){
-        btn.textContent = `🔄 リトライ中(${attempt}/3)... ${waits[attempt]/1000}秒待機`;
-        await new Promise(r => setTimeout(r, waits[attempt]));
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,
+      {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          contents:[{parts:[{text:prompt}]}],
+          generationConfig:{responseMimeType:"application/json",maxOutputTokens:2500,temperature:0.9}
+        })
       }
-      try {
-        result = await tryFetch();
-        if(result.error){
-          // 混雑系のエラーならリトライ
-          const msg = (result.error.message || '').toLowerCase();
-          if(msg.includes('high demand') || msg.includes('overloaded') || msg.includes('unavailable') || msg.includes('rate')){
-            lastError = result.error.message;
-            continue; // リトライ
-          }
-          throw new Error(result.error.message); // 致命的エラーは即終了
-        }
-        break; // 成功なら抜ける
-      } catch(e){
-        lastError = e.message;
-        if(attempt === waits.length - 1) throw e; // 最終試行で失敗ならエラー投げる
-      }
-    }
-    if(result && result.error) throw new Error(`サーバー混雑(${waits.length}回試行): ${lastError}\n\n少し時間を置いて再度お試しください。`);
+    );
+    const result = await res.json();
+    if(result.error) throw new Error(result.error.message);
     if(!result.candidates||!result.candidates[0]) throw new Error('レスポンスが空です');
     let text = result.candidates[0].content.parts.map(p=>p.text||'').join('');
     text = text.replace(/```json|```/g,'').trim();
