@@ -1,9 +1,8 @@
 // ========================================
-// AFRO Horse 認証モジュール（v2）
-// LIFF (LINE Login) + Firestore + 会員番号採番
+// AFRO Horse 認証モジュール（v3）
+// LIFF + Firestore + 会員番号採番（修正版）
 // ========================================
 
-// 設定値
 const LIFF_ID = '2010025011-Ge20WgjB';
 
 const firebaseConfig = {
@@ -15,17 +14,13 @@ const firebaseConfig = {
   appId: "1:744565672066:web:de766cc9d8699e085c8c9b"
 };
 
-// Firebase初期化
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.firestore();
 
-// ========================================
-// グローバル：現在のユーザー情報
-// ========================================
 let currentUser = null;
-let currentUserData = null; // Firestoreに保存した会員データ
+let currentUserData = null;
 
 // ========================================
 // LIFF初期化＆ログイン処理
@@ -42,8 +37,11 @@ async function initAuth() {
         pictureUrl: profile.pictureUrl
       };
       
-      // Firestoreにユーザー情報を保存（初回は会員番号も付与）
+      console.log('LIFF profile:', currentUser);
+      
       currentUserData = await saveUserToFirestore(currentUser);
+      
+      console.log('保存後のuserData:', currentUserData);
       
       return currentUser;
     } else {
@@ -53,22 +51,17 @@ async function initAuth() {
     }
   } catch (error) {
     console.error('LIFF初期化エラー:', error);
+    alert('ログイン処理でエラーが発生しました: ' + error.message);
     return null;
   }
 }
 
-// ========================================
-// ログイン実行
-// ========================================
 function login() {
   if (!liff.isLoggedIn()) {
     liff.login();
   }
 }
 
-// ========================================
-// ログアウト
-// ========================================
 function logout() {
   if (liff.isLoggedIn()) {
     liff.logout();
@@ -79,52 +72,67 @@ function logout() {
 }
 
 // ========================================
-// ユーザー情報をFirestoreに保存
-// 初回登録時は会員番号を採番
+// ユーザー情報をFirestoreに保存（修正版）
 // ========================================
 async function saveUserToFirestore(user) {
   try {
     const userRef = db.collection('users').doc(user.userId);
+    
+    console.log('userドキュメント取得開始:', user.userId);
     const doc = await userRef.get();
+    console.log('userドキュメント取得完了。exists:', doc.exists);
     
     if (!doc.exists) {
-      // 新規ユーザー：会員番号を採番
+      // 新規ユーザー
+      console.log('新規ユーザー → 会員番号採番開始');
+      
       const memberNumber = await getNextMemberNumber();
+      console.log('採番された会員番号:', memberNumber);
       
       const newUserData = {
         userId: user.userId,
         displayName: user.displayName,
-        pictureUrl: user.pictureUrl,
+        pictureUrl: user.pictureUrl || '',
         memberNumber: memberNumber,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
       
+      console.log('users/{userId}に保存:', newUserData);
       await userRef.set(newUserData);
+      console.log('users保存成功！');
+      
       return newUserData;
     } else {
-      // 既存ユーザー：表示名・アイコンだけ更新
+      // 既存ユーザー
+      console.log('既存ユーザー検出');
+      const data = doc.data();
+      
+      // 表示名・アイコン更新
       await userRef.update({
         displayName: user.displayName,
-        pictureUrl: user.pictureUrl,
+        pictureUrl: user.pictureUrl || '',
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-      return doc.data();
+      
+      return data;
     }
   } catch (error) {
-    console.error('ユーザー保存エラー:', error);
+    console.error('ユーザー保存エラー詳細:', error);
+    console.error('エラーコード:', error.code);
+    console.error('エラーメッセージ:', error.message);
+    alert('ユーザー情報の保存に失敗しました。\n' + error.message);
     return null;
   }
 }
 
 // ========================================
-// 次の会員番号を取得（自動カウントアップ）
+// 次の会員番号を取得
 // ========================================
 async function getNextMemberNumber() {
   const counterRef = db.collection('counters').doc('memberNumber');
   
   try {
-    // トランザクションで安全にカウントアップ
     const newNumber = await db.runTransaction(async (transaction) => {
       const counterDoc = await transaction.get(counterRef);
       
@@ -137,38 +145,26 @@ async function getNextMemberNumber() {
       return next;
     });
     
+    console.log('採番結果:', newNumber);
     return newNumber;
   } catch (error) {
     console.error('会員番号採番エラー:', error);
-    // フォールバック：タイムスタンプ
-    return Date.now();
+    throw error;
   }
 }
 
-// ========================================
-// 現在のユーザー取得
-// ========================================
 function getCurrentUser() {
   return currentUser;
 }
 
-// ========================================
-// 現在のユーザーデータ（Firestore）取得
-// ========================================
 function getCurrentUserData() {
   return currentUserData;
 }
 
-// ========================================
-// ログイン状態確認
-// ========================================
 function isLoggedIn() {
   return currentUser !== null;
 }
 
-// ========================================
-// キズナレース情報を取得
-// ========================================
 async function getKizunaData(userId) {
   try {
     const doc = await db.collection('kizuna_users').doc(userId).get();
@@ -182,9 +178,6 @@ async function getKizunaData(userId) {
   }
 }
 
-// ========================================
-// キズナレース入隊（陣営＋推し馬）
-// ========================================
 async function joinKizuna(userId, jineiData, oshiData, cardDesignVersion = 'v1') {
   try {
     await db.collection('kizuna_users').doc(userId).set({
