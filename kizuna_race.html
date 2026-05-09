@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>みんなのキズナレース | AFRO Horse</title>
+<meta name="description" content="AFRO Horseの「みんなのキズナレース」。6つの予想スタイルから自分の陣営を選んで、毎週みんなで本命を決める。">
+<meta name="theme-color" content="#0e2e1f">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="canonical" href="https://afro-horse.com/kizuna_race.html">
+
+<!-- フォント -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0a1f15;
+  color: #fff;
+  font-family: 'Noto Sans JP', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ヘッダー */
+.header {
+  background: #0e2e1f;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #1a4a32;
+}
+.logo {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 20px;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+.home-link {
+  color: #c0e8d0;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+.home-link:hover {
+  color: #fff;
+}
+
+/* メインビジュアル */
+.hero {
+  text-align: center;
+  padding: 60px 20px 40px;
+  background: linear-gradient(180deg, #0e2e1f 0%, #0a1f15 100%);
+}
+.hero h1 {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: clamp(28px, 6vw, 48px);
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+.hero .subtitle {
+  font-size: 14px;
+  color: #87b89c;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+.hero .tagline {
+  font-size: 16px;
+  color: #c0e8d0;
+  margin-top: 20px;
+}
+
+/* 説明セクション */
+.intro {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  text-align: center;
+}
+.intro p {
+  font-size: 15px;
+  color: #d0e8d8;
+  margin-bottom: 16px;
+}
+.intro .highlight {
+  color: #ffd96b;
+  font-weight: 700;
+}
+
+/* ステータス表示（自分の状態） */
+.status-box {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  padding: 24px;
+  background: rgba(26, 74, 50, 0.5);
+  border: 1px solid #1a4a32;
+  border-radius: 16px;
+  text-align: center;
+}
+.status-box.loading {
+  color: #87b89c;
+}
+.status-box.logged-in {
+  background: rgba(26, 74, 50, 0.7);
+}
+.status-box .my-jinei {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #ffd96b;
+}
+.status-box .my-info {
+  font-size: 13px;
+  color: #c0e8d0;
+}
+.cta-btn {
+  display: inline-block;
+  background: #ffd96b;
+  color: #0a1f15;
+  padding: 14px 32px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  margin-top: 12px;
+}
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 217, 107, 0.4);
+}
+.cta-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 陣営グリッド */
+.jinei-section {
+  max-width: 1100px;
+  margin: 40px auto 0;
+  padding: 0 20px 80px;
+}
+.section-title {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.section-subtitle {
+  text-align: center;
+  color: #87b89c;
+  font-size: 12px;
+  letter-spacing: 3px;
+  margin-bottom: 36px;
+}
+
+.jinei-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.jinei-card {
+  background: #0e2e1f;
+  border: 2px solid #1a4a32;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.jinei-card:hover {
+  border-color: #ffd96b;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(255, 217, 107, 0.15);
+}
+.jinei-card.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.jinei-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 50%;
+  padding: 8px;
+  margin-bottom: 14px;
+}
+.jinei-name {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 22px;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+.jinei-style {
+  font-size: 13px;
+  color: #ffd96b;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.jinei-catchphrase {
+  font-size: 13px;
+  color: #c0e8d0;
+  font-style: italic;
+  margin-bottom: 16px;
+  min-height: 40px;
+}
+.jinei-substyles {
+  font-size: 11px;
+  color: #87b89c;
+  margin-bottom: 18px;
+  min-height: 32px;
+}
+.join-btn {
+  width: 100%;
+  background: transparent;
+  color: #ffd96b;
+  border: 2px solid #ffd96b;
+  border-radius: 999px;
+  padding: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 1px;
+}
+.join-btn:hover {
+  background: #ffd96b;
+  color: #0a1f15;
+}
+
+/* フッター */
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: #587264;
+  font-size: 12px;
+  border-top: 1px solid #1a4a32;
+}
+
+/* モーダル（確認画面） */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.75);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show {
+  display: flex;
+}
+.modal-box {
+  background: #0e2e1f;
+  border: 2px solid #ffd96b;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+.modal-box img {
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 6px;
+  margin-bottom: 16px;
+}
+.modal-box h2 {
+  font-family: 'Dela Gothic One', sans-serif;
+  margin-bottom: 12px;
+}
+.modal-box p {
+  margin-bottom: 24px;
+  color: #d0e8d8;
+}
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.modal-buttons button {
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+.btn-cancel {
+  background: transparent;
+  color: #87b89c;
+  border: 1px solid #1a4a32 !important;
+}
+.btn-confirm {
+  background: #ffd96b;
+  color: #0a1f15;
+}
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="header">
+  <a href="index.html" class="logo">AFRO Horse</a>
+  <a href="index.html" class="home-link">← HOME</a>
+</header>
+
+<!-- メインビジュアル -->
+<section class="hero">
+  <div class="subtitle">KIZUNA RACE</div>
+  <h1>みんなのキズナレース</h1>
+  <p class="tagline">予想スタイルで陣営に分かれて、毎週みんなで本命を決める</p>
+</section>
+
+<!-- 説明 -->
+<section class="intro">
+  <p>あなたの<span class="highlight">予想哲学</span>はどれ？</p>
+  <p>6人のアフロ馬キャラ、それぞれ違う予想スタイルを持つ仲間たち。<br>
+     好きなキャラの陣営に入隊して、<span class="highlight">陣営の総意</span>で本命を作ろう。</p>
+</section>
+
+<!-- ステータス表示エリア（JSで動的に表示切替） -->
+<div class="status-box loading" id="statusBox">
+  <p>読み込み中...</p>
+</div>
+
+<!-- 陣営紹介グリッド -->
+<section class="jinei-section">
+  <h2 class="section-title">SIX JINEI</h2>
+  <div class="section-subtitle">6つの予想スタイル</div>
+  
+  <div class="jinei-grid" id="jineiGrid">
+    <!-- JSで動的生成 -->
+  </div>
+</section>
+
+<!-- フッター -->
+<footer class="footer">
+  © 2026 AFRO Horse. All rights reserved.
+</footer>
+
+<!-- 入隊確認モーダル -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <img id="modalImg" src="" alt="">
+    <h2 id="modalJineiName"></h2>
+    <p id="modalDescription"></p>
+    <p style="font-size:13px; color:#ffd96b;">この陣営に入隊しますか？</p>
+    <div class="modal-buttons">
+      <button class="btn-cancel" id="modalCancel">キャンセル</button>
+      <button class="btn-confirm" id="modalConfirm">入隊する</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================================
+     必要なライブラリ
+=========================================== -->
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="js/auth.js"></script>
+
+<!-- 注意：このページはheader.jsを使わない（自前のヘッダーがあるから） -->
+
+<script>
+// ========================================
+// 6陣営のデータ
+// ========================================
+const JINEI_DATA = [
+  {
+    id: 'afuwa',
+    name: 'アフワ',
+    img: 'images/afuwa.png',
+    style: '実績・本命派',
+    catchphrase: '「結果を残してきた馬を信じる」',
+    substyles: '実績・本命党・連対率・印・コメント'
+  },
+  {
+    id: 'yancha',
+    name: 'やんちゃアフワ',
+    img: 'images/yanchaahuwa.png',
+    style: '穴党・ロマン派',
+    catchphrase: '「人気馬には用がない」',
+    substyles: '逆張り・万馬券・若駒・休み明け・下剋上'
+  },
+  {
+    id: 'buruma',
+    name: 'ブルマ',
+    img: 'images/buruma.png',
+    style: 'データ派',
+    catchphrase: '「数字がすべてを語る」',
+    substyles: '過去データ・スピード指数・ラップ・コース適性'
+  },
+  {
+    id: 'chahuwa',
+    name: 'チャフワ',
+    img: 'images/chahuwa.png',
+    style: '直感・パドック派',
+    catchphrase: '「ピンときた馬を信じる」',
+    substyles: 'パドック・気配・返し馬・推し馬・直感'
+  },
+  {
+    id: 'kurohuwa',
+    name: 'クロフワ',
+    img: 'images/kurohuwa.png',
+    style: '調教派',
+    catchphrase: '「努力した馬は嘘をつかない」',
+    substyles: '追い切り・坂路・ウッド・調教師・ローテ'
+  },
+  {
+    id: 'ginma',
+    name: 'ギンマ',
+    img: 'images/ginma.png',
+    style: '血統派',
+    catchphrase: '「血を見ればわかる…ニヤリ」',
+    substyles: '父系・母父・配合・コース×血統・馬場×血統'
+  }
+];
+
+// ========================================
+// メイン処理（auth.jsの後に実行）
+// ========================================
+let myJineiId = null; // 自分の陣営（あれば）
+
+async function main() {
+  // auth.js の initAuth() で初期化
+  const user = await initAuth();
+  
+  // 陣営所属チェック
+  if (user) {
+    await checkMyJinei(user.userId);
+  }
+  
+  // ステータスエリア更新
+  updateStatusBox(user);
+  
+  // 陣営カード描画
+  renderJineiCards();
+}
+
+// ========================================
+// 自分の陣営確認
+// ========================================
+async function checkMyJinei(userId) {
+  try {
+    const doc = await db.collection('kizuna_users').doc(userId).get();
+    if (doc.exists) {
+      myJineiId = doc.data().jineiId;
+    }
+  } catch (e) {
+    console.log('陣営所属確認エラー:', e);
+  }
+}
+
+// ========================================
+// ステータス表示
+// ========================================
+function updateStatusBox(user) {
+  const box = document.getElementById('statusBox');
+  
+  if (!user) {
+    // 未ログイン
+    box.className = 'status-box';
+    box.innerHTML = `
+      <p>キズナレースに参加するには<br>LINEアカウントで登録が必要です</p>
+      <button class="cta-btn" onclick="login()">LINEで登録 / ログイン</button>
+    `;
+  } else if (myJineiId) {
+    // 入隊済み
+    const jinei = JINEI_DATA.find(j => j.id === myJineiId);
+    box.className = 'status-box logged-in';
+    box.innerHTML = `
+      <p style="font-size:13px; color:#87b89c;">あなたの陣営</p>
+      <div class="my-jinei">${jinei ? jinei.name : '不明'}</div>
+      <div class="my-info">${jinei ? jinei.style : ''}</div>
+      <div class="my-info" style="margin-top:8px;">${jinei ? jinei.catchphrase : ''}</div>
+    `;
+  } else {
+    // ログイン済み・未所属
+    box.className = 'status-box logged-in';
+    box.innerHTML = `
+      <p>ようこそ、${escapeHTML(user.displayName)}さん！</p>
+      <p style="font-size:13px; color:#c0e8d0; margin-top:8px;">
+        下から好きな陣営を選んで入隊しよう
+      </p>
+    `;
+  }
+}
+
+// ========================================
+// 陣営カード描画
+// ========================================
+function renderJineiCards() {
+  const grid = document.getElementById('jineiGrid');
+  grid.innerHTML = JINEI_DATA.map(j => {
+    const isMine = myJineiId === j.id;
+    const isOther = myJineiId && myJineiId !== j.id;
+    const btnText = isMine ? '✓ 所属中' : '入隊する';
+    const cardClass = isOther ? 'jinei-card disabled' : 'jinei-card';
+    
+    return `
+      <div class="${cardClass}" data-id="${j.id}">
+        <img src="${j.img}" alt="${escapeHTML(j.name)}">
+        <div class="jinei-name">${escapeHTML(j.name)}</div>
+        <div class="jinei-style">${escapeHTML(j.style)}</div>
+        <div class="jinei-catchphrase">${escapeHTML(j.catchphrase)}</div>
+        <div class="jinei-substyles">${escapeHTML(j.substyles)}</div>
+        <button class="join-btn" data-id="${j.id}" ${isMine ? 'disabled' : ''}>
+          ${btnText}
+        </button>
+      </div>
+    `;
+  }).join('');
+  
+  // 入隊ボタンのイベント
+  document.querySelectorAll('.join-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      if (myJineiId === id) return; // 既に所属
+      handleJoinClick(id);
+    });
+  });
+}
+
+// ========================================
+// 入隊ボタンクリック
+// ========================================
+function handleJoinClick(jineiId) {
+  // 未ログインならログイン誘導
+  if (!isLoggedIn()) {
+    if (confirm('入隊にはLINEログインが必要です。\nログインしますか？')) {
+      login();
+    }
+    return;
+  }
+  
+  // 既に他の陣営所属
+  if (myJineiId && myJineiId !== jineiId) {
+    alert('既に別の陣営に所属しています。');
+    return;
+  }
+  
+  // 確認モーダル表示
+  showConfirmModal(jineiId);
+}
+
+// ========================================
+// 確認モーダル
+// ========================================
+function showConfirmModal(jineiId) {
+  const jinei = JINEI_DATA.find(j => j.id === jineiId);
+  if (!jinei) return;
+  
+  document.getElementById('modalImg').src = jinei.img;
+  document.getElementById('modalJineiName').textContent = jinei.name + ' 陣営';
+  document.getElementById('modalDescription').textContent = jinei.style + ' / ' + jinei.catchphrase;
+  
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('show');
+  
+  document.getElementById('modalCancel').onclick = () => {
+    overlay.classList.remove('show');
+  };
+  
+  document.getElementById('modalConfirm').onclick = () => {
+    overlay.classList.remove('show');
+    joinJinei(jineiId);
+  };
+}
+
+// ========================================
+// 陣営に入隊（Firestore保存）
+// ========================================
+async function joinJinei(jineiId) {
+  const user = getCurrentUser();
+  if (!user) return;
+  
+  const jinei = JINEI_DATA.find(j => j.id === jineiId);
+  if (!jinei) return;
+  
+  try {
+    await db.collection('kizuna_users').doc(user.userId).set({
+      userId: user.userId,
+      displayName: user.displayName,
+      pictureUrl: user.pictureUrl,
+      jineiId: jineiId,
+      jinei: jinei.name,
+      jineiStyle: jinei.style,
+      joinedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    
+    myJineiId = jineiId;
+    alert(`${jinei.name} 陣営に入隊しました！🐴`);
+    
+    // 表示更新
+    updateStatusBox(user);
+    renderJineiCards();
+    
+    // 上にスクロール
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+  } catch (error) {
+    console.error('入隊エラー:', error);
+    alert('入隊処理に失敗しました。もう一度試してください。');
+  }
+}
+
+// ========================================
+// HTMLエスケープ
+// ========================================
+function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = String(str || '');
+  return div.innerHTML;
+}
+
+// ========================================
+// 起動
+// ========================================
+main();
+</script>
+
+</body>
+</html>
