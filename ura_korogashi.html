@@ -2,8 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="ブルマの複勝転がし｜軍資金1,000円から始まる複勝転がし企画。連勝で増える夢のロマン馬券、1回のハズレで全消滅。AFRO Horse公式の競馬チャレンジ。">
-<link rel="canonical" href="https://afro-horse.com/korogashi.html">
+<meta name="description" content="裏ブルマの自由転がし｜ルールなし、縛りなし。人気でも穴でも、その時の直感で選ぶ気まぐれ複勝転がし。AFRO Horse裏ルート。">
+<link rel="canonical" href="https://afro-horse.com/ura_korogashi.html">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -12,7 +12,7 @@
   gtag('config', 'G-8NV6044LPZ');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ブルマの複勝転がし | AFRO Horse</title>
+<title>裏ブルマの自由転がし | AFRO Horse 裏</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -20,20 +20,21 @@
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 :root {
-  --blue: #1ea7e8;
+  --blue: #1e9fff;
   --blue-light: #5bc0f0;
-  --blue-dark: #0d6ba8;
+  --blue-dark: #0066cc;
   --yellow: #ffd633;
   --yellow-deep: #ffb700;
-  --bg: #0a1d33;
+  --neon: #1e9fff;
+  --bg: #020308;
 }
 
 body {
   font-family: 'Noto Sans JP', sans-serif;
   background:
-    radial-gradient(ellipse at top, #1a4d7a 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 30%, #0d3a5e 0%, transparent 55%),
-    radial-gradient(ellipse at 20% 70%, #1e5a8a 0%, transparent 60%),
+    radial-gradient(ellipse at top, #04162e 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 30%, #06182e 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 70%, #04122a 0%, transparent 60%),
     var(--bg);
   background-attachment: fixed;
   min-height: 100vh;
@@ -57,15 +58,15 @@ body::after {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(2px 2px at 20% 30%, rgba(255,214,51,0.3), transparent),
-    radial-gradient(2px 2px at 80% 70%, rgba(91,192,240,0.4), transparent),
+    radial-gradient(2px 2px at 20% 30%, rgba(30,159,255,0.35), transparent),
+    radial-gradient(2px 2px at 80% 70%, rgba(255,214,51,0.3), transparent),
     radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1px 1px at 30% 80%, rgba(255,214,51,0.3), transparent),
-    radial-gradient(2px 2px at 90% 40%, rgba(255,255,255,0.3), transparent);
+    radial-gradient(1px 1px at 30% 80%, rgba(91,192,240,0.3), transparent),
+    radial-gradient(2px 2px at 90% 40%, rgba(255,255,255,0.25), transparent);
   pointer-events: none;
   z-index: 1;
-  opacity: 0.6;
-  animation: twinkle 4s ease-in-out infinite;
+  opacity: 0.4;
+  animation: twinkle 3.2s ease-in-out infinite;
 }
 
 @keyframes twinkle {
@@ -93,40 +94,41 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(14, 46, 31, 0.96);
+  background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 2px solid #c8941d;
-  box-shadow: 0 2px 12px rgba(14, 46, 31, 0.2);
+  border-bottom: 2px solid #1e9fff;
+  box-shadow: 0 2px 16px rgba(30, 159, 255, 0.25);
 }
 .nav-logo {
   font-family: 'Dela Gothic One', cursive;
   font-size: 22px;
   letter-spacing: 2px;
-  color: #f8f1de;
+  color: #fff;
   text-decoration: none;
+  text-shadow: 0 0 12px rgba(30, 159, 255, 0.6);
 }
 .nav-logo em {
-  color: #e8b952;
+  color: #1e9fff;
   font-style: normal;
-  text-shadow: none;
+  text-shadow: 0 0 14px rgba(30, 159, 255, 0.9);
 }
 .nav-back {
-  color: #f8f1de;
+  color: #fff;
   font-size: 0.7rem;
   text-decoration: none;
   letter-spacing: 2px;
-  border: 1px solid #c8941d;
+  border: 1px solid #1e9fff;
   padding: 5px 11px;
   border-radius: 4px;
   font-family: 'Bebas Neue', cursive;
-  background: rgba(200, 148, 29, 0.10);
+  background: rgba(30, 159, 255, 0.15);
   transition: all 0.2s;
 }
 .nav-back:hover, .nav-back:active {
-  background: #c8941d;
-  color: #0e2e1f;
-  border-color: #c8941d;
+  background: #1e9fff;
+  color: #fff;
+  border-color: #1e9fff;
 }
 
 /* ===== HERO ===== */
@@ -135,13 +137,78 @@ body::after {
   padding: 24px 0 12px;
 }
 
-.hero-banner {
+.nav-ura-badge {
+  display: inline-block;
+  margin-left: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  background: linear-gradient(135deg, #1e9fff, #ffd633);
+  color: #0a1d33;
+  padding: 2px 7px;
+  border-radius: 3px;
+  vertical-align: middle;
+  text-shadow: none;
+  font-weight: 900;
+  box-shadow: 0 0 10px rgba(30, 159, 255, 0.6);
+}
+
+.ura-badge {
+  display: inline-block;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: #ffd633;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #1e9fff;
+  padding: 6px 14px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  box-shadow: 0 0 14px rgba(30, 159, 255, 0.5), inset 0 0 10px rgba(30, 159, 255, 0.15);
+  animation: ura-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes ura-pulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(30, 159, 255, 0.5), inset 0 0 10px rgba(30, 159, 255, 0.15); }
+  50% { box-shadow: 0 0 26px rgba(30, 159, 255, 0.9), inset 0 0 14px rgba(30, 159, 255, 0.3); }
+}
+
+/* ===== Hero Image Logo (new) ===== */
+.hero-logo-img {
   width: 100%;
-  max-width: 520px;
-  margin: 0 auto 18px;
+  max-width: 540px;
+  margin: 14px auto 8px;
   display: block;
-  filter: drop-shadow(0 8px 30px rgba(30, 167, 232, 0.5));
+  filter:
+    drop-shadow(0 8px 28px rgba(30, 159, 255, 0.55))
+    drop-shadow(0 0 22px rgba(255, 214, 51, 0.25));
   animation: float 3s ease-in-out infinite;
+}
+
+.hero-logo-fallback {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 38px;
+  line-height: 1.05;
+  background: linear-gradient(135deg, #1e9fff 0%, #ffd633 50%, #1e9fff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.02em;
+  filter: drop-shadow(0 4px 10px rgba(30, 159, 255, 0.6));
+  margin: 14px auto 8px;
+}
+
+.hero-logo-fallback span {
+  font-size: 28px;
+}
+
+.hero-logo-sub-standalone {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.45em;
+  color: #ffd633;
+  margin: 4px 0 14px;
+  text-shadow: 0 0 12px rgba(255, 214, 51, 0.6);
 }
 
 @keyframes float {
@@ -152,7 +219,7 @@ body::after {
 .hero-date {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 13px;
-  color: var(--blue-light);
+  color: #5bc0f0;
   letter-spacing: 0.3em;
   margin-bottom: 6px;
 }
@@ -163,8 +230,8 @@ body::after {
 
 /* ===== ABOUT ===== */
 .about {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(91, 192, 240, 0.2);
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(91, 192, 240, 0.18);
   border-radius: 14px;
   padding: 22px 18px;
   margin-bottom: 28px;
@@ -229,7 +296,7 @@ body::after {
 
 .about-body .quote {
   display: inline-block;
-  background: linear-gradient(135deg, rgba(255, 214, 51, 0.15), rgba(30, 167, 232, 0.1));
+  background: linear-gradient(135deg, rgba(255, 214, 51, 0.15), rgba(30, 159, 255, 0.1));
   padding: 2px 10px;
   border-left: 3px solid var(--yellow);
   border-radius: 3px;
@@ -242,7 +309,7 @@ body::after {
   display: block;
   margin-top: 14px;
   padding: 12px 14px;
-  background: linear-gradient(135deg, rgba(255, 214, 51, 0.2), rgba(30, 167, 232, 0.15));
+  background: linear-gradient(135deg, rgba(255, 214, 51, 0.2), rgba(30, 159, 255, 0.15));
   border: 1px dashed var(--yellow);
   border-radius: 8px;
   font-family: 'Dela Gothic One', cursive;
@@ -259,7 +326,7 @@ body::after {
   color: #fff;
   letter-spacing: 0.05em;
   margin-bottom: 24px;
-  text-shadow: 0 2px 12px rgba(30, 167, 232, 0.5);
+  text-shadow: 0 2px 12px rgba(30, 159, 255, 0.5);
 }
 
 /* ===== BURUMA TALKS (top status) ===== */
@@ -282,7 +349,7 @@ body::after {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 16px rgba(30, 167, 232, 0.5));
+  filter: drop-shadow(0 4px 16px rgba(30, 159, 255, 0.5));
   animation: bobble 2.5s ease-in-out infinite;
 }
 
@@ -307,7 +374,7 @@ body::after {
 .speech-bubble {
   flex: 1;
   background: #fff;
-  color: #0a1d33;
+  color: #050a14;
   padding: 14px 16px;
   border-radius: 18px;
   font-size: 14px;
@@ -342,13 +409,13 @@ body::after {
 
 /* ===== STATUS BIG ===== */
 .status-big {
-  background: linear-gradient(135deg, rgba(30, 167, 232, 0.2), rgba(13, 29, 51, 0.6));
+  background: linear-gradient(135deg, rgba(30, 159, 255, 0.2), rgba(0, 2, 8, 0.6));
   border: 2px solid var(--blue);
   border-radius: 16px;
   padding: 20px 16px;
   text-align: center;
   margin-bottom: 28px;
-  box-shadow: 0 0 40px rgba(30, 167, 232, 0.3);
+  box-shadow: 0 0 40px rgba(30, 159, 255, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -407,14 +474,14 @@ body::after {
   padding: 4px 14px 3px;
   border-radius: 16px;
   letter-spacing: 0.1em;
-  background: rgba(0, 30, 60, 0.5);
+  background: rgba(0, 6, 18, 0.5);
   border: 1px solid rgba(91, 192, 240, 0.4);
   color: #fff;
 }
 
 .status-chip.streak {
   background: linear-gradient(135deg, var(--yellow), var(--yellow-deep));
-  color: #0a1d33;
+  color: #050a14;
   font-family: 'Dela Gothic One', cursive;
   font-size: 12px;
   border-color: var(--yellow);
@@ -455,7 +522,7 @@ body::after {
 .goal-progress {
   width: 100%;
   height: 10px;
-  background: rgba(0, 30, 60, 0.6);
+  background: rgba(0, 6, 18, 0.6);
   border: 1px solid rgba(91, 192, 240, 0.3);
   border-radius: 6px;
   overflow: hidden;
@@ -497,7 +564,7 @@ body::after {
 
 /* ===== NEXT TARGET ===== */
 .next-target {
-  background: linear-gradient(135deg, rgba(255, 214, 51, 0.15), rgba(30, 167, 232, 0.1));
+  background: linear-gradient(135deg, rgba(255, 214, 51, 0.15), rgba(30, 159, 255, 0.1));
   border: 2px dashed var(--yellow);
   border-radius: 14px;
   padding: 20px 16px;
@@ -524,7 +591,7 @@ body::after {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 11px;
   background: var(--yellow);
-  color: #0a1d33;
+  color: #050a14;
   padding: 3px 10px 2px;
   border-radius: 4px;
   letter-spacing: 0.2em;
@@ -570,7 +637,7 @@ body::after {
 .next-target-bubble {
   flex: 1;
   background: #fff;
-  color: #0a1d33;
+  color: #050a14;
   padding: 10px 14px;
   border-radius: 14px;
   font-size: 13px;
@@ -592,7 +659,7 @@ body::after {
 }
 
 .next-target-race {
-  background: rgba(0, 30, 60, 0.4);
+  background: rgba(0, 6, 18, 0.4);
   border-radius: 10px;
   padding: 14px;
   border-left: 3px solid var(--yellow);
@@ -726,8 +793,8 @@ body::after {
 .race.lose::before { background: #888; box-shadow: 0 0 12px rgba(255,255,255,0.4); }
 
 .race-card {
-  background: linear-gradient(135deg, rgba(30, 167, 232, 0.1), rgba(255,255,255,0.03));
-  border: 1px solid rgba(30, 167, 232, 0.25);
+  background: linear-gradient(135deg, rgba(30, 159, 255, 0.1), rgba(255,255,255,0.03));
+  border: 1px solid rgba(30, 159, 255, 0.25);
   border-radius: 12px;
   padding: 14px 16px;
   position: relative;
@@ -735,7 +802,7 @@ body::after {
 
 .race.win .race-card {
   border-color: rgba(255, 214, 51, 0.4);
-  background: linear-gradient(135deg, rgba(255, 214, 51, 0.08), rgba(30, 167, 232, 0.05));
+  background: linear-gradient(135deg, rgba(255, 214, 51, 0.08), rgba(30, 159, 255, 0.05));
 }
 
 .race.lose .race-card {
@@ -775,7 +842,7 @@ body::after {
   gap: 8px;
   margin-bottom: 12px;
   padding: 10px 12px;
-  background: rgba(0, 30, 60, 0.4);
+  background: rgba(0, 6, 18, 0.4);
   border-radius: 8px;
   border-left: 3px solid var(--yellow);
 }
@@ -893,7 +960,7 @@ body::after {
 .race-comment-bubble {
   flex: 1;
   background: rgba(255, 255, 255, 0.95);
-  color: #0a1d33;
+  color: #050a14;
   padding: 8px 12px;
   border-radius: 12px;
   font-size: 12px;
@@ -927,7 +994,7 @@ body::after {
 .streak-callout-inner {
   display: inline-block;
   background: linear-gradient(135deg, var(--yellow), var(--yellow-deep));
-  color: #0a1d33;
+  color: #050a14;
   padding: 10px 22px;
   border-radius: 30px;
   font-family: 'Dela Gothic One', cursive;
@@ -946,19 +1013,19 @@ body::after {
 .final {
   margin-top: 30px;
   padding: 36px 24px;
-  background: linear-gradient(180deg, rgba(30, 167, 232, 0.2), rgba(13, 29, 51, 0.6));
+  background: linear-gradient(180deg, rgba(30, 159, 255, 0.2), rgba(0, 2, 8, 0.6));
   border: 2px solid var(--blue);
   border-radius: 16px;
   text-align: center;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 50px rgba(30, 167, 232, 0.4);
+  box-shadow: 0 0 50px rgba(30, 159, 255, 0.4);
 }
 
 .final.clear {
   border: 3px solid var(--yellow);
   background:
-    radial-gradient(ellipse at center, rgba(255, 214, 51, 0.25) 0%, rgba(30, 167, 232, 0.15) 50%, rgba(13, 29, 51, 0.8) 100%);
+    radial-gradient(ellipse at center, rgba(255, 214, 51, 0.25) 0%, rgba(30, 159, 255, 0.15) 50%, rgba(0, 2, 8, 0.8) 100%);
   box-shadow:
     0 0 80px rgba(255, 214, 51, 0.6),
     0 0 120px rgba(255, 214, 51, 0.3),
@@ -1036,7 +1103,7 @@ body::after {
   font-family: 'Dela Gothic One', cursive;
   font-size: clamp(24px, 8vw, 36px);
   color: var(--blue);
-  text-shadow: 0 0 24px rgba(30, 167, 232, 0.7), 2px 2px 0 #000;
+  text-shadow: 0 0 24px rgba(30, 159, 255, 0.7), 2px 2px 0 #000;
   margin-bottom: 18px;
   letter-spacing: 0.05em;
   position: relative;
@@ -1065,7 +1132,7 @@ body::after {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 11px;
   letter-spacing: 0.6em;
-  color: #0a1d33;
+  color: #050a14;
   background: var(--yellow);
   padding: 4px 14px 3px;
   border-radius: 4px;
@@ -1125,7 +1192,7 @@ body::after {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 22px;
   color: #fff;
-  background: rgba(30, 167, 232, 0.4);
+  background: rgba(30, 159, 255, 0.4);
   padding: 6px 20px 4px;
   border-radius: 20px;
   letter-spacing: 0.15em;
@@ -1138,7 +1205,7 @@ body::after {
 .final.clear .final-multi {
   background: linear-gradient(135deg, var(--yellow), var(--yellow-deep));
   border-color: #fff;
-  color: #0a1d33;
+  color: #050a14;
   font-weight: 900;
   box-shadow: 0 0 20px rgba(255, 214, 51, 0.6);
 }
@@ -1170,14 +1237,14 @@ body::after {
 }
 
 .summary-box {
-  background: rgba(0, 30, 60, 0.5);
-  border: 1px solid rgba(30, 167, 232, 0.25);
+  background: rgba(0, 6, 18, 0.5);
+  border: 1px solid rgba(30, 159, 255, 0.25);
   border-radius: 8px;
   padding: 12px 6px 10px;
 }
 
 .final.clear .summary-box {
-  background: rgba(0, 30, 60, 0.7);
+  background: rgba(0, 6, 18, 0.7);
   border-color: rgba(255, 214, 51, 0.4);
 }
 
@@ -1213,105 +1280,10 @@ body::after {
   font-family: 'Noto Sans JP', sans-serif;
   cursor: pointer;
   letter-spacing: 0.15em;
-  box-shadow: 0 4px 16px rgba(30, 167, 232, 0.4);
+  box-shadow: 0 4px 16px rgba(30, 159, 255, 0.4);
 }
 
 .share-btn:active { transform: scale(0.97); }
-
-/* ===== URA LINK (裏ルートへの入口) ===== */
-.ura-link-section {
-  margin: 4px 0 22px;
-  text-align: center;
-}
-
-.ura-link-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 22px 14px 18px;
-  text-decoration: none;
-  background: linear-gradient(135deg, #050a14 0%, #0a1428 100%);
-  border: 1px solid rgba(30, 159, 255, 0.35);
-  border-radius: 10px;
-  box-shadow:
-    0 4px 18px rgba(0, 0, 0, 0.5),
-    inset 0 0 18px rgba(30, 159, 255, 0.08);
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.ura-link-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(30, 159, 255, 0.18), transparent);
-  transition: left 0.6s ease;
-}
-
-.ura-link-btn:hover::before, .ura-link-btn:active::before {
-  left: 100%;
-}
-
-.ura-link-btn:hover, .ura-link-btn:active {
-  border-color: rgba(30, 159, 255, 0.7);
-  box-shadow:
-    0 6px 24px rgba(30, 159, 255, 0.35),
-    inset 0 0 22px rgba(30, 159, 255, 0.15);
-  transform: translateY(-1px);
-}
-
-.ura-link-tag {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  background: linear-gradient(135deg, #1e9fff, #ffd633);
-  color: #050a14;
-  padding: 3px 8px;
-  border-radius: 3px;
-  font-weight: 900;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.ura-link-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  line-height: 1.3;
-}
-
-.ura-link-text {
-  font-family: 'Dela Gothic One', cursive;
-  font-size: 14px;
-  color: #fff;
-  letter-spacing: 0.05em;
-}
-
-.ura-link-text em {
-  color: #1e9fff;
-  font-style: normal;
-  text-shadow: 0 0 10px rgba(30, 159, 255, 0.7);
-}
-
-.ura-link-sub {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: #ffd633;
-  margin-top: 2px;
-  opacity: 0.85;
-}
-
-.ura-link-arrow {
-  font-size: 18px;
-  color: #1e9fff;
-  margin-left: 4px;
-  flex-shrink: 0;
-  text-shadow: 0 0 10px rgba(30, 159, 255, 0.7);
-}
 
 .footer {
   margin-top: 40px;
@@ -1321,7 +1293,7 @@ body::after {
   color: var(--blue-light);
   line-height: 1.7;
   letter-spacing: 0.05em;
-  border-top: 1px solid rgba(30, 167, 232, 0.15);
+  border-top: 1px solid rgba(30, 159, 255, 0.15);
 }
 
 .footer a { color: var(--yellow); text-decoration: none; }
@@ -1365,8 +1337,8 @@ body::after {
 }
 
 .archive-item {
-  background: linear-gradient(135deg, rgba(30, 167, 232, 0.08), rgba(255,255,255,0.02));
-  border: 1px solid rgba(30, 167, 232, 0.25);
+  background: linear-gradient(135deg, rgba(30, 159, 255, 0.08), rgba(255,255,255,0.02));
+  border: 1px solid rgba(30, 159, 255, 0.25);
   border-radius: 10px;
   padding: 14px 16px;
   position: relative;
@@ -1375,7 +1347,7 @@ body::after {
 
 .archive-item.win {
   border-color: rgba(255, 214, 51, 0.4);
-  background: linear-gradient(135deg, rgba(255, 214, 51, 0.1), rgba(30, 167, 232, 0.05));
+  background: linear-gradient(135deg, rgba(255, 214, 51, 0.1), rgba(30, 159, 255, 0.05));
   box-shadow: 0 2px 12px rgba(255, 214, 51, 0.15);
 }
 
@@ -1495,7 +1467,7 @@ body::after {
 
 .archive-item.win .archive-status-tag {
   background: var(--yellow);
-  color: #0a1d33;
+  color: #050a14;
 }
 
 .archive-item.lose .archive-status-tag {
@@ -1531,50 +1503,44 @@ body::after {
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
-  <a href="index.html" class="nav-back">← HOME</a>
+  <a href="index.html" class="nav-logo">AFRO<em>Horse</em><span class="nav-ura-badge">URA</span></a>
+  <a href="korogashi.html" class="nav-back">← 表へ</a>
 </nav>
 
 <div class="container">
 
   <section class="hero">
-    <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">ブルマの複勝転がし｜1,000円から始まる連勝チャレンジ — AFRO Horse</h1>
-    <img src="images/buruma_korogashi/buruma_logo.png" alt="ブルマの複勝転がし" class="hero-banner">
+    <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">裏ブルマの自由転がし｜ルールなし・縛りなしの気まぐれ複勝転がし — AFRO Horse 裏ルート</h1>
+
+    <div class="ura-badge">⚠ URA SIDE / 裏ルート ⚠</div>
+
+    <img src="images/ura_buruma/ura_buruma_logo.png" alt="裏ブルマの自由転がし" class="hero-logo-img" onerror="this.outerHTML='<div class=&quot;hero-logo-fallback&quot;>裏ブルマ<br><span>の自由転がし</span></div>'">
+
+    <div class="hero-logo-sub-standalone">FREE STYLE FUKUSHO</div>
+
     <div class="hero-date" id="heroDate">—</div>
     <div class="hero-challenge-name" id="heroChallengeName">読み込み中…</div>
   </section>
-
-  <!-- 裏ルートへの入口 -->
-  <div class="ura-link-section">
-    <a href="ura_korogashi.html" class="ura-link-btn">
-      <span class="ura-link-tag">URA</span>
-      <span class="ura-link-content">
-        <span class="ura-link-text">裏<em>ブルマ</em>の自由転がし</span>
-        <span class="ura-link-sub">→ ENTER URA SIDE</span>
-      </span>
-      <span class="ura-link-arrow">⚡</span>
-    </a>
-  </div>
 
   <!-- ABOUT -->
   <section class="about">
     <div class="about-header">
       <span class="label">ABOUT</span>
       <span class="slash">/</span>
-      <span class="title">ブルマの複勝転がし</span>
+      <span class="title">裏ブルマの自由転がし</span>
     </div>
     <div class="about-body">
-      <p><span class="quote">「複勝なら堅いはず」</span> その読みを信じて、勝ち金まるごと次のレースへ。</p>
-      <p>軍資金<span class="strong">1,000円</span>から始まる<span class="strong">ロマンの転がし</span>。</p>
-      <p>連勝するほど夢は膨らみ、<span class="punch">1回のハズレで全てが消える</span>…</p>
-      <span class="final-line">⚡ ブルマと一緒に夢を見ろ ⚡</span>
+      <p><span class="quote">「ルールなし、縛りなし」</span> 人気馬でも穴馬でも、その時の<span class="strong">直感</span>で選ぶ。</p>
+      <p>表ブルマが<span class="strong">読み</span>で行くなら、裏ブルマは<span class="punch">気の向くまま</span>。</p>
+      <p>同じ複勝転がしでも、選び方が全然違う。<span class="punch">直感の冴え</span>が試される裏ルートや。</p>
+      <span class="final-line">🎲 縛らんで自由に転がせ 🎲</span>
     </div>
   </section>
 
   <!-- ブルマがしゃべる風 トップステータス -->
   <section class="buruma-talks" id="burumaTalks" style="display:none;">
     <div class="buruma-character">
-      <img id="burumaTopImg" src="images/buruma_korogashi/buruma_normal.png" alt="ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>🐴</div>'">
+      <img id="burumaTopImg" src="images/ura_buruma/ura_buruma_normal.png" alt="裏ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>🐴</div>'">
     </div>
     <div class="speech-bubble" id="burumaTopBubble">
       しゃべる準備中…
@@ -1600,11 +1566,11 @@ body::after {
   <section class="next-target" id="nextTarget" style="display:none;">
     <div class="next-target-header">
       <div class="next-target-label">⚡ NEXT TARGET</div>
-      <div class="next-target-tag">次の勝負</div>
+      <div class="next-target-tag">次の直感</div>
     </div>
     <div class="next-target-info">
       <div class="next-target-buruma">
-        <img id="burumaNextImg" src="images/buruma_korogashi/buruma_yaruki.png" alt="ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>💪</div>'">
+        <img id="burumaNextImg" src="images/ura_buruma/ura_buruma_yaruki.png" alt="裏ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>💪</div>'">
       </div>
       <div class="next-target-bubble" id="burumaNextBubble">
         次はこれで勝負や！
@@ -1616,7 +1582,7 @@ body::after {
   <!-- 履歴 -->
   <section class="journey" id="journeySection" style="display:none;">
     <div class="section-label">
-      <span class="line"></span><span class="text">THE JOURNEY</span><span class="line"></span>
+      <span class="line"></span><span class="text">URA JOURNEY</span><span class="line"></span>
     </div>
     <div class="timeline" id="timeline"></div>
   </section>
@@ -1628,20 +1594,21 @@ body::after {
   <section class="archive" id="archiveSection" style="display:none;">
     <div class="archive-header">
       <div class="label">ARCHIVE</div>
-      <h2>過去のチャレンジ</h2>
+      <h2>過去の自由戦績</h2>
     </div>
     <div class="archive-list" id="archiveList"></div>
   </section>
 
   <div class="share-section">
-    <button class="share-btn" onclick="shareResult()">📸 この記録をシェア</button>
+    <button class="share-btn" onclick="shareResult()">🎲 自由の記録をシェア</button>
   </div>
 
   <div id="loadingScreen" class="loading">LOADING...</div>
 
   <div class="footer">
-    ブルマの複勝転がし / AFRO Horse<br>
+    裏ブルマの自由転がし / AFRO Horse 裏ルート<br>
     ※エンタメ目的 / 馬券購入は自己責任<br>
+    <a href="korogashi.html">← 表ルート（堅実派）はこちら</a><br>
     <a href="https://afuwa12345.github.io/AFRO-Horse/">AFRO Horse</a>
   </div>
 
@@ -1649,19 +1616,21 @@ body::after {
 
 <script>
 // =====================================================
-//  🔧 GAS連携用URL（後でここに入れる）
+//  🔧 GAS連携用URL（裏ルート用 / 裏ブルマの自由転がし）
+//  ⚠ 表ルートとは別のスプレッドシート/エンドポイントに差し替えてください
+//  ⚠ 同じ列構成（チャレンジNo / 軍資金 / レースNo / 結果 / 確定オッズ など）が必要
 // =====================================================
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbytItkDyPGDoygn0jrTDD5UA3t7TuyS2lpzOOdu5wsn7aKwiQnGcdyo3U1UMlZUmfgMOA/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbytItkDyPGDoygn0jrTDD5UA3t7TuyS2lpzOOdu5wsn7aKwiQnGcdyo3U1UMlZUmfgMOA/exec?route=ura';
 
 // =====================================================
 //  📦 モックデータ（GAS_URLが空のとき使われる）
+//  自由転がし用：人気〜中穴〜穴を直感ミックス
 // =====================================================
 const MOCK_DATA = [
-  // チャレンジ1（進行中・次の勝負あり）
-  { 'チャレンジNo': 1, 'チャレンジ名': '第1回ブルマチャレンジ', '軍資金': 1000, 'レースNo': 1, '日付': '4/26', '競馬場': '東京', 'R': '11R', 'レース名': '皐月賞 G1', '馬番': 7,  '馬名': 'アフロホース',     '結果': '〇', '確定オッズ': 2.3 },
-  { 'チャレンジNo': 1, 'チャレンジ名': '第1回ブルマチャレンジ', '軍資金': 1000, 'レースNo': 2, '日付': '4/26', '競馬場': '中山', 'R': '9R',  'レース名': '雅Sエンジェル賞', '馬番': 3,  '馬名': 'ギンマシャイン',   '結果': '〇', '確定オッズ': 1.8 },
-  { 'チャレンジNo': 1, 'チャレンジ名': '第1回ブルマチャレンジ', '軍資金': 1000, 'レースNo': 3, '日付': '4/27', '競馬場': '阪神', 'R': '11R', 'レース名': '桜花賞 G1',     '馬番': 12, '馬名': 'クロフワブレード', '結果': '〇', '確定オッズ': 2.6 },
-  { 'チャレンジNo': 1, 'チャレンジ名': '第1回ブルマチャレンジ', '軍資金': 1000, 'レースNo': 4, '日付': '4/27', '競馬場': '東京', 'R': '10R', 'レース名': '青嵐賞',        '馬番': 5,  '馬名': 'チャフワロード',   '結果': '',   '確定オッズ': '' },
+  { 'チャレンジNo': 1, 'チャレンジ名': '第1回 自由チャレンジ', '軍資金': 1000, 'レースNo': 1, '日付': '5/3', '競馬場': '東京', 'R': '11R', 'レース名': 'NHKマイルC G1', '馬番': 7,  '馬名': 'アフロホース',     '結果': '〇', '確定オッズ': 2.4 },
+  { 'チャレンジNo': 1, 'チャレンジ名': '第1回 自由チャレンジ', '軍資金': 1000, 'レースNo': 2, '日付': '5/3', '競馬場': '京都', 'R': '10R', 'レース名': '葵S',           '馬番': 11, '馬名': 'クロフワブラスト', '結果': '〇', '確定オッズ': 4.6 },
+  { 'チャレンジNo': 1, 'チャレンジ名': '第1回 自由チャレンジ', '軍資金': 1000, 'レースNo': 3, '日付': '5/4', '競馬場': '阪神', 'R': '11R', 'レース名': 'ヴィクトリアM G1', '馬番': 3,  '馬名': 'ギンマシャイン',   '結果': '〇', '確定オッズ': 1.8 },
+  { 'チャレンジNo': 1, 'チャレンジ名': '第1回 自由チャレンジ', '軍資金': 1000, 'レースNo': 4, '日付': '5/4', '競馬場': '東京', 'R': '11R', 'レース名': 'オークス G1',     '馬番': 14, '馬名': 'チャフワデビル',   '結果': '',   '確定オッズ': '' },
 ];
 
 // =====================================================
@@ -1670,94 +1639,94 @@ const MOCK_DATA = [
 const BURUMA_LINES = {
   // 1戦目スタート
   start: [
-    'よっしゃ、いくでぇ！ブルマの本気見せたるわ💪',
-    '今日は調子ええで！転がせ転がせ〜🔥',
-    'ドリーム掴むぞ！ついてこいや〜！',
-    'ブルマチャレンジ開幕や〜！',
+    'よっしゃ、今日も気の向くままに行くで〜🎲',
+    'ルールなし、縛りなし。これが裏ブルマや',
+    '直感頼りの転がし、開幕や〜！',
+    '気分で選んで、気分で勝つ。それだけや✨',
   ],
   // 通常的中（連勝1〜2）
   win: [
-    '的中ぅぅぅ！次もいくでぇ🔥',
-    '読み通り！ブルマの目に狂いなし✌️',
-    'やったでぇ！ええ感じやんけ！',
-    '当たり前体操や！',
+    '直感ドンピシャや！気持ちええわ〜🎯',
+    '縛らんで選んだら来た！これやで',
+    'ノリで行ったら的中、流石ブルマやろ？',
+    '勘が冴えとる、ええ感じや✨',
   ],
   // 連勝中（3〜）
   streak: [
-    'ノリにノってきた〜🔥もう止まらん！',
-    'ブルマ無双や！夢が広がる〜🌈',
-    '何連勝するか分からんで〜！',
-    '読みが冴えてるぅ✨',
+    '気の向くままが正解やった！止まらん〜',
+    '直感、絶好調や⚡もっと行くで',
+    '自由にやるとこうなる、覚えとき',
+    '縛らんのが一番ええ、再確認や',
   ],
   // 大連勝（5〜）or 高オッズ的中
   bigwin: [
-    '🎉伝説の始まりや！',
-    '🎉ドリーム掴んだ…！',
-    '🎉これがブルマの実力や！まだまだ転がすで！',
-    '🎉夢じゃない、本当や！',
+    '🎉直感、神が降りてきた…！',
+    '🎉自由スタイル無敗や〜！伝説や！',
+    '🎉ノリで取った大勝ち、たまらんわ',
+    '🎉裏ブルマ覚醒、止まる気がせん',
   ],
   // ハズレ
   lose: [
-    'うわぁぁ…ここで夢は終わった😭',
-    '夢でしたw でも最高の旅やった！',
-    'これが競馬や…次こそリベンジや！',
-    'ドンマイドンマイ、また挑戦したるわ💧',
+    '💧自由に行ったら外れた…まあ、それも人生やろ',
+    '💧直感ハズレ！でも後悔はないで',
+    '💧これも自由の代償や、また気分で挑むわ',
+    '💧気の向くままやから、こんな日もある',
   ],
-  // 次の勝負（やる気）
+  // 次の勝負（直感）
   next: [
-    'これは買いやで！見とけよ〜👀',
-    'ブルマの本命や！気合入れていくでぇ💪',
-    '次はこれで勝負や！期待しとき⚡',
-    'よ〜く目に焼き付けときや！',
-    'これで勝てなかったら知らん（笑）',
+    'ピンと来た、こいつや👀',
+    '直感がこいつやて言うてる⚡',
+    'なんかええ気がする、行くで',
+    '理由はないけど、これや。それでええ',
+    '気の向くまま、次もこの一頭や',
   ],
   // トップステータス：チャレンジ進行中・連勝中
   topGood: [
-    'ええ感じや〜！このまま転がせ💪',
-    'ブルマ絶好調！もっといくで〜🔥',
-    '夢が広がってきた…！',
+    '自由スタイル絶好調や〜⚡',
+    '直感冴えまくり、もっと行くで🎲',
+    '気の向くままが正解やった！',
   ],
   // トップステータス：チャレンジ進行中・1連勝
   topNormal: [
-    '幸先のいいスタートや！次もいくで〜',
-    '一発目クリア！この調子や💫',
-    'ええ流れや、続けていこう！',
+    '滑り出しええ感じや、自由に転がそ',
+    '1発目クリア、この気分で続けるで✨',
+    '幸先ええやん、直感頼りで行こか',
   ],
   // トップステータス：1戦目前
   topStart: [
-    'チャレンジ開幕！軍資金は{initial}円や💰',
-    '今日からスタート！ブルマと一緒に夢見るで✨',
+    '裏ルート開幕！軍資金{initial}円、自由に転がすで🎲',
+    '縛りなし複勝、エンジン始動や⚡',
   ],
   // トップステータス：チャレンジ終了（成功・継続中）
   topComplete: [
-    '完走したでぇ！軍資金が{multi}倍に🎉',
-    'ブルマの実力見たか〜！{multi}倍や✨',
+    '自由に転がして{multi}倍に！気持ちええ✨',
+    '裏ブルマの直感、{multi}倍に化けたで🎲',
   ],
   // トップステータス：目標達成🏆
   topCleared: [
-    '🏆 目標達成や〜！ブルマやったで〜！',
-    '🏆 ¥{goal}クリア！次は更に上を目指すで⚡',
-    '🏆 ミッションコンプリート！夢叶ったで✨',
-    '🏆 ブルマ伝説の幕開けや〜！',
+    '🏆 自由に行ったら目標突破や〜！',
+    '🏆 ¥{goal}クリア！縛らんで正解やった⚡',
+    '🏆 直感的中、夢叶ったで✨',
+    '🏆 裏ブルマの自由スタイル、勝利や🎲',
   ],
   // トップステータス：チャレンジ終了（ハズレ）
   topLost: [
-    '夢は終わった…でも最高{max}円まで届いたで💧',
-    'ここで終了や…でも{best}連勝の伝説残したで！',
+    '自由に行ったけど、最高{max}円までやったわ💧',
+    'ここで終戦や…でも{best}連勝、自由スタイルで残したで',
   ],
 };
 
 // =====================================================
-//  🎨 場面 → ブルマ画像 マッピング
+//  🎨 場面 → 裏ブルマ画像 マッピング
 // =====================================================
-const IMG_BASE = 'images/buruma_korogashi/';
+const IMG_BASE = 'images/ura_buruma/';
 const BURUMA_IMG = {
-  normal:   IMG_BASE + 'buruma_normal.png',   // 基本顔
-  happy:    IMG_BASE + 'buruma_happy.png',    // ガッツポーズ
-  peace:    IMG_BASE + 'buruma_peace.png',    // ピース/OK
-  sad:      IMG_BASE + 'buruma_sad.png',      // しょんぼり
-  yaruki:   IMG_BASE + 'buruma_yaruki.png',   // やる気
-  surprise: IMG_BASE + 'buruma_surprise.png', // びっくり
+  normal:   IMG_BASE + "ura_buruma_normal.png",   // 基本顔
+  happy:    IMG_BASE + "ura_buruma_happy.png",    // ガッツポーズ
+  peace:    IMG_BASE + "ura_buruma_peace.png",    // ピース/OK
+  sad:      IMG_BASE + "ura_buruma_sad.png",      // しょんぼり
+  yaruki:   IMG_BASE + "ura_buruma_yaruki.png",   // やる気
+  surprise: IMG_BASE + "ura_buruma_surprise.png", // びっくり
 };
 
 // =====================================================
@@ -2081,7 +2050,7 @@ function renderJourney(journey) {
         </div>
         <div class="race-comment">
           <div class="race-comment-buruma">
-            <img src="${BURUMA_IMG[mood]}" alt="ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>🐴</div>'">
+            <img src="${BURUMA_IMG[mood]}" alt="裏ブルマ" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>🐴</div>'">
           </div>
           <div class="race-comment-bubble">${escapeHtml(comment)}</div>
         </div>
@@ -2100,16 +2069,16 @@ function renderFinal(current, initial, maxAmount, bestStreak, journey, mode, goa
     // 🏆 目標達成！超豪華演出
     final.classList.add('clear');
     final.innerHTML = `
-      <div class="final-clear-trophy">🏆</div>
-      <div class="final-clear-burst">★ MISSION ACCOMPLISHED ★</div>
+      <div class="final-clear-trophy">💥</div>
+      <div class="final-clear-burst">★ FREE STYLE WIN ★</div>
       <div class="final-label">FINAL RESULT</div>
       <div class="final-buruma-clear">
-        <img src="${BURUMA_IMG.happy}" alt="ブルマ" onerror="this.outerHTML='<div style=&quot;font-size:60px&quot;>🎉</div>'">
+        <img src="${BURUMA_IMG.happy}" alt="裏ブルマ" onerror="this.outerHTML='<div style=&quot;font-size:60px&quot;>🎉</div>'">
       </div>
       <div class="final-headline">CHALLENGE<br>CLEAR!</div>
       <div class="final-amount">¥${format(current)}</div>
       <div class="final-multi">×${multi.toFixed(2)} TIMES</div>
-      <div class="final-message">🎯 目標 ¥${format(goal)} を達成！<br>ブルマの夢、叶ったで〜！</div>
+      <div class="final-message">🎯 目標 ¥${format(goal)} 達成や〜！<br>気の向くままで掴んだ夢や🎲</div>
       <div class="final-summary">
         <div class="summary-box"><div class="summary-label">RACES</div><div class="summary-value">${journey.length}</div></div>
         <div class="summary-box"><div class="summary-label">BEST 連勝</div><div class="summary-value">${bestStreak}</div></div>
@@ -2124,10 +2093,10 @@ function renderFinal(current, initial, maxAmount, bestStreak, journey, mode, goa
     // 💧 ハズレで終了
     final.innerHTML = `
       <div class="final-label">FINAL RESULT</div>
-      <div class="final-headline">💧 CHALLENGE END</div>
+      <div class="final-headline">💧 FREE FALL ENDED</div>
       <div class="final-amount">¥${format(maxAmount)}</div>
       <div class="final-multi">最高 ×${(maxAmount/initial).toFixed(2)} 到達</div>
-      ${goal > 0 ? `<div class="final-message">🎯 目標 ¥${format(goal)}<br>あと ¥${format(Math.max(0, goal - maxAmount))} だった…次やリベンジや！</div>` : ''}
+      ${goal > 0 ? `<div class="final-message">🎯 目標 ¥${format(goal)}<br>あと ¥${format(Math.max(0, goal - maxAmount))} で落ちた…自由スタイルやから後悔なしや💧</div>` : ''}
       <div class="final-summary">
         <div class="summary-box"><div class="summary-label">RACES</div><div class="summary-value">${journey.length}</div></div>
         <div class="summary-box"><div class="summary-label">BEST 連勝</div><div class="summary-value">${bestStreak}</div></div>
@@ -2213,7 +2182,7 @@ function renderArchive(challenges) {
 }
 
 function launchConfetti(big) {
-  const colors = ['#ffd633', '#1ea7e8', '#5bc0f0', '#fff', '#ffb700', '#ff8c00'];
+  const colors = ['#ffd633', '#1e9fff', '#5bc0f0', '#fff', '#ffb700', '#ff8c00'];
   const count = big ? 150 : 80;
   for (let i = 0; i < count; i++) {
     const c = document.createElement('div');
@@ -2235,7 +2204,7 @@ function launchConfetti(big) {
 function shareResult() {
   const amount = document.getElementById('statusAmount').textContent;
   const name = document.getElementById('heroChallengeName').textContent;
-  const text = `🐴 ブルマの複勝転がし\n${name}\n現在 ${amount}！\n\n#AFROHorse #ブルマの複勝転がし #競馬`;
+  const text = `🎲 裏ブルマの自由転がし【裏】\n${name}\n現在 ${amount}！\n\n#AFROHorse #裏ブルマ #自由転がし #競馬 #フリースタイル複勝`;
   if (navigator.share) {
     navigator.share({ text }).catch(() => copyText(text));
   } else {
