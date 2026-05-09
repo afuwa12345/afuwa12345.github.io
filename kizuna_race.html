@@ -13,6 +13,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
 
+<!-- Swiper.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -21,6 +25,7 @@ body {
   font-family: 'Noto Sans JP', sans-serif;
   line-height: 1.6;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* ヘッダー */
@@ -45,14 +50,12 @@ body {
   font-size: 13px;
   font-weight: 600;
 }
-.home-link:hover {
-  color: #fff;
-}
+.home-link:hover { color: #fff; }
 
 /* メインビジュアル */
 .hero {
   text-align: center;
-  padding: 60px 20px 40px;
+  padding: 50px 20px 30px;
   background: linear-gradient(180deg, #0e2e1f 0%, #0a1f15 100%);
 }
 .hero h1 {
@@ -73,42 +76,39 @@ body {
   margin-top: 20px;
 }
 
-/* 説明セクション */
+/* 説明 */
 .intro {
   max-width: 720px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 30px 24px 20px;
   text-align: center;
 }
 .intro p {
   font-size: 15px;
   color: #d0e8d8;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 .intro .highlight {
   color: #ffd96b;
   font-weight: 700;
 }
 
-/* ステータス表示（自分の状態） */
+/* ステータス表示 */
 .status-box {
   max-width: 600px;
-  margin: 0 auto 30px;
-  padding: 24px;
+  margin: 0 auto 20px;
+  padding: 20px;
   background: rgba(26, 74, 50, 0.5);
   border: 1px solid #1a4a32;
   border-radius: 16px;
   text-align: center;
 }
-.status-box.loading {
-  color: #87b89c;
-}
 .status-box.logged-in {
   background: rgba(26, 74, 50, 0.7);
 }
 .status-box .my-jinei {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 900;
   margin-bottom: 8px;
   color: #ffd96b;
 }
@@ -135,17 +135,10 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(255, 217, 107, 0.4);
 }
-.cta-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
 
-/* 陣営グリッド */
-.jinei-section {
-  max-width: 1100px;
-  margin: 40px auto 0;
-  padding: 0 20px 80px;
+/* スワイパーセクション */
+.swiper-section {
+  padding: 30px 0 60px;
 }
 .section-title {
   font-family: 'Dela Gothic One', sans-serif;
@@ -159,165 +152,264 @@ body {
   color: #87b89c;
   font-size: 12px;
   letter-spacing: 3px;
-  margin-bottom: 36px;
+  margin-bottom: 12px;
+}
+.swiper-hint {
+  text-align: center;
+  color: #ffd96b;
+  font-size: 13px;
+  margin-bottom: 24px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 
-.jinei-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+/* Swiperカード */
+.jinei-swiper {
+  width: 100%;
+  padding: 30px 0 60px !important;
 }
-
-.jinei-card {
+.jinei-swiper .swiper-slide {
+  width: 280px;
+  height: 380px;
   background: #0e2e1f;
   border: 2px solid #1a4a32;
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  transition: all 0.25s ease;
+  justify-content: center;
+  padding: 24px;
   cursor: pointer;
+  transition: all 0.4s ease;
+  opacity: 0.4;
+  transform: scale(0.85);
+  position: relative;
 }
-.jinei-card:hover {
+.jinei-swiper .swiper-slide-active {
+  opacity: 1;
+  transform: scale(1);
   border-color: #ffd96b;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(255, 217, 107, 0.15);
+  box-shadow: 0 12px 40px rgba(255, 217, 107, 0.25);
 }
-.jinei-card.disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
-.jinei-card img {
-  width: 120px;
-  height: 120px;
+.swiper-slide img {
+  width: 160px;
+  height: 160px;
   object-fit: contain;
+  background: #fff;
+  border-radius: 50%;
+  padding: 10px;
+  margin-bottom: 16px;
+}
+.swiper-slide .slide-name {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.swiper-slide .slide-style {
+  font-size: 13px;
+  color: #ffd96b;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.swiper-slide .slide-catch {
+  font-size: 12px;
+  color: #c0e8d0;
+  font-style: italic;
+  text-align: center;
+  min-height: 36px;
+}
+.swiper-slide.is-mine::after {
+  content: '✓ 所属中';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #ffd96b;
+  color: #0a1f15;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ナビゲーション矢印 */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffd96b !important;
+  background: rgba(14, 46, 31, 0.85);
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50%;
+  border: 1px solid #1a4a32;
+}
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 18px !important;
+  font-weight: 900;
+}
+
+/* ページネーション */
+.swiper-pagination-bullet {
+  background: #87b89c !important;
+  opacity: 0.4;
+}
+.swiper-pagination-bullet-active {
+  background: #ffd96b !important;
+  opacity: 1;
+}
+
+/* 詳細モーダル */
+.detail-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+.detail-modal-overlay.show {
+  display: flex;
+}
+.detail-modal-box {
+  background: #0e2e1f;
+  border: 2px solid #ffd96b;
+  border-radius: 20px;
+  padding: 28px 24px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalIn 0.3s ease-out;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.modal-header img {
+  width: 130px;
+  height: 130px;
   background: #fff;
   border-radius: 50%;
   padding: 8px;
   margin-bottom: 14px;
 }
-.jinei-name {
+.modal-jinei-name {
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 900;
-  font-size: 22px;
+  font-size: 26px;
+  letter-spacing: 1px;
   margin-bottom: 4px;
+}
+.modal-jinei-style {
+  color: #ffd96b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.modal-section {
+  background: rgba(26, 74, 50, 0.4);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.modal-section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffd96b;
+  margin-bottom: 8px;
   letter-spacing: 1px;
 }
-.jinei-style {
-  font-size: 13px;
-  color: #ffd96b;
-  font-weight: 700;
-  margin-bottom: 10px;
+.modal-section-content {
+  font-size: 14px;
+  color: #d0e8d8;
+  line-height: 1.7;
 }
-.jinei-catchphrase {
-  font-size: 13px;
-  color: #c0e8d0;
-  font-style: italic;
-  margin-bottom: 16px;
-  min-height: 40px;
-}
-.jinei-substyles {
+.modal-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  justify-content: center;
-  margin-bottom: 18px;
-  min-height: 32px;
+  margin-top: 8px;
 }
-.jinei-tag {
+.modal-tag {
   display: inline-block;
   background: rgba(255, 217, 107, 0.12);
   color: #ffd96b;
   border: 1px solid rgba(255, 217, 107, 0.35);
   border-radius: 999px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.3px;
 }
-.join-btn {
-  width: 100%;
-  background: transparent;
-  color: #ffd96b;
-  border: 2px solid #ffd96b;
-  border-radius: 999px;
-  padding: 10px;
-  font-weight: 700;
+.modal-recommend-list {
+  list-style: none;
+  padding: 0;
+}
+.modal-recommend-list li {
+  padding: 4px 0;
+  padding-left: 20px;
+  position: relative;
   font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  letter-spacing: 1px;
-}
-.join-btn:hover {
-  background: #ffd96b;
-  color: #0a1f15;
-}
-
-/* フッター */
-.footer {
-  text-align: center;
-  padding: 30px 20px;
-  color: #587264;
-  font-size: 12px;
-  border-top: 1px solid #1a4a32;
-}
-
-/* モーダル（確認画面） */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.75);
-  z-index: 10000;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.modal-overlay.show {
-  display: flex;
-}
-.modal-box {
-  background: #0e2e1f;
-  border: 2px solid #ffd96b;
-  border-radius: 20px;
-  padding: 32px;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-}
-.modal-box img {
-  width: 100px;
-  height: 100px;
-  background: #fff;
-  border-radius: 50%;
-  padding: 6px;
-  margin-bottom: 16px;
-}
-.modal-box h2 {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 900;
-  font-size: 24px;
-  margin-bottom: 12px;
-}
-.modal-box p {
-  margin-bottom: 24px;
   color: #d0e8d8;
 }
-.modal-buttons {
+.modal-recommend-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #ffd96b;
+  font-weight: 700;
+}
+
+.modal-footer {
   display: flex;
   gap: 12px;
-  justify-content: center;
+  margin-top: 20px;
 }
-.modal-buttons button {
-  padding: 12px 24px;
+.modal-footer button {
+  flex: 1;
+  padding: 14px;
   border-radius: 999px;
   font-weight: 700;
   cursor: pointer;
   border: none;
   font-size: 14px;
+  letter-spacing: 1px;
 }
 .btn-cancel {
   background: transparent;
@@ -327,6 +419,20 @@ body {
 .btn-confirm {
   background: #ffd96b;
   color: #0a1f15;
+  font-weight: 900;
+}
+.btn-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* フッター */
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: #587264;
+  font-size: 12px;
+  border-top: 1px solid #1a4a32;
 }
 </style>
 </head>
@@ -348,22 +454,26 @@ body {
 <!-- 説明 -->
 <section class="intro">
   <p>あなたの<span class="highlight">予想哲学</span>はどれ？</p>
-  <p>6人のアフロ馬キャラ、それぞれ違う予想スタイルを持つ仲間たち。<br>
+  <p>6人のアフロ馬キャラ、それぞれ違う予想スタイル。<br>
      好きなキャラの陣営に入隊して、<span class="highlight">陣営の総意</span>で本命を作ろう。</p>
 </section>
 
-<!-- ステータス表示エリア（JSで動的に表示切替） -->
+<!-- ステータス表示 -->
 <div class="status-box loading" id="statusBox">
   <p>読み込み中...</p>
 </div>
 
-<!-- 陣営紹介グリッド -->
-<section class="jinei-section">
+<!-- スワイパーセクション -->
+<section class="swiper-section">
   <h2 class="section-title">SIX JINEI</h2>
   <div class="section-subtitle">6つの予想スタイル</div>
+  <div class="swiper-hint">← スワイプして選ぼう →</div>
   
-  <div class="jinei-grid" id="jineiGrid">
-    <!-- JSで動的生成 -->
+  <div class="swiper jinei-swiper">
+    <div class="swiper-wrapper" id="swiperWrapper"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
   </div>
 </section>
 
@@ -372,34 +482,48 @@ body {
   © 2026 AFRO Horse. All rights reserved.
 </footer>
 
-<!-- 入隊確認モーダル -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal-box">
-    <img id="modalImg" src="" alt="">
-    <h2 id="modalJineiName"></h2>
-    <p id="modalDescription"></p>
-    <p style="font-size:13px; color:#ffd96b;">この陣営に入隊しますか？</p>
-    <div class="modal-buttons">
-      <button class="btn-cancel" id="modalCancel">キャンセル</button>
-      <button class="btn-confirm" id="modalConfirm">入隊する</button>
+<!-- 詳細モーダル -->
+<div class="detail-modal-overlay" id="detailModal">
+  <div class="detail-modal-box">
+    <button class="modal-close" id="modalCloseBtn">✕</button>
+    
+    <div class="modal-header">
+      <img id="modalImg" src="" alt="">
+      <div class="modal-jinei-name" id="modalName"></div>
+      <div class="modal-jinei-style" id="modalStyle"></div>
+    </div>
+    
+    <div class="modal-section">
+      <div class="modal-section-title">📖 キャラ紹介</div>
+      <div class="modal-section-content" id="modalIntro"></div>
+    </div>
+    
+    <div class="modal-section">
+      <div class="modal-section-title">🎯 予想スタイル</div>
+      <div class="modal-section-content" id="modalPredictionStyle"></div>
+      <div class="modal-tags" id="modalTags"></div>
+    </div>
+    
+    <div class="modal-section">
+      <div class="modal-section-title">✨ こんな人におすすめ</div>
+      <ul class="modal-recommend-list" id="modalRecommend"></ul>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn-cancel" id="modalCancelBtn">閉じる</button>
+      <button class="btn-confirm" id="modalConfirmBtn">入隊する</button>
     </div>
   </div>
 </div>
 
-<!-- ===========================================
-     必要なライブラリ
-=========================================== -->
+<!-- ライブラリ -->
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="js/auth.js"></script>
 
-<!-- 注意：このページはheader.jsを使わない（自前のヘッダーがあるから） -->
-
 <script>
-// ========================================
-// 6陣営のデータ
-// ========================================
+// 6陣営の詳細データ
 const JINEI_DATA = [
   {
     id: 'afuwa',
@@ -407,7 +531,14 @@ const JINEI_DATA = [
     img: 'images/afuwa.png',
     style: '実績・本命派',
     catchphrase: '「結果を残してきた馬を信じる」',
-    substyles: '実績・本命党・連対率・印・コメント'
+    intro: 'AFRO Horseの主人公。アフロ馬の代表選手。穏やかでしっかり者で、みんなのお兄ちゃん的存在。負けても次を信じる前向きさが武器。',
+    predictionStyle: '過去の実績や連対率を信じる王道タイプ。新聞の印・プロのコメントも参考にしながら、堅実に本命を打つ。「人気馬には人気な理由がある」が口癖。',
+    tags: ['実績', '本命党', '連対率', '印', 'コメント'],
+    recommend: [
+      '堅実な予想を組み立てたい人',
+      'データより実績で判断したい人',
+      '競馬初心者にも◎'
+    ]
   },
   {
     id: 'yancha',
@@ -415,7 +546,14 @@ const JINEI_DATA = [
     img: 'images/yanchaahuwa.png',
     style: '穴党・ロマン派',
     catchphrase: '「人気馬には用がない」',
-    substyles: '逆張り・万馬券・若駒・休み明け・下剋上'
+    intro: 'タバコを吸うと現れるアフワのもう一つの姿。普段の優等生な顔から一変、ニヒルな笑みを浮かべる夜の顔。「人気？知らねぇな…」と万馬券に夢を託すロマンチスト。',
+    predictionStyle: '人気馬は基本スルー。穴馬・伏兵・若駒・休み明け・人気薄を狙い撃ち。「下剋上が一番アツい」が信念。当たれば一撃で取り返す。',
+    tags: ['逆張り', '万馬券', '若駒', '休み明け', '下剋上'],
+    recommend: [
+      '配当より夢を追いたい人',
+      '人気馬から買いたくない逆張り派',
+      '万馬券狙いの一発勝負好き'
+    ]
   },
   {
     id: 'buruma',
@@ -423,7 +561,14 @@ const JINEI_DATA = [
     img: 'images/buruma.png',
     style: 'データ派',
     catchphrase: '「数字がすべてを語る」',
-    substyles: '過去データ・スピード指数・ラップ・コース適性'
+    intro: '青いアフロのデータ博士。冷静沈着でロジカル。感情で予想する人を「非合理的」と一蹴。でも実は推し馬には甘い一面も。',
+    predictionStyle: '過去データ・スピード指数・ラップタイム・コース適性。すべてを数字で判断。「直感は錯覚、データは事実」がモットー。',
+    tags: ['過去データ', 'スピード指数', 'ラップ', 'コース適性'],
+    recommend: [
+      '数字とロジックで予想したい人',
+      'スピード指数を重視する派',
+      '感情に流されたくない冷静派'
+    ]
   },
   {
     id: 'chahuwa',
@@ -431,7 +576,14 @@ const JINEI_DATA = [
     img: 'images/chahuwa.png',
     style: '直感・パドック派',
     catchphrase: '「ピンときた馬を信じる」',
-    substyles: 'パドック・気配・返し馬・推し馬・直感'
+    intro: 'オレンジ色のふわふわアフロ。観察力が鋭くて、馬の気配を読み取る天才。「この子いい顔してる…」が決め台詞。情に厚い。',
+    predictionStyle: 'パドックでの仕草、馬の気配、返し馬の動き、目つき。生身の情報を全身で感じ取る。データより今この瞬間を信じる。',
+    tags: ['パドック', '気配', '返し馬', '推し馬', '直感'],
+    recommend: [
+      'パドック観察が好きな人',
+      '「ピンとくる馬」を信じたい人',
+      '推し馬を一途に応援したい人'
+    ]
   },
   {
     id: 'kurohuwa',
@@ -439,7 +591,14 @@ const JINEI_DATA = [
     img: 'images/kurohuwa.png',
     style: '調教派',
     catchphrase: '「努力した馬は嘘をつかない」',
-    substyles: '追い切り・坂路・ウッド・調教師・ローテ'
+    intro: '真っ黒なアフロの努力家。早朝の調教を毎日チェックする勤勉キャラ。「馬は嘘をつかない」が口癖。寡黙だが熱い。',
+    predictionStyle: '追い切りの動き・坂路タイム・ウッドチップでの併せ馬・調教師の発言・ローテーション。裏側の努力を見抜く。',
+    tags: ['追い切り', '坂路', 'ウッド', '調教師', 'ローテ'],
+    recommend: [
+      '追い切り情報を毎週チェックする派',
+      '調教師の手腕を信じる人',
+      '一週間かけてじっくり予想する派'
+    ]
   },
   {
     id: 'ginma',
@@ -447,60 +606,49 @@ const JINEI_DATA = [
     img: 'images/ginma.png',
     style: '血統派',
     catchphrase: '「血を見ればわかる…ニヤリ」',
-    substyles: '父系・母父・配合・コース×血統・馬場×血統'
+    intro: '銀髪のクールキャラ。おじいちゃん風の喋り方で「ふぉっふぉっ」と笑う。血統オタクで、若駒の血を見て未来まで読む達人。',
+    predictionStyle: '父系・母父・配合・コース×血統・馬場×血統。「血を見ればわかる…ニヤリ」が決め台詞。芝・ダート・距離・馬場別に血統適性を見抜く。',
+    tags: ['父系', '母父', '配合', 'コース×血統', '馬場×血統'],
+    recommend: [
+      '血統表を読むのが楽しい人',
+      '「この血なら走る」って言いたい派',
+      '父・母父まで予想に入れる派'
+    ]
   }
 ];
 
-// ========================================
-// メイン処理（auth.jsの後に実行）
-// ========================================
-let myJineiId = null; // 自分の陣営（あれば）
+let myJineiId = null;
+let swiperInstance = null;
+let currentJineiIdInModal = null;
 
 async function main() {
-  // auth.js の initAuth() で初期化
   const user = await initAuth();
-  
-  // 陣営所属チェック
-  if (user) {
-    await checkMyJinei(user.userId);
-  }
-  
-  // ステータスエリア更新
+  if (user) await checkMyJinei(user.userId);
   updateStatusBox(user);
-  
-  // 陣営カード描画
-  renderJineiCards();
+  renderSwiper();
+  initSwiper();
+  bindModalEvents();
 }
 
-// ========================================
-// 自分の陣営確認
-// ========================================
 async function checkMyJinei(userId) {
   try {
     const doc = await db.collection('kizuna_users').doc(userId).get();
-    if (doc.exists) {
-      myJineiId = doc.data().jineiId;
-    }
+    if (doc.exists) myJineiId = doc.data().jineiId;
   } catch (e) {
-    console.log('陣営所属確認エラー:', e);
+    console.log('陣営確認エラー:', e);
   }
 }
 
-// ========================================
-// ステータス表示
-// ========================================
 function updateStatusBox(user) {
   const box = document.getElementById('statusBox');
   
   if (!user) {
-    // 未ログイン
     box.className = 'status-box';
     box.innerHTML = `
       <p>キズナレースに参加するには<br>LINEアカウントで登録が必要です</p>
       <button class="cta-btn" onclick="login()">LINEで登録 / ログイン</button>
     `;
   } else if (myJineiId) {
-    // 入隊済み
     const jinei = JINEI_DATA.find(j => j.id === myJineiId);
     box.className = 'status-box logged-in';
     box.innerHTML = `
@@ -510,107 +658,128 @@ function updateStatusBox(user) {
       <div class="my-info" style="margin-top:8px;">${jinei ? jinei.catchphrase : ''}</div>
     `;
   } else {
-    // ログイン済み・未所属
     box.className = 'status-box logged-in';
     box.innerHTML = `
       <p>ようこそ、${escapeHTML(user.displayName)}さん！</p>
-      <p style="font-size:13px; color:#c0e8d0; margin-top:8px;">
-        下から好きな陣営を選んで入隊しよう
-      </p>
+      <p style="font-size:13px; color:#c0e8d0; margin-top:8px;">下から好きな陣営を選んで入隊しよう</p>
     `;
   }
 }
 
-// ========================================
-// 陣営カード描画
-// ========================================
-function renderJineiCards() {
-  const grid = document.getElementById('jineiGrid');
-  grid.innerHTML = JINEI_DATA.map(j => {
+function renderSwiper() {
+  const wrapper = document.getElementById('swiperWrapper');
+  wrapper.innerHTML = JINEI_DATA.map(j => {
     const isMine = myJineiId === j.id;
-    const isOther = myJineiId && myJineiId !== j.id;
-    const btnText = isMine ? '✓ 所属中' : '入隊する';
-    const cardClass = isOther ? 'jinei-card disabled' : 'jinei-card';
-    
-    // サブ属性をタグに分割
-    const tags = j.substyles.split('・').map(t => 
-      `<span class="jinei-tag">${escapeHTML(t.trim())}</span>`
-    ).join('');
-    
     return `
-      <div class="${cardClass}" data-id="${j.id}">
+      <div class="swiper-slide ${isMine ? 'is-mine' : ''}" data-id="${j.id}">
         <img src="${j.img}" alt="${escapeHTML(j.name)}">
-        <div class="jinei-name">${escapeHTML(j.name)}</div>
-        <div class="jinei-style">${escapeHTML(j.style)}</div>
-        <div class="jinei-catchphrase">${escapeHTML(j.catchphrase)}</div>
-        <div class="jinei-substyles">${tags}</div>
-        <button class="join-btn" data-id="${j.id}" ${isMine ? 'disabled' : ''}>
-          ${btnText}
-        </button>
+        <div class="slide-name">${escapeHTML(j.name)}</div>
+        <div class="slide-style">${escapeHTML(j.style)}</div>
+        <div class="slide-catch">${escapeHTML(j.catchphrase)}</div>
       </div>
     `;
   }).join('');
+}
+
+function initSwiper() {
+  swiperInstance = new Swiper('.jinei-swiper', {
+    slidesPerView: 'auto',
+    centeredSlides: true,
+    spaceBetween: 20,
+    loop: true,
+    grabCursor: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    touchRatio: 1.5,
+  });
   
-  // 入隊ボタンのイベント
-  document.querySelectorAll('.join-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = btn.dataset.id;
-      if (myJineiId === id) return; // 既に所属
-      handleJoinClick(id);
+  // スライドタップ
+  document.querySelectorAll('.swiper-slide').forEach((slide) => {
+    slide.addEventListener('click', () => {
+      const id = slide.dataset.id;
+      
+      if (slide.classList.contains('swiper-slide-active')) {
+        // 中央のスライド → 詳細モーダル
+        openDetailModal(id);
+      } else {
+        // 中央じゃないスライド → そのスライドを中央へ
+        const index = JINEI_DATA.findIndex(j => j.id === id);
+        if (index >= 0) swiperInstance.slideToLoop(index);
+      }
     });
   });
 }
 
-// ========================================
-// 入隊ボタンクリック
-// ========================================
-function handleJoinClick(jineiId) {
-  // 未ログインならログイン誘導
-  if (!isLoggedIn()) {
-    if (confirm('入隊にはLINEログインが必要です。\nログインしますか？')) {
-      login();
+function openDetailModal(jineiId) {
+  const j = JINEI_DATA.find(x => x.id === jineiId);
+  if (!j) return;
+  
+  currentJineiIdInModal = jineiId;
+  
+  document.getElementById('modalImg').src = j.img;
+  document.getElementById('modalName').textContent = j.name + ' 陣営';
+  document.getElementById('modalStyle').textContent = j.style;
+  document.getElementById('modalIntro').textContent = j.intro;
+  document.getElementById('modalPredictionStyle').textContent = j.predictionStyle;
+  
+  document.getElementById('modalTags').innerHTML = j.tags.map(t => 
+    `<span class="modal-tag">${escapeHTML(t)}</span>`
+  ).join('');
+  
+  document.getElementById('modalRecommend').innerHTML = j.recommend.map(r => 
+    `<li>${escapeHTML(r)}</li>`
+  ).join('');
+  
+  const confirmBtn = document.getElementById('modalConfirmBtn');
+  if (myJineiId === jineiId) {
+    confirmBtn.textContent = '✓ 所属中';
+    confirmBtn.disabled = true;
+  } else if (myJineiId) {
+    confirmBtn.textContent = '別陣営所属中';
+    confirmBtn.disabled = true;
+  } else {
+    confirmBtn.textContent = '入隊する';
+    confirmBtn.disabled = false;
+  }
+  
+  document.getElementById('detailModal').classList.add('show');
+}
+
+function closeDetailModal() {
+  document.getElementById('detailModal').classList.remove('show');
+  currentJineiIdInModal = null;
+}
+
+function bindModalEvents() {
+  document.getElementById('modalCloseBtn').addEventListener('click', closeDetailModal);
+  document.getElementById('modalCancelBtn').addEventListener('click', closeDetailModal);
+  
+  document.getElementById('detailModal').addEventListener('click', (e) => {
+    if (e.target.id === 'detailModal') closeDetailModal();
+  });
+  
+  document.getElementById('modalConfirmBtn').addEventListener('click', () => {
+    if (!currentJineiIdInModal) return;
+    
+    if (!isLoggedIn()) {
+      if (confirm('入隊にはLINEログインが必要です。\nログインしますか？')) {
+        login();
+      }
+      return;
     }
-    return;
-  }
-  
-  // 既に他の陣営所属
-  if (myJineiId && myJineiId !== jineiId) {
-    alert('既に別の陣営に所属しています。');
-    return;
-  }
-  
-  // 確認モーダル表示
-  showConfirmModal(jineiId);
+    
+    if (myJineiId) return;
+    
+    joinJinei(currentJineiIdInModal);
+  });
 }
 
-// ========================================
-// 確認モーダル
-// ========================================
-function showConfirmModal(jineiId) {
-  const jinei = JINEI_DATA.find(j => j.id === jineiId);
-  if (!jinei) return;
-  
-  document.getElementById('modalImg').src = jinei.img;
-  document.getElementById('modalJineiName').textContent = jinei.name + ' 陣営';
-  document.getElementById('modalDescription').textContent = jinei.style + ' / ' + jinei.catchphrase;
-  
-  const overlay = document.getElementById('modalOverlay');
-  overlay.classList.add('show');
-  
-  document.getElementById('modalCancel').onclick = () => {
-    overlay.classList.remove('show');
-  };
-  
-  document.getElementById('modalConfirm').onclick = () => {
-    overlay.classList.remove('show');
-    joinJinei(jineiId);
-  };
-}
-
-// ========================================
-// 陣営に入隊（Firestore保存）
-// ========================================
 async function joinJinei(jineiId) {
   const user = getCurrentUser();
   if (!user) return;
@@ -630,13 +799,17 @@ async function joinJinei(jineiId) {
     });
     
     myJineiId = jineiId;
+    closeDetailModal();
     alert(`${jinei.name} 陣営に入隊しました！🐴`);
     
-    // 表示更新
     updateStatusBox(user);
-    renderJineiCards();
+    renderSwiper();
     
-    // 上にスクロール
+    if (swiperInstance) {
+      swiperInstance.destroy();
+      initSwiper();
+    }
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
   } catch (error) {
@@ -645,18 +818,12 @@ async function joinJinei(jineiId) {
   }
 }
 
-// ========================================
-// HTMLエスケープ
-// ========================================
 function escapeHTML(str) {
   const div = document.createElement('div');
   div.textContent = String(str || '');
   return div.innerHTML;
 }
 
-// ========================================
-// 起動
-// ========================================
 main();
 </script>
 
