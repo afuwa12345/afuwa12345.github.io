@@ -10,7 +10,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&family=Kosugi+Maru&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -167,7 +167,7 @@ body {
   font-weight: 700;
   text-align: center;
   margin-bottom: 8px;
-  font-family: 'Zen Maru Gothic', sans-serif;
+  font-family: 'Kosugi Maru', sans-serif;
 }
 .nickname-input:focus {
   outline: none;
@@ -520,7 +520,7 @@ body {
     <p>カードに刻まれるあなたの名前です</p>
     
     <input type="text" class="nickname-input" id="nicknameInput" 
-           placeholder="例：こう、アフロ太郎、Mike..." 
+           placeholder="例：アフロ太郎、馬好き、Mike..." 
            maxlength="8" autocomplete="off">
     <div class="nickname-counter" id="nicknameCounter">0 / 8文字</div>
     <div class="nickname-error" id="nicknameError"></div>
@@ -647,11 +647,11 @@ body {
 // カードレイアウト設定（card_adjust.htmlで決めた値）
 // ========================================
 const CARD_LAYOUT = {
-  font: 'Zen Maru Gothic',
-  name:  { x: 210, y: 966,  size: 50, color: '#000000', weight: '700', align: 'left' },
-  jinei: { x: 210, y: 1023, size: 45, color: '#0e2e1f', weight: '700', align: 'left' },
-  no:    { x: 786, y: 113,  size: 50, color: '#000000', weight: '700', align: 'center' },
-  date:  { x: 752, y: 1005, size: 45, color: '#000000', weight: '700', align: 'center' }
+  font: 'Kosugi Maru',
+  name:  { x: 230, y: 1088, size: 50, color: '#000000', weight: '700', align: 'left' },
+  jinei: { x: 230, y: 1153, size: 45, color: '#0e2e1f', weight: '700', align: 'left' },
+  no:    { x: 883, y: 129,  size: 55, color: '#000000', weight: '700', align: 'center' },
+  date:  { x: 847, y: 1132, size: 45, color: '#000000', weight: '700', align: 'center' }
 };
 
 // ========================================
@@ -752,12 +752,17 @@ async function main() {
   if (user) {
     const kizuna = await getKizunaData(user.userId);
     
-    if (kizuna && kizuna.jineiId) {
+    console.log('入隊チェック - kizuna:', kizuna);
+    
+    // kizunaが存在してかつjineiIdが設定されてる場合のみ入隊済み判定
+    if (kizuna && kizuna.jineiId && kizuna.oshiId) {
+      console.log('入隊済みと判定');
       alert('既に入隊済みです。マイページへ移動します。');
       location.href = 'mypage.html';
       return;
     }
     
+    console.log('未入隊と判定 → STEP 2へ');
     // ログイン済みだが未入隊 → STEP 2 へ
     goToStep(2);
   }
