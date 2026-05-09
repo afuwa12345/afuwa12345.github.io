@@ -691,6 +691,10 @@ function initSwiper() {
     grabCursor: true,
     initialSlide: 0,
     watchSlidesProgress: true,
+    touchStartPreventDefault: false,
+    touchMoveStopPropagation: false,
+    threshold: 10,
+    touchAngle: 45,
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
@@ -699,7 +703,7 @@ function initSwiper() {
       el: '.swiper-pagination',
       clickable: true,
     },
-    touchRatio: 1.5,
+    touchRatio: 1.2,
   });
   
   // スライドタップ
