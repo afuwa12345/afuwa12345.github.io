@@ -19,13 +19,17 @@
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
 body {
   background: #0a1f15;
   color: #fff;
   font-family: 'Noto Sans JP', sans-serif;
   line-height: 1.6;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 /* ヘッダー */
@@ -165,15 +169,15 @@ body {
 /* Swiperカード */
 .jinei-swiper {
   width: 100%;
+  max-width: 100%;
   padding: 30px 0 60px !important;
-  overflow: visible;
+  overflow: hidden;
 }
 .jinei-swiper .swiper-wrapper {
   align-items: center;
 }
 .jinei-swiper .swiper-slide {
-  width: calc(100vw - 64px);
-  max-width: 320px;
+  width: 280px;
   height: 380px;
   background: #0e2e1f;
   border: 2px solid #1a4a32;
