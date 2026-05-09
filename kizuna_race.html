@@ -199,7 +199,8 @@ body {
   margin-bottom: 14px;
 }
 .jinei-name {
-  font-family: 'Dela Gothic One', sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 900;
   font-size: 22px;
   margin-bottom: 4px;
   letter-spacing: 1px;
@@ -218,10 +219,23 @@ body {
   min-height: 40px;
 }
 .jinei-substyles {
-  font-size: 11px;
-  color: #87b89c;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
   margin-bottom: 18px;
   min-height: 32px;
+}
+.jinei-tag {
+  display: inline-block;
+  background: rgba(255, 217, 107, 0.12);
+  color: #ffd96b;
+  border: 1px solid rgba(255, 217, 107, 0.35);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 .join-btn {
   width: 100%;
@@ -283,7 +297,9 @@ body {
   margin-bottom: 16px;
 }
 .modal-box h2 {
-  font-family: 'Dela Gothic One', sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
   margin-bottom: 12px;
 }
 .modal-box p {
@@ -516,13 +532,18 @@ function renderJineiCards() {
     const btnText = isMine ? '✓ 所属中' : '入隊する';
     const cardClass = isOther ? 'jinei-card disabled' : 'jinei-card';
     
+    // サブ属性をタグに分割
+    const tags = j.substyles.split('・').map(t => 
+      `<span class="jinei-tag">${escapeHTML(t.trim())}</span>`
+    ).join('');
+    
     return `
       <div class="${cardClass}" data-id="${j.id}">
         <img src="${j.img}" alt="${escapeHTML(j.name)}">
         <div class="jinei-name">${escapeHTML(j.name)}</div>
         <div class="jinei-style">${escapeHTML(j.style)}</div>
         <div class="jinei-catchphrase">${escapeHTML(j.catchphrase)}</div>
-        <div class="jinei-substyles">${escapeHTML(j.substyles)}</div>
+        <div class="jinei-substyles">${tags}</div>
         <button class="join-btn" data-id="${j.id}" ${isMine ? 'disabled' : ''}>
           ${btnText}
         </button>
