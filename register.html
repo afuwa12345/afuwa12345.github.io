@@ -888,13 +888,48 @@ function showConfirm() {
   const userData = getCurrentUserData();
   const user = getCurrentUser();
   
-  document.getElementById('confirmMemberNo').textContent = 
-    '#' + String(userData.memberNumber).padStart(3, '0');
-  document.getElementById('confirmName').textContent = user.displayName;
-  document.getElementById('confirmJinei').textContent = selectedJinei.name;
-  document.getElementById('confirmJineiStyle').textContent = selectedJinei.style;
-  document.getElementById('confirmOshi').textContent = selectedOshi.name;
-  document.getElementById('confirmOshiImg').src = selectedOshi.img;
+  console.log('=== STEP 4 確認 ===');
+  console.log('user:', user);
+  console.log('userData:', userData);
+  console.log('selectedJinei:', selectedJinei);
+  console.log('selectedOshi:', selectedOshi);
+  
+  // 会員番号
+  if (userData && userData.memberNumber) {
+    document.getElementById('confirmMemberNo').textContent = 
+      '#' + String(userData.memberNumber).padStart(3, '0');
+  } else {
+    document.getElementById('confirmMemberNo').textContent = '取得中...';
+    // 再取得を試みる
+    if (user) {
+      db.collection('users').doc(user.userId).get().then(doc => {
+        if (doc.exists) {
+          const data = doc.data();
+          currentUserData = data; // 上書き
+          if (data.memberNumber) {
+            document.getElementById('confirmMemberNo').textContent = 
+              '#' + String(data.memberNumber).padStart(3, '0');
+          }
+        }
+      });
+    }
+  }
+  
+  // 名前
+  document.getElementById('confirmName').textContent = 
+    user ? user.displayName : '---';
+  
+  // 陣営
+  if (selectedJinei) {
+    document.getElementById('confirmJinei').textContent = selectedJinei.name;
+    document.getElementById('confirmJineiStyle').textContent = selectedJinei.style;
+  }
+  
+  // 推し馬
+  if (selectedOshi) {
+    document.getElementById('confirmOshi').textContent = selectedOshi.name;
+    document.getElementById('confirmOshiImg').src = selectedOshi.img;
+  }
 }
 
 // ========================================
