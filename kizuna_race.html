@@ -691,9 +691,6 @@ function initSwiper() {
     grabCursor: true,
     initialSlide: 0,
     watchSlidesProgress: true,
-    observer: true,
-    observeParents: true,
-    observeSlideChildren: true,
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
@@ -703,11 +700,6 @@ function initSwiper() {
       clickable: true,
     },
     touchRatio: 1.5,
-    on: {
-      resize: function() {
-        this.update();
-      }
-    }
   });
   
   // スライドタップ
