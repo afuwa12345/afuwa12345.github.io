@@ -8,12 +8,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <link rel="canonical" href="https://afro-horse.com/register.html">
 
-<!-- フォント -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
 
-<!-- Swiper -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
@@ -32,7 +30,6 @@ body {
   min-height: 100vh;
 }
 
-/* ヘッダー */
 .header {
   background: #0e2e1f;
   padding: 16px 20px;
@@ -58,29 +55,23 @@ body {
   font-weight: 600;
 }
 
-/* ステップインジケーター */
 .steps-bar {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   padding: 24px 16px 0;
   background: #0e2e1f;
 }
 .step-dot {
-  width: 28px;
+  width: 24px;
   height: 4px;
   background: #1a4a32;
   border-radius: 2px;
   transition: background 0.3s ease;
 }
-.step-dot.active {
-  background: #ffd96b;
-}
-.step-dot.done {
-  background: #4ec07f;
-}
+.step-dot.active { background: #ffd96b; }
+.step-dot.done { background: #4ec07f; }
 
-/* ステップタイトル */
 .step-info {
   text-align: center;
   padding: 16px 20px 8px;
@@ -98,19 +89,14 @@ body {
   letter-spacing: 1px;
 }
 
-/* ステップコンテナ */
 .step {
   display: none;
   min-height: calc(100vh - 200px);
   padding: 20px;
 }
-.step.active {
-  display: block;
-}
+.step.active { display: block; }
 
-/* ─────────────────
-   STEP 1: LOGIN
-───────────────── */
+/* STEP 1: ログイン */
 .login-section {
   max-width: 500px;
   margin: 0 auto;
@@ -131,15 +117,13 @@ body {
   color: #c0e8d0;
   margin-bottom: 30px;
   font-size: 14px;
-  line-height: 1.8;
 }
 .login-section ul {
   list-style: none;
-  padding: 0;
+  padding: 18px 20px;
   text-align: left;
   background: rgba(26, 74, 50, 0.4);
   border-radius: 12px;
-  padding: 18px 20px;
   margin-bottom: 30px;
 }
 .login-section ul li {
@@ -155,9 +139,79 @@ body {
   left: 0;
 }
 
-/* ─────────────────
-   STEP 2: 陣営選択
-───────────────── */
+/* STEP 2: ユーザーネーム */
+.nickname-section {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+.nickname-section h2 {
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+.nickname-section p {
+  color: #c0e8d0;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+.nickname-input {
+  width: 100%;
+  padding: 16px;
+  background: rgba(26, 74, 50, 0.5);
+  border: 2px solid #1a4a32;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+.nickname-input:focus {
+  outline: none;
+  border-color: #ffd96b;
+}
+.nickname-input.error {
+  border-color: #c0392b;
+}
+.nickname-counter {
+  color: #87b89c;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+.nickname-counter.over {
+  color: #c0392b;
+}
+.nickname-error {
+  color: #c0392b;
+  font-size: 13px;
+  margin-bottom: 16px;
+  min-height: 20px;
+}
+.nickname-rules {
+  background: rgba(26, 74, 50, 0.4);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  text-align: left;
+  font-size: 12px;
+  color: #c0e8d0;
+}
+.nickname-rules li {
+  padding: 3px 0;
+  padding-left: 18px;
+  position: relative;
+  list-style: none;
+}
+.nickname-rules li::before {
+  content: '・';
+  position: absolute;
+  left: 0;
+}
+
+/* Swiper */
 .jinei-swiper, .oshi-swiper {
   width: 100%;
   max-width: 100%;
@@ -208,7 +262,6 @@ body {
   font-size: 22px;
   margin-bottom: 6px;
   letter-spacing: 1px;
-  text-align: center;
 }
 .swiper-slide .slide-style {
   font-size: 13px;
@@ -224,7 +277,6 @@ body {
   min-height: 36px;
 }
 
-/* ナビゲーション */
 .swiper-button-next,
 .swiper-button-prev {
   color: #ffd96b !important;
@@ -248,7 +300,6 @@ body {
   opacity: 1;
 }
 
-/* 詳細表示エリア（スワイパー下） */
 .selected-info {
   max-width: 600px;
   margin: 0 auto 24px;
@@ -283,9 +334,7 @@ body {
   font-weight: 600;
 }
 
-/* ─────────────────
-   STEP 4: 確認
-───────────────── */
+/* 確認 */
 .confirm-section {
   max-width: 480px;
   margin: 0 auto;
@@ -305,9 +354,7 @@ body {
   padding: 12px 0;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.confirm-row:last-child {
-  border-bottom: none;
-}
+.confirm-row:last-child { border-bottom: none; }
 .confirm-row .label {
   font-size: 13px;
   color: #87b89c;
@@ -325,11 +372,9 @@ body {
   padding: 4px;
 }
 
-/* ─────────────────
-   STEP 5: カード完成
-───────────────── */
+/* カード結果 */
 .card-result {
-  max-width: 420px;
+  max-width: 480px;
   margin: 0 auto;
   text-align: center;
   padding: 20px;
@@ -352,9 +397,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* ─────────────────
-   ボタン
-───────────────── */
+/* ボタン */
 .btn-row {
   display: flex;
   gap: 12px;
@@ -402,7 +445,6 @@ body {
   width: 100%;
 }
 
-/* フッター */
 .footer {
   text-align: center;
   padding: 30px 20px;
@@ -425,23 +467,10 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-
-.member-no {
-  display: inline-block;
-  background: #ffd96b;
-  color: #0a1f15;
-  padding: 8px 20px;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 18px;
-  letter-spacing: 1px;
-  margin: 12px 0;
-}
 </style>
 </head>
 <body>
 
-<!-- ヘッダー -->
 <header class="header">
   <a href="index.html" class="logo">AFRO Horse</a>
   <a href="index.html" class="home-link">← HOME</a>
@@ -454,17 +483,15 @@ body {
   <div class="step-dot" data-step="3"></div>
   <div class="step-dot" data-step="4"></div>
   <div class="step-dot" data-step="5"></div>
+  <div class="step-dot" data-step="6"></div>
 </div>
 
-<!-- ステップ情報 -->
 <div class="step-info">
-  <div class="step-number" id="stepNumber">STEP 1 / 5</div>
+  <div class="step-number" id="stepNumber">STEP 1 / 6</div>
   <div class="step-title" id="stepTitle">ログイン</div>
 </div>
 
-<!-- ============================================
-   STEP 1: LINEログイン
-============================================ -->
+<!-- STEP 1: ログイン -->
 <section class="step active" id="step1">
   <div class="login-section">
     <img src="images/kizuna_race_title.png" alt="みんなのキズナレース" class="hero-img">
@@ -486,52 +513,65 @@ body {
   </div>
 </section>
 
-<!-- ============================================
-   STEP 2: 陣営選択
-============================================ -->
+<!-- STEP 2: ユーザーネーム -->
 <section class="step" id="step2">
+  <div class="nickname-section">
+    <h2>ユーザーネームを決めよう</h2>
+    <p>カードに刻まれるあなたの名前です</p>
+    
+    <input type="text" class="nickname-input" id="nicknameInput" 
+           placeholder="例：こう、アフロ太郎、Mike..." 
+           maxlength="8" autocomplete="off">
+    <div class="nickname-counter" id="nicknameCounter">0 / 8文字</div>
+    <div class="nickname-error" id="nicknameError"></div>
+    
+    <ul class="nickname-rules">
+      <li>1〜8文字</li>
+      <li>日本語・英数字・記号OK</li>
+      <li>カードに永久に刻まれます</li>
+      <li>後から変更できません</li>
+    </ul>
+    
+    <div class="btn-row" style="margin: 0; padding: 0;">
+      <button class="btn btn-primary" id="nicknameNextBtn" onclick="confirmNickname()">
+        この名前で進む →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3: 陣営選択 -->
+<section class="step" id="step3">
   <div class="swiper jinei-swiper">
     <div class="swiper-wrapper" id="jineiWrapper"></div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
     <div class="swiper-pagination" id="jineiPagination"></div>
   </div>
-  
-  <div class="selected-info" id="jineiInfo">
-    <!-- JS -->
-  </div>
-  
+  <div class="selected-info" id="jineiInfo"></div>
   <div class="btn-row">
-    <button class="btn btn-secondary" onclick="goToStep(1)">← 戻る</button>
-    <button class="btn btn-primary" id="jineiNextBtn" onclick="confirmJinei()">この陣営にする</button>
+    <button class="btn btn-secondary" onclick="goToStep(2)">← 戻る</button>
+    <button class="btn btn-primary" onclick="confirmJinei()">この陣営にする</button>
   </div>
 </section>
 
-<!-- ============================================
-   STEP 3: 推し馬選択
-============================================ -->
-<section class="step" id="step3">
+<!-- STEP 4: 推し馬選択 -->
+<section class="step" id="step4">
   <div class="swiper oshi-swiper">
     <div class="swiper-wrapper" id="oshiWrapper"></div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
     <div class="swiper-pagination" id="oshiPagination"></div>
   </div>
-  
-  <div class="selected-info" id="oshiInfo">
-    <!-- JS -->
-  </div>
-  
+  <div class="selected-info" id="oshiInfo"></div>
   <div class="btn-row">
-    <button class="btn btn-secondary" onclick="goToStep(2)">← 戻る</button>
-    <button class="btn btn-primary" id="oshiNextBtn" onclick="confirmOshi()">この子にする</button>
+    <button class="btn btn-secondary" onclick="goToStep(3)">← 戻る</button>
+    <button class="btn btn-primary" onclick="confirmOshi()">この子にする</button>
   </div>
 </section>
 
-<!-- ============================================
-   STEP 4: 確認
-============================================ -->
-<section class="step" id="step4">
+<!-- STEP 5: 確認 -->
+<section class="step" id="step5">
   <div class="confirm-section">
     <p style="text-align:center; color:#c0e8d0; margin-bottom:20px;">
       内容を確認してください
@@ -543,7 +583,7 @@ body {
         <span class="value" id="confirmMemberNo">#---</span>
       </div>
       <div class="confirm-row">
-        <span class="label">名前</span>
+        <span class="label">ユーザーネーム</span>
         <span class="value" id="confirmName">---</span>
       </div>
       <div class="confirm-row">
@@ -564,11 +604,11 @@ body {
     </div>
     
     <p style="text-align:center; color:#ffd96b; font-size:13px; margin-bottom:20px;">
-      ⚠️ 陣営と推し馬は<strong>後から変更できません</strong>
+      ⚠️ ユーザーネーム・陣営・推し馬は<strong>後から変更できません</strong>
     </p>
     
     <div class="btn-row" style="margin: 0;">
-      <button class="btn btn-secondary" onclick="goToStep(3)">← 戻る</button>
+      <button class="btn btn-secondary" onclick="goToStep(4)">← 戻る</button>
       <button class="btn btn-primary" id="finalConfirmBtn" onclick="finalConfirm()">
         カードを発行する 🎴
       </button>
@@ -576,18 +616,16 @@ body {
   </div>
 </section>
 
-<!-- ============================================
-   STEP 5: カード完成
-============================================ -->
-<section class="step" id="step5">
+<!-- STEP 6: カード完成 -->
+<section class="step" id="step6">
   <div class="card-result">
     <h2>🎉 入隊完了！</h2>
     <p class="sub">あなたの会員カードが発行されました</p>
     
-    <canvas id="cardCanvas" width="600" height="900"></canvas>
+    <canvas id="cardCanvas"></canvas>
     
     <div style="display: flex; flex-direction: column; gap: 12px;">
-      <button class="btn btn-primary" id="downloadCardBtn" onclick="downloadCard()">
+      <button class="btn btn-primary" onclick="downloadCard()">
         📥 カードを保存
       </button>
       <a href="mypage.html" class="btn btn-secondary">マイページへ</a>
@@ -599,13 +637,23 @@ body {
   © 2026 AFRO Horse. All rights reserved.
 </footer>
 
-<!-- ライブラリ -->
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="js/auth.js"></script>
 
 <script>
+// ========================================
+// カードレイアウト設定（card_adjust.htmlで決めた値）
+// ========================================
+const CARD_LAYOUT = {
+  font: 'Zen Maru Gothic',
+  name:  { x: 210, y: 966,  size: 50, color: '#000000', weight: '700', align: 'left' },
+  jinei: { x: 210, y: 1023, size: 45, color: '#0e2e1f', weight: '700', align: 'left' },
+  no:    { x: 786, y: 113,  size: 50, color: '#000000', weight: '700', align: 'center' },
+  date:  { x: 752, y: 1005, size: 45, color: '#000000', weight: '700', align: 'center' }
+};
+
 // ========================================
 // 6陣営データ
 // ========================================
@@ -614,6 +662,7 @@ const CHARACTERS = [
     id: 'afuwa',
     name: 'アフワ',
     img: 'images/afuwa.png',
+    cardImg: 'images/cards/card_afuwa.png',
     style: '実績・本命派',
     catchphrase: '「結果を残してきた馬を信じる」',
     intro: 'AFRO Horseの主人公。穏やかでしっかり者。負けても次を信じる前向きさが武器。',
@@ -624,6 +673,7 @@ const CHARACTERS = [
     id: 'yancha',
     name: 'やんちゃアフワ',
     img: 'images/yanchaahuwa.png',
+    cardImg: 'images/cards/card_yancha.png',
     style: '穴党・ロマン派',
     catchphrase: '「人気馬には用がない」',
     intro: 'タバコを吸うと現れるアフワのもう一つの姿。ニヒルな笑みを浮かべる夜の顔。',
@@ -634,6 +684,7 @@ const CHARACTERS = [
     id: 'buruma',
     name: 'ブルマ',
     img: 'images/buruma.png',
+    cardImg: 'images/cards/card_buruma.png',
     style: 'データ派',
     catchphrase: '「数字がすべてを語る」',
     intro: '青いアフロのデータ博士。冷静沈着でロジカル。',
@@ -644,6 +695,7 @@ const CHARACTERS = [
     id: 'chahuwa',
     name: 'チャフワ',
     img: 'images/chahuwa.png',
+    cardImg: 'images/cards/card_chahuwa.png',
     style: '直感・パドック派',
     catchphrase: '「ピンときた馬を信じる」',
     intro: 'オレンジ色のふわふわアフロ。観察力が鋭くて、馬の気配を読み取る天才。',
@@ -654,6 +706,7 @@ const CHARACTERS = [
     id: 'kurohuwa',
     name: 'クロフワ',
     img: 'images/kurohuwa.png',
+    cardImg: 'images/cards/card_kurohuwa.png',
     style: '調教派',
     catchphrase: '「努力した馬は嘘をつかない」',
     intro: '真っ黒なアフロの努力家。早朝の調教を毎日チェックする勤勉キャラ。',
@@ -664,6 +717,7 @@ const CHARACTERS = [
     id: 'ginma',
     name: 'ギンマ',
     img: 'images/ginma.png',
+    cardImg: 'images/cards/card_ginma.png',
     style: '血統派',
     catchphrase: '「血を見ればわかる…ニヤリ」',
     intro: '銀髪のクールキャラ。血統オタクで、若駒の血を見て未来まで読む達人。',
@@ -672,10 +726,9 @@ const CHARACTERS = [
   }
 ];
 
-// ========================================
 // 状態管理
-// ========================================
 let currentStep = 1;
+let nickname = '';
 let selectedJinei = null;
 let selectedOshi = null;
 let jineiSwiper = null;
@@ -683,10 +736,11 @@ let oshiSwiper = null;
 
 const STEP_TITLES = {
   1: 'ログイン',
-  2: '陣営を選ぶ',
-  3: '推し馬を選ぶ',
-  4: '内容を確認',
-  5: 'カード発行完了'
+  2: 'ユーザーネーム',
+  3: '陣営を選ぶ',
+  4: '推し馬を選ぶ',
+  5: '内容を確認',
+  6: 'カード発行完了'
 };
 
 // ========================================
@@ -696,11 +750,9 @@ async function main() {
   const user = await initAuth();
   
   if (user) {
-    // 既にログイン済み
     const kizuna = await getKizunaData(user.userId);
     
     if (kizuna && kizuna.jineiId) {
-      // 既に入隊済み → マイページへ
       alert('既に入隊済みです。マイページへ移動します。');
       location.href = 'mypage.html';
       return;
@@ -715,14 +767,11 @@ async function main() {
 // ステップ遷移
 // ========================================
 function goToStep(stepNum) {
-  // 全ステップ非表示
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   
-  // 対象ステップ表示
   const target = document.getElementById('step' + stepNum);
   if (target) target.classList.add('active');
   
-  // インジケーター更新
   document.querySelectorAll('.step-dot').forEach(d => {
     const dotStep = parseInt(d.dataset.step);
     d.classList.remove('active', 'done');
@@ -730,29 +779,100 @@ function goToStep(stepNum) {
     if (dotStep === stepNum) d.classList.add('active');
   });
   
-  // タイトル更新
-  document.getElementById('stepNumber').textContent = `STEP ${stepNum} / 5`;
+  document.getElementById('stepNumber').textContent = `STEP ${stepNum} / 6`;
   document.getElementById('stepTitle').textContent = STEP_TITLES[stepNum];
   
   currentStep = stepNum;
   
-  // 各ステップ初期化
-  if (stepNum === 2) initJineiSwiper();
-  if (stepNum === 3) initOshiSwiper();
-  if (stepNum === 4) showConfirm();
+  if (stepNum === 3) initJineiSwiper();
+  if (stepNum === 4) initOshiSwiper();
+  if (stepNum === 5) showConfirm();
   
-  // スクロール位置リセット
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ========================================
-// STEP 2: 陣営選択
+// STEP 2: ユーザーネーム
+// ========================================
+const nicknameInput = document.getElementById('nicknameInput');
+const nicknameCounter = document.getElementById('nicknameCounter');
+const nicknameError = document.getElementById('nicknameError');
+
+nicknameInput.addEventListener('input', () => {
+  const val = nicknameInput.value;
+  const len = [...val].length; // サロゲートペア対応
+  
+  nicknameCounter.textContent = `${len} / 8文字`;
+  nicknameCounter.classList.toggle('over', len > 8);
+  
+  if (len > 8) {
+    nicknameInput.classList.add('error');
+    nicknameError.textContent = '8文字以内で入力してください';
+  } else {
+    nicknameInput.classList.remove('error');
+    nicknameError.textContent = '';
+  }
+});
+
+async function confirmNickname() {
+  const val = nicknameInput.value.trim();
+  
+  if (!val) {
+    nicknameError.textContent = 'ユーザーネームを入力してください';
+    nicknameInput.classList.add('error');
+    return;
+  }
+  
+  if ([...val].length > 8) {
+    nicknameError.textContent = '8文字以内で入力してください';
+    nicknameInput.classList.add('error');
+    return;
+  }
+  
+  // 重複チェック
+  const btn = document.getElementById('nicknameNextBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>確認中...';
+  
+  try {
+    const exists = await checkNicknameExists(val);
+    
+    if (exists) {
+      nicknameError.textContent = 'この名前は既に使われています';
+      nicknameInput.classList.add('error');
+      btn.disabled = false;
+      btn.textContent = 'この名前で進む →';
+      return;
+    }
+    
+    nickname = val;
+    btn.disabled = false;
+    btn.textContent = 'この名前で進む →';
+    goToStep(3);
+    
+  } catch (e) {
+    console.error('重複チェックエラー:', e);
+    nicknameError.textContent = 'エラーが発生しました。もう一度お試しください';
+    btn.disabled = false;
+    btn.textContent = 'この名前で進む →';
+  }
+}
+
+async function checkNicknameExists(name) {
+  const snapshot = await db.collection('users')
+    .where('nickname', '==', name)
+    .limit(1)
+    .get();
+  return !snapshot.empty;
+}
+
+// ========================================
+// STEP 3: 陣営選択
 // ========================================
 function initJineiSwiper() {
   const wrapper = document.getElementById('jineiWrapper');
   
   if (!wrapper.children.length) {
-    // 初回のみ生成
     wrapper.innerHTML = CHARACTERS.map(c => `
       <div class="swiper-slide" data-id="${c.id}">
         <img src="${c.img}" alt="${c.name}">
@@ -763,9 +883,7 @@ function initJineiSwiper() {
     `).join('');
   }
   
-  if (jineiSwiper) {
-    jineiSwiper.destroy();
-  }
+  if (jineiSwiper) jineiSwiper.destroy();
   
   jineiSwiper = new Swiper('.jinei-swiper', {
     slidesPerView: 'auto',
@@ -784,39 +902,30 @@ function initJineiSwiper() {
       el: '#jineiPagination',
       clickable: true,
     },
-    on: {
-      slideChange: function() {
-        updateJineiInfo();
-      }
-    }
+    on: { slideChange: updateJineiInfo }
   });
   
-  // 初回表示
   setTimeout(updateJineiInfo, 100);
 }
 
 function updateJineiInfo() {
   if (!jineiSwiper) return;
-  const idx = jineiSwiper.realIndex;
-  const c = CHARACTERS[idx];
-  
+  const c = CHARACTERS[jineiSwiper.realIndex];
   document.getElementById('jineiInfo').innerHTML = `
     <h3>${c.name} 陣営：${c.style}</h3>
     <div class="desc">${c.predictionStyle}</div>
-    <div class="tags">
-      ${c.tags.map(t => `<span class="tag">${t}</span>`).join('')}
-    </div>
+    <div class="tags">${c.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
   `;
 }
 
 function confirmJinei() {
   if (!jineiSwiper) return;
   selectedJinei = CHARACTERS[jineiSwiper.realIndex];
-  goToStep(3);
+  goToStep(4);
 }
 
 // ========================================
-// STEP 3: 推し馬選択
+// STEP 4: 推し馬選択
 // ========================================
 function initOshiSwiper() {
   const wrapper = document.getElementById('oshiWrapper');
@@ -851,11 +960,7 @@ function initOshiSwiper() {
       el: '#oshiPagination',
       clickable: true,
     },
-    on: {
-      slideChange: function() {
-        updateOshiInfo();
-      }
-    }
+    on: { slideChange: updateOshiInfo }
   });
   
   setTimeout(updateOshiInfo, 100);
@@ -863,9 +968,7 @@ function initOshiSwiper() {
 
 function updateOshiInfo() {
   if (!oshiSwiper) return;
-  const idx = oshiSwiper.realIndex;
-  const c = CHARACTERS[idx];
-  
+  const c = CHARACTERS[oshiSwiper.realIndex];
   document.getElementById('oshiInfo').innerHTML = `
     <h3>💛 ${c.name} を推す</h3>
     <div class="desc">${c.intro}</div>
@@ -878,54 +981,27 @@ function updateOshiInfo() {
 function confirmOshi() {
   if (!oshiSwiper) return;
   selectedOshi = CHARACTERS[oshiSwiper.realIndex];
-  goToStep(4);
+  goToStep(5);
 }
 
 // ========================================
-// STEP 4: 確認
+// STEP 5: 確認
 // ========================================
 function showConfirm() {
   const userData = getCurrentUserData();
-  const user = getCurrentUser();
   
-  console.log('=== STEP 4 確認 ===');
-  console.log('user:', user);
-  console.log('userData:', userData);
-  console.log('selectedJinei:', selectedJinei);
-  console.log('selectedOshi:', selectedOshi);
-  
-  // 会員番号
   if (userData && userData.memberNumber) {
     document.getElementById('confirmMemberNo').textContent = 
       '#' + String(userData.memberNumber).padStart(3, '0');
-  } else {
-    document.getElementById('confirmMemberNo').textContent = '取得中...';
-    // 再取得を試みる
-    if (user) {
-      db.collection('users').doc(user.userId).get().then(doc => {
-        if (doc.exists) {
-          const data = doc.data();
-          currentUserData = data; // 上書き
-          if (data.memberNumber) {
-            document.getElementById('confirmMemberNo').textContent = 
-              '#' + String(data.memberNumber).padStart(3, '0');
-          }
-        }
-      });
-    }
   }
   
-  // 名前
-  document.getElementById('confirmName').textContent = 
-    user ? user.displayName : '---';
+  document.getElementById('confirmName').textContent = nickname;
   
-  // 陣営
   if (selectedJinei) {
     document.getElementById('confirmJinei').textContent = selectedJinei.name;
     document.getElementById('confirmJineiStyle').textContent = selectedJinei.style;
   }
   
-  // 推し馬
   if (selectedOshi) {
     document.getElementById('confirmOshi').textContent = selectedOshi.name;
     document.getElementById('confirmOshiImg').src = selectedOshi.img;
@@ -933,7 +1009,7 @@ function showConfirm() {
 }
 
 // ========================================
-// STEP 4 → 確定 → STEP 5
+// 確定 → カード発行
 // ========================================
 async function finalConfirm() {
   const btn = document.getElementById('finalConfirmBtn');
@@ -942,11 +1018,20 @@ async function finalConfirm() {
   
   const user = getCurrentUser();
   
+  // ニックネームをusersに追加保存
+  try {
+    await db.collection('users').doc(user.userId).update({
+      nickname: nickname
+    });
+  } catch (e) {
+    console.error('ニックネーム保存エラー:', e);
+  }
+  
+  // 陣営・推し馬保存
   const success = await joinKizuna(user.userId, selectedJinei, selectedOshi, 'v1');
   
   if (success) {
-    goToStep(5);
-    // カード生成
+    goToStep(6);
     setTimeout(generateCard, 300);
   } else {
     alert('入隊に失敗しました。もう一度お試しください。');
@@ -956,151 +1041,74 @@ async function finalConfirm() {
 }
 
 // ========================================
-// STEP 5: カード生成
+// カード生成
 // ========================================
-function generateCard() {
+async function generateCard() {
   const canvas = document.getElementById('cardCanvas');
   const ctx = canvas.getContext('2d');
-  const W = canvas.width;
-  const H = canvas.height;
   
-  const userData = getCurrentUserData();
-  const user = getCurrentUser();
-  
-  // 背景（黒×緑グラデ）
-  const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, '#0e2e1f');
-  grad.addColorStop(1, '#0a1f15');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-  
-  // 装飾枠
-  ctx.strokeStyle = '#ffd96b';
-  ctx.lineWidth = 6;
-  ctx.strokeRect(20, 20, W - 40, H - 40);
-  
-  ctx.strokeStyle = '#1a4a32';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(35, 35, W - 70, H - 70);
-  
-  // ヘッダー：AFRO HORSE
-  ctx.fillStyle = '#ffd96b';
-  ctx.font = 'bold 32px "Noto Sans JP", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('🐴 AFRO HORSE', W / 2, 90);
-  
-  ctx.fillStyle = '#c0e8d0';
-  ctx.font = '16px "Noto Sans JP", sans-serif';
-  ctx.fillText('MEMBER CARD', W / 2, 120);
-  
-  // 区切り線
-  ctx.strokeStyle = '#ffd96b';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(80, 145);
-  ctx.lineTo(W - 80, 145);
-  ctx.stroke();
-  
-  // 推し馬画像（メイン）
-  const oshiImg = new Image();
-  oshiImg.crossOrigin = 'anonymous';
-  oshiImg.onload = () => {
-    // 円形クリップ
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(W / 2, 320, 130, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.fillStyle = '#fff';
-    ctx.fill();
-    ctx.clip();
-    ctx.drawImage(oshiImg, W / 2 - 130, 190, 260, 260);
-    ctx.restore();
-    
-    // 推し馬の枠
-    ctx.strokeStyle = '#ffd96b';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.arc(W / 2, 320, 130, 0, Math.PI * 2);
-    ctx.stroke();
-    
-    drawCardText();
-  };
-  oshiImg.onerror = () => {
-    drawCardText();
-  };
-  oshiImg.src = selectedOshi.img;
-  
-  function drawCardText() {
-    // MY PARTNER
-    ctx.fillStyle = '#ffd96b';
-    ctx.font = 'bold 14px "Noto Sans JP", sans-serif';
-    ctx.fillText('💛 MY PARTNER', W / 2, 490);
-    
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 28px "Noto Sans JP", sans-serif';
-    ctx.fillText(selectedOshi.name, W / 2, 530);
-    
-    // 区切り線
-    ctx.strokeStyle = '#1a4a32';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(80, 560);
-    ctx.lineTo(W - 80, 560);
-    ctx.stroke();
-    
-    // 陣営
-    ctx.fillStyle = '#87b89c';
-    ctx.font = '13px "Noto Sans JP", sans-serif';
-    ctx.fillText('JINEI', W / 2, 595);
-    
-    ctx.fillStyle = '#ffd96b';
-    ctx.font = 'bold 24px "Noto Sans JP", sans-serif';
-    ctx.fillText(selectedJinei.name + ' 陣営', W / 2, 625);
-    
-    ctx.fillStyle = '#c0e8d0';
-    ctx.font = '14px "Noto Sans JP", sans-serif';
-    ctx.fillText(selectedJinei.style, W / 2, 650);
-    
-    // 区切り線
-    ctx.strokeStyle = '#1a4a32';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(80, 685);
-    ctx.lineTo(W - 80, 685);
-    ctx.stroke();
-    
-    // 個人情報
-    ctx.fillStyle = '#87b89c';
-    ctx.font = '12px "Noto Sans JP", sans-serif';
-    ctx.textAlign = 'left';
-    
-    ctx.fillText('NAME', 80, 720);
-    ctx.fillText('No.', 80, 760);
-    ctx.fillText('SINCE', 80, 800);
-    
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 18px "Noto Sans JP", sans-serif';
-    ctx.textAlign = 'right';
-    ctx.fillText(user.displayName, W - 80, 720);
-    
-    ctx.fillStyle = '#ffd96b';
-    ctx.font = 'bold 22px "Noto Sans JP", sans-serif';
-    ctx.fillText('#' + String(userData.memberNumber).padStart(3, '0'), W - 80, 762);
-    
-    const date = new Date();
-    const dateStr = date.getFullYear() + '.' + 
-                    String(date.getMonth() + 1).padStart(2, '0') + '.' + 
-                    String(date.getDate()).padStart(2, '0');
-    ctx.fillStyle = '#fff';
-    ctx.font = '16px "Noto Sans JP", sans-serif';
-    ctx.fillText(dateStr, W - 80, 800);
-    
-    // フッター
-    ctx.fillStyle = '#587264';
-    ctx.font = '11px "Noto Sans JP", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('afro-horse.com  /  v1 design', W / 2, 855);
+  // フォント読み込み待ち
+  try {
+    await document.fonts.load(`700 50px "${CARD_LAYOUT.font}"`);
+    await document.fonts.load(`700 45px "${CARD_LAYOUT.font}"`);
+    await document.fonts.ready;
+    console.log('フォント読み込み完了');
+  } catch (e) {
+    console.warn('フォント読み込み待ち失敗:', e);
   }
+  
+  // 推し馬のテンプレート画像読み込み
+  const cardImg = new Image();
+  cardImg.crossOrigin = 'anonymous';
+  
+  cardImg.onload = () => {
+    // キャンバスサイズを画像に合わせる
+    canvas.width = cardImg.width;
+    canvas.height = cardImg.height;
+    
+    // 背景画像描画
+    ctx.drawImage(cardImg, 0, 0);
+    
+    // テキスト描画
+    drawCardText(ctx);
+  };
+  
+  cardImg.onerror = () => {
+    console.error('カード画像の読み込みに失敗:', selectedOshi.cardImg);
+    alert('カード画像が読み込めませんでした。');
+  };
+  
+  cardImg.src = selectedOshi.cardImg;
+}
+
+function drawCardText(ctx) {
+  const userData = getCurrentUserData();
+  const memberNo = '#' + String(userData.memberNumber).padStart(3, '0');
+  
+  const date = new Date();
+  const dateStr = date.getFullYear() + '.' + 
+                  String(date.getMonth() + 1).padStart(2, '0') + '.' + 
+                  String(date.getDate()).padStart(2, '0');
+  
+  // ユーザーネーム
+  drawText(ctx, nickname, CARD_LAYOUT.name);
+  
+  // 陣営
+  drawText(ctx, selectedJinei.name + ' 陣営', CARD_LAYOUT.jinei);
+  
+  // 会員番号
+  drawText(ctx, memberNo, CARD_LAYOUT.no);
+  
+  // 入隊日
+  drawText(ctx, dateStr, CARD_LAYOUT.date);
+}
+
+function drawText(ctx, text, layout) {
+  ctx.fillStyle = layout.color;
+  ctx.font = `${layout.weight} ${layout.size}px "${CARD_LAYOUT.font}", "Noto Sans JP", sans-serif`;
+  ctx.textAlign = layout.align;
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, layout.x, layout.y);
 }
 
 // ========================================
@@ -1116,9 +1124,7 @@ function downloadCard() {
   link.click();
 }
 
-// ========================================
 // 起動
-// ========================================
 main();
 </script>
 
