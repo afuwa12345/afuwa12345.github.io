@@ -613,6 +613,166 @@ main > .section:first-of-type { padding-top: 14px; }
 @keyframes btnSheen { 0%,100% { transform: translateX(-100%); } 60% { transform: translateX(100%); } }
 .vote-btn:disabled::before { display: none; }
 
+/* ===== コメント入力（投票時） ===== */
+.comment-input-wrap {
+  margin-top: 18px;
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2.5px solid var(--jc-main);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 4px 0 var(--jc-deep);
+  position: relative;
+}
+.comment-input-wrap::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--jc-deep), var(--gold), var(--jc-deep));
+  border-radius: 12px 12px 0 0;
+}
+.comment-label {
+  display: block;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.comment-label-en {
+  display: block;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--jc-main);
+  text-shadow: 0 0 8px var(--jc-glow);
+  margin-bottom: 2px;
+}
+.comment-label-ja {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+.comment-input {
+  width: 100%;
+  min-height: 70px;
+  padding: 10px 12px;
+  border: 2px solid var(--turf);
+  border-radius: 8px;
+  background: #fff;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.comment-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+.comment-counter {
+  text-align: right;
+  margin-top: 4px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+}
+.comment-counter span { color: var(--jc-main); font-weight: 900; }
+
+/* ===== 自分のコメント（投票後ステータス内） ===== */
+.my-comment {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(0,0,0,0.05);
+  border-left: 3px solid var(--jc-main);
+  border-radius: 6px;
+  text-align: left;
+}
+.my-comment-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--jc-main);
+  margin-bottom: 4px;
+}
+.my-comment-text {
+  font-size: 13px;
+  color: var(--turf-deep);
+  font-weight: 700;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* ===== コメント一覧（仲間の声） ===== */
+.comments-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.comments-empty {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 30px 12px;
+  background: var(--cream-soft);
+  border: 2px dashed var(--jc-main);
+  border-radius: 10px;
+  opacity: 0.7;
+}
+.comment-item {
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2px solid var(--jc-main);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 3px 0 var(--jc-deep);
+  position: relative;
+  animation: commentIn 0.4s ease-out;
+}
+@keyframes commentIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.comment-icon {
+  position: absolute;
+  top: 10px; left: -8px;
+  width: 22px; height: 22px;
+  background: var(--jc-main);
+  color: var(--cream);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  border: 2px solid var(--gold);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+}
+.comment-text {
+  font-size: 13px;
+  color: var(--turf-deep);
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 6px;
+  margin-left: 16px;
+  word-break: break-word;
+}
+.comment-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 16px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--jc-main);
+  background: rgba(255,255,255,0.7);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--jc-main);
+}
+.comment-pick b {
+  font-family: 'Dela Gothic One', cursive;
+  font-weight: 400;
+  color: var(--turf-deep);
+  letter-spacing: 0;
+}
+
 /* ===== 集計（HPバー風） ===== */
 .tally-card {
   background: linear-gradient(135deg, var(--cream-soft), #fff);
@@ -1034,6 +1194,22 @@ main > .section:first-of-type { padding-top: 14px; }
         <div class="sec-label-ja">本命を選べ</div>
       </div>
       <div class="horse-grid" id="horseGrid"></div>
+
+      <!-- 一言コメント -->
+      <div class="comment-input-wrap">
+        <label class="comment-label">
+          <span class="comment-label-en">⚔ BATTLE CRY ⚔</span>
+          <span class="comment-label-ja">一言コメント（任意・100文字まで）</span>
+        </label>
+        <textarea
+          id="commentInput"
+          class="comment-input"
+          maxlength="100"
+          placeholder="例：実績的に堅い、ここは外せない…"
+        ></textarea>
+        <div class="comment-counter"><span id="commentCount">0</span> / 100</div>
+      </div>
+
       <div class="vote-btn-wrap">
         <button class="vote-btn" id="voteBtn" disabled>本命を選択せよ</button>
       </div>
@@ -1046,6 +1222,10 @@ main > .section:first-of-type { padding-top: 14px; }
         <div class="title">PARTICIPATED!</div>
         <div class="desc">投票完了。陣営の本命に反映されました</div>
         <div class="your-pick">YOUR PICK：<b id="myPickText">—</b></div>
+        <div class="my-comment" id="myCommentBlock" style="display:none">
+          <div class="my-comment-label">YOUR BATTLE CRY</div>
+          <div class="my-comment-text" id="myCommentText"></div>
+        </div>
       </div>
 
       <div class="sec-label" style="margin-top:32px">
@@ -1054,6 +1234,15 @@ main > .section:first-of-type { padding-top: 14px; }
       </div>
       <div class="tally-card" id="tallyCard">
         <div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">まだ票が集まっていません</div>
+      </div>
+
+      <!-- 仲間の声 -->
+      <div class="sec-label" style="margin-top:32px">
+        <div class="sec-label-en">⚔ BATTLE CRIES ⚔</div>
+        <div class="sec-label-ja">仲間の声</div>
+      </div>
+      <div class="comments-list" id="commentsList">
+        <div class="comments-empty">まだ声が集まっていません…</div>
       </div>
     </div>
 
@@ -1336,6 +1525,15 @@ function renderVoteArea() {
     </div>
   `).join('');
   document.getElementById('voteBtn').addEventListener('click', submitVote);
+
+  // コメント文字数カウンター
+  const ci = document.getElementById('commentInput');
+  const cc = document.getElementById('commentCount');
+  if (ci && cc) {
+    ci.addEventListener('input', () => {
+      cc.textContent = ci.value.length;
+    });
+  }
 }
 
 function selectHorse(el) {
@@ -1354,6 +1552,10 @@ async function submitVote() {
   btn.disabled = true;
   btn.textContent = '投票中...';
 
+  // コメント取得（任意）
+  const commentEl = document.getElementById('commentInput');
+  const comment = commentEl ? commentEl.value.trim().slice(0, 100) : '';
+
   try {
     const userId = getCurrentUser().userId;
     const voteId = `${race.raceId}_${userId}`;
@@ -1366,6 +1568,7 @@ async function submitVote() {
         userId, raceId: race.raceId,
         jineiId: myKizuna.jineiId,
         horseName: selectedHorse,
+        comment: comment,
         votedAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
     });
@@ -1389,7 +1592,7 @@ async function submitVote() {
 
     // ENGAGED演出
     showVoteOverlay();
-    myVote = { horseName: selectedHorse, jineiId: myKizuna.jineiId };
+    myVote = { horseName: selectedHorse, jineiId: myKizuna.jineiId, comment: comment };
 
     setTimeout(async () => {
       hideVoteOverlay();
@@ -1423,12 +1626,63 @@ function hideVoteOverlay() {
 async function renderVoted() {
   document.getElementById('votedArea').classList.remove('hidden');
   document.getElementById('myPickText').textContent = myVote.horseName;
+
+  // 自分のコメント表示
+  if (myVote.comment && myVote.comment.trim()) {
+    document.getElementById('myCommentBlock').style.display = 'block';
+    document.getElementById('myCommentText').textContent = myVote.comment;
+  }
+
   const m = JINEI_MASTER[myKizuna.jineiId];
   if (m) {
     document.getElementById('myJineiTitleEn').textContent = `${m.name.replace('陣営','').toUpperCase()} TALLY`;
   }
   await refreshTally();
+  await refreshComments();
   setInterval(refreshTally, 30000);
+  setInterval(refreshComments, 30000);
+}
+
+// 仲間のコメント取得＆表示（自陣営のみ）
+async function refreshComments() {
+  try {
+    const snap = await db.collection('kizuna_votes')
+      .where('raceId', '==', race.raceId)
+      .where('jineiId', '==', myKizuna.jineiId)
+      .get();
+
+    const list = document.getElementById('commentsList');
+    if (!list) return;
+
+    // コメントありのものだけ抽出、新しい順
+    const items = [];
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (d.comment && d.comment.trim()) {
+        items.push({
+          comment: d.comment,
+          horseName: d.horseName,
+          votedAt: d.votedAt ? d.votedAt.toMillis() : 0,
+        });
+      }
+    });
+    items.sort((a, b) => b.votedAt - a.votedAt);
+
+    if (items.length === 0) {
+      list.innerHTML = '<div class="comments-empty">まだ声が集まっていません…</div>';
+      return;
+    }
+
+    list.innerHTML = items.map(item => `
+      <div class="comment-item">
+        <div class="comment-icon">💬</div>
+        <div class="comment-text">${escapeHtml(item.comment)}</div>
+        <div class="comment-pick">→ <b>${escapeHtml(item.horseName)}</b></div>
+      </div>
+    `).join('');
+  } catch (e) {
+    console.error('refreshComments error', e);
+  }
 }
 
 async function refreshTally() {
