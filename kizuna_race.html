@@ -960,6 +960,194 @@ main > .section:first-of-type { padding-top: 14px; }
   text-shadow: 0 0 8px var(--jc-glow);
 }
 
+/* ===== レースカード コンパクト版（投票後・締切後） ===== */
+.race-card.compact {
+  padding: 12px 14px 10px;
+  margin-top: 10px;
+}
+.race-card.compact::after { display: none; }
+.race-card.compact .race-tag {
+  font-size: 10px;
+  letter-spacing: 3px;
+  margin-bottom: 2px;
+}
+.race-card.compact .race-title {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.race-card.compact .race-info {
+  font-size: 11px;
+}
+.race-card.compact .countdown { display: none; }
+
+/* ===== ステータスブロック コンパクト版 ===== */
+.status-block.mini {
+  padding: 14px 16px;
+  position: relative;
+}
+.status-block.mini .icon {
+  font-size: 26px;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 2px 4px var(--jc-glow));
+}
+.status-block.mini .title {
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+.status-block.mini .desc {
+  font-size: 11px;
+}
+.status-block.mini .your-pick {
+  margin-top: 8px;
+  padding: 6px 14px;
+  font-size: 11px;
+  border-radius: 8px;
+}
+.status-block.mini .your-pick b {
+  font-size: 13px;
+}
+.status-block.mini .my-comment {
+  margin-top: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+.status-block.mini .my-comment-label { font-size: 9px; }
+.status-block.mini .my-comment-text { font-size: 12px; }
+
+/* ===== HPバー風 全馬集計 ===== */
+.horse-tally-list {
+  display: grid;
+  gap: 8px;
+}
+.horse-tally {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2px solid var(--turf);
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 3px 0 var(--turf-deep);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.horse-tally::before {
+  content: '';
+  position: absolute; top: 0; left: 0; bottom: 0;
+  width: 4px;
+  background: var(--turf);
+}
+.horse-tally.top {
+  border-color: var(--gold);
+  box-shadow: 0 4px 0 var(--gold), 0 0 18px var(--gold-glow);
+  background: linear-gradient(135deg, #fff, var(--gold-glow), #fff);
+}
+.horse-tally.top::before { background: var(--gold); }
+.horse-tally.mine {
+  border-color: var(--jc-main);
+  box-shadow: 0 4px 0 var(--jc-deep), 0 0 16px var(--jc-glow);
+}
+.horse-tally.mine::before { background: var(--jc-main); }
+.horse-tally.top.mine {
+  border-color: var(--gold);
+  box-shadow: 0 4px 0 var(--gold), 0 0 22px var(--gold-glow), 0 0 30px var(--jc-glow);
+}
+.horse-tally.zero { opacity: 0.5; box-shadow: 0 2px 0 var(--gray); }
+
+.ht-rank {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 18px;
+  color: var(--gray);
+  min-width: 18px;
+  text-align: center;
+}
+.horse-tally.top .ht-rank {
+  color: var(--gold);
+  font-size: 22px;
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+.ht-num {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 14px;
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
+  color: var(--cream);
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid var(--gold);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+.horse-tally.top .ht-num {
+  background: linear-gradient(135deg, var(--gold), var(--gold-glow));
+  color: var(--turf-deep);
+}
+.ht-body { flex: 1; min-width: 0; }
+.ht-name {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 12px;
+  color: var(--turf-deep);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex; align-items: center; gap: 6px;
+}
+.ht-mine-badge {
+  display: inline-block;
+  background: var(--jc-main);
+  color: var(--cream);
+  font-family: 'Bebas Neue', cursive;
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  border: 1px solid var(--gold);
+}
+.hp-bar-wrap {
+  height: 8px;
+  background: linear-gradient(180deg, #1a1a1a, #2a2a2a);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--turf-deep);
+  position: relative;
+}
+.hp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--jc-main), var(--jc-light));
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 8px var(--jc-glow);
+  position: relative;
+}
+.hp-bar-fill::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+  border-radius: 3px 3px 0 0;
+}
+.horse-tally.top .hp-bar-fill {
+  background: linear-gradient(90deg, var(--gold), var(--gold-glow));
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+.ht-votes {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 18px;
+  color: var(--jc-main);
+  min-width: 30px;
+  text-align: right;
+  text-shadow: 0 0 6px var(--jc-glow);
+}
+.horse-tally.top .ht-votes {
+  color: var(--gold);
+  font-size: 22px;
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+.horse-tally.zero .ht-votes { color: var(--gray); text-shadow: none; }
+
 /* ===== ステータス ===== */
 .status-block {
   text-align: center;
@@ -1267,19 +1455,8 @@ main > .section:first-of-type { padding-top: 14px; }
 
   <div id="mainView" class="hidden">
 
-    <!-- レース情報 -->
+    <!-- 戦士プロフィール（最上部） -->
     <div class="section">
-      <div class="race-card flash-in">
-        <div class="race-tag">⚔ THIS WEEK&apos;S RACE ⚔</div>
-        <div class="race-title" id="raceName">—</div>
-        <div class="race-info" id="raceMeta">—</div>
-        <div class="countdown">
-          <span class="countdown-label">DEADLINE</span>
-          <span class="countdown-value" id="countdown">--:--:--</span>
-        </div>
-      </div>
-
-      <!-- 戦士プロフィール -->
       <div class="warrior-card flash-in">
         <div class="warrior-inner">
           <div class="warrior-avatar-wrap">
@@ -1299,6 +1476,17 @@ main > .section:first-of-type { padding-top: 14px; }
           </div>
         </div>
       </div>
+
+      <!-- レース情報 -->
+      <div class="race-card flash-in" id="raceCard">
+        <div class="race-tag">⚔ THIS WEEK&apos;S RACE ⚔</div>
+        <div class="race-title" id="raceName">—</div>
+        <div class="race-info" id="raceMeta">—</div>
+        <div class="countdown" id="countdownBox">
+          <span class="countdown-label">DEADLINE</span>
+          <span class="countdown-value" id="countdown">--:--:--</span>
+        </div>
+      </div>
     </div>
 
     <!-- 投票エリア -->
@@ -1316,7 +1504,7 @@ main > .section:first-of-type { padding-top: 14px; }
 
     <!-- 投票済み -->
     <div id="votedArea" class="section hidden">
-      <div class="status-block success">
+      <div class="status-block success mini">
         <span class="icon">⚔</span>
         <div class="title">PARTICIPATED!</div>
         <div class="desc">投票完了。陣営の本命に反映されました</div>
@@ -1327,16 +1515,16 @@ main > .section:first-of-type { padding-top: 14px; }
         </div>
       </div>
 
-      <div class="sec-label" style="margin-top:32px">
+      <div class="sec-label" style="margin-top:24px">
         <div class="sec-label-en" id="myJineiTitleEn">FACTION TALLY</div>
         <div class="sec-label-ja">陣営内ランキング</div>
       </div>
-      <div class="tally-card" id="tallyCard">
+      <div id="tallyCard" class="horse-tally-list">
         <div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">まだ票が集まっていません</div>
       </div>
 
       <!-- 仲間の声 -->
-      <div class="sec-label" style="margin-top:32px">
+      <div class="sec-label" style="margin-top:24px">
         <div class="sec-label-en">⚔ BATTLE CRIES ⚔</div>
         <div class="sec-label-ja">仲間の声</div>
       </div>
@@ -1347,14 +1535,14 @@ main > .section:first-of-type { padding-top: 14px; }
 
     <!-- 締切後 -->
     <div id="closedArea" class="section hidden">
-      <div class="status-block">
+      <div class="status-block mini">
         <span class="icon" id="closedIcon">🏁</span>
         <div class="title" id="closedTitle">CLOSED</div>
         <div class="desc" id="closedDesc">投票締切。結果をお待ちください</div>
         <div class="your-pick" id="myPickClosed" style="display:none">YOUR PICK：<b id="myPickText2">—</b></div>
       </div>
 
-      <div class="sec-label" style="margin-top:32px">
+      <div class="sec-label" style="margin-top:24px">
         <div class="sec-label-en">⚔ 6 FACTIONS BATTLE ⚔</div>
         <div class="sec-label-ja">6陣営の本命</div>
       </div>
@@ -1624,13 +1812,21 @@ async function renderMainContent() {
   const isClosed = status === 'closed' || status === 'settled' || isPastDeadline();
   if (isClosed) {
     document.getElementById('battleBanner').innerHTML = '<span>🏁 RESULT PHASE 🏁</span>';
+    compactRaceCard();
     await renderClosed(status);
   }
   else if (myVote) {
     document.getElementById('battleBanner').innerHTML = '<span>⚔ ENGAGED ⚔</span>';
+    compactRaceCard();
     await renderVoted();
   }
   else renderVoteArea();
+}
+
+// レースカードをコンパクト化（カウントダウン非表示）
+function compactRaceCard() {
+  const card = document.getElementById('raceCard');
+  if (card) card.classList.add('compact');
 }
 function isPastDeadline() {
   if (!race.deadline) return false;
@@ -1860,35 +2056,44 @@ async function refreshTally() {
           counts[d.horseName] = (counts[d.horseName] || 0) + 1;
         }
       });
-      if (Object.keys(counts).length > 0) votes = counts;
+      votes = counts;
     } catch (e) {
       console.error('refreshTally fallback error', e);
+      votes = {};
     }
   }
 
-  if (!votes) {
-    card.innerHTML = '<div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">まだ票が集まっていません</div>';
-    return;
-  }
+  if (!votes) votes = {};
 
-  const entries = Object.entries(votes).filter(([_, v]) => v > 0).sort((a, b) => b[1] - a[1]);
-  if (entries.length === 0) {
-    card.innerHTML = '<div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">まだ票が集まっていません</div>';
-    return;
-  }
-  const max = entries[0][1];
-  const numMap = {};
-  horses.forEach(h => { numMap[h.name] = h.index; });
-  card.innerHTML = entries.map(([name, votes], i) => {
-    const pct = (votes / max) * 100;
-    const num = numMap[name] || '?';
+  // 全馬データ作成（ゼロ票も含む）
+  const tallyData = horses.map(h => ({
+    index: h.index,
+    name: h.name,
+    votes: votes[h.name] || 0,
+  }));
+  // ソート：得票数降順、同票は馬番順
+  tallyData.sort((a, b) => b.votes - a.votes || a.index - b.index);
+
+  const max = Math.max(1, ...tallyData.map(t => t.votes));
+  const myHorse = myVote ? myVote.horseName : null;
+
+  card.innerHTML = tallyData.map((t, i) => {
+    const pct = (t.votes / max) * 100;
+    const isTop = i === 0 && t.votes > 0;
+    const isMine = myHorse && myHorse === t.name;
+    const isZero = t.votes === 0;
     return `
-      <div class="tally-row ${i === 0 ? 'first' : ''}">
-        <div class="tally-rank ${i === 0 ? 'r1' : ''}">${i+1}</div>
-        <div class="tally-num">${num}</div>
-        <div class="tally-name">${escapeHtml(name)}</div>
-        <div class="tally-bar-wrap"><div class="tally-bar" style="width:${pct}%"></div></div>
-        <div class="tally-votes">${votes}</div>
+      <div class="horse-tally ${isTop ? 'top' : ''} ${isMine ? 'mine' : ''} ${isZero ? 'zero' : ''}">
+        <div class="ht-rank">${isTop ? '👑' : i+1}</div>
+        <div class="ht-num">${t.index}</div>
+        <div class="ht-body">
+          <div class="ht-name">
+            ${escapeHtml(t.name)}
+            ${isMine ? '<span class="ht-mine-badge">YOUR PICK</span>' : ''}
+          </div>
+          <div class="hp-bar-wrap"><div class="hp-bar-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="ht-votes">${t.votes}</div>
       </div>
     `;
   }).join('');
@@ -1919,8 +2124,9 @@ async function renderClosed(status) {
       const top = Object.entries(t.votes).sort((a,b) => b[1] - a[1])[0];
       if (top && top[1] > 0) { pickName = top[0]; pickVotes = top[1]; }
     }
-    const isHit = race.winner && race.winner === pickName;
-    const isMiss = race.winner && !isHit;
+    const isSettled = status === 'settled' && race.winner;
+    const isHit = isSettled && race.winner === pickName;
+    const isMiss = isSettled && !isHit;
     return `
       <div class="jinei-result ${isHit ? 'hit' : ''} ${isMiss ? 'miss' : ''}" style="border-left:5px solid ${m.main}">
         ${isHit ? '<div class="hit-crown">👑</div>' : ''}
