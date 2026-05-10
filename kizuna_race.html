@@ -2256,9 +2256,8 @@ async function renderVoted() {
   }
 
   const m = JINEI_MASTER[myKizuna.jineiId];
-  if (m) {
-    document.getElementById('myJineiTitleEn').textContent = `${m.name.replace('陣営','').toUpperCase()} TALLY`;
-  }
+  // myJineiTitleEn は廃止（メガカードに統合）
+
   await refreshTally();
   await refreshComments();
   setInterval(refreshTally, 30000);
