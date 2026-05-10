@@ -186,6 +186,25 @@
   function injectNavMemberCSS() {
     const style = document.createElement('style');
     style.textContent = `
+      /* メニューオーバーレイを画面右半分に */
+      @media (min-width: 0) {
+        .menu-overlay {
+          width: 75% !important;
+          max-width: 360px !important;
+          right: 0 !important;
+          left: auto !important;
+          transform: translateX(100%) !important;
+          height: 100vh !important;
+          top: 0 !important;
+          padding-top: 80px !important;
+          overflow-y: auto !important;
+          box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+        }
+        .menu-overlay.open {
+          transform: translateX(0) !important;
+        }
+      }
+      
       /* ハンバーガーが推し馬アイコンになる時 */
       .ah-ham-loggedin {
         padding: 0 !important;
@@ -224,22 +243,21 @@
       .ah-member-card {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 12px;
         background: rgba(255, 217, 107, 0.08);
         border: 1px solid rgba(255, 217, 107, 0.3);
         border-radius: 16px;
-        padding: 14px 18px;
+        padding: 12px 14px;
         cursor: pointer;
         transition: all 0.2s ease;
         text-decoration: none;
       }
       .ah-member-card:hover {
         background: rgba(255, 217, 107, 0.15);
-        transform: translateY(-2px);
       }
       .ah-member-icon {
-        width: 50px;
-        height: 50px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         background: #fff;
         padding: 3px;
@@ -249,37 +267,44 @@
       .ah-member-info {
         flex: 1;
         text-align: left;
+        min-width: 0;
       }
       .ah-member-name {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 900;
         color: #fff;
-        margin-bottom: 4px;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .ah-member-meta {
-        font-size: 12px;
+        font-size: 11px;
         color: #ffd96b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .ah-member-arrow {
-        font-size: 24px;
+        font-size: 22px;
         color: #ffd96b;
         font-weight: 900;
+        flex-shrink: 0;
       }
       
-      /* CTAボタン（未ログインや未入隊時） */
+      /* CTAボタン */
       .ah-cta {
         display: block;
-        background: linear-gradient(135deg, #ffd96b, #ffb347);
+        background: linear-gradient(135deg, #ffd96b, #ffb347) !important;
         color: #0a1f15 !important;
-        padding: 14px 20px;
+        padding: 14px 16px;
         border-radius: 12px;
         font-weight: 900;
         text-align: center;
         text-decoration: none;
-        font-size: 15px;
+        font-size: 14px !important;
         letter-spacing: 1px;
         transition: all 0.2s ease;
-        background-color: transparent !important;
       }
       .ah-cta:hover {
         transform: translateY(-2px);
@@ -290,23 +315,27 @@
       .ah-divider {
         height: 1px;
         background: rgba(255, 255, 255, 0.1);
-        margin: 16px 20px;
+        margin: 12px 20px;
+      }
+      
+      /* メニュー内のa要素を小さめに調整 */
+      .menu-overlay > a {
+        font-size: 18px !important;
+        padding: 14px 20px !important;
       }
       
       /* フッターセクション */
       .ah-footer-section {
-        padding: 20px;
-        margin-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 16px 20px;
+        margin-top: auto;
       }
       .ah-logout {
         display: block;
         text-align: center;
         color: #c0392b !important;
-        font-size: 13px;
+        font-size: 13px !important;
         cursor: pointer;
         padding: 10px;
-        background-color: transparent !important;
         text-decoration: none;
       }
       .ah-logout:hover {
