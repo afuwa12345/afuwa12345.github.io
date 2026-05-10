@@ -195,10 +195,17 @@
           left: auto !important;
           transform: translateX(100%) !important;
           height: 100vh !important;
+          height: 100dvh !important;
           top: 0 !important;
-          padding-top: 80px !important;
-          overflow-y: auto !important;
+          padding-top: 90px !important;
+          padding-bottom: 30px !important;
+          overflow-y: scroll !important;
+          -webkit-overflow-scrolling: touch !important;
           box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: stretch !important;
+          justify-content: flex-start !important;
         }
         .menu-overlay.open {
           transform: translateX(0) !important;
