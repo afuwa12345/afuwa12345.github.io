@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ランクスタンプ位置調整ツール</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Hiragino Kaku Gothic ProN', sans-serif;
+  background: #1a2030;
+  color: #eee;
+  padding: 16px;
+}
+
+.container { max-width: 1100px; margin: 0 auto; }
+
+h1 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #ffd96b;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+}
+@media (max-width: 800px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+.preview-area {
+  background: #0a1418;
+  border: 2px solid #2a3a4a;
+  border-radius: 8px;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.canvas-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+#cardCanvas {
+  display: block;
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+.controls {
+  background: #2a3a4a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.control-group {
+  margin-bottom: 14px;
+}
+.control-group label {
+  display: block;
+  font-size: 11px;
+  color: #87b89c;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+select, input[type="range"], input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  background: #0a1418;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+}
+input[type="number"] {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+.range-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.range-row input[type="range"] { flex: 1; }
+.range-row input[type="number"] { width: 80px; }
+
+.output-block {
+  background: #0a1418;
+  border: 1px solid #2a3a4a;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 14px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #b8e0c8;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.copy-btn {
+  width: 100%;
+  padding: 10px;
+  background: #ffd96b;
+  color: #0a1418;
+  border: none;
+  border-radius: 6px;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+.copy-btn:hover { background: #ffe88a; }
+.copy-btn.copied { background: #06C755; color: #fff; }
+
+.tip {
+  font-size: 11px;
+  color: #87b89c;
+  line-height: 1.5;
+  margin-top: 6px;
+}
+.tip b { color: #ffd96b; }
+
+.preview-info {
+  font-size: 11px;
+  color: #87b89c;
+  margin-top: 8px;
+  font-family: 'Courier New', monospace;
+}
+.preview-info b { color: #ffd96b; }
+
+.error-msg {
+  background: rgba(192,57,43,0.2);
+  border: 1px solid #c0392b;
+  color: #ffaaaa;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 8px;
+  display: none;
+}
+.error-msg.show { display: block; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🏆 ランクスタンプ位置調整ツール</h1>
+
+  <div class="layout">
+    <!-- プレビュー -->
+    <div class="preview-area">
+      <div class="canvas-wrap">
+        <canvas id="cardCanvas"></canvas>
+      </div>
+      <div class="preview-info" id="previewInfo">画像読み込み中...</div>
+      <div class="error-msg" id="errorMsg"></div>
+    </div>
+
+    <!-- コントロール -->
+    <div class="controls">
+
+      <div class="control-group">
+        <label>カード（陣営）</label>
+        <select id="cardSelect">
+          <option value="images/cards/card_afuwa.png">アフワ</option>
+          <option value="images/cards/card_yancha.png" selected>やんちゃアフワ</option>
+          <option value="images/cards/card_buruma.png">ブルマ</option>
+          <option value="images/cards/card_chahuwa.png">チャフワ</option>
+          <option value="images/cards/card_kurohuwa.png">クロフワ</option>
+          <option value="images/cards/card_ginma.png">ギンマ</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>ランクスタンプ</label>
+        <select id="rankSelect">
+          <option value="1">1: 新馬</option>
+          <option value="2">2: 未勝利</option>
+          <option value="3">3: 1勝クラス</option>
+          <option value="4">4: 2勝クラス</option>
+          <option value="5">5: 3勝クラス</option>
+          <option value="6">6: OPクラス</option>
+          <option value="7">7: G3</option>
+          <option value="8">8: G2</option>
+          <option value="9" selected>9: G1</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>X座標 (横)</label>
+        <div class="range-row">
+          <input type="range" id="xRange" min="0" max="2000" value="850">
+          <input type="number" id="xNum" value="850">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Y座標 (縦)</label>
+        <div class="range-row">
+          <input type="range" id="yRange" min="0" max="2000" value="200">
+          <input type="number" id="yNum" value="200">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>サイズ (px)</label>
+        <div class="range-row">
+          <input type="range" id="sizeRange" min="50" max="500" value="200">
+          <input type="number" id="sizeNum" value="200">
+        </div>
+      </div>
+
+      <div class="tip">
+        💡 スライダー or 数値で調整。<br>
+        プレビューでリアルタイム反映！
+      </div>
+
+      <div class="output-block" id="outputBlock">調整中...</div>
+
+      <button class="copy-btn" id="copyBtn">📋 設定値をコピー</button>
+
+      <div class="tip" style="margin-top: 14px;">
+        <b>使い方：</b><br>
+        1. カードと位置を調整<br>
+        2. 「設定値をコピー」<br>
+        3. 俺に貼り付けて送る<br>
+        → mypage.html に組み込みます
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const cardSelect = document.getElementById('cardSelect');
+const rankSelect = document.getElementById('rankSelect');
+const xRange = document.getElementById('xRange');
+const yRange = document.getElementById('yRange');
+const sizeRange = document.getElementById('sizeRange');
+const xNum = document.getElementById('xNum');
+const yNum = document.getElementById('yNum');
+const sizeNum = document.getElementById('sizeNum');
+const canvas = document.getElementById('cardCanvas');
+const ctx = canvas.getContext('2d');
+const previewInfo = document.getElementById('previewInfo');
+const outputBlock = document.getElementById('outputBlock');
+const errorMsg = document.getElementById('errorMsg');
+const copyBtn = document.getElementById('copyBtn');
+
+let cardImg = null;
+let stampImg = null;
+
+function showError(msg) {
+  errorMsg.textContent = msg;
+  errorMsg.classList.add('show');
+}
+function hideError() {
+  errorMsg.classList.remove('show');
+}
+
+// レンジ・数値の連動
+function bindPair(rangeEl, numEl) {
+  rangeEl.addEventListener('input', () => {
+    numEl.value = rangeEl.value;
+    render();
+  });
+  numEl.addEventListener('input', () => {
+    rangeEl.value = numEl.value;
+    render();
+  });
+}
+bindPair(xRange, xNum);
+bindPair(yRange, yNum);
+bindPair(sizeRange, sizeNum);
+
+cardSelect.addEventListener('change', loadCard);
+rankSelect.addEventListener('change', loadStamp);
+
+async function loadCard() {
+  const url = cardSelect.value;
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      cardImg = img;
+      canvas.width = img.width;
+      canvas.height = img.height;
+      // X/Y のmaxを画像サイズに合わせる
+      xRange.max = img.width;
+      yRange.max = img.height;
+      previewInfo.innerHTML = `カードサイズ: <b>${img.width} × ${img.height}</b>px`;
+      render();
+      hideError();
+      resolve();
+    };
+    img.onerror = () => {
+      showError(`カード画像が読み込めません: ${url}\n\nこのHTMLは afro-horse.com 上で開いてください！`);
+    };
+    img.src = url;
+  });
+}
+
+async function loadStamp() {
+  const num = rankSelect.value;
+  const url = `images/cards/ranks/rank_${num}.png`;
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      stampImg = img;
+      render();
+      resolve();
+    };
+    img.onerror = () => {
+      showError(`スタンプ画像が読み込めません: ${url}\nimages/cards/ranks/rank_X.png を確認してください`);
+    };
+    img.src = url;
+  });
+}
+
+function render() {
+  if (!cardImg) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(cardImg, 0, 0);
+
+  if (stampImg) {
+    const x = parseInt(xNum.value);
+    const y = parseInt(yNum.value);
+    const size = parseInt(sizeNum.value);
+    // 中心基準で描画
+    ctx.drawImage(stampImg, x - size/2, y - size/2, size, size);
+  }
+
+  // 出力値を更新
+  const out = `// ランクスタンプ位置設定
+{
+  x: ${xNum.value},      // 中心X座標
+  y: ${yNum.value},      // 中心Y座標
+  size: ${sizeNum.value}    // サイズ
+}`;
+  outputBlock.textContent = out;
+}
+
+copyBtn.addEventListener('click', async () => {
+  const text = `ランクスタンプ位置：x=${xNum.value}, y=${yNum.value}, size=${sizeNum.value}`;
+  try {
+    await navigator.clipboard.writeText(text);
+    copyBtn.textContent = '✓ コピーしました';
+    copyBtn.classList.add('copied');
+    setTimeout(() => {
+      copyBtn.textContent = '📋 設定値をコピー';
+      copyBtn.classList.remove('copied');
+    }, 1500);
+  } catch (e) {
+    alert('コピー失敗。手動で値を読み取ってください：\n' + text);
+  }
+});
+
+// 初回ロード
+(async () => {
+  await loadCard();
+  await loadStamp();
+})();
+</script>
+
+</body>
+</html>
