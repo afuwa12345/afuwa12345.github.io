@@ -1087,7 +1087,7 @@ main > .section:first-of-type { padding-top: 14px; }
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 32px 14px 56px;
+  padding: 12px 32px 12px 56px;
   color: var(--cream);
   font-family: 'Noto Sans JP', sans-serif;
   clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
@@ -1211,28 +1211,30 @@ main > .section:first-of-type { padding-top: 14px; }
   font-weight: 900;
 }
 
-/* 馬番（馬牌風：上下色チック付き） */
+/* 馬番（馬牌風：小さくしてYOUR PICKと並べる） */
 .ht-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'Bebas Neue', cursive;
-  font-size: 14px;
+  font-size: 11px;
   background: #fff;
   color: #000;
-  border-radius: 3px;
-  width: 28px; height: 36px;
-  display: flex; align-items: center; justify-content: center;
+  border-radius: 2px;
+  width: 22px; height: 18px;
   flex-shrink: 0;
   font-weight: 900;
-  border: 1.5px solid #333;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  border: 1px solid #333;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
   position: relative;
-  z-index: 2;
   overflow: hidden;
+  vertical-align: middle;
 }
 .ht-num::before, .ht-num::after {
   content: '';
   position: absolute;
   left: 0; right: 0;
-  height: 5px;
+  height: 3px;
   background: var(--waku-color, #c5292a);
   z-index: 0;
 }
@@ -1241,12 +1243,19 @@ main > .section:first-of-type { padding-top: 14px; }
 .ht-num-text {
   position: relative;
   z-index: 1;
+  line-height: 1;
 }
 .horse-tally.rank-1 .ht-num {
-  width: 32px; height: 40px;
-  font-size: 16px;
   border-color: var(--gold);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 8px var(--gold-glow);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5), 0 0 6px var(--gold-glow);
+}
+
+/* タグ行（馬番 + YOUR PICK） */
+.ht-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
 }
 
 /* 枠番カラー（waku-1〜waku-8） */
@@ -1291,15 +1300,16 @@ main > .section:first-of-type { padding-top: 14px; }
 .horse-tally.zero .ht-name-text { color: rgba(248,241,222,0.5); }
 
 .ht-mine-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
-  margin-top: 4px;
   background: var(--gold);
   color: var(--turf-deep);
   font-family: 'Bebas Neue', cursive;
   font-size: 9px;
-  padding: 1px 6px;
-  border-radius: 3px;
+  padding: 0 6px;
+  height: 18px;
+  border-radius: 2px;
   letter-spacing: 1px;
   border: 1px solid var(--cream);
   text-shadow: none;
@@ -1511,79 +1521,130 @@ main > .section:first-of-type { padding-top: 14px; }
 }
 .your-pick b { color: var(--jc-deep); font-family: 'Dela Gothic One', cursive; font-weight: 400; font-size: 15px; }
 
-/* ===== 全陣営公開（バトルロイヤル） ===== */
-.all-jinei { display: grid; gap: 12px; margin-top: 14px; }
+/* ===== 全陣営公開（バトルロイヤル：陣営カラー金縁カード） ===== */
+.all-jinei { display: grid; gap: 14px; margin-top: 14px; }
 .jinei-result {
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px;
-  background: linear-gradient(135deg, var(--cream-soft), #fff);
-  border: 2.5px solid var(--turf);
-  border-radius: 12px;
-  box-shadow: 0 4px 0 var(--turf-deep);
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, var(--res-deep, var(--turf-deep)), var(--res-main, var(--turf)) 50%, var(--res-deep, var(--turf-deep)));
+  border: 3px solid var(--gold);
+  border-radius: 14px;
+  box-shadow:
+    0 5px 0 rgba(0,0,0,0.35),
+    0 8px 24px rgba(0,0,0,0.25),
+    0 0 18px var(--res-glow, rgba(255,216,109,0.3));
   position: relative;
   overflow: hidden;
+  color: var(--cream);
+}
+.jinei-result::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 50%),
+    repeating-linear-gradient(45deg, transparent, transparent 16px, rgba(0,0,0,0.06) 16px, rgba(0,0,0,0.06) 32px);
+  pointer-events: none;
+}
+.jinei-result::after {
+  content: '';
+  position: absolute; top: -40%; right: -15%;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, var(--gold-glow), transparent 60%);
+  opacity: 0.25;
+  pointer-events: none;
 }
 .jinei-result-avatar {
-  width: 56px; height: 56px;
+  width: 60px; height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--gold);
-  background: var(--turf-deep);
+  border: 2.5px solid var(--gold);
+  background: rgba(0,0,0,0.4);
   flex-shrink: 0;
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
+  box-shadow: 0 0 16px var(--gold-glow), inset 0 0 8px rgba(0,0,0,0.4);
+  position: relative;
+  z-index: 1;
 }
-.jinei-result-info { flex: 1; min-width: 0; }
+.jinei-result-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .jinei-result-name {
   font-family: 'Dela Gothic One', cursive;
   font-size: 14px;
-  color: var(--turf-deep);
-  margin-bottom: 1px;
+  color: var(--cream);
+  margin-bottom: 2px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 8px var(--gold-glow);
+  letter-spacing: 0.02em;
 }
 .jinei-result-style {
   font-size: 10px;
-  color: var(--text-soft);
+  color: rgba(248,241,222,0.85);
   font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.jinei-result-pick-wrap {
+  text-align: right;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
 }
 .jinei-result-pick {
-  text-align: right;
   font-family: 'Dela Gothic One', cursive;
-  font-size: 14px;
-  color: var(--red-deep);
+  font-size: 13px;
+  color: var(--gold-glow);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.5), 0 0 8px var(--gold-glow);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
 }
 .jinei-result-votes {
   font-family: 'Bebas Neue', cursive;
-  font-size: 11px;
-  color: var(--text-soft);
+  font-size: 12px;
+  color: rgba(248,241,222,0.8);
   margin-top: 2px;
-  text-align: right;
+  letter-spacing: 1px;
 }
+
+/* 的中：金色グロー強化 */
 .jinei-result.hit {
-  border-color: var(--gold);
-  background: linear-gradient(135deg, var(--gold-glow), #fff);
-  box-shadow: 0 4px 0 var(--gold), 0 0 30px var(--gold-glow);
+  border: 3px solid var(--gold-glow);
+  box-shadow:
+    0 6px 0 var(--gold),
+    0 10px 40px var(--gold-glow),
+    0 0 60px var(--gold-glow);
   animation: hitGlow 2s ease-in-out infinite;
+  transform: scale(1.02);
 }
 @keyframes hitGlow {
-  0%,100% { box-shadow: 0 4px 0 var(--gold), 0 0 30px var(--gold-glow); }
-  50% { box-shadow: 0 4px 0 var(--gold), 0 0 60px var(--gold-glow); }
+  0%,100% { box-shadow: 0 6px 0 var(--gold), 0 10px 40px var(--gold-glow), 0 0 60px var(--gold-glow); }
+  50% { box-shadow: 0 6px 0 var(--gold), 0 10px 50px var(--gold-glow), 0 0 90px var(--gold-glow); }
 }
-.jinei-result.hit .jinei-result-pick { color: var(--gold); }
 .jinei-result.hit .jinei-result-avatar {
   border-color: var(--gold-glow);
-  box-shadow: 0 0 24px var(--gold-glow);
-  transform: scale(1.05);
+  box-shadow: 0 0 28px var(--gold-glow);
+  transform: scale(1.08);
 }
-.jinei-result.miss { opacity: 0.55; filter: grayscale(0.5); }
+.jinei-result.hit .jinei-result-pick {
+  color: #fff;
+  text-shadow: 0 0 16px var(--gold-glow), 0 0 28px #fff;
+}
+
+/* ハズレ：暗く、彩度落とす */
+.jinei-result.miss {
+  opacity: 0.55;
+  filter: grayscale(0.5);
+}
+
 .hit-crown {
   position: absolute;
-  top: -10px; left: 12px;
-  font-size: 22px;
-  filter: drop-shadow(0 4px 8px var(--gold-glow));
+  top: -12px; left: 14px;
+  font-size: 26px;
+  filter: drop-shadow(0 4px 10px var(--gold-glow));
   animation: crownBounce 1.2s ease-in-out infinite;
+  z-index: 3;
 }
 @keyframes crownBounce {
   0%,100% { transform: translateY(0) rotate(-10deg); }
-  50% { transform: translateY(-4px) rotate(10deg); }
+  50% { transform: translateY(-5px) rotate(10deg); }
 }
 
 /* ===== 投票完了オーバーレイ ===== */
@@ -2463,12 +2524,14 @@ async function refreshTally() {
           <div class="ht-rank-num">${rank}</div>
           <div class="ht-rank-suffix">位</div>
         </div>
-        <div class="ht-num ${wakuClass}"><span class="ht-num-text">${t.index}</span></div>
         <div class="ht-body">
           <div class="ht-name">
             <span class="ht-name-text">${escapeHtml(t.name)}</span>
           </div>
-          ${isMine ? '<span class="ht-mine-badge">YOUR PICK</span>' : ''}
+          <div class="ht-tags">
+            <span class="ht-num ${wakuClass}"><span class="ht-num-text">${t.index}</span></span>
+            ${isMine ? '<span class="ht-mine-badge">YOUR PICK</span>' : ''}
+          </div>
         </div>
         <div class="ht-votes-wrap">
           <div class="ht-votes">${t.votes}</div>
@@ -2516,15 +2579,16 @@ async function renderClosed(status) {
     const isSettled = status === 'settled' && race.winner;
     const isHit = isSettled && race.winner === pickName;
     const isMiss = isSettled && !isHit;
+    const styleVars = `--res-main: ${m.main}; --res-deep: ${m.deep}; --res-glow: ${m.glow};`;
     return `
-      <div class="jinei-result ${isHit ? 'hit' : ''} ${isMiss ? 'miss' : ''}" style="border-left:5px solid ${m.main}">
+      <div class="jinei-result ${isHit ? 'hit' : ''} ${isMiss ? 'miss' : ''}" style="${styleVars}">
         ${isHit ? '<div class="hit-crown">👑</div>' : ''}
         <img class="jinei-result-avatar" src="${m.img}" alt="">
         <div class="jinei-result-info">
           <div class="jinei-result-name">${m.name}</div>
           <div class="jinei-result-style">${m.style}</div>
         </div>
-        <div>
+        <div class="jinei-result-pick-wrap">
           <div class="jinei-result-pick">${escapeHtml(pickName)}</div>
           <div class="jinei-result-votes">${pickVotes}/${total} 票</div>
         </div>
