@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理画面｜AFRO Horse</title>
+<meta name="robots" content="noindex">
+
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+<!-- Firebase + LIFF -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="js/auth.js"></script>
+
+<style>
+:root {
+  --turf: #1a4731;
+  --turf-deep: #0e2e1f;
+  --cream: #f8f1de;
+  --cream-deep: #ede0bd;
+  --cream-soft: #fcf7e8;
+  --gold: #c8941d;
+  --gold-light: #e8b952;
+  --gold-glow: #ffd86d;
+  --red: #c5292a;
+  --red-deep: #8b1b1b;
+  --text: #2a2419;
+  --text-soft: #5a4f3d;
+  --gray: #7a6e5a;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  min-height: 100vh;
+  padding: 20px 16px 60px;
+}
+
+.header {
+  text-align: center;
+  padding: 16px 0 24px;
+  border-bottom: 3px solid var(--gold);
+  margin-bottom: 24px;
+}
+.header h1 {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px;
+  color: var(--turf-deep);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.header .sub {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--gold);
+}
+.header .admin-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 12px;
+  background: var(--red-deep);
+  color: var(--cream);
+  font-size: 11px;
+  font-weight: 900;
+  border-radius: 4px;
+  letter-spacing: 2px;
+}
+
+.container { max-width: 600px; margin: 0 auto; }
+
+.card {
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2.5px solid var(--turf);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 0 var(--turf-deep), 0 6px 16px rgba(14,46,31,0.1);
+}
+.card-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  color: var(--turf-deep);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--gold);
+  display: inline-block;
+}
+
+.race-info-box {
+  background: rgba(14,46,31,0.05);
+  border-left: 4px solid var(--turf);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.race-info-line {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.race-info-line:last-child { margin-bottom: 0; }
+.race-info-line span {
+  display: inline-block;
+  min-width: 70px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+  font-weight: 400;
+}
+.race-info-line b {
+  color: var(--turf-deep);
+  font-family: 'Dela Gothic One', cursive;
+  font-weight: 400;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+.status-pill.open { background: #2563eb; color: #fff; }
+.status-pill.closed { background: var(--gold); color: var(--turf-deep); }
+.status-pill.processing { background: var(--red); color: #fff; }
+.status-pill.settled { background: var(--turf); color: var(--cream); }
+
+label {
+  display: block;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text-soft);
+  margin-bottom: 6px;
+  font-weight: 900;
+}
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--turf);
+  border-radius: 8px;
+  background: #fff;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%231a4731' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255,216,109,0.3); }
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border: 3px solid var(--gold);
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
+  color: var(--cream);
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #000, 0 0 16px var(--gold-glow);
+  transition: transform 0.15s, box-shadow 0.15s;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  margin-top: 14px;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #000, 0 0 20px var(--gold-glow); }
+.btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #000; }
+.btn:disabled {
+  background: var(--gray);
+  border-color: var(--text-soft);
+  color: rgba(255,255,255,0.5);
+  cursor: not-allowed;
+  box-shadow: 0 3px 0 var(--text-soft);
+  text-shadow: none;
+}
+.btn:disabled:hover, .btn:disabled:active { transform: none; }
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--red), var(--red-deep));
+  border-color: var(--gold);
+}
+
+.alert {
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  border: 2px solid;
+}
+.alert.info { background: rgba(37,99,235,0.1); border-color: #2563eb; color: #1e40af; }
+.alert.warn { background: rgba(212,160,23,0.1); border-color: var(--gold); color: var(--gold); }
+.alert.error { background: rgba(197,41,42,0.1); border-color: var(--red); color: var(--red-deep); }
+.alert.success { background: rgba(26,71,49,0.1); border-color: var(--turf); color: var(--turf-deep); }
+
+.deny-block {
+  text-align: center;
+  padding: 60px 20px;
+}
+.deny-emoji { font-size: 60px; margin-bottom: 16px; }
+.deny-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 20px;
+  color: var(--red-deep);
+  margin-bottom: 12px;
+}
+.deny-text {
+  color: var(--text-soft);
+  font-size: 13px;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.log-area {
+  background: linear-gradient(135deg, #0a1418, #1a2a30);
+  color: #b8e0c8;
+  padding: 14px;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  max-height: 360px;
+  overflow-y: auto;
+  border: 2px solid var(--turf);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.log-area::-webkit-scrollbar { width: 6px; }
+.log-area::-webkit-scrollbar-thumb { background: var(--turf); border-radius: 3px; }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.summary-stat {
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
+  color: var(--cream);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1.5px solid var(--gold);
+}
+.summary-stat-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold-glow);
+  margin-bottom: 4px;
+}
+.summary-stat-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+
+.spinner {
+  width: 32px; height: 32px;
+  border: 3px solid rgba(14,46,31,0.18);
+  border-top-color: var(--turf);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 20px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.back-link {
+  display: inline-block;
+  margin-top: 30px;
+  color: var(--text-soft);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+.back-link:hover { color: var(--turf-deep); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>キズナレース 管理画面</h1>
+    <div class="sub">ADMIN PANEL</div>
+    <div class="admin-tag">⚠ 管理者専用</div>
+  </div>
+
+  <!-- ローディング -->
+  <div id="loading" style="text-align:center; padding:60px 20px;">
+    <div class="spinner"></div>
+    <p style="color:var(--text-soft); font-weight:700; font-family:'Bebas Neue',cursive; letter-spacing:3px; font-size:12px;">AUTHENTICATING...</p>
+  </div>
+
+  <!-- アクセス拒否 -->
+  <div id="denyView" style="display:none">
+    <div class="deny-block">
+      <div class="deny-emoji">🚫</div>
+      <div class="deny-title">アクセス権限がありません</div>
+      <div class="deny-text">
+        この画面は管理者専用です。<br>
+        一般ユーザーは閲覧できません。
+      </div>
+      <a href="index.html" class="back-link">← ホームに戻る</a>
+    </div>
+  </div>
+
+  <!-- メイン -->
+  <div id="mainView" style="display:none">
+
+    <!-- 現在のレース -->
+    <div class="card">
+      <div class="card-title">📋 現在のレース</div>
+      <div id="raceInfo">
+        <p style="color:var(--text-soft);font-weight:700">読み込み中...</p>
+      </div>
+    </div>
+
+    <!-- 投票集計 -->
+    <div class="card">
+      <div class="card-title">📊 投票状況</div>
+      <div class="summary-grid" id="summaryStats">
+        <div class="summary-stat">
+          <div class="summary-stat-label">TOTAL VOTES</div>
+          <div class="summary-stat-value" id="statTotal">0</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-stat-label">FACTIONS</div>
+          <div class="summary-stat-value" id="statFactions">0/6</div>
+        </div>
+      </div>
+      <div id="jineiBreakdown" style="font-size:12px; color:var(--text-soft); font-weight:700;"></div>
+    </div>
+
+    <!-- 結果確定 -->
+    <div class="card">
+      <div class="card-title">🏆 結果確定 & ポイント付与</div>
+      <div id="settlePanel">
+        <div id="alreadySettled" style="display:none">
+          <div class="alert success">
+            ✅ このレースは既に結果確定済みです<br>
+            <span style="font-weight:400;font-size:12px">1着馬：<b id="settledWinner"></b></span>
+          </div>
+        </div>
+
+        <div id="settleForm">
+          <div class="alert warn">
+            ⚠ ポイント付与は<b>1回のみ実行可能</b>。実行前に1着馬名をしっかり確認してください。
+          </div>
+
+          <label for="winnerSelect">1着馬名</label>
+          <select id="winnerSelect">
+            <option value="">-- 1着馬を選択 --</option>
+          </select>
+
+          <button id="settleBtn" class="btn btn-danger" disabled>🏆 結果確定 & ポイント付与</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 処理ログ -->
+    <div class="card" id="logCard" style="display:none">
+      <div class="card-title">📝 処理ログ</div>
+      <div class="log-area" id="logArea"></div>
+    </div>
+
+    <a href="index.html" class="back-link">← ホームに戻る</a>
+  </div>
+</div>
+
+<script>
+// ==================================================
+// 設定
+// ==================================================
+const ADMIN_USER_IDS = ['U6f409d13de5666ec37314933f02bcdc2'];
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxfKiXErtclIE05J4cx_MuOiHFzEIQ07Er9ScKhCzOkFiQ6pMlLuOo3nb6uoQE8TWeQCw/exec';
+
+let race = null, horses = [];
+let logBuf = [];
+
+// ==================================================
+// メイン
+// ==================================================
+async function main() {
+  // 認証
+  let user;
+  try {
+    user = await initAuth();
+  } catch (e) {
+    showDeny('LINE認証に失敗しました');
+    return;
+  }
+  if (!user) { showDeny('ログインが必要です'); return; }
+
+  // 管理者チェック
+  if (!ADMIN_USER_IDS.includes(user.userId)) {
+    showDeny(`
+      この画面は管理者専用です。<br>
+      一般ユーザーは閲覧できません。
+      <div style="margin-top:20px;padding:12px;background:rgba(0,0,0,0.05);border-radius:6px;text-align:left;font-size:11px;color:var(--text-soft);font-family:monospace;word-break:break-all;border:1px dashed var(--gray)">
+        <b style="font-family:'Bebas Neue',cursive;letter-spacing:2px;color:var(--turf-deep)">YOUR USER ID:</b><br>
+        ${user.userId}
+      </div>
+    `);
+    return;
+  }
+
+  // レース情報取得
+  try {
+    const data = await fetch(`${GAS_URL}?action=getAll&t=${Date.now()}`).then(r => r.json());
+    if (data.error) throw new Error(data.error);
+    race = data.race;
+    horses = data.horses || [];
+  } catch (err) {
+    document.getElementById('loading').innerHTML =
+      `<div class="alert error">レース情報取得エラー: ${err.message}</div>`;
+    return;
+  }
+
+  // 表示
+  renderRaceInfo();
+  await renderSummary();
+  renderSettlePanel();
+
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('mainView').style.display = 'block';
+}
+
+function showDeny(msg) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('denyView').style.display = 'block';
+  if (msg) {
+    document.querySelector('#denyView .deny-text').innerHTML = msg;
+  }
+}
+
+// ==================================================
+// レース情報
+// ==================================================
+function renderRaceInfo() {
+  const dl = race.deadline ? new Date(race.deadline) : null;
+  const dlStr = dl ? `${dl.getMonth()+1}/${dl.getDate()} ${String(dl.getHours()).padStart(2,'0')}:${String(dl.getMinutes()).padStart(2,'0')}` : '—';
+  document.getElementById('raceInfo').innerHTML = `
+    <div class="race-info-box">
+      <div class="race-info-line"><span>RACE</span><b>${escapeHtml(race.name || '—')}</b></div>
+      <div class="race-info-line"><span>VENUE</span><b>${escapeHtml(race.place || '—')} ${race.raceNum || ''}R</b></div>
+      <div class="race-info-line"><span>DEADLINE</span><b>${dlStr}</b></div>
+      <div class="race-info-line"><span>HORSES</span><b>${horses.length}頭</b></div>
+      <div class="race-info-line"><span>STATUS</span><span class="status-pill ${race.status || 'open'}">${(race.status || 'open').toUpperCase()}</span></div>
+      ${race.winner ? `<div class="race-info-line"><span>WINNER</span><b style="color:var(--gold)">🏆 ${escapeHtml(race.winner)}</b></div>` : ''}
+    </div>
+  `;
+}
+
+// ==================================================
+// 投票集計
+// ==================================================
+async function renderSummary() {
+  const snap = await db.collection('kizuna_votes')
+    .where('raceId', '==', race.raceId).get();
+
+  let total = 0;
+  const byJinei = {};
+  snap.forEach(doc => {
+    total++;
+    const d = doc.data();
+    const jid = d.jineiId;
+    if (!byJinei[jid]) byJinei[jid] = 0;
+    byJinei[jid]++;
+  });
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statFactions').textContent = `${Object.keys(byJinei).length}/6`;
+
+  const JINEI_NAMES = {
+    afuwa: 'アフワ', yancha: 'やんちゃ', buruma: 'ブルマ',
+    chahuwa: 'チャフワ', kurohuwa: 'クロフワ', ginma: 'ギンマ',
+  };
+  const lines = Object.keys(JINEI_NAMES).map(jid => {
+    const n = byJinei[jid] || 0;
+    return `${JINEI_NAMES[jid]}: ${n}票`;
+  }).join(' / ');
+  document.getElementById('jineiBreakdown').textContent = lines;
+}
+
+// ==================================================
+// 結果確定パネル
+// ==================================================
+function renderSettlePanel() {
+  if (race.status === 'settled') {
+    document.getElementById('alreadySettled').style.display = 'block';
+    document.getElementById('settleForm').style.display = 'none';
+    document.getElementById('settledWinner').textContent = race.winner || '—';
+    return;
+  }
+
+  const select = document.getElementById('winnerSelect');
+  horses.forEach(h => {
+    const opt = document.createElement('option');
+    opt.value = h.name;
+    opt.textContent = `${h.index}. ${h.name}`;
+    select.appendChild(opt);
+  });
+
+  const btn = document.getElementById('settleBtn');
+  select.addEventListener('change', () => {
+    btn.disabled = !select.value;
+    if (select.value) btn.textContent = `🏆 ${select.value} で確定 & 付与`;
+  });
+  btn.addEventListener('click', settle);
+}
+
+// ==================================================
+// 結果確定 & ポイント付与
+// ==================================================
+async function settle() {
+  const winner = document.getElementById('winnerSelect').value;
+  if (!winner) return;
+  if (!confirm(`【最終確認】\n\n1着馬：${winner}\n\nこのレースを確定して全員にポイントを付与します。\n実行は1回のみ・取消不可。\n\n本当に実行しますか？`)) return;
+
+  const btn = document.getElementById('settleBtn');
+  btn.disabled = true;
+  btn.textContent = '処理中...';
+
+  // ログエリア表示
+  logBuf = [];
+  document.getElementById('logCard').style.display = 'block';
+  log(`==== 結果確定 & ポイント付与 開始 ====`);
+  log(`レース: ${race.name}（${race.raceId}）`);
+  log(`1着馬: ${winner}`);
+  log('');
+
+  try {
+    // ① レースステータスを processing にして二重実行防止
+    log('[1/5] レースを processing 状態に切り替え...');
+    const raceRef = db.collection('kizuna_races').doc(race.raceId);
+    await db.runTransaction(async tx => {
+      const doc = await tx.get(raceRef);
+      const data = doc.data() || {};
+      if (data.status === 'settled') throw new Error('already-settled');
+      if (data.status === 'processing') throw new Error('already-processing');
+      tx.set(raceRef, {
+        raceId: race.raceId,
+        status: 'processing',
+        winner: winner,
+        settledAt: firebase.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+    });
+    log('   ✅ processing に切り替え完了');
+
+    // ② 全投票取得
+    log('[2/5] 投票データ取得中...');
+    const votesSnap = await db.collection('kizuna_votes')
+      .where('raceId', '==', race.raceId).get();
+    log(`   ✅ ${votesSnap.size}件の投票を取得`);
+
+    // ③ 陣営別の最多得票馬を計算（陣営の本命）
+    log('[3/5] 各陣営の本命を計算...');
+    const byJinei = {}; // jineiId -> {votes: {horseName: count}, members: [userId]}
+    votesSnap.forEach(doc => {
+      const d = doc.data();
+      const jid = d.jineiId;
+      if (!byJinei[jid]) byJinei[jid] = { votes: {}, members: [] };
+      byJinei[jid].votes[d.horseName] = (byJinei[jid].votes[d.horseName] || 0) + 1;
+      byJinei[jid].members.push(d.userId);
+    });
+
+    const jineiHonmei = {}; // jineiId -> 本命馬名
+    Object.keys(byJinei).forEach(jid => {
+      const sorted = Object.entries(byJinei[jid].votes).sort((a,b) => b[1] - a[1]);
+      if (sorted.length > 0) {
+        jineiHonmei[jid] = sorted[0][0];
+        log(`   ${jid}: ${sorted[0][0]} (${sorted[0][1]}票)`);
+      }
+    });
+
+    // ④ 各人にポイント付与
+    log('[4/5] 全員にポイント付与中...');
+    let processedCount = 0, individualHits = 0, jineiHits = 0;
+    const batch = db.batch();
+
+    votesSnap.forEach(doc => {
+      const d = doc.data();
+      const userId = d.userId;
+      const jid = d.jineiId;
+      let pts = 1; // 参加ボーナス
+      let reasons = ['参加+1'];
+
+      // 個人本命的中
+      if (d.horseName === winner) {
+        pts += 10;
+        reasons.push('個人的中+10');
+        individualHits++;
+      }
+      // 陣営本命的中
+      if (jineiHonmei[jid] === winner) {
+        pts += 5;
+        reasons.push('陣営的中+5');
+        jineiHits++;
+      }
+
+      const pointsRef = db.collection('kizuna_points').doc(userId);
+      batch.set(pointsRef, {
+        userId: userId,
+        totalPoints: firebase.firestore.FieldValue.increment(pts),
+        hitCount: firebase.firestore.FieldValue.increment(d.horseName === winner ? 1 : 0),
+        missCount: firebase.firestore.FieldValue.increment(d.horseName === winner ? 0 : 1),
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+
+      // race_history 記録
+      const historyRef = pointsRef.collection('race_history').doc(race.raceId);
+      batch.set(historyRef, {
+        raceId: race.raceId,
+        raceName: race.name,
+        userPick: d.horseName,
+        winner: winner,
+        isHit: d.horseName === winner,
+        jineiHit: jineiHonmei[jid] === winner,
+        points: pts,
+        settledAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      processedCount++;
+    });
+
+    await batch.commit();
+    log(`   ✅ ${processedCount}人に付与完了`);
+    log(`   個人本命的中: ${individualHits}人`);
+    log(`   陣営本命的中（陣営員）: ${jineiHits}人`);
+
+    // ⑤ レースを settled に
+    log('[5/5] レースを settled に確定...');
+    await raceRef.set({
+      status: 'settled',
+      jineiHonmei: jineiHonmei,
+      processedCount: processedCount,
+      individualHits: individualHits,
+      jineiHits: jineiHits,
+      pointAwardedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+    log('   ✅ settled に確定');
+    log('');
+    log('==== 完了 ====');
+
+    // 完了アラート
+    setTimeout(() => {
+      alert(`🎉 完了！\n\n処理人数: ${processedCount}\n個人的中: ${individualHits}人\n陣営的中: ${jineiHits}人`);
+      // 表示更新
+      race.status = 'settled';
+      race.winner = winner;
+      document.getElementById('alreadySettled').style.display = 'block';
+      document.getElementById('settleForm').style.display = 'none';
+      document.getElementById('settledWinner').textContent = winner;
+      renderRaceInfo();
+    }, 200);
+
+  } catch (err) {
+    log('');
+    log(`❌ エラー: ${err.message}`);
+    console.error(err);
+    if (err.message === 'already-settled') {
+      alert('既に確定済みです。リロードしてください。');
+    } else if (err.message === 'already-processing') {
+      alert('現在処理中です。完了するまでお待ちください。');
+    } else {
+      alert('エラーが発生しました。ログを確認してください。');
+    }
+    btn.disabled = false;
+    btn.textContent = `🏆 ${winner} で確定 & 付与`;
+  }
+}
+
+// ==================================================
+// ユーティリティ
+// ==================================================
+function log(msg) {
+  logBuf.push(msg);
+  document.getElementById('logArea').textContent = logBuf.join('\n');
+  // 自動スクロール
+  const area = document.getElementById('logArea');
+  area.scrollTop = area.scrollHeight;
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+main();
+</script>
+
+</body>
+</html>
