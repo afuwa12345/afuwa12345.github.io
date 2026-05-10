@@ -35,11 +35,16 @@
   --text-soft: #5a4f3d;
   --gray: #7a6e5a;
 
-  /* 陣営カラー（jsで上書き） */
-  --jc-main:    #c5292a;
-  --jc-deep:    #8b1b1b;
-  --jc-light:   #ff5a5a;
-  --jc-glow:    rgba(197,41,42,0.5);
+  /* 陣営カラー（jsで上書き）：デフォルトはサイトカラー */
+  --jc-main:    #1a4731;
+  --jc-deep:    #0e2e1f;
+  --jc-light:   #2d6b4a;
+  --jc-glow:    rgba(26,71,49,0.45);
+}
+/* 陣営カラーが変わる時のスムーズ遷移 */
+.battle-banner, .race-card, .warrior-card, .vote-btn,
+.tally-card, .status-block, .sec-label-en {
+  transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, color 0.4s ease;
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html { scroll-behavior: smooth; }
@@ -909,12 +914,20 @@ main > .section:first-of-type { padding-top: 14px; }
   padding: 12px 22px;
   border-radius: 10px;
   z-index: 1000;
-  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.4,0,0.2,1), visibility 0.4s;
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   font-weight: 700;
   font-size: 13px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
-.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
 .toast.error { border-color: var(--red); }
 .toast.success { border-color: var(--gold-glow); }
 
