@@ -613,22 +613,136 @@ main > .section:first-of-type { padding-top: 14px; }
 @keyframes btnSheen { 0%,100% { transform: translateX(-100%); } 60% { transform: translateX(100%); } }
 .vote-btn:disabled::before { display: none; }
 
-/* ===== コメント入力（投票時） ===== */
-.comment-input-wrap {
-  margin-top: 18px;
+/* ===== 確認モーダル ===== */
+.confirm-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 2000;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+.confirm-modal.show { display: flex; animation: overlayIn 0.25s ease-out; }
+.confirm-card {
   background: linear-gradient(135deg, var(--cream-soft), #fff);
-  border: 2.5px solid var(--jc-main);
-  border-radius: 12px;
-  padding: 14px;
-  box-shadow: 0 4px 0 var(--jc-deep);
+  border: 3px solid var(--gold);
+  border-radius: 14px;
+  padding: 24px 20px 20px;
+  width: 100%;
+  max-width: 420px;
   position: relative;
+  box-shadow:
+    0 8px 0 var(--jc-deep),
+    0 16px 40px rgba(0,0,0,0.5),
+    0 0 40px var(--jc-glow);
+  animation: confirmIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  max-height: 90vh;
+  overflow-y: auto;
 }
-.comment-input-wrap::before {
+@keyframes confirmIn {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.confirm-card::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  position: absolute; top: 0; left: 0; right: 0; height: 5px;
   background: linear-gradient(90deg, var(--jc-deep), var(--gold), var(--jc-deep));
-  border-radius: 12px 12px 0 0;
+  border-radius: 14px 14px 0 0;
 }
+.confirm-tag {
+  text-align: center;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--jc-main);
+  margin-bottom: 6px;
+  text-shadow: 0 0 8px var(--jc-glow);
+}
+.confirm-pick-label {
+  text-align: center;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.confirm-pick-name {
+  text-align: center;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 24px;
+  color: var(--turf-deep);
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 0 18px var(--jc-glow);
+  margin-bottom: 14px;
+  word-break: break-all;
+}
+.confirm-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--jc-main), transparent);
+  margin: 0 0 14px;
+  opacity: 0.5;
+}
+.confirm-warn {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red-deep);
+  background: rgba(197,41,42,0.08);
+  border: 1px dashed var(--red);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.confirm-btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+.confirm-btn {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.confirm-btn.cancel {
+  background: var(--cream-deep);
+  color: var(--text-soft);
+  border: 2px solid var(--gray);
+  box-shadow: 0 4px 0 var(--gray);
+}
+.confirm-btn.cancel:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--gray); }
+.confirm-btn.engage {
+  background: linear-gradient(135deg, var(--jc-main), var(--jc-deep));
+  color: var(--cream);
+  border: 2px solid var(--gold);
+  box-shadow: 0 4px 0 var(--jc-deep), 0 0 16px var(--jc-glow);
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
+.confirm-btn.engage:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--jc-deep); }
+.confirm-btn.engage:disabled {
+  background: var(--gray);
+  border-color: var(--text-soft);
+  color: rgba(255,255,255,0.5);
+  box-shadow: 0 3px 0 var(--text-soft);
+  cursor: not-allowed;
+}
+.confirm-btn.engage::before {
+  content:'';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: btnSheen 3s ease-in-out infinite;
+}
+
+/* ===== コメント入力（モーダル内） ===== */
 .comment-label {
   display: block;
   margin-bottom: 8px;
@@ -1195,21 +1309,6 @@ main > .section:first-of-type { padding-top: 14px; }
       </div>
       <div class="horse-grid" id="horseGrid"></div>
 
-      <!-- 一言コメント -->
-      <div class="comment-input-wrap">
-        <label class="comment-label">
-          <span class="comment-label-en">⚔ BATTLE CRY ⚔</span>
-          <span class="comment-label-ja">一言コメント（任意・100文字まで）</span>
-        </label>
-        <textarea
-          id="commentInput"
-          class="comment-input"
-          maxlength="100"
-          placeholder="例：実績的に堅い、ここは外せない…"
-        ></textarea>
-        <div class="comment-counter"><span id="commentCount">0</span> / 100</div>
-      </div>
-
       <div class="vote-btn-wrap">
         <button class="vote-btn" id="voteBtn" disabled>本命を選択せよ</button>
       </div>
@@ -1269,6 +1368,36 @@ main > .section:first-of-type { padding-top: 14px; }
 <div class="vote-overlay" id="voteOverlay">
   <div class="vote-overlay-text">⚔ ENGAGED!</div>
   <div class="vote-overlay-sub">YOUR PICK IS LOCKED IN</div>
+</div>
+
+<!-- 投票確認モーダル -->
+<div class="confirm-modal" id="confirmModal">
+  <div class="confirm-card">
+    <div class="confirm-tag">⚔ FINAL CONFIRMATION ⚔</div>
+    <div class="confirm-pick-label">YOUR PICK</div>
+    <div class="confirm-pick-name" id="confirmPickName">—</div>
+
+    <div class="confirm-divider"></div>
+
+    <label class="comment-label">
+      <span class="comment-label-en">⚔ BATTLE CRY ⚔</span>
+      <span class="comment-label-ja">一言コメント（任意・100文字まで）</span>
+    </label>
+    <textarea
+      id="commentInput"
+      class="comment-input"
+      maxlength="100"
+      placeholder="例：実績的に堅い、ここは外せない…"
+    ></textarea>
+    <div class="comment-counter"><span id="commentCount">0</span> / 100</div>
+
+    <div class="confirm-warn">⚠ 投票は1回のみ・変更できません</div>
+
+    <div class="confirm-btn-row">
+      <button class="confirm-btn cancel" onclick="closeConfirmModal()">キャンセル</button>
+      <button class="confirm-btn engage" id="confirmEngageBtn" onclick="confirmedSubmit()">⚔ 参戦 ⚔</button>
+    </div>
+  </div>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -1524,16 +1653,7 @@ function renderVoteArea() {
       </div>
     </div>
   `).join('');
-  document.getElementById('voteBtn').addEventListener('click', submitVote);
-
-  // コメント文字数カウンター
-  const ci = document.getElementById('commentInput');
-  const cc = document.getElementById('commentCount');
-  if (ci && cc) {
-    ci.addEventListener('input', () => {
-      cc.textContent = ci.value.length;
-    });
-  }
+  document.getElementById('voteBtn').addEventListener('click', openConfirmModal);
 }
 
 function selectHorse(el) {
@@ -1545,12 +1665,34 @@ function selectHorse(el) {
   btn.textContent = `⚔ ${selectedHorse} に参戦 ⚔`;
 }
 
-async function submitVote() {
+// ============================================================
+// 確認モーダル
+// ============================================================
+function openConfirmModal() {
   if (!selectedHorse) return;
-  if (!confirm(`「${selectedHorse}」に投票します。\n投票は1回のみで変更できません。よろしいですか？`)) return;
-  const btn = document.getElementById('voteBtn');
-  btn.disabled = true;
-  btn.textContent = '投票中...';
+  document.getElementById('confirmPickName').textContent = selectedHorse;
+  document.getElementById('commentInput').value = '';
+  document.getElementById('commentCount').textContent = '0';
+  document.getElementById('confirmEngageBtn').disabled = false;
+  document.getElementById('confirmEngageBtn').innerHTML = '⚔ 参戦 ⚔';
+
+  // 文字数カウンター（モーダル開くたびに付け直し）
+  const ci = document.getElementById('commentInput');
+  const cc = document.getElementById('commentCount');
+  ci.oninput = () => { cc.textContent = ci.value.length; };
+
+  document.getElementById('confirmModal').classList.add('show');
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirmModal').classList.remove('show');
+}
+
+async function confirmedSubmit() {
+  if (!selectedHorse) return;
+  const engageBtn = document.getElementById('confirmEngageBtn');
+  engageBtn.disabled = true;
+  engageBtn.innerHTML = '送信中...';
 
   // コメント取得（任意）
   const commentEl = document.getElementById('commentInput');
@@ -1590,6 +1732,9 @@ async function submitVote() {
       lastVotedAt: firebase.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
 
+    // モーダル閉じる
+    closeConfirmModal();
+
     // ENGAGED演出
     showVoteOverlay();
     myVote = { horseName: selectedHorse, jineiId: myKizuna.jineiId, comment: comment };
@@ -1604,16 +1749,22 @@ async function submitVote() {
   } catch (err) {
     console.error(err);
     if (err.message === 'already-voted') {
+      closeConfirmModal();
       showToast('既に投票済みです', 'error');
       myVote = await fetchMyVote(race.raceId, getCurrentUser().userId);
       document.getElementById('voteArea').classList.add('hidden');
       await renderVoted();
     } else {
       showToast('投票に失敗しました', 'error');
-      btn.disabled = false;
-      btn.textContent = `⚔ ${selectedHorse} に参戦 ⚔`;
+      engageBtn.disabled = false;
+      engageBtn.innerHTML = '⚔ 参戦 ⚔';
     }
   }
+}
+
+// 旧submitVote（互換のため残すがモーダル経由で動く）
+async function submitVote() {
+  openConfirmModal();
 }
 
 function showVoteOverlay() {
