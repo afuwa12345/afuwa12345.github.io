@@ -994,6 +994,15 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
 
 <script src="week_data.js"></script>
 <script src="race-data.js"></script>
+<!-- AFRO Horse 会員機能：メニュー初期非表示（一瞬出る対策） -->
+<style>
+  .menu-overlay {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transform: translateX(100%) !important;
+    transition: none !important;
+  }
+</style>
 </head>
 <body>
 
