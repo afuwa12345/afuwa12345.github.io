@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>みんなのキズナレース | AFRO Horse</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=Noto+Sans+JP:wght@400;700;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+
+<!-- Firebase + LIFF -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/header.js"></script>
+
+<style>
+:root {
+  --red:        #e8281e;
+  --red-dark:   #9b1a14;
+  --red-glow:   rgba(232,40,30,0.55);
+  --gold:       #d4a93a;
+  --gold-soft:  #e8c878;
+  --bg:         #0a0707;
+  --bg2:        #16100f;
+  --surface:    #1c1414;
+  --surface2:   #261818;
+  --text:       #f0e6e3;
+  --muted:      #7a5650;
+  --border:     rgba(232,40,30,0.25);
+  --green:      #4ade80;
+  --green-dark: #14532d;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+html { background: var(--bg); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── 背景：ノイズ＋グラデ ── */
+body::before {
+  content:'';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+body::after {
+  content:'';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(232,40,30,0.12), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(212,169,58,0.06), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+main { position: relative; z-index: 2; padding: 20px 16px 80px; max-width: 720px; margin: 0 auto; }
+
+/* ── タイトルブロック ── */
+.race-hero {
+  position: relative;
+  background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px 20px 20px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.race-hero::before {
+  content:'';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+.eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+.race-name {
+  font-family: 'Cinzel', 'Noto Sans JP', serif;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.race-meta {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+.race-meta b { color: var(--text); font-weight: 700; }
+
+/* ── カウントダウン ── */
+.countdown {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 14px;
+}
+.countdown-label {
+  font-family: 'Bebas Neue';
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--muted);
+}
+.countdown-value {
+  font-family: 'Bebas Neue';
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(212,169,58,0.35);
+}
+.countdown-value.urgent { color: var(--red); text-shadow: 0 0 16px var(--red-glow); animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.6 } }
+
+/* ── 陣営バッジ ── */
+.jinei-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(232,40,30,0.08), rgba(232,40,30,0.02));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--red);
+  padding: 12px 14px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.jinei-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 2px solid var(--red);
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+.jinei-info { flex: 1; min-width: 0; }
+.jinei-tag {
+  font-family: 'Bebas Neue';
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--red);
+}
+.jinei-name {
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+.jinei-style {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── セクション見出し ── */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 12px;
+}
+.section-title::before, .section-title::after {
+  content:'';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.section-title span {
+  font-family: 'Bebas Neue';
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--gold-soft);
+}
+
+/* ── 馬カード ── */
+.horse-grid {
+  display: grid;
+  gap: 8px;
+}
+.horse-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+}
+.horse-card::before {
+  content:'';
+  position: absolute; top: 0; bottom: 0; left: 0; width: 0;
+  background: linear-gradient(90deg, var(--red), transparent);
+  opacity: 0.18;
+  transition: width 0.25s ease;
+}
+.horse-card:hover { border-color: var(--red); transform: translateX(2px); }
+.horse-card:hover::before { width: 100%; }
+.horse-card.selected {
+  border-color: var(--red);
+  background: linear-gradient(135deg, rgba(232,40,30,0.18), var(--surface));
+  box-shadow: 0 0 24px rgba(232,40,30,0.25), inset 0 0 12px rgba(232,40,30,0.12);
+}
+.horse-card.selected::before { width: 100%; opacity: 0.3; }
+
+.horse-num {
+  font-family: 'Bebas Neue';
+  font-size: 28px;
+  width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.horse-card.selected .horse-num {
+  background: var(--red); border-color: var(--red); color: #fff;
+  text-shadow: 0 0 8px rgba(255,255,255,0.5);
+}
+.horse-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
+.horse-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.horse-meta {
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.horse-meta span { white-space: nowrap; }
+.horse-meta b { color: var(--text); font-weight: 700; }
+
+/* ── 投票ボタン ── */
+.vote-btn-wrap {
+  position: sticky;
+  bottom: 16px;
+  margin-top: 20px;
+  z-index: 10;
+}
+.vote-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
+  font-size: 18px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(232,40,30,0.4), 0 0 0 1px rgba(255,255,255,0.06) inset;
+  transition: all 0.2s;
+}
+.vote-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(232,40,30,0.5); }
+.vote-btn:disabled {
+  background: var(--surface2);
+  color: var(--muted);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+.vote-btn::before {
+  content:'';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+.vote-btn:hover::before { transform: translateX(100%); }
+
+/* ── 集計ゲージ ── */
+.tally-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+.tally-card .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(232,40,30,0.12);
+}
+.tally-card .row:last-child { border-bottom: none; }
+.tally-rank {
+  font-family: 'Bebas Neue';
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  color: var(--gold-soft);
+}
+.tally-rank.r1 { color: var(--gold); text-shadow: 0 0 8px rgba(212,169,58,0.6); }
+.tally-num {
+  font-family: 'Bebas Neue';
+  font-size: 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tally-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tally-bar-wrap {
+  width: 80px;
+  height: 6px;
+  background: var(--bg2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.tally-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+  border-radius: 3px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tally-votes {
+  font-family: 'Bebas Neue';
+  font-size: 14px;
+  color: var(--gold-soft);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── ステータス系（投票済 / 締切後）── */
+.status-block {
+  text-align: center;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.status-block .icon { font-size: 28px; margin-bottom: 8px; display: block; }
+.status-block .title {
+  font-family: 'Bebas Neue';
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.status-block .desc { font-size: 13px; color: var(--muted); }
+.status-block.success { border-color: var(--green); }
+.status-block.success .title { color: var(--green); }
+
+.your-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(212,169,58,0.08);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 8px 14px;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.your-pick b { color: var(--gold); }
+
+/* ── 全陣営公開 ── */
+.all-jinei {
+  display: grid;
+  gap: 8px;
+}
+.jinei-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  border-left: 3px solid var(--red);
+}
+.jinei-result .name {
+  font-size: 13px;
+  font-weight: 700;
+  flex: 1;
+}
+.jinei-result .pick {
+  font-family: 'Bebas Neue';
+  font-size: 16px;
+  color: var(--gold);
+}
+.jinei-result.hit { border-left-color: var(--green); background: linear-gradient(135deg, rgba(74,222,128,0.08), var(--surface)); }
+.jinei-result.hit .pick { color: var(--green); }
+
+/* ── 未入隊画面 ── */
+.locked {
+  text-align: center;
+  padding: 60px 24px 40px;
+}
+.locked .lock-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 20px var(--red-glow));
+}
+.locked h1 {
+  font-family: 'Cinzel', 'Noto Sans JP', serif;
+  font-size: 24px;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+.locked p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.locked .cta {
+  display: inline-block;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: 'Bebas Neue';
+  font-size: 16px;
+  letter-spacing: 4px;
+  box-shadow: 0 8px 24px rgba(232,40,30,0.4);
+  transition: transform 0.2s;
+}
+.locked .cta:hover { transform: translateY(-2px); }
+
+/* ── ローディング ── */
+.loading {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(232,40,30,0.18);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── トースト ── */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-200%);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { border-color: var(--red); }
+.toast.success { border-color: var(--green); }
+
+/* ── 結果フラッシュ ── */
+@keyframes flashIn {
+  0% { transform: scale(0.85); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.flash-in { animation: flashIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+.hidden { display: none !important; }
+
+/* ── レスポンシブ ── */
+@media (min-width: 600px) {
+  .horse-grid { grid-template-columns: 1fr 1fr; }
+  .race-name { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<main>
+  <!-- ローディング -->
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p>READY...</p>
+  </div>
+
+  <!-- 未入隊画面 -->
+  <div id="lockedView" class="locked hidden">
+    <div class="lock-icon">🐴</div>
+    <h1>キズナレース<br>参戦には陣営が必要</h1>
+    <p>
+      6つの陣営から「キズナキャラ」を選び、<br>
+      入隊カードを発行してから参戦できます。
+    </p>
+    <a href="register.html" class="cta">入隊する →</a>
+  </div>
+
+  <!-- メイン画面 -->
+  <div id="mainView" class="hidden">
+
+    <!-- レース情報ヒーロー -->
+    <div class="race-hero flash-in">
+      <div class="eyebrow">THIS WEEK&apos;S RACE</div>
+      <div class="race-name" id="raceName">—</div>
+      <div class="race-meta" id="raceMeta">—</div>
+      <div class="countdown">
+        <span class="countdown-label">DEADLINE</span>
+        <span class="countdown-value" id="countdown">--:--:--</span>
+      </div>
+    </div>
+
+    <!-- 陣営バッジ -->
+    <div class="jinei-badge">
+      <div class="jinei-icon" id="jineiIcon"></div>
+      <div class="jinei-info">
+        <div class="jinei-tag">YOUR FACTION</div>
+        <div class="jinei-name" id="jineiName">—</div>
+        <div class="jinei-style" id="jineiStyle">—</div>
+      </div>
+    </div>
+
+    <!-- 投票エリア（投票前） -->
+    <div id="voteArea" class="hidden">
+      <div class="section-title"><span>SELECT YOUR PICK</span></div>
+      <div class="horse-grid" id="horseGrid"></div>
+      <div class="vote-btn-wrap">
+        <button class="vote-btn" id="voteBtn" disabled>本命を投票</button>
+      </div>
+    </div>
+
+    <!-- 投票済み（締切前） -->
+    <div id="votedArea" class="hidden">
+      <div class="status-block success">
+        <span class="icon">✓</span>
+        <div class="title">VOTED</div>
+        <div class="desc">投票完了！締切まで結果をお待ちください</div>
+        <div class="your-pick">あなたの本命：<b id="myPickText">—</b></div>
+      </div>
+
+      <div class="section-title"><span id="myJineiTitle">FACTION TALLY</span></div>
+      <div class="tally-card" id="tallyCard">
+        <div style="text-align:center;color:var(--muted);font-size:12px;padding:12px">
+          まだ票が集まっていません
+        </div>
+      </div>
+    </div>
+
+    <!-- 締切後（結果待ち / 結果発表） -->
+    <div id="closedArea" class="hidden">
+      <div class="status-block">
+        <span class="icon">🏁</span>
+        <div class="title" id="closedTitle">CLOSED</div>
+        <div class="desc" id="closedDesc">投票締切。結果をお待ちください</div>
+        <div class="your-pick" id="myPickClosed" style="display:none">あなたの本命：<b id="myPickText2">—</b></div>
+      </div>
+
+      <div class="section-title"><span>ALL FACTIONS</span></div>
+      <div class="all-jinei" id="allJinei"></div>
+    </div>
+
+  </div>
+</main>
+
+<div id="toast" class="toast">通知</div>
+
+<script>
+// ============================================================
+// 設定
+// ============================================================
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxfKiXErtclIE05J4cx_MuOiHFzEIQ07Er9ScKhCzOkFiQ6pMlLuOo3nb6uoQE8TWeQCw/exec';
+
+// 6陣営マスタ（jineiId は auth.js 側と揃える想定）
+const JINEI_MASTER = {
+  afuwa:    { name: 'アフワ陣営',         style: '実績・本命派',     color: '#e8281e' },
+  yancha:   { name: 'やんちゃアフワ陣営', style: '穴党・ロマン派',   color: '#f59e0b' },
+  buruma:   { name: 'ブルマ陣営',         style: 'データ派',         color: '#3b82f6' },
+  chafuwa:  { name: 'チャフワ陣営',       style: '直感・パドック派', color: '#fb923c' },
+  kurofuwa: { name: 'クロフワ陣営',       style: '調教派',           color: '#1f2937' },
+  ginma:    { name: 'ギンマ陣営',         style: '血統派',           color: '#94a3b8' },
+};
+
+// ============================================================
+// 状態
+// ============================================================
+let race = null;
+let horses = [];
+let myKizuna = null;
+let myUserData = null;
+let myVote = null;
+let countdownTimer = null;
+
+// ============================================================
+// メイン
+// ============================================================
+async function main() {
+  // 認証
+  const user = await initAuth();
+  if (!user) {
+    showToast('LINEログインが必要です', 'error');
+    setTimeout(() => location.href = 'register.html', 1200);
+    return;
+  }
+  myUserData = getCurrentUserData();
+  myKizuna = await getKizunaData(user.userId);
+
+  // 未入隊チェック
+  if (!myKizuna || !myKizuna.jineiId) {
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('lockedView').classList.remove('hidden');
+    return;
+  }
+
+  // レース情報＆出走馬取得
+  try {
+    const data = await fetchRaceData();
+    if (data.error) throw new Error(data.error);
+    race = data.race;
+    horses = data.horses || [];
+  } catch (err) {
+    console.error(err);
+    document.getElementById('loading').innerHTML =
+      '<p style="color:var(--muted)">今週のレース情報がまだ設定されていません</p>';
+    return;
+  }
+
+  // 既存の投票チェック
+  myVote = await fetchMyVote(race.raceId, user.userId);
+
+  // 描画
+  renderHero();
+  renderJineiBadge();
+  await renderMainContent();
+
+  // 表示切替
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('mainView').classList.remove('hidden');
+
+  // カウントダウン開始
+  startCountdown();
+}
+
+// ============================================================
+// データ取得
+// ============================================================
+async function fetchRaceData() {
+  const res = await fetch(`${GAS_URL}?action=getAll&t=${Date.now()}`);
+  return res.json();
+}
+
+async function fetchMyVote(raceId, userId) {
+  const docId = `${raceId}_${userId}`;
+  try {
+    const doc = await db.collection('kizuna_votes').doc(docId).get();
+    return doc.exists ? doc.data() : null;
+  } catch (e) {
+    console.error('vote fetch error', e);
+    return null;
+  }
+}
+
+async function fetchJineiSummary(raceId, jineiId) {
+  try {
+    const doc = await db.collection('kizuna_races').doc(raceId)
+      .collection('jinei_summary').doc(jineiId).get();
+    return doc.exists ? doc.data() : null;
+  } catch (e) {
+    console.error('summary fetch error', e);
+    return null;
+  }
+}
+
+async function fetchAllJineiSummary(raceId) {
+  try {
+    const snap = await db.collection('kizuna_races').doc(raceId)
+      .collection('jinei_summary').get();
+    const result = {};
+    snap.forEach(doc => { result[doc.id] = doc.data(); });
+    return result;
+  } catch (e) {
+    console.error('all summary error', e);
+    return {};
+  }
+}
+
+// ============================================================
+// 描画：レース情報
+// ============================================================
+function renderHero() {
+  document.getElementById('raceName').textContent = race.name || '—';
+  const dl = race.deadline ? new Date(race.deadline) : null;
+  const dlStr = dl ? `${dl.getMonth()+1}/${dl.getDate()} ${String(dl.getHours()).padStart(2,'0')}:${String(dl.getMinutes()).padStart(2,'0')}` : '—';
+  document.getElementById('raceMeta').innerHTML =
+    `<b>${race.place || '—'}</b> ${race.raceNum || ''}R / 締切 <b>${dlStr}</b>`;
+}
+
+function renderJineiBadge() {
+  const master = JINEI_MASTER[myKizuna.jineiId] || { name: myKizuna.jinei, style: myKizuna.jineiStyle };
+  document.getElementById('jineiName').textContent = master.name;
+  document.getElementById('jineiStyle').textContent = master.style;
+  // アイコン：推し馬画像があれば使う、なければカラー
+  if (myKizuna.oshiId) {
+    document.getElementById('jineiIcon').style.backgroundImage =
+      `url('images/cards/card_${myKizuna.oshiId}.png')`;
+  } else {
+    document.getElementById('jineiIcon').style.background = master.color;
+  }
+}
+
+// ============================================================
+// メインコンテンツ振り分け
+// ============================================================
+async function renderMainContent() {
+  const status = race.status || 'open';
+  const isClosed = status === 'closed' || status === 'settled' || isPastDeadline();
+
+  if (isClosed) {
+    await renderClosed(status);
+  } else if (myVote) {
+    await renderVoted();
+  } else {
+    renderVoteArea();
+  }
+}
+
+function isPastDeadline() {
+  if (!race.deadline) return false;
+  return new Date(race.deadline).getTime() < Date.now();
+}
+
+// ============================================================
+// 投票エリア（未投票）
+// ============================================================
+function renderVoteArea() {
+  document.getElementById('voteArea').classList.remove('hidden');
+
+  const grid = document.getElementById('horseGrid');
+  grid.innerHTML = horses.map(h => `
+    <div class="horse-card" data-name="${escapeHtml(h.name)}" onclick="selectHorse(this)">
+      <div class="horse-num">${h.index}</div>
+      <div class="horse-info">
+        <div class="horse-name">${escapeHtml(h.name)}</div>
+        <div class="horse-meta">
+          ${h.jockey ? `<span><b>${escapeHtml(h.jockey)}</b></span>` : ''}
+          ${h.sex && h.age ? `<span>${escapeHtml(h.sex)}${h.age}</span>` : ''}
+          ${h.kinryo ? `<span>${escapeHtml(h.kinryo)}kg</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('voteBtn').addEventListener('click', submitVote);
+}
+
+let selectedHorse = null;
+function selectHorse(el) {
+  document.querySelectorAll('.horse-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedHorse = el.dataset.name;
+  document.getElementById('voteBtn').disabled = false;
+  document.getElementById('voteBtn').textContent = `「${selectedHorse}」に投票`;
+}
+
+async function submitVote() {
+  if (!selectedHorse) return;
+  if (!confirm(`「${selectedHorse}」に投票します。\n投票は1回のみで変更できません。よろしいですか？`)) return;
+
+  const btn = document.getElementById('voteBtn');
+  btn.disabled = true;
+  btn.textContent = '投票中...';
+
+  try {
+    const userId = getCurrentUser().userId;
+    const voteId = `${race.raceId}_${userId}`;
+    const voteRef = db.collection('kizuna_votes').doc(voteId);
+
+    // トランザクションで二重投票防止
+    await db.runTransaction(async tx => {
+      const doc = await tx.get(voteRef);
+      if (doc.exists) throw new Error('already-voted');
+
+      tx.set(voteRef, {
+        userId, raceId: race.raceId,
+        jineiId: myKizuna.jineiId,
+        horseName: selectedHorse,
+        votedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    });
+
+    // 集計ドキュメントを更新（自陣営の集計）
+    const summaryRef = db.collection('kizuna_races').doc(race.raceId)
+      .collection('jinei_summary').doc(myKizuna.jineiId);
+    await summaryRef.set({
+      jineiId: myKizuna.jineiId,
+      totalVotes: firebase.firestore.FieldValue.increment(1),
+      [`votes.${selectedHorse}`]: firebase.firestore.FieldValue.increment(1),
+      lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    // レース基本情報も保存（無ければ作る）
+    await db.collection('kizuna_races').doc(race.raceId).set({
+      raceId: race.raceId,
+      name: race.name,
+      place: race.place,
+      raceNum: race.raceNum,
+      dateMMDD: race.dateMMDD,
+      deadline: race.deadline,
+      status: race.status || 'open',
+      lastVotedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    showToast('投票完了！', 'success');
+    myVote = { horseName: selectedHorse, jineiId: myKizuna.jineiId };
+
+    // 投票エリア非表示 → 投票済みエリア表示
+    setTimeout(async () => {
+      document.getElementById('voteArea').classList.add('hidden');
+      await renderVoted();
+    }, 800);
+
+  } catch (err) {
+    console.error(err);
+    if (err.message === 'already-voted') {
+      showToast('既に投票済みです', 'error');
+      myVote = await fetchMyVote(race.raceId, getCurrentUser().userId);
+      document.getElementById('voteArea').classList.add('hidden');
+      await renderVoted();
+    } else {
+      showToast('投票に失敗しました: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = `「${selectedHorse}」に投票`;
+    }
+  }
+}
+
+// ============================================================
+// 投票済みエリア（自陣営の集計）
+// ============================================================
+async function renderVoted() {
+  document.getElementById('votedArea').classList.remove('hidden');
+  document.getElementById('myPickText').textContent = myVote.horseName;
+  const master = JINEI_MASTER[myKizuna.jineiId];
+  document.getElementById('myJineiTitle').textContent = `${master ? master.name : '陣営'} TALLY`;
+
+  await refreshTally();
+  // 30秒ごとに自動更新
+  setInterval(refreshTally, 30000);
+}
+
+async function refreshTally() {
+  const summary = await fetchJineiSummary(race.raceId, myKizuna.jineiId);
+  const card = document.getElementById('tallyCard');
+
+  if (!summary || !summary.votes) {
+    card.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:12px;padding:12px">まだ票が集まっていません</div>';
+    return;
+  }
+
+  // 票数順にソート
+  const entries = Object.entries(summary.votes)
+    .filter(([_, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1]);
+
+  if (entries.length === 0) {
+    card.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:12px;padding:12px">まだ票が集まっていません</div>';
+    return;
+  }
+
+  const max = entries[0][1];
+
+  // 馬名 → 馬番マップ
+  const numMap = {};
+  horses.forEach(h => { numMap[h.name] = h.index; });
+
+  card.innerHTML = entries.map(([name, votes], i) => {
+    const pct = (votes / max) * 100;
+    const num = numMap[name] || '?';
+    return `
+      <div class="row">
+        <div class="tally-rank ${i === 0 ? 'r1' : ''}">${i+1}</div>
+        <div class="tally-num">${num}</div>
+        <div class="tally-name">${escapeHtml(name)}</div>
+        <div class="tally-bar-wrap"><div class="tally-bar" style="width:${pct}%"></div></div>
+        <div class="tally-votes">${votes}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// 締切後エリア
+// ============================================================
+async function renderClosed(status) {
+  document.getElementById('closedArea').classList.remove('hidden');
+
+  // 自分の投票表示
+  if (myVote) {
+    document.getElementById('myPickClosed').style.display = 'inline-flex';
+    document.getElementById('myPickText2').textContent = myVote.horseName;
+  }
+
+  if (status === 'settled' && race.winner) {
+    document.getElementById('closedTitle').textContent = 'RESULT';
+    document.getElementById('closedDesc').innerHTML = `1着：<b style="color:var(--gold)">${escapeHtml(race.winner)}</b>`;
+  }
+
+  // 全陣営の本命を集計
+  const allSummary = await fetchAllJineiSummary(race.raceId);
+  const list = document.getElementById('allJinei');
+
+  list.innerHTML = Object.keys(JINEI_MASTER).map(jid => {
+    const master = JINEI_MASTER[jid];
+    const sum = allSummary[jid];
+    let pickName = '—';
+    let pickVotes = 0;
+    let total = 0;
+
+    if (sum && sum.votes) {
+      total = sum.totalVotes || 0;
+      const top = Object.entries(sum.votes).sort((a,b) => b[1] - a[1])[0];
+      if (top) { pickName = top[0]; pickVotes = top[1]; }
+    }
+
+    const isHit = race.winner && race.winner === pickName;
+
+    return `
+      <div class="jinei-result ${isHit ? 'hit' : ''}" style="border-left-color:${master.color}">
+        <div class="name">${master.name}<br><span style="font-size:10px;color:var(--muted);font-weight:400">${master.style}</span></div>
+        <div class="pick">${escapeHtml(pickName)}<br><span style="font-size:10px;color:var(--muted)">${pickVotes}/${total}票</span></div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// カウントダウン
+// ============================================================
+function startCountdown() {
+  if (!race.deadline) return;
+  const target = new Date(race.deadline).getTime();
+  const el = document.getElementById('countdown');
+
+  const update = () => {
+    const now = Date.now();
+    const diff = target - now;
+    if (diff <= 0) {
+      el.textContent = 'CLOSED';
+      el.classList.add('urgent');
+      clearInterval(countdownTimer);
+      // 締切超えたら自動で締切ビューに切り替え
+      setTimeout(() => location.reload(), 1200);
+      return;
+    }
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if (h === 0 && m < 10) el.classList.add('urgent');
+  };
+  update();
+  countdownTimer = setInterval(update, 1000);
+}
+
+// ============================================================
+// ヘルパー
+// ============================================================
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast show ${type || ''}`;
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+main();
+</script>
+
+</body>
+</html>
