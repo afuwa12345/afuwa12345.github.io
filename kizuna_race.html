@@ -1086,8 +1086,8 @@ main > .section:first-of-type { padding-top: 14px; }
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 38px 14px 64px;
+  gap: 8px;
+  padding: 14px 32px 14px 56px;
   color: var(--cream);
   font-family: 'Noto Sans JP', sans-serif;
   clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
@@ -1117,7 +1117,7 @@ main > .section:first-of-type { padding-top: 14px; }
     0 8px 24px rgba(197,41,42,0.5),
     0 0 30px rgba(255,216,109,0.4),
     inset 0 0 20px rgba(255,216,109,0.1);
-  padding: 18px 46px 18px 70px;
+  padding: 16px 38px 16px 62px;
   margin-right: 0;
   transform: scale(1.02);
 }
@@ -1136,21 +1136,21 @@ main > .section:first-of-type { padding-top: 14px; }
 .horse-tally.rank-2 {
   background: linear-gradient(135deg, #4a4e5e 0%, #2c2f3a 100%);
   border-color: rgba(192,192,192,0.5);
-  padding: 16px 42px 16px 66px;
+  padding: 14px 34px 14px 58px;
   margin-right: 4px;
 }
 /* 3位：銅色 */
 .horse-tally.rank-3 {
   background: linear-gradient(135deg, #5a3a2a 0%, #3a2418 100%);
   border-color: rgba(184,115,51,0.5);
-  padding: 14px 40px 14px 64px;
+  padding: 12px 32px 12px 56px;
   margin-right: 6px;
 }
 /* 4位以下：暗め */
 .horse-tally.rank-other {
   background: linear-gradient(135deg, #1f1f2a 0%, #161620 100%);
   border-color: rgba(255,255,255,0.15);
-  padding: 12px 36px 12px 60px;
+  padding: 10px 30px 10px 52px;
   margin-right: 12px;
 }
 /* ゼロ票 */
@@ -1162,11 +1162,11 @@ main > .section:first-of-type { padding-top: 14px; }
 /* 順位バッジ（左の大きい数字） */
 .ht-rank-badge {
   position: absolute;
-  left: -4px;
+  left: -2px;
   top: 50%;
   transform: translateY(-50%);
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1178,7 +1178,7 @@ main > .section:first-of-type { padding-top: 14px; }
   box-shadow: 0 4px 12px rgba(0,0,0,0.5), 0 0 16px var(--gold-glow);
 }
 .horse-tally.rank-1 .ht-rank-badge {
-  width: 64px; height: 64px;
+  width: 56px; height: 56px;
   background: linear-gradient(135deg, var(--gold), #b8860b);
   box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 24px var(--gold-glow);
 }
@@ -1187,21 +1187,21 @@ main > .section:first-of-type { padding-top: 14px; }
   text-shadow: 0 1px 0 rgba(255,255,255,0.4);
 }
 .horse-tally.rank-other .ht-rank-badge {
-  width: 48px; height: 48px;
+  width: 42px; height: 42px;
 }
 .ht-rank-num {
   font-family: 'Bebas Neue', cursive;
-  font-size: 26px;
+  font-size: 22px;
   line-height: 1;
   color: var(--gold-glow);
   text-shadow: 0 0 8px var(--gold-glow);
   font-weight: 900;
 }
-.horse-tally.rank-other .ht-rank-num { font-size: 20px; }
-.horse-tally.rank-1 .ht-rank-num { font-size: 32px; }
+.horse-tally.rank-other .ht-rank-num { font-size: 18px; }
+.horse-tally.rank-1 .ht-rank-num { font-size: 28px; }
 .ht-rank-suffix {
   font-family: 'Noto Sans JP', sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   color: var(--cream);
   letter-spacing: 1px;
   margin-top: -2px;
@@ -1214,11 +1214,11 @@ main > .section:first-of-type { padding-top: 14px; }
 /* 馬番（黄色丸） */
 .ht-num {
   font-family: 'Bebas Neue', cursive;
-  font-size: 14px;
+  font-size: 13px;
   background: linear-gradient(135deg, #fff, #ddd);
   color: var(--turf-deep);
   border-radius: 50%;
-  width: 30px; height: 30px;
+  width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   font-weight: 900;
@@ -1230,8 +1230,8 @@ main > .section:first-of-type { padding-top: 14px; }
 .horse-tally.rank-1 .ht-num {
   background: linear-gradient(135deg, var(--gold-glow), var(--gold));
   border-color: var(--cream);
-  width: 34px; height: 34px;
-  font-size: 16px;
+  width: 30px; height: 30px;
+  font-size: 14px;
 }
 
 .ht-body { flex: 1; min-width: 0; position: relative; z-index: 2; padding-right: 4px; overflow: hidden; }
@@ -1294,22 +1294,22 @@ main > .section:first-of-type { padding-top: 14px; }
 }
 .ht-votes {
   font-family: 'Bebas Neue', cursive;
-  font-size: 32px;
+  font-size: 26px;
   color: var(--gold-glow);
   font-weight: 900;
   line-height: 1;
   text-shadow: 0 2px 0 rgba(0,0,0,0.6), 0 0 14px var(--gold-glow);
   position: relative;
   z-index: 2;
-  min-width: 40px;
+  min-width: 30px;
   text-align: right;
 }
 .horse-tally.rank-1 .ht-votes {
-  font-size: 42px;
+  font-size: 36px;
   color: #fff;
   text-shadow: 0 3px 0 rgba(0,0,0,0.5), 0 0 20px var(--gold-glow), 0 0 30px rgba(255,255,255,0.4);
 }
-.horse-tally.rank-other .ht-votes { font-size: 24px; }
+.horse-tally.rank-other .ht-votes { font-size: 20px; }
 .horse-tally.zero .ht-votes {
   color: rgba(248,241,222,0.3);
   text-shadow: none;
