@@ -1015,6 +1015,65 @@ main > .section:first-of-type { padding-top: 14px; }
 .status-block.mini .my-comment-label { font-size: 9px; }
 .status-block.mini .my-comment-text { font-size: 12px; }
 
+/* ===== メガ金色カード（投票後 統合カード） ===== */
+.warrior-card-mega {
+  margin-top: 0;
+  padding: 18px 16px 20px;
+}
+.warrior-mega-portrait {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.warrior-mega-portrait .warrior-avatar-wrap {
+  width: 96px; height: 96px;
+  flex-shrink: 0;
+}
+.warrior-mega-portrait .warrior-info { flex: 1; min-width: 0; color: var(--cream); }
+.warrior-mega-divider {
+  position: relative;
+  z-index: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-glow), var(--gold), transparent);
+  margin: 16px -4px;
+  box-shadow: 0 0 12px var(--gold-glow);
+  border-radius: 2px;
+}
+.warrior-mega-tally {
+  position: relative;
+  z-index: 1;
+}
+.warrior-mega-tally-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px;
+  letter-spacing: 5px;
+  color: var(--gold-glow);
+  text-align: center;
+  text-shadow: 0 0 12px var(--gold-glow), 0 2px 0 rgba(0,0,0,0.4);
+  margin-bottom: 2px;
+}
+.warrior-mega-tally-sub {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  text-align: center;
+  color: var(--cream);
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4);
+}
+.tally-empty {
+  text-align: center;
+  color: rgba(248,241,222,0.7);
+  font-size: 12px;
+  padding: 14px;
+  font-weight: 700;
+  background: rgba(0,0,0,0.3);
+  border: 2px dashed rgba(255,216,109,0.4);
+  border-radius: 8px;
+}
+
 /* ===== HPバー風 全馬集計（麻雀ゲーム風 斜め帯） ===== */
 .horse-tally-list {
   display: flex;
@@ -1616,8 +1675,8 @@ main > .section:first-of-type { padding-top: 14px; }
 
   <div id="mainView" class="hidden">
 
-    <!-- 戦士プロフィール（最上部） -->
-    <div class="section">
+    <!-- 戦士プロフィール（最上部・投票前のみ） -->
+    <div class="section" id="warriorTopSection">
       <div class="warrior-card flash-in">
         <div class="warrior-inner">
           <div class="warrior-avatar-wrap">
@@ -1665,6 +1724,42 @@ main > .section:first-of-type { padding-top: 14px; }
 
     <!-- 投票済み -->
     <div id="votedArea" class="section hidden">
+
+      <!-- メガ金色カード：侍 + ランキング統合 -->
+      <div class="warrior-card warrior-card-mega flash-in">
+        <!-- 上半分：侍プロフィール -->
+        <div class="warrior-mega-portrait">
+          <div class="warrior-avatar-wrap">
+            <div class="warrior-ring"></div>
+            <img class="warrior-avatar" id="warriorAvatarMega" src="" alt="">
+          </div>
+          <div class="warrior-info">
+            <div class="warrior-tag">⚔ YOUR FACTION ⚔</div>
+            <div class="warrior-name" id="warriorNameMega">—</div>
+            <div class="warrior-style" id="warriorStyleMega">—</div>
+            <div class="rank-row">
+              <span class="rank-label">RANK</span>
+              <span class="rank-value" id="rankValueMega">新馬</span>
+              <span class="rank-points" id="rankPointsMega">0pt</span>
+            </div>
+            <div class="points-bar-wrap"><div class="points-bar" id="pointsBarMega" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <!-- 区切り -->
+        <div class="warrior-mega-divider"></div>
+
+        <!-- 下半分：ランキング -->
+        <div class="warrior-mega-tally">
+          <div class="warrior-mega-tally-title">⚔ FACTION TALLY ⚔</div>
+          <div class="warrior-mega-tally-sub">陣営内ランキング</div>
+          <div id="tallyCard" class="horse-tally-list">
+            <div class="tally-empty">まだ票が集まっていません…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ステータス（PARTICIPATED + YOUR PICK + コメント） -->
       <div class="status-block success mini">
         <span class="icon">⚔</span>
         <div class="title">PARTICIPATED!</div>
@@ -1674,14 +1769,6 @@ main > .section:first-of-type { padding-top: 14px; }
           <div class="my-comment-label">YOUR BATTLE CRY</div>
           <div class="my-comment-text" id="myCommentText"></div>
         </div>
-      </div>
-
-      <div class="sec-label" style="margin-top:24px">
-        <div class="sec-label-en" id="myJineiTitleEn">FACTION TALLY</div>
-        <div class="sec-label-ja">陣営内ランキング</div>
-      </div>
-      <div id="tallyCard" class="horse-tally-list">
-        <div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">まだ票が集まっていません</div>
       </div>
 
       <!-- 仲間の声 -->
@@ -1950,14 +2037,9 @@ function renderHero() {
 
 function renderWarrior(points) {
   const m = JINEI_MASTER[myKizuna.jineiId] || { name: myKizuna.jinei || '陣営', style: myKizuna.jineiStyle || '', img: '' };
-  document.getElementById('warriorName').textContent = m.name;
-  document.getElementById('warriorStyle').textContent = m.style;
-  if (m.img) document.getElementById('warriorAvatar').src = m.img;
 
   const totalPoints = (points && points.totalPoints) || 0;
   const { current, next } = getRank(totalPoints);
-  document.getElementById('rankValue').textContent = current.name;
-  document.getElementById('rankPoints').textContent = `${totalPoints}pt`;
 
   // ポイントバー（次のランクまでの進捗）
   let pct = 100;
@@ -1966,8 +2048,29 @@ function renderWarrior(points) {
     const progress = totalPoints - current.min;
     pct = Math.min(100, Math.max(0, (progress / range) * 100));
   }
+
+  // 両方の場所（最上部 / メガ）に同じデータを反映
+  ['', 'Mega'].forEach(suffix => {
+    const setText = (id, val) => {
+      const el = document.getElementById(id + suffix);
+      if (el) el.textContent = val;
+    };
+    const setSrc = (id, val) => {
+      const el = document.getElementById(id + suffix);
+      if (el && val) el.src = val;
+    };
+    setText('warriorName', m.name);
+    setText('warriorStyle', m.style);
+    setSrc('warriorAvatar', m.img);
+    setText('rankValue', current.name);
+    setText('rankPoints', `${totalPoints}pt`);
+  });
+
   setTimeout(() => {
-    document.getElementById('pointsBar').style.width = pct + '%';
+    const bar1 = document.getElementById('pointsBar');
+    const bar2 = document.getElementById('pointsBarMega');
+    if (bar1) bar1.style.width = pct + '%';
+    if (bar2) bar2.style.width = pct + '%';
   }, 200);
 }
 
@@ -1977,14 +2080,22 @@ async function renderMainContent() {
   if (isClosed) {
     document.getElementById('battleBanner').innerHTML = '<span>🏁 RESULT PHASE 🏁</span>';
     compactRaceCard();
+    hideTopWarrior(); // 締切後は最上部の戦士隠す
     await renderClosed(status);
   }
   else if (myVote) {
     document.getElementById('battleBanner').innerHTML = '<span>⚔ ENGAGED ⚔</span>';
     compactRaceCard();
+    hideTopWarrior(); // 投票後は最上部の戦士隠す（メガに統合）
     await renderVoted();
   }
   else renderVoteArea();
+}
+
+// 最上部の戦士セクションを隠す（投票後・締切後）
+function hideTopWarrior() {
+  const sec = document.getElementById('warriorTopSection');
+  if (sec) sec.style.display = 'none';
 }
 
 // レースカードをコンパクト化（カウントダウン非表示）
