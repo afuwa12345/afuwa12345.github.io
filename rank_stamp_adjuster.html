@@ -310,7 +310,7 @@ async function loadCard() {
 
 async function loadStamp() {
   const num = rankSelect.value;
-  const url = `images/cards/ranks/rank_${num}.png`;
+  const url = `images/cards/rank/rank_${num}.png`;
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
@@ -319,7 +319,7 @@ async function loadStamp() {
       resolve();
     };
     img.onerror = () => {
-      showError(`スタンプ画像が読み込めません: ${url}\nimages/cards/ranks/rank_X.png を確認してください`);
+      showError(`スタンプ画像が読み込めません: ${url}\nimages/cards/rank/rank_X.png を確認してください`);
     };
     img.src = url;
   });
