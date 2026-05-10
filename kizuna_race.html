@@ -1211,28 +1211,55 @@ main > .section:first-of-type { padding-top: 14px; }
   font-weight: 900;
 }
 
-/* 馬番（黄色丸） */
+/* 馬番（馬牌風：上下色チック付き） */
 .ht-num {
   font-family: 'Bebas Neue', cursive;
-  font-size: 13px;
-  background: linear-gradient(135deg, #fff, #ddd);
-  color: var(--turf-deep);
-  border-radius: 50%;
-  width: 26px; height: 26px;
+  font-size: 14px;
+  background: #fff;
+  color: #000;
+  border-radius: 3px;
+  width: 28px; height: 36px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   font-weight: 900;
-  border: 2px solid var(--turf-deep);
-  box-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  border: 1.5px solid #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
   position: relative;
   z-index: 2;
+  overflow: hidden;
+}
+.ht-num::before, .ht-num::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 5px;
+  background: var(--waku-color, #c5292a);
+  z-index: 0;
+}
+.ht-num::before { top: 0; }
+.ht-num::after { bottom: 0; }
+.ht-num-text {
+  position: relative;
+  z-index: 1;
 }
 .horse-tally.rank-1 .ht-num {
-  background: linear-gradient(135deg, var(--gold-glow), var(--gold));
-  border-color: var(--cream);
-  width: 30px; height: 30px;
-  font-size: 14px;
+  width: 32px; height: 40px;
+  font-size: 16px;
+  border-color: var(--gold);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 8px var(--gold-glow);
 }
+
+/* 枠番カラー（waku-1〜waku-8） */
+.waku-1 { --waku-color: #fff; color: #000 !important; border-color: #555 !important; }
+.waku-1::before, .waku-1::after { background: #d0d0d0; }
+.waku-2 { --waku-color: #222; }
+.waku-2 { background: #222 !important; color: #fff !important; }
+.waku-3 { --waku-color: #c5292a; }
+.waku-4 { --waku-color: #2563eb; }
+.waku-5 { --waku-color: #fbbf24; }
+.waku-6 { --waku-color: #16a34a; }
+.waku-7 { --waku-color: #ea580c; }
+.waku-8 { --waku-color: #ec4899; }
 
 .ht-body { flex: 1; min-width: 0; position: relative; z-index: 2; padding-right: 4px; overflow: hidden; }
 .ht-name {
@@ -2429,13 +2456,14 @@ async function refreshTally() {
     if (rank === 1 && t.votes > 0) rankClass = 'rank-1';
     else if (rank === 2 && t.votes > 0) rankClass = 'rank-2';
     else if (rank === 3 && t.votes > 0) rankClass = 'rank-3';
+    const wakuClass = `waku-${getWaku(t.index, horses.length)}`;
     return `
       <div class="horse-tally ${rankClass} ${isMine ? 'mine' : ''} ${isZero ? 'zero' : ''}">
         <div class="ht-rank-badge">
           <div class="ht-rank-num">${rank}</div>
           <div class="ht-rank-suffix">位</div>
         </div>
-        <div class="ht-num">${t.index}</div>
+        <div class="ht-num ${wakuClass}"><span class="ht-num-text">${t.index}</span></div>
         <div class="ht-body">
           <div class="ht-name">
             <span class="ht-name-text">${escapeHtml(t.name)}</span>
@@ -2449,6 +2477,15 @@ async function refreshTally() {
       </div>
     `;
   }).join('');
+}
+
+// 馬番→枠番（出走頭数で配分）
+function getWaku(num, total) {
+  if (!total || total <= 0) return 1;
+  if (total <= 8) return num; // 8頭以下は馬番=枠番
+  // 9頭以上は8枠に分配（簡易版）
+  const wakuSize = Math.ceil(total / 8);
+  return Math.min(8, Math.ceil(num / wakuSize));
 }
 
 async function renderClosed(status) {
