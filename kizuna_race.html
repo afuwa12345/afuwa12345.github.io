@@ -1910,6 +1910,15 @@ async function renderClosed(status) {
 
 function startCountdown() {
   if (!race.deadline) return;
+  // 既に締切過ぎてる場合はカウントダウン動かさない（無限リロード防止）
+  if (isPastDeadline()) {
+    const el = document.getElementById('countdown');
+    if (el) {
+      el.textContent = 'CLOSED';
+      el.classList.add('urgent');
+    }
+    return;
+  }
   const target = new Date(race.deadline).getTime();
   const el = document.getElementById('countdown');
   const update = () => {
@@ -1919,6 +1928,7 @@ function startCountdown() {
       el.textContent = 'CLOSED';
       el.classList.add('urgent');
       clearInterval(countdownTimer);
+      // 締切瞬間に1回だけリロード（既にcloseな状態にする）
       setTimeout(() => location.reload(), 1200);
       return;
     }
