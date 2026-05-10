@@ -208,7 +208,10 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
   border-top: 3px solid var(--gold);
   border-bottom: 3px solid var(--gold);
   overflow: hidden;
+  margin-bottom: 0;
 }
+main { padding-top: 0; }
+main > .section:first-of-type { padding-top: 14px; }
 .battle-banner::before, .battle-banner::after {
   content:'';
   position: absolute; top: 0; bottom: 0;
@@ -1066,7 +1069,7 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
   <div class="vote-overlay-sub">YOUR PICK IS LOCKED IN</div>
 </div>
 
-<div id="toast" class="toast">通知</div>
+<div id="toast" class="toast"></div>
 
 <script>
 // ============================================================
