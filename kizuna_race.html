@@ -1087,7 +1087,7 @@ main > .section:first-of-type { padding-top: 14px; }
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 18px 14px 64px;
+  padding: 14px 38px 14px 64px;
   color: var(--cream);
   font-family: 'Noto Sans JP', sans-serif;
   clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
@@ -1117,7 +1117,7 @@ main > .section:first-of-type { padding-top: 14px; }
     0 8px 24px rgba(197,41,42,0.5),
     0 0 30px rgba(255,216,109,0.4),
     inset 0 0 20px rgba(255,216,109,0.1);
-  padding: 18px 22px 18px 70px;
+  padding: 18px 46px 18px 70px;
   margin-right: 0;
   transform: scale(1.02);
 }
@@ -1136,20 +1136,21 @@ main > .section:first-of-type { padding-top: 14px; }
 .horse-tally.rank-2 {
   background: linear-gradient(135deg, #4a4e5e 0%, #2c2f3a 100%);
   border-color: rgba(192,192,192,0.5);
-  padding: 16px 20px 16px 66px;
+  padding: 16px 42px 16px 66px;
   margin-right: 4px;
 }
 /* 3位：銅色 */
 .horse-tally.rank-3 {
   background: linear-gradient(135deg, #5a3a2a 0%, #3a2418 100%);
   border-color: rgba(184,115,51,0.5);
+  padding: 14px 40px 14px 64px;
   margin-right: 6px;
 }
 /* 4位以下：暗め */
 .horse-tally.rank-other {
   background: linear-gradient(135deg, #1f1f2a 0%, #161620 100%);
   border-color: rgba(255,255,255,0.15);
-  padding: 12px 16px 12px 60px;
+  padding: 12px 36px 12px 60px;
   margin-right: 12px;
 }
 /* ゼロ票 */
@@ -1233,29 +1234,38 @@ main > .section:first-of-type { padding-top: 14px; }
   font-size: 16px;
 }
 
-.ht-body { flex: 1; min-width: 0; position: relative; z-index: 2; }
+.ht-body { flex: 1; min-width: 0; position: relative; z-index: 2; padding-right: 4px; overflow: hidden; }
 .ht-name {
   font-family: 'Dela Gothic One', cursive;
-  font-size: 14px;
-  color: var(--cream);
   letter-spacing: 0.02em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);
   display: flex;
   align-items: center;
   gap: 6px;
+  width: 100%;
+  min-width: 0;
 }
-.horse-tally.rank-1 .ht-name {
+.ht-name-text {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--cream);
+  font-size: 13px;
+}
+.horse-tally.rank-1 .ht-name-text {
   font-size: 16px;
   text-shadow: 0 2px 0 rgba(0,0,0,0.5), 0 0 12px var(--gold-glow);
 }
-.horse-tally.rank-other .ht-name { font-size: 13px; }
-.horse-tally.zero .ht-name { color: rgba(248,241,222,0.5); }
+.horse-tally.rank-2 .ht-name-text { font-size: 14px; }
+.horse-tally.rank-3 .ht-name-text { font-size: 13px; }
+.horse-tally.rank-other .ht-name-text { font-size: 12px; }
+.horse-tally.zero .ht-name-text { color: rgba(248,241,222,0.5); }
 
 .ht-mine-badge {
   display: inline-block;
+  flex-shrink: 0;
   background: var(--gold);
   color: var(--turf-deep);
   font-family: 'Bebas Neue', cursive;
@@ -1275,6 +1285,12 @@ main > .section:first-of-type { padding-top: 14px; }
 }
 
 /* 票数（特大数字） */
+.ht-votes-wrap {
+  flex-shrink: 0;
+  text-align: right;
+  position: relative;
+  z-index: 2;
+}
 .ht-votes {
   font-family: 'Bebas Neue', cursive;
   font-size: 32px;
@@ -1318,6 +1334,61 @@ main > .section:first-of-type { padding-top: 14px; }
     0 4px 0 rgba(0,0,0,0.4),
     0 6px 16px rgba(0,0,0,0.3),
     0 0 24px var(--jc-glow);
+}
+
+/* ===== 自分のBATTLE CRY（独立カード） ===== */
+.my-cry-block {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
+  border: 2px solid var(--gold);
+  border-left: 6px solid var(--gold);
+  border-radius: 10px;
+  position: relative;
+  box-shadow:
+    0 4px 0 rgba(0,0,0,0.3),
+    0 6px 20px rgba(0,0,0,0.25),
+    0 0 18px var(--gold-glow);
+  overflow: hidden;
+}
+.my-cry-block::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 60px; height: 60px;
+  background: radial-gradient(circle, var(--gold-glow), transparent 70%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+.my-cry-block::after {
+  content: '🗡️';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 16px;
+  opacity: 0.5;
+  filter: drop-shadow(0 2px 4px var(--gold-glow));
+}
+.my-cry-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--gold-glow);
+  text-shadow: 0 0 8px var(--gold-glow);
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+}
+.my-cry-text {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  color: var(--cream);
+  font-weight: 700;
+  line-height: 1.55;
+  word-break: break-word;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
 /* ===== コメントリスト：スクロール対応 ===== */
@@ -1759,16 +1830,10 @@ main > .section:first-of-type { padding-top: 14px; }
         </div>
       </div>
 
-      <!-- ステータス（PARTICIPATED + YOUR PICK + コメント） -->
-      <div class="status-block success mini">
-        <span class="icon">⚔</span>
-        <div class="title">PARTICIPATED!</div>
-        <div class="desc">投票完了。陣営の本命に反映されました</div>
-        <div class="your-pick">YOUR PICK：<b id="myPickText">—</b></div>
-        <div class="my-comment" id="myCommentBlock" style="display:none">
-          <div class="my-comment-label">YOUR BATTLE CRY</div>
-          <div class="my-comment-text" id="myCommentText"></div>
-        </div>
+      <!-- 自分のコメント（書いた時だけ表示） -->
+      <div class="my-cry-block" id="myCommentBlock" style="display:none">
+        <div class="my-cry-label">⚔ YOUR BATTLE CRY ⚔</div>
+        <div class="my-cry-text" id="myCommentText"></div>
       </div>
 
       <!-- 仲間の声 -->
@@ -2247,16 +2312,12 @@ function hideVoteOverlay() {
 
 async function renderVoted() {
   document.getElementById('votedArea').classList.remove('hidden');
-  document.getElementById('myPickText').textContent = myVote.horseName;
 
-  // 自分のコメント表示
+  // 自分のコメント表示（書いた時だけ）
   if (myVote.comment && myVote.comment.trim()) {
     document.getElementById('myCommentBlock').style.display = 'block';
     document.getElementById('myCommentText').textContent = myVote.comment;
   }
-
-  const m = JINEI_MASTER[myKizuna.jineiId];
-  // myJineiTitleEn は廃止（メガカードに統合）
 
   await refreshTally();
   await refreshComments();
@@ -2376,11 +2437,11 @@ async function refreshTally() {
         <div class="ht-num">${t.index}</div>
         <div class="ht-body">
           <div class="ht-name">
-            ${escapeHtml(t.name)}
+            <span class="ht-name-text">${escapeHtml(t.name)}</span>
             ${isMine ? '<span class="ht-mine-badge">YOUR PICK</span>' : ''}
           </div>
         </div>
-        <div>
+        <div class="ht-votes-wrap">
           <div class="ht-votes">${t.votes}</div>
           <div class="ht-votes-label">VOTES</div>
         </div>
