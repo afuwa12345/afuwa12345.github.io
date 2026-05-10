@@ -1015,138 +1015,299 @@ main > .section:first-of-type { padding-top: 14px; }
 .status-block.mini .my-comment-label { font-size: 9px; }
 .status-block.mini .my-comment-text { font-size: 12px; }
 
-/* ===== HPバー風 全馬集計 ===== */
+/* ===== HPバー風 全馬集計（麻雀ゲーム風 斜め帯） ===== */
 .horse-tally-list {
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0;
+  position: relative;
 }
 .horse-tally {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  background: linear-gradient(135deg, var(--cream-soft), #fff);
-  border: 2px solid var(--turf);
-  border-radius: 10px;
-  position: relative;
-  box-shadow: 0 3px 0 var(--turf-deep);
-  overflow: hidden;
-  transition: transform 0.15s, box-shadow 0.2s;
+  gap: 12px;
+  padding: 14px 18px 14px 64px;
+  color: var(--cream);
+  font-family: 'Noto Sans JP', sans-serif;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #2a2a3e 100%);
+  border: 2px solid rgba(255,216,109,0.3);
+  border-right: none;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.4), 0 6px 16px rgba(0,0,0,0.3);
+  overflow: visible;
+  margin-right: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 .horse-tally::before {
   content: '';
-  position: absolute; top: 0; left: 0; bottom: 0;
-  width: 4px;
-  background: var(--turf);
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px);
+  pointer-events: none;
 }
-.horse-tally.top {
-  border-color: var(--gold);
-  box-shadow: 0 4px 0 var(--gold), 0 0 18px var(--gold-glow);
-  background: linear-gradient(135deg, #fff, var(--gold-glow), #fff);
-}
-.horse-tally.top::before { background: var(--gold); }
-.horse-tally.mine {
-  border-color: var(--jc-main);
-  box-shadow: 0 4px 0 var(--jc-deep), 0 0 16px var(--jc-glow);
-}
-.horse-tally.mine::before { background: var(--jc-main); }
-.horse-tally.top.mine {
-  border-color: var(--gold);
-  box-shadow: 0 4px 0 var(--gold), 0 0 22px var(--gold-glow), 0 0 30px var(--jc-glow);
-}
-.horse-tally.zero { opacity: 0.5; box-shadow: 0 2px 0 var(--gray); }
 
-.ht-rank {
+/* 1位：赤帯特大 */
+.horse-tally.rank-1 {
+  background: linear-gradient(135deg, #c5292a 0%, #8b1b1b 50%, #5a0e0e 100%);
+  border: 3px solid var(--gold);
+  box-shadow:
+    0 6px 0 rgba(0,0,0,0.5),
+    0 8px 24px rgba(197,41,42,0.5),
+    0 0 30px rgba(255,216,109,0.4),
+    inset 0 0 20px rgba(255,216,109,0.1);
+  padding: 18px 22px 18px 70px;
+  margin-right: 0;
+  transform: scale(1.02);
+}
+.horse-tally.rank-1::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 30px;
+  background: linear-gradient(90deg, transparent, var(--gold-glow));
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  animation: rank1Sheen 2.5s ease-in-out infinite;
+}
+@keyframes rank1Sheen { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+/* 2位：銀色 */
+.horse-tally.rank-2 {
+  background: linear-gradient(135deg, #4a4e5e 0%, #2c2f3a 100%);
+  border-color: rgba(192,192,192,0.5);
+  padding: 16px 20px 16px 66px;
+  margin-right: 4px;
+}
+/* 3位：銅色 */
+.horse-tally.rank-3 {
+  background: linear-gradient(135deg, #5a3a2a 0%, #3a2418 100%);
+  border-color: rgba(184,115,51,0.5);
+  margin-right: 6px;
+}
+/* 4位以下：暗め */
+.horse-tally.rank-other {
+  background: linear-gradient(135deg, #1f1f2a 0%, #161620 100%);
+  border-color: rgba(255,255,255,0.15);
+  padding: 12px 16px 12px 60px;
+  margin-right: 12px;
+}
+/* ゼロ票 */
+.horse-tally.zero {
+  opacity: 0.45;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0e0e0e 100%);
+}
+
+/* 順位バッジ（左の大きい数字） */
+.ht-rank-badge {
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--turf-deep), #000);
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5), 0 0 16px var(--gold-glow);
+}
+.horse-tally.rank-1 .ht-rank-badge {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, var(--gold), #b8860b);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 24px var(--gold-glow);
+}
+.horse-tally.rank-1 .ht-rank-num {
+  color: var(--turf-deep);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+.horse-tally.rank-other .ht-rank-badge {
+  width: 48px; height: 48px;
+}
+.ht-rank-num {
   font-family: 'Bebas Neue', cursive;
-  font-size: 18px;
-  color: var(--gray);
-  min-width: 18px;
-  text-align: center;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--gold-glow);
+  text-shadow: 0 0 8px var(--gold-glow);
+  font-weight: 900;
 }
-.horse-tally.top .ht-rank {
-  color: var(--gold);
-  font-size: 22px;
-  text-shadow: 0 0 10px var(--gold-glow);
+.horse-tally.rank-other .ht-rank-num { font-size: 20px; }
+.horse-tally.rank-1 .ht-rank-num { font-size: 32px; }
+.ht-rank-suffix {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 10px;
+  color: var(--cream);
+  letter-spacing: 1px;
+  margin-top: -2px;
 }
+.horse-tally.rank-1 .ht-rank-suffix {
+  color: var(--turf-deep);
+  font-weight: 900;
+}
+
+/* 馬番（黄色丸） */
 .ht-num {
   font-family: 'Bebas Neue', cursive;
   font-size: 14px;
-  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
-  color: var(--cream);
+  background: linear-gradient(135deg, #fff, #ddd);
+  color: var(--turf-deep);
   border-radius: 50%;
-  width: 28px; height: 28px;
+  width: 30px; height: 30px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  border: 2px solid var(--gold);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  font-weight: 900;
+  border: 2px solid var(--turf-deep);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  position: relative;
+  z-index: 2;
 }
-.horse-tally.top .ht-num {
-  background: linear-gradient(135deg, var(--gold), var(--gold-glow));
-  color: var(--turf-deep);
+.horse-tally.rank-1 .ht-num {
+  background: linear-gradient(135deg, var(--gold-glow), var(--gold));
+  border-color: var(--cream);
+  width: 34px; height: 34px;
+  font-size: 16px;
 }
-.ht-body { flex: 1; min-width: 0; }
+
+.ht-body { flex: 1; min-width: 0; position: relative; z-index: 2; }
 .ht-name {
   font-family: 'Dela Gothic One', cursive;
-  font-size: 12px;
-  color: var(--turf-deep);
+  font-size: 14px;
+  color: var(--cream);
   letter-spacing: 0.02em;
-  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: flex; align-items: center; gap: 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+.horse-tally.rank-1 .ht-name {
+  font-size: 16px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.5), 0 0 12px var(--gold-glow);
+}
+.horse-tally.rank-other .ht-name { font-size: 13px; }
+.horse-tally.zero .ht-name { color: rgba(248,241,222,0.5); }
+
 .ht-mine-badge {
   display: inline-block;
-  background: var(--jc-main);
-  color: var(--cream);
+  background: var(--gold);
+  color: var(--turf-deep);
   font-family: 'Bebas Neue', cursive;
   font-size: 9px;
-  padding: 1px 6px;
+  padding: 2px 7px;
   border-radius: 3px;
   letter-spacing: 1px;
-  border: 1px solid var(--gold);
+  border: 1px solid var(--cream);
+  text-shadow: none;
+  font-weight: 900;
+  box-shadow: 0 2px 6px rgba(255,216,109,0.4);
+  animation: minePulse 1.8s ease-in-out infinite;
 }
-.hp-bar-wrap {
-  height: 8px;
-  background: linear-gradient(180deg, #1a1a1a, #2a2a2a);
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid var(--turf-deep);
-  position: relative;
+@keyframes minePulse {
+  0%,100% { box-shadow: 0 2px 6px rgba(255,216,109,0.4); }
+  50% { box-shadow: 0 2px 12px rgba(255,216,109,0.8); }
 }
-.hp-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--jc-main), var(--jc-light));
-  border-radius: 3px;
-  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: 0 0 8px var(--jc-glow);
-  position: relative;
-}
-.hp-bar-fill::after {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 50%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
-  border-radius: 3px 3px 0 0;
-}
-.horse-tally.top .hp-bar-fill {
-  background: linear-gradient(90deg, var(--gold), var(--gold-glow));
-  box-shadow: 0 0 12px var(--gold-glow);
-}
+
+/* 票数（特大数字） */
 .ht-votes {
   font-family: 'Bebas Neue', cursive;
-  font-size: 18px;
-  color: var(--jc-main);
-  min-width: 30px;
+  font-size: 32px;
+  color: var(--gold-glow);
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.6), 0 0 14px var(--gold-glow);
+  position: relative;
+  z-index: 2;
+  min-width: 40px;
   text-align: right;
-  text-shadow: 0 0 6px var(--jc-glow);
 }
-.horse-tally.top .ht-votes {
-  color: var(--gold);
-  font-size: 22px;
-  text-shadow: 0 0 10px var(--gold-glow);
+.horse-tally.rank-1 .ht-votes {
+  font-size: 42px;
+  color: #fff;
+  text-shadow: 0 3px 0 rgba(0,0,0,0.5), 0 0 20px var(--gold-glow), 0 0 30px rgba(255,255,255,0.4);
 }
-.horse-tally.zero .ht-votes { color: var(--gray); text-shadow: none; }
+.horse-tally.rank-other .ht-votes { font-size: 24px; }
+.horse-tally.zero .ht-votes {
+  color: rgba(248,241,222,0.3);
+  text-shadow: none;
+  font-size: 20px;
+}
+.ht-votes-label {
+  display: block;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 9px;
+  color: rgba(248,241,222,0.6);
+  letter-spacing: 2px;
+  margin-top: -2px;
+  font-weight: 700;
+}
+.horse-tally.rank-1 .ht-votes-label {
+  color: rgba(255,255,255,0.8);
+}
+
+/* 自分の馬は陣営カラーグロー */
+.horse-tally.mine:not(.rank-1) {
+  border-color: var(--jc-light);
+  box-shadow:
+    0 4px 0 rgba(0,0,0,0.4),
+    0 6px 16px rgba(0,0,0,0.3),
+    0 0 24px var(--jc-glow);
+}
+
+/* ===== コメントリスト：スクロール対応 ===== */
+.comments-list-wrap {
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2.5px solid var(--jc-main);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 0 var(--jc-deep), 0 0 18px var(--jc-glow);
+  position: relative;
+  overflow: hidden;
+}
+.comments-list-wrap::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--jc-deep), var(--gold), var(--jc-deep));
+}
+.comments-list {
+  display: grid;
+  gap: 10px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 8px 4px 4px;
+  /* スクロールバー */
+  scrollbar-width: thin;
+  scrollbar-color: var(--jc-main) transparent;
+}
+.comments-list::-webkit-scrollbar {
+  width: 6px;
+}
+.comments-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.comments-list::-webkit-scrollbar-thumb {
+  background: var(--jc-main);
+  border-radius: 3px;
+}
+.comments-list::-webkit-scrollbar-thumb:hover {
+  background: var(--jc-deep);
+}
+.comments-count {
+  text-align: right;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--jc-main);
+  padding: 4px 8px 0;
+  font-weight: 900;
+}
 
 /* ===== ステータス ===== */
 .status-block {
@@ -1528,8 +1689,11 @@ main > .section:first-of-type { padding-top: 14px; }
         <div class="sec-label-en">⚔ BATTLE CRIES ⚔</div>
         <div class="sec-label-ja">仲間の声</div>
       </div>
-      <div class="comments-list" id="commentsList">
-        <div class="comments-empty">まだ声が集まっていません…</div>
+      <div class="comments-list-wrap">
+        <div class="comments-list" id="commentsList">
+          <div class="comments-empty">まだ声が集まっていません…</div>
+        </div>
+        <div class="comments-count" id="commentsCount" style="display:none"></div>
       </div>
     </div>
 
@@ -1999,6 +2163,7 @@ async function refreshComments() {
       .get();
 
     const list = document.getElementById('commentsList');
+    const countEl = document.getElementById('commentsCount');
     if (!list) return;
 
     // コメントありのものだけ抽出、新しい順
@@ -2017,6 +2182,7 @@ async function refreshComments() {
 
     if (items.length === 0) {
       list.innerHTML = '<div class="comments-empty">まだ声が集まっていません…</div>';
+      if (countEl) countEl.style.display = 'none';
       return;
     }
 
@@ -2027,6 +2193,11 @@ async function refreshComments() {
         <div class="comment-pick">→ <b>${escapeHtml(item.horseName)}</b></div>
       </div>
     `).join('');
+
+    if (countEl) {
+      countEl.style.display = 'block';
+      countEl.textContent = `${items.length} VOICES`;
+    }
   } catch (e) {
     console.error('refreshComments error', e);
   }
@@ -2078,22 +2249,31 @@ async function refreshTally() {
   const myHorse = myVote ? myVote.horseName : null;
 
   card.innerHTML = tallyData.map((t, i) => {
-    const pct = (t.votes / max) * 100;
-    const isTop = i === 0 && t.votes > 0;
+    const rank = i + 1;
+    const isTop = rank === 1 && t.votes > 0;
     const isMine = myHorse && myHorse === t.name;
     const isZero = t.votes === 0;
+    let rankClass = 'rank-other';
+    if (rank === 1 && t.votes > 0) rankClass = 'rank-1';
+    else if (rank === 2 && t.votes > 0) rankClass = 'rank-2';
+    else if (rank === 3 && t.votes > 0) rankClass = 'rank-3';
     return `
-      <div class="horse-tally ${isTop ? 'top' : ''} ${isMine ? 'mine' : ''} ${isZero ? 'zero' : ''}">
-        <div class="ht-rank">${isTop ? '👑' : i+1}</div>
+      <div class="horse-tally ${rankClass} ${isMine ? 'mine' : ''} ${isZero ? 'zero' : ''}">
+        <div class="ht-rank-badge">
+          <div class="ht-rank-num">${rank}</div>
+          <div class="ht-rank-suffix">位</div>
+        </div>
         <div class="ht-num">${t.index}</div>
         <div class="ht-body">
           <div class="ht-name">
             ${escapeHtml(t.name)}
             ${isMine ? '<span class="ht-mine-badge">YOUR PICK</span>' : ''}
           </div>
-          <div class="hp-bar-wrap"><div class="hp-bar-fill" style="width:${pct}%"></div></div>
         </div>
-        <div class="ht-votes">${t.votes}</div>
+        <div>
+          <div class="ht-votes">${t.votes}</div>
+          <div class="ht-votes-label">VOTES</div>
+        </div>
       </div>
     `;
   }).join('');
