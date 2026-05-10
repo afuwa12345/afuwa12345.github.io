@@ -1837,13 +1837,41 @@ async function refreshComments() {
 }
 
 async function refreshTally() {
-  const summary = await fetchJineiSummary(race.raceId, myKizuna.jineiId);
   const card = document.getElementById('tallyCard');
-  if (!summary || !summary.votes) {
+
+  // まずsummaryから取得試行
+  let votes = null;
+  const summary = await fetchJineiSummary(race.raceId, myKizuna.jineiId);
+  if (summary && summary.votes && Object.keys(summary.votes).length > 0) {
+    votes = summary.votes;
+  }
+
+  // summary無い or 空なら、kizuna_votes から直接集計（fallback）
+  if (!votes) {
+    try {
+      const snap = await db.collection('kizuna_votes')
+        .where('raceId', '==', race.raceId)
+        .where('jineiId', '==', myKizuna.jineiId)
+        .get();
+      const counts = {};
+      snap.forEach(doc => {
+        const d = doc.data();
+        if (d.horseName) {
+          counts[d.horseName] = (counts[d.horseName] || 0) + 1;
+        }
+      });
+      if (Object.keys(counts).length > 0) votes = counts;
+    } catch (e) {
+      console.error('refreshTally fallback error', e);
+    }
+  }
+
+  if (!votes) {
     card.innerHTML = '<div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">まだ票が集まっていません</div>';
     return;
   }
-  const entries = Object.entries(summary.votes).filter(([_, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+
+  const entries = Object.entries(votes).filter(([_, v]) => v > 0).sort((a, b) => b[1] - a[1]);
   if (entries.length === 0) {
     card.innerHTML = '<div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">まだ票が集まっていません</div>';
     return;
@@ -1878,16 +1906,18 @@ async function renderClosed(status) {
     document.getElementById('closedDesc').innerHTML = `1着：<b style="color:var(--jc-deep)">${escapeHtml(race.winner)}</b>`;
   }
 
-  const allSummary = await fetchAllJineiSummary(race.raceId);
+  // 集計データを取得（kizuna_votesから直接集計してsummaryを補完）
+  const allTally = await buildAllJineiTally(race.raceId);
+
   const list = document.getElementById('allJinei');
   list.innerHTML = Object.keys(JINEI_MASTER).map(jid => {
     const m = JINEI_MASTER[jid];
-    const sum = allSummary[jid];
-    let pickName = '—', pickVotes = 0, total = 0;
-    if (sum && sum.votes) {
-      total = sum.totalVotes || 0;
-      const top = Object.entries(sum.votes).sort((a,b) => b[1] - a[1])[0];
-      if (top) { pickName = top[0]; pickVotes = top[1]; }
+    const t = allTally[jid] || { votes: {}, total: 0 };
+    let pickName = '—', pickVotes = 0;
+    const total = t.total;
+    if (t.votes && Object.keys(t.votes).length > 0) {
+      const top = Object.entries(t.votes).sort((a,b) => b[1] - a[1])[0];
+      if (top && top[1] > 0) { pickName = top[0]; pickVotes = top[1]; }
     }
     const isHit = race.winner && race.winner === pickName;
     const isMiss = race.winner && !isHit;
@@ -1906,6 +1936,32 @@ async function renderClosed(status) {
       </div>
     `;
   }).join('');
+}
+
+// kizuna_votes から全陣営の集計を構築（summary無くてもOK）
+async function buildAllJineiTally(raceId) {
+  const result = {};
+  // 全6陣営を初期化
+  Object.keys(JINEI_MASTER).forEach(jid => {
+    result[jid] = { votes: {}, total: 0 };
+  });
+  try {
+    const snap = await db.collection('kizuna_votes')
+      .where('raceId', '==', raceId)
+      .get();
+    snap.forEach(doc => {
+      const d = doc.data();
+      const jid = d.jineiId;
+      const horse = d.horseName;
+      if (!jid || !horse) return;
+      if (!result[jid]) result[jid] = { votes: {}, total: 0 };
+      result[jid].votes[horse] = (result[jid].votes[horse] || 0) + 1;
+      result[jid].total += 1;
+    });
+  } catch (e) {
+    console.error('buildAllJineiTally error', e);
+  }
+  return result;
 }
 
 function startCountdown() {
