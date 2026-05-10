@@ -17,14 +17,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <script src="js/auth.js"></script>
-<script src="js/header.js"></script>
 
 <style>
 :root {
   --turf: #1a4731;
   --turf-deep: #0e2e1f;
   --turf-light: #2d6b4a;
-  --turf-bright: #4ca57a;
   --cream: #f8f1de;
   --cream-deep: #ede0bd;
   --cream-soft: #fcf7e8;
@@ -36,6 +34,12 @@
   --text: #2a2419;
   --text-soft: #5a4f3d;
   --gray: #7a6e5a;
+
+  /* 陣営カラー（jsで上書き） */
+  --jc-main:    #c5292a;
+  --jc-deep:    #8b1b1b;
+  --jc-light:   #ff5a5a;
+  --jc-glow:    rgba(197,41,42,0.5);
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html { scroll-behavior: smooth; }
@@ -56,7 +60,90 @@ body::before {
   z-index: 1;
   opacity: 0.6;
 }
-nav, .hero, .section { position: relative; z-index: 2; }
+
+/* ===== 陣営カラーオーバーレイ（全画面染め） ===== */
+body.with-jinei::after {
+  content:'';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(circle at 20% 0%, var(--jc-glow) 0%, transparent 50%),
+    radial-gradient(circle at 80% 100%, var(--jc-glow) 0%, transparent 50%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
+  animation: jineiPulse 6s ease-in-out infinite;
+}
+@keyframes jineiPulse {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 0 20px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(14, 46, 31, 0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 2px solid var(--gold);
+  box-shadow: 0 2px 12px rgba(14,46,31,0.2);
+}
+.nav-logo {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--cream);
+  text-decoration: none;
+}
+.nav-logo em { font-style: normal; color: var(--gold-light); }
+.hamburger {
+  width: 40px; height: 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-end;
+  gap: 6px; cursor: pointer;
+}
+.hamburger span {
+  display: block; height: 3px;
+  background: var(--cream); border-radius: 2px;
+  transition: all 0.4s;
+}
+.hamburger span:nth-child(1) { width: 24px; }
+.hamburger span:nth-child(2) { width: 16px; background: var(--gold-light); }
+.hamburger span:nth-child(3) { width: 20px; background: var(--red); }
+.hamburger.open span:nth-child(1) { width: 22px; transform: translateY(8.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { width: 0; opacity: 0; }
+.hamburger.open span:nth-child(3) { width: 22px; transform: translateY(-8.5px) rotate(-45deg); background: var(--cream); }
+
+.menu-overlay {
+  position: fixed; inset: 0;
+  background: rgba(14, 46, 31, 0.98);
+  backdrop-filter: blur(20px);
+  z-index: 150;
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  gap: 22px; padding: 40px;
+}
+.menu-overlay.open { transform: translateY(0); }
+.menu-overlay a {
+  color: var(--cream); text-decoration: none;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px; letter-spacing: 3px;
+  transition: color 0.2s, transform 0.2s;
+}
+.menu-overlay a:active { color: var(--gold-light); transform: scale(1.08); }
+.menu-overlay .divider {
+  width: 80px; height: 2px;
+  background: var(--gold);
+  margin: 4px 0;
+  border-radius: 1px;
+  opacity: 0.6;
+}
 
 /* ===== HERO ===== */
 .hero {
@@ -108,19 +195,55 @@ nav, .hero, .section { position: relative; z-index: 2; }
   position: relative; z-index: 2;
 }
 
+/* ===== バトル参戦バナー ===== */
+.battle-banner {
+  position: relative;
+  background: linear-gradient(90deg, var(--jc-deep), var(--jc-main), var(--jc-deep));
+  color: var(--cream);
+  text-align: center;
+  padding: 12px 16px;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  letter-spacing: 6px;
+  border-top: 3px solid var(--gold);
+  border-bottom: 3px solid var(--gold);
+  overflow: hidden;
+}
+.battle-banner::before, .battle-banner::after {
+  content:'';
+  position: absolute; top: 0; bottom: 0;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: bannerSlide 3s linear infinite;
+}
+.battle-banner::before { left: 0; animation-delay: 0s; }
+.battle-banner::after { right: 0; animation-delay: 1.5s; transform: scaleX(-1); }
+@keyframes bannerSlide { from { transform: translateX(-100px); } to { transform: translateX(calc(100vw + 100px)); } }
+.battle-banner span {
+  display: inline-block;
+  position: relative; z-index: 2;
+  text-shadow: 0 0 12px var(--gold-glow), 0 2px 0 rgba(0,0,0,0.4);
+  animation: bannerPulse 2s ease-in-out infinite;
+}
+@keyframes bannerPulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
 /* ===== セクション共通 ===== */
 .section {
   max-width: 600px;
   margin: 0 auto;
-  padding: 30px 16px;
+  padding: 26px 16px;
 }
-.sec-label { text-align: center; margin-bottom: 24px; position: relative; }
+.sec-label { text-align: center; margin-bottom: 20px; }
 .sec-label-en {
   font-family: 'Bebas Neue', cursive;
   font-size: 11px;
   letter-spacing: 5px;
-  color: var(--gold);
+  color: var(--jc-main);
   margin-bottom: 4px;
+  text-shadow: 0 0 12px var(--jc-glow);
 }
 .sec-label-ja {
   font-family: 'Dela Gothic One', cursive;
@@ -132,38 +255,49 @@ nav, .hero, .section { position: relative; z-index: 2; }
 }
 .sec-label-ja::before, .sec-label-ja::after {
   content: ''; width: 30px; height: 2px;
-  background: var(--turf); border-radius: 1px;
+  background: var(--jc-main); border-radius: 1px;
 }
 
-/* ===== レース情報カード ===== */
+/* ===== レース情報カード（バトルカード化） ===== */
 .race-card {
-  background: var(--cream-soft);
-  border: 2px solid var(--turf);
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 3px solid var(--jc-main);
   border-radius: 14px;
-  padding: 20px 18px;
+  padding: 22px 18px 18px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 0 var(--turf-deep), 0 6px 14px rgba(14,46,31,0.15);
+  box-shadow:
+    0 6px 0 var(--jc-deep),
+    0 10px 24px var(--jc-glow),
+    inset 0 0 24px rgba(255,255,255,0.4);
 }
 .race-card::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 4px;
-  background: linear-gradient(90deg, var(--turf), var(--gold), var(--turf));
+  position: absolute; top: 0; left: 0; right: 0; height: 5px;
+  background: linear-gradient(90deg, var(--jc-deep), var(--gold), var(--jc-deep));
+}
+.race-card::after {
+  content: '⚔';
+  position: absolute; top: 12px; right: 14px;
+  font-size: 24px; color: var(--jc-main);
+  opacity: 0.3;
+  transform: rotate(15deg);
 }
 .race-tag {
   font-family: 'Bebas Neue', cursive;
   font-size: 11px;
   letter-spacing: 4px;
-  color: var(--gold);
+  color: var(--jc-main);
   margin-bottom: 4px;
 }
 .race-title {
   font-family: 'Dela Gothic One', cursive;
-  font-size: 22px;
+  font-size: 26px;
   color: var(--turf-deep);
   letter-spacing: 0.04em;
   line-height: 1.2;
   margin-bottom: 8px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.08);
 }
 .race-info {
   font-size: 13px;
@@ -176,108 +310,235 @@ nav, .hero, .section { position: relative; z-index: 2; }
 .countdown {
   margin-top: 14px;
   display: flex; justify-content: space-between; align-items: center;
-  background: var(--turf-deep);
+  background: linear-gradient(135deg, var(--turf-deep), #000);
+  border: 2px solid var(--gold);
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   color: var(--cream);
+  position: relative;
+  overflow: hidden;
 }
+.countdown::before {
+  content:'';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, var(--jc-glow), transparent);
+  animation: countdownSheen 4s ease-in-out infinite;
+}
+@keyframes countdownSheen { 0%,100% { transform: translateX(-100%); } 50% { transform: translateX(100%); } }
 .countdown-label {
   font-family: 'Bebas Neue', cursive;
   font-size: 11px;
   letter-spacing: 3px;
   color: var(--gold-light);
+  position: relative; z-index: 1;
 }
 .countdown-value {
   font-family: 'Bebas Neue', cursive;
-  font-size: 22px;
+  font-size: 24px;
   letter-spacing: 2px;
   color: var(--gold-glow);
-  text-shadow: 0 0 12px rgba(255,216,109,0.4);
+  text-shadow: 0 0 16px var(--gold-glow);
+  position: relative; z-index: 1;
 }
-.countdown-value.urgent { color: #ff6b6b; animation: pulse 1s ease-in-out infinite; }
-@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.55 } }
+.countdown-value.urgent { color: #ff6b6b; text-shadow: 0 0 20px #ff6b6b; animation: pulse 0.8s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.5 } }
 
-/* ===== 陣営バッジ ===== */
-.jinei-badge {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--cream-soft);
-  border: 2px solid var(--gold);
+/* ===== 戦士プロフィール（陣営バッジの強化版） ===== */
+.warrior-card {
+  position: relative;
+  margin-top: 18px;
+  padding: 20px 16px;
+  background: linear-gradient(135deg, var(--jc-deep), var(--jc-main) 50%, var(--jc-deep));
+  border: 3px solid var(--gold);
   border-radius: 14px;
-  padding: 12px 14px;
-  margin-top: 14px;
-  box-shadow: 0 3px 0 rgba(200,148,29,0.5);
+  overflow: hidden;
+  box-shadow:
+    0 6px 0 rgba(0,0,0,0.3),
+    0 10px 30px var(--jc-glow);
 }
-.jinei-icon {
-  width: 50px; height: 50px;
-  border-radius: 50%;
-  background: var(--cream);
-  border: 2px solid var(--turf);
-  background-size: cover;
-  background-position: center;
+.warrior-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15), transparent 50%),
+    repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(0,0,0,0.05) 20px, rgba(0,0,0,0.05) 40px);
+  pointer-events: none;
+}
+.warrior-card::after {
+  content: '';
+  position: absolute; top: -50%; right: -20%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 60%);
+  opacity: 0.3;
+  pointer-events: none;
+  animation: glowOrbit 8s linear infinite;
+}
+@keyframes glowOrbit {
+  0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+}
+
+.warrior-inner {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 14px;
+}
+.warrior-avatar-wrap {
+  position: relative;
+  width: 96px; height: 96px;
   flex-shrink: 0;
-  box-shadow: 0 0 12px rgba(255,216,109,0.4);
 }
-.jinei-info { flex: 1; min-width: 0; }
-.jinei-tag {
+.warrior-avatar {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--gold);
+  background: rgba(0,0,0,0.4);
+  box-shadow:
+    0 0 24px var(--gold-glow),
+    inset 0 0 12px rgba(0,0,0,0.4);
+}
+.warrior-ring {
+  position: absolute; inset: -6px;
+  border: 2px dashed var(--gold);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: ringRotate 12s linear infinite;
+}
+@keyframes ringRotate { to { transform: rotate(360deg); } }
+
+.warrior-info { flex: 1; min-width: 0; color: var(--cream); }
+.warrior-tag {
   font-family: 'Bebas Neue', cursive;
   font-size: 10px;
-  letter-spacing: 3px;
-  color: var(--gold);
+  letter-spacing: 4px;
+  color: var(--gold-light);
+  margin-bottom: 2px;
+  text-shadow: 0 0 8px var(--gold-glow);
 }
-.jinei-name {
+.warrior-name {
   font-family: 'Dela Gothic One', cursive;
-  font-size: 16px;
-  color: var(--turf-deep);
-  letter-spacing: 0.03em;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 12px var(--gold-glow);
+  margin-bottom: 4px;
 }
-.jinei-style {
+.warrior-style {
   font-size: 11px;
-  color: var(--text-soft);
-  margin-top: 2px;
   font-weight: 700;
+  color: rgba(248,241,222,0.85);
+  margin-bottom: 8px;
+}
+.rank-row {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 6px;
+  padding: 6px 8px;
+  border: 1px solid rgba(255,216,109,0.3);
+}
+.rank-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold-light);
+}
+.rank-value {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 12px;
+  color: var(--cream);
+  flex: 1;
+}
+.rank-points {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px;
+  color: var(--gold-glow);
 }
 
-/* ===== 馬カード ===== */
+.points-bar-wrap {
+  margin-top: 6px;
+  height: 6px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(255,216,109,0.2);
+}
+.points-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-glow));
+  box-shadow: 0 0 8px var(--gold-glow);
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ===== 馬カード（戦闘カード） ===== */
 .horse-grid { display: grid; gap: 10px; margin-top: 14px; }
 .horse-card {
   position: relative;
-  background: var(--cream-soft);
-  border: 2px solid var(--turf);
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2.5px solid var(--turf);
   border-radius: 12px;
   padding: 12px 14px;
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.2s, border-color 0.2s;
   display: flex; align-items: center; gap: 12px;
-  box-shadow: 0 3px 0 var(--turf-deep), 0 5px 10px rgba(14,46,31,0.1);
+  box-shadow: 0 4px 0 var(--turf-deep), 0 6px 12px rgba(14,46,31,0.1);
   overflow: hidden;
 }
-.horse-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 0 var(--turf-deep), 0 7px 14px rgba(14,46,31,0.15);
+.horse-card::before {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--jc-glow), transparent);
+  transition: left 0.5s;
+  pointer-events: none;
 }
+.horse-card:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--turf-deep), 0 10px 18px rgba(14,46,31,0.2); }
+.horse-card:hover::before { left: 100%; }
 .horse-card:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--turf-deep); }
 .horse-card.selected {
   border-color: var(--gold);
-  background: linear-gradient(135deg, rgba(255,216,109,0.25), var(--cream-soft));
-  box-shadow: 0 4px 0 var(--gold), 0 8px 20px rgba(255,216,109,0.4), inset 0 0 18px rgba(255,216,109,0.2);
+  background: linear-gradient(135deg, #fff, var(--gold-glow) 30%, #fff);
+  box-shadow:
+    0 5px 0 var(--gold),
+    0 0 0 4px var(--jc-glow),
+    0 0 30px var(--gold-glow),
+    inset 0 0 20px rgba(255,216,109,0.3);
+  animation: selectedFlash 1.5s ease-in-out infinite;
 }
+@keyframes selectedFlash {
+  0%,100% { box-shadow: 0 5px 0 var(--gold), 0 0 0 4px var(--jc-glow), 0 0 30px var(--gold-glow), inset 0 0 20px rgba(255,216,109,0.3); }
+  50% { box-shadow: 0 5px 0 var(--gold), 0 0 0 6px var(--jc-glow), 0 0 50px var(--gold-glow), inset 0 0 30px rgba(255,216,109,0.5); }
+}
+.horse-card.selected::after {
+  content: '★';
+  position: absolute;
+  top: -10px; right: -10px;
+  width: 30px; height: 30px;
+  background: var(--gold);
+  color: var(--turf-deep);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  border: 2px solid var(--cream);
+  box-shadow: 0 0 12px var(--gold-glow);
+  animation: starSpin 2s linear infinite;
+}
+@keyframes starSpin { to { transform: rotate(360deg); } }
 .horse-num {
   font-family: 'Bebas Neue', cursive;
   font-size: 26px;
-  width: 40px; height: 40px;
+  width: 42px; height: 42px;
   display: flex; align-items: center; justify-content: center;
-  background: var(--turf-deep);
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
   color: var(--cream);
   border-radius: 50%;
   flex-shrink: 0;
   border: 2px solid var(--gold);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2), inset 0 -2px 4px rgba(0,0,0,0.3);
 }
 .horse-card.selected .horse-num {
-  background: var(--gold);
+  background: linear-gradient(135deg, var(--gold), var(--gold-glow));
   color: var(--turf-deep);
-  text-shadow: 0 0 8px rgba(255,255,255,0.5);
+  box-shadow: 0 2px 0 var(--gold-light), 0 0 16px var(--gold-glow);
 }
-.horse-info { flex: 1; min-width: 0; }
+.horse-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .horse-name {
   font-family: 'Dela Gothic One', cursive;
   font-size: 15px;
@@ -294,9 +555,9 @@ nav, .hero, .section { position: relative; z-index: 2; }
   display: flex; gap: 8px; flex-wrap: wrap;
   font-weight: 700;
 }
-.horse-meta b { color: var(--turf); }
+.horse-meta b { color: var(--jc-main); }
 
-/* ===== 投票ボタン ===== */
+/* ===== 投票ボタン（ENGAGE） ===== */
 .vote-btn-wrap {
   position: sticky;
   bottom: 14px;
@@ -305,47 +566,53 @@ nav, .hero, .section { position: relative; z-index: 2; }
 }
 .vote-btn {
   display: block; width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, var(--red), var(--red-deep));
+  padding: 18px;
+  background: linear-gradient(135deg, var(--jc-main), var(--jc-deep));
   color: var(--cream);
-  border: 2px solid var(--red-deep);
+  border: 3px solid var(--gold);
   border-radius: 12px;
   font-family: 'Dela Gothic One', cursive;
   font-size: 16px;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 5px 0 var(--red-deep), 0 8px 20px rgba(197,41,42,0.4);
+  box-shadow:
+    0 6px 0 var(--jc-deep),
+    0 10px 24px var(--jc-glow),
+    0 0 30px var(--jc-glow);
   transition: transform 0.15s, box-shadow 0.15s;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4);
 }
-.vote-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--red-deep), 0 12px 24px rgba(197,41,42,0.5); }
-.vote-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--red-deep); }
+.vote-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--jc-deep), 0 14px 28px var(--jc-glow); }
+.vote-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 var(--jc-deep); }
 .vote-btn:disabled {
-  background: var(--gray);
+  background: linear-gradient(135deg, var(--gray), var(--text-soft));
   border-color: var(--text-soft);
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.5);
   cursor: not-allowed;
-  box-shadow: 0 3px 0 var(--text-soft);
+  box-shadow: 0 4px 0 var(--text-soft);
+  text-shadow: none;
 }
 .vote-btn:disabled:hover, .vote-btn:disabled:active { transform: none; }
 .vote-btn::before {
   content:'';
   position: absolute; inset: 0;
-  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
   transform: translateX(-100%);
-  transition: transform 0.6s;
+  animation: btnSheen 3s ease-in-out infinite;
 }
-.vote-btn:hover::before { transform: translateX(100%); }
+@keyframes btnSheen { 0%,100% { transform: translateX(-100%); } 60% { transform: translateX(100%); } }
+.vote-btn:disabled::before { display: none; }
 
-/* ===== 集計 ===== */
+/* ===== 集計（HPバー風） ===== */
 .tally-card {
-  background: var(--cream-soft);
-  border: 2px solid var(--turf);
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2.5px solid var(--jc-main);
   border-radius: 12px;
   padding: 14px;
   margin-top: 14px;
-  box-shadow: 0 3px 0 var(--turf-deep);
+  box-shadow: 0 4px 0 var(--jc-deep), 0 0 24px var(--jc-glow);
 }
 .tally-row {
   display: flex; align-items: center; gap: 10px;
@@ -362,18 +629,19 @@ nav, .hero, .section { position: relative; z-index: 2; }
 }
 .tally-rank.r1 {
   color: var(--gold);
-  text-shadow: 0 0 8px rgba(255,216,109,0.6);
-  font-size: 22px;
+  text-shadow: 0 0 12px var(--gold-glow);
+  font-size: 24px;
 }
 .tally-num {
   font-family: 'Bebas Neue', cursive;
   font-size: 14px;
-  background: var(--turf-deep);
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
   color: var(--cream);
   border-radius: 50%;
   width: 28px; height: 28px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
+  border: 1px solid var(--gold);
 }
 .tally-name {
   flex: 1;
@@ -385,83 +653,107 @@ nav, .hero, .section { position: relative; z-index: 2; }
   text-overflow: ellipsis;
 }
 .tally-bar-wrap {
-  width: 70px; height: 8px;
+  width: 70px; height: 10px;
   background: var(--cream-deep);
-  border-radius: 4px;
+  border-radius: 5px;
   overflow: hidden;
+  border: 1px solid var(--jc-deep);
 }
 .tally-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--turf), var(--turf-bright));
+  background: linear-gradient(90deg, var(--jc-main), var(--jc-light));
+  box-shadow: 0 0 8px var(--jc-glow);
   transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
 }
 .tally-row.first .tally-bar {
   background: linear-gradient(90deg, var(--gold), var(--gold-glow));
+  box-shadow: 0 0 12px var(--gold-glow);
 }
 .tally-votes {
   font-family: 'Bebas Neue', cursive;
-  font-size: 16px;
-  color: var(--turf-deep);
+  font-size: 18px;
+  color: var(--jc-main);
   min-width: 36px;
   text-align: right;
+  text-shadow: 0 0 8px var(--jc-glow);
 }
 
 /* ===== ステータス ===== */
 .status-block {
   text-align: center;
-  padding: 24px 20px;
-  background: var(--cream-soft);
-  border: 2px solid var(--turf);
+  padding: 28px 20px;
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 3px solid var(--jc-main);
   border-radius: 14px;
-  box-shadow: 0 3px 0 var(--turf-deep);
+  box-shadow: 0 5px 0 var(--jc-deep), 0 0 30px var(--jc-glow);
+  position: relative;
+  overflow: hidden;
 }
-.status-block.success { border-color: var(--gold); box-shadow: 0 3px 0 var(--gold); }
-.status-block .icon { font-size: 36px; margin-bottom: 8px; display: block; }
+.status-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--jc-deep), var(--gold), var(--jc-deep));
+}
+.status-block.success { border-color: var(--gold); box-shadow: 0 5px 0 var(--gold), 0 0 30px var(--gold-glow); }
+.status-block .icon { font-size: 48px; margin-bottom: 8px; display: block; filter: drop-shadow(0 4px 8px var(--jc-glow)); }
 .status-block .title {
   font-family: 'Dela Gothic One', cursive;
-  font-size: 22px;
+  font-size: 24px;
   color: var(--turf-deep);
   margin-bottom: 6px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.08);
 }
 .status-block .desc { font-size: 13px; color: var(--text-soft); font-weight: 700; }
 .your-pick {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255,216,109,0.18);
+  background: linear-gradient(135deg, var(--gold-glow), rgba(255,216,109,0.3));
   border: 2px solid var(--gold);
   border-radius: 10px;
-  padding: 8px 14px;
-  margin-top: 12px;
+  padding: 10px 18px;
+  margin-top: 14px;
   font-size: 13px;
   font-weight: 700;
   font-family: 'Noto Sans JP', sans-serif;
   color: var(--turf-deep);
+  box-shadow: 0 0 16px var(--gold-glow);
 }
-.your-pick b { color: var(--red-deep); font-family: 'Dela Gothic One', cursive; font-weight: 400; }
+.your-pick b { color: var(--jc-deep); font-family: 'Dela Gothic One', cursive; font-weight: 400; font-size: 15px; }
 
-/* ===== 全陣営公開 ===== */
-.all-jinei { display: grid; gap: 10px; margin-top: 14px; }
+/* ===== 全陣営公開（バトルロイヤル） ===== */
+.all-jinei { display: grid; gap: 12px; margin-top: 14px; }
 .jinei-result {
   display: flex; align-items: center; gap: 12px;
-  padding: 12px 14px;
-  background: var(--cream-soft);
-  border: 2px solid var(--turf);
-  border-radius: 10px;
-  box-shadow: 0 3px 0 var(--turf-deep);
+  padding: 14px;
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2.5px solid var(--turf);
+  border-radius: 12px;
+  box-shadow: 0 4px 0 var(--turf-deep);
+  position: relative;
+  overflow: hidden;
+}
+.jinei-result-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  background: var(--turf-deep);
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
 }
 .jinei-result-info { flex: 1; min-width: 0; }
 .jinei-result-name {
   font-family: 'Dela Gothic One', cursive;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--turf-deep);
+  margin-bottom: 1px;
 }
 .jinei-result-style {
   font-size: 10px;
   color: var(--text-soft);
   font-weight: 700;
-  margin-top: 1px;
 }
 .jinei-result-pick {
   text-align: right;
@@ -478,26 +770,73 @@ nav, .hero, .section { position: relative; z-index: 2; }
 }
 .jinei-result.hit {
   border-color: var(--gold);
-  box-shadow: 0 3px 0 var(--gold), 0 0 18px rgba(255,216,109,0.4);
-  background: linear-gradient(135deg, rgba(255,216,109,0.18), var(--cream-soft));
+  background: linear-gradient(135deg, var(--gold-glow), #fff);
+  box-shadow: 0 4px 0 var(--gold), 0 0 30px var(--gold-glow);
+  animation: hitGlow 2s ease-in-out infinite;
+}
+@keyframes hitGlow {
+  0%,100% { box-shadow: 0 4px 0 var(--gold), 0 0 30px var(--gold-glow); }
+  50% { box-shadow: 0 4px 0 var(--gold), 0 0 60px var(--gold-glow); }
 }
 .jinei-result.hit .jinei-result-pick { color: var(--gold); }
-.hit-badge {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--gold);
-  background: var(--turf-deep);
-  padding: 4px 8px;
-  border-radius: 6px;
-  margin-left: 8px;
+.jinei-result.hit .jinei-result-avatar {
+  border-color: var(--gold-glow);
+  box-shadow: 0 0 24px var(--gold-glow);
+  transform: scale(1.05);
+}
+.jinei-result.miss { opacity: 0.55; filter: grayscale(0.5); }
+.hit-crown {
+  position: absolute;
+  top: -10px; left: 12px;
+  font-size: 22px;
+  filter: drop-shadow(0 4px 8px var(--gold-glow));
+  animation: crownBounce 1.2s ease-in-out infinite;
+}
+@keyframes crownBounce {
+  0%,100% { transform: translateY(0) rotate(-10deg); }
+  50% { transform: translateY(-4px) rotate(10deg); }
 }
 
-/* ===== 未入隊画面 ===== */
-.locked {
-  text-align: center;
-  padding: 40px 24px;
+/* ===== 投票完了オーバーレイ ===== */
+.vote-overlay {
+  position: fixed; inset: 0;
+  background: radial-gradient(circle, rgba(0,0,0,0.7), rgba(0,0,0,0.95));
+  z-index: 1500;
+  display: none;
+  align-items: center; justify-content: center;
+  flex-direction: column;
+  gap: 20px;
 }
+.vote-overlay.show { display: flex; animation: overlayIn 0.3s ease-out; }
+@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+.vote-overlay-text {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 48px;
+  color: var(--gold-glow);
+  text-shadow:
+    0 0 30px var(--jc-glow),
+    0 0 60px var(--gold-glow),
+    0 4px 0 rgba(0,0,0,0.6);
+  letter-spacing: 0.1em;
+  animation: textBurst 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes textBurst {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.vote-overlay-sub {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: var(--cream);
+  opacity: 0;
+  animation: fadeUp 0.5s 0.4s ease-out forwards;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 0.85; transform: translateY(0); } }
+
+/* ===== 未入隊 ===== */
+.locked { text-align: center; padding: 40px 24px; }
 .locked .lock-emoji {
   font-size: 68px;
   margin-bottom: 16px;
@@ -535,17 +874,10 @@ nav, .hero, .section { position: relative; z-index: 2; }
   letter-spacing: 3px;
   border: 2px solid var(--red-deep);
   box-shadow: 0 5px 0 var(--red-deep), 0 8px 20px rgba(197,41,42,0.4);
-  transition: transform 0.15s;
 }
-.locked .cta:hover { transform: translateY(-2px); }
-.locked .cta:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--red-deep); }
 
 /* ===== ローディング ===== */
-.loading {
-  text-align: center;
-  padding: 100px 20px;
-  color: var(--text-soft);
-}
+.loading { text-align: center; padding: 100px 20px; color: var(--text-soft); }
 .spinner {
   width: 44px; height: 44px;
   border: 4px solid rgba(14,46,31,0.18);
@@ -583,7 +915,6 @@ nav, .hero, .section { position: relative; z-index: 2; }
 .toast.error { border-color: var(--red); }
 .toast.success { border-color: var(--gold-glow); }
 
-/* ===== アニメ ===== */
 @keyframes flashIn {
   0% { transform: scale(0.92); opacity: 0; }
   60% { transform: scale(1.02); opacity: 1; }
@@ -600,14 +931,34 @@ nav, .hero, .section { position: relative; z-index: 2; }
 </head>
 <body>
 
+<!-- ===== ナビ（indexと同じ） ===== -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+  <div class="hamburger" id="ham" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay">
+  <a href="index.html" onclick="toggleMenu()">HOME</a>
+  <a href="afrohorse_characters.html" onclick="toggleMenu()">CHARACTERS</a>
+  <a href="tools.html" onclick="toggleMenu()">TOOLS</a>
+  <a href="schedule.html" onclick="toggleMenu()">SCHEDULE</a>
+  <div class="divider"></div>
+  <a href="kizuna_race.html" onclick="toggleMenu()">KIZUNA RACE</a>
+  <a href="mypage.html" onclick="toggleMenu()">MY PAGE</a>
+</div>
+
 <!-- ===== ヒーロー ===== -->
 <section class="hero">
   <img src="images/kizuna_race_title.png" alt="みんなのキズナレース" class="kizuna-title-img">
   <p class="hero-sub">6つの陣営、6つの予想スタイル<br>あなたの本命が陣営の運命を決める</p>
 </section>
 
+<!-- バトル参戦バナー -->
+<div class="battle-banner" id="battleBanner"><span>⚔ VOTING PHASE ⚔</span></div>
+
 <main>
-  <!-- ローディング -->
   <div class="section">
     <div id="loading" class="loading">
       <div class="spinner"></div>
@@ -615,26 +966,21 @@ nav, .hero, .section { position: relative; z-index: 2; }
     </div>
   </div>
 
-  <!-- 未入隊 -->
   <div id="lockedView" class="section hidden">
     <div class="locked">
       <div class="lock-emoji">🐴</div>
       <h1>キズナレースには<br>陣営入隊が必要</h1>
-      <p>
-        6つの陣営から「キズナキャラ」を選んで、<br>
-        入隊カードを発行してから参戦できます。
-      </p>
+      <p>6つの陣営から「キズナキャラ」を選んで、<br>入隊カードを発行してから参戦できます。</p>
       <a href="register.html" class="cta">入隊する →</a>
     </div>
   </div>
 
-  <!-- メイン -->
   <div id="mainView" class="hidden">
 
     <!-- レース情報 -->
     <div class="section">
       <div class="race-card flash-in">
-        <div class="race-tag">THIS WEEK&apos;S RACE</div>
+        <div class="race-tag">⚔ THIS WEEK&apos;S RACE ⚔</div>
         <div class="race-title" id="raceName">—</div>
         <div class="race-info" id="raceMeta">—</div>
         <div class="countdown">
@@ -643,12 +989,24 @@ nav, .hero, .section { position: relative; z-index: 2; }
         </div>
       </div>
 
-      <div class="jinei-badge">
-        <div class="jinei-icon" id="jineiIcon"></div>
-        <div class="jinei-info">
-          <div class="jinei-tag">YOUR FACTION</div>
-          <div class="jinei-name" id="jineiName">—</div>
-          <div class="jinei-style" id="jineiStyle">—</div>
+      <!-- 戦士プロフィール -->
+      <div class="warrior-card flash-in">
+        <div class="warrior-inner">
+          <div class="warrior-avatar-wrap">
+            <div class="warrior-ring"></div>
+            <img class="warrior-avatar" id="warriorAvatar" src="" alt="">
+          </div>
+          <div class="warrior-info">
+            <div class="warrior-tag">⚔ YOUR FACTION ⚔</div>
+            <div class="warrior-name" id="warriorName">—</div>
+            <div class="warrior-style" id="warriorStyle">—</div>
+            <div class="rank-row">
+              <span class="rank-label">RANK</span>
+              <span class="rank-value" id="rankValue">新馬</span>
+              <span class="rank-points" id="rankPoints">0pt</span>
+            </div>
+            <div class="points-bar-wrap"><div class="points-bar" id="pointsBar" style="width:0%"></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -657,31 +1015,29 @@ nav, .hero, .section { position: relative; z-index: 2; }
     <div id="voteArea" class="section hidden">
       <div class="sec-label">
         <div class="sec-label-en">SELECT YOUR PICK</div>
-        <div class="sec-label-ja">本命を投票</div>
+        <div class="sec-label-ja">本命を選べ</div>
       </div>
       <div class="horse-grid" id="horseGrid"></div>
       <div class="vote-btn-wrap">
-        <button class="vote-btn" id="voteBtn" disabled>本命を選択してください</button>
+        <button class="vote-btn" id="voteBtn" disabled>本命を選択せよ</button>
       </div>
     </div>
 
     <!-- 投票済み -->
     <div id="votedArea" class="section hidden">
       <div class="status-block success">
-        <span class="icon">🎯</span>
-        <div class="title">投票完了！</div>
-        <div class="desc">締切まで結果をお待ちください</div>
-        <div class="your-pick">あなたの本命：<b id="myPickText">—</b></div>
+        <span class="icon">⚔</span>
+        <div class="title">PARTICIPATED!</div>
+        <div class="desc">投票完了。陣営の本命に反映されました</div>
+        <div class="your-pick">YOUR PICK：<b id="myPickText">—</b></div>
       </div>
 
       <div class="sec-label" style="margin-top:32px">
         <div class="sec-label-en" id="myJineiTitleEn">FACTION TALLY</div>
-        <div class="sec-label-ja">陣営の状況</div>
+        <div class="sec-label-ja">陣営内ランキング</div>
       </div>
       <div class="tally-card" id="tallyCard">
-        <div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">
-          まだ票が集まっていません
-        </div>
+        <div style="text-align:center;color:var(--text-soft);font-size:12px;padding:12px;font-weight:700">まだ票が集まっていません</div>
       </div>
     </div>
 
@@ -691,12 +1047,12 @@ nav, .hero, .section { position: relative; z-index: 2; }
         <span class="icon" id="closedIcon">🏁</span>
         <div class="title" id="closedTitle">CLOSED</div>
         <div class="desc" id="closedDesc">投票締切。結果をお待ちください</div>
-        <div class="your-pick" id="myPickClosed" style="display:none">あなたの本命：<b id="myPickText2">—</b></div>
+        <div class="your-pick" id="myPickClosed" style="display:none">YOUR PICK：<b id="myPickText2">—</b></div>
       </div>
 
       <div class="sec-label" style="margin-top:32px">
-        <div class="sec-label-en">ALL FACTIONS</div>
-        <div class="sec-label-ja">全陣営の本命</div>
+        <div class="sec-label-en">⚔ 6 FACTIONS BATTLE ⚔</div>
+        <div class="sec-label-ja">6陣営の本命</div>
       </div>
       <div class="all-jinei" id="allJinei"></div>
     </div>
@@ -704,23 +1060,85 @@ nav, .hero, .section { position: relative; z-index: 2; }
   </div>
 </main>
 
+<!-- 投票完了オーバーレイ -->
+<div class="vote-overlay" id="voteOverlay">
+  <div class="vote-overlay-text">⚔ ENGAGED!</div>
+  <div class="vote-overlay-sub">YOUR PICK IS LOCKED IN</div>
+</div>
+
 <div id="toast" class="toast">通知</div>
 
 <script>
+// ============================================================
+// 設定
+// ============================================================
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxfKiXErtclIE05J4cx_MuOiHFzEIQ07Er9ScKhCzOkFiQ6pMlLuOo3nb6uoQE8TWeQCw/exec';
 
+// 6陣営マスタ（jineiId → 表示情報＆陣営カラー）
 const JINEI_MASTER = {
-  afuwa:    { name: 'アフワ陣営',         style: '実績・本命派',     color: '#c5292a' },
-  yancha:   { name: 'やんちゃアフワ陣営', style: '穴党・ロマン派',   color: '#c8941d' },
-  buruma:   { name: 'ブルマ陣営',         style: 'データ派',         color: '#3b82f6' },
-  chafuwa:  { name: 'チャフワ陣営',       style: '直感・パドック派', color: '#f97316' },
-  kurofuwa: { name: 'クロフワ陣営',       style: '調教派',           color: '#1f2937' },
-  ginma:    { name: 'ギンマ陣営',         style: '血統派',           color: '#94a3b8' },
+  afuwa: {
+    name: 'アフワ陣営', style: '実績・本命派',
+    img: 'images/ikusa/ikusa_afuwa.png',
+    main: '#c5292a', deep: '#7a1212', light: '#ff5a5a', glow: 'rgba(197,41,42,0.55)',
+  },
+  yancha: {
+    name: 'やんちゃアフワ陣営', style: '穴党・ロマン派',
+    img: 'images/ikusa/ikusa_yanchaahuwa.png',
+    main: '#d4a017', deep: '#7a5a05', light: '#ffd166', glow: 'rgba(212,160,23,0.55)',
+  },
+  buruma: {
+    name: 'ブルマ陣営', style: 'データ派',
+    img: 'images/ikusa/ikusa_buruma.png',
+    main: '#2563eb', deep: '#1e40af', light: '#60a5fa', glow: 'rgba(37,99,235,0.55)',
+  },
+  chafuwa: {
+    name: 'チャフワ陣営', style: '直感・パドック派',
+    img: 'images/ikusa/ikusa_chahuwa.png',
+    main: '#c2410c', deep: '#7c2d12', light: '#fb923c', glow: 'rgba(194,65,12,0.55)',
+  },
+  kurofuwa: {
+    name: 'クロフワ陣営', style: '調教派',
+    img: 'images/ikusa/ikusa_kurohuwa.png',
+    main: '#1f2937', deep: '#0a0e14', light: '#6b7280', glow: 'rgba(31,41,55,0.55)',
+  },
+  ginma: {
+    name: 'ギンマ陣営', style: '血統派',
+    img: 'images/ikusa/ikusa_ginma.png',
+    main: '#94a3b8', deep: '#475569', light: '#cbd5e1', glow: 'rgba(148,163,184,0.55)',
+  },
 };
 
+// ランクマスタ
+const RANKS = [
+  { min: 0,    name: '新馬' },
+  { min: 10,   name: '未勝利' },
+  { min: 50,   name: '1勝クラス' },
+  { min: 150,  name: '2勝クラス' },
+  { min: 300,  name: '3勝クラス' },
+  { min: 500,  name: 'オープン' },
+  { min: 800,  name: '重賞馬' },
+  { min: 1200, name: 'GⅢ馬' },
+  { min: 1700, name: 'GⅡ馬' },
+  { min: 2500, name: 'GⅠ馬' },
+];
+
+// ============================================================
+// ハンバーガー
+// ============================================================
+function toggleMenu() {
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('menuOverlay').classList.toggle('open');
+}
+
+// ============================================================
+// 状態
+// ============================================================
 let race = null, horses = [], myKizuna = null, myUserData = null, myVote = null;
 let countdownTimer = null, selectedHorse = null;
 
+// ============================================================
+// メイン
+// ============================================================
 async function main() {
   const user = await initAuth();
   if (!user) {
@@ -737,6 +1155,10 @@ async function main() {
     return;
   }
 
+  // 陣営カラーで画面を染める
+  applyJineiColor(myKizuna.jineiId);
+
+  // レース情報
   try {
     const data = await fetchRaceData();
     if (data.error) throw new Error(data.error);
@@ -749,10 +1171,14 @@ async function main() {
     return;
   }
 
+  // 既存の投票
   myVote = await fetchMyVote(race.raceId, user.userId);
 
+  // ポイント取得（仮：まだコレクションに無くてもOK）
+  const myPoints = await fetchMyPoints(user.userId);
+
   renderHero();
-  renderJineiBadge();
+  renderWarrior(myPoints);
   await renderMainContent();
 
   document.getElementById('loading').classList.add('hidden');
@@ -761,6 +1187,21 @@ async function main() {
   startCountdown();
 }
 
+// 陣営カラーを CSS変数に流し込む
+function applyJineiColor(jineiId) {
+  const m = JINEI_MASTER[jineiId];
+  if (!m) return;
+  document.body.classList.add('with-jinei');
+  const root = document.documentElement;
+  root.style.setProperty('--jc-main', m.main);
+  root.style.setProperty('--jc-deep', m.deep);
+  root.style.setProperty('--jc-light', m.light);
+  root.style.setProperty('--jc-glow', m.glow);
+}
+
+// ============================================================
+// データ取得
+// ============================================================
 async function fetchRaceData() {
   const res = await fetch(`${GAS_URL}?action=getAll&t=${Date.now()}`);
   return res.json();
@@ -771,6 +1212,12 @@ async function fetchMyVote(raceId, userId) {
     const doc = await db.collection('kizuna_votes').doc(docId).get();
     return doc.exists ? doc.data() : null;
   } catch (e) { return null; }
+}
+async function fetchMyPoints(userId) {
+  try {
+    const doc = await db.collection('kizuna_points').doc(userId).get();
+    return doc.exists ? doc.data() : { totalPoints: 0 };
+  } catch (e) { return { totalPoints: 0 }; }
 }
 async function fetchJineiSummary(raceId, jineiId) {
   try {
@@ -789,6 +1236,24 @@ async function fetchAllJineiSummary(raceId) {
   } catch (e) { return {}; }
 }
 
+// ============================================================
+// ランク計算
+// ============================================================
+function getRank(points) {
+  let current = RANKS[0];
+  let next = RANKS[1];
+  for (let i = 0; i < RANKS.length; i++) {
+    if (points >= RANKS[i].min) {
+      current = RANKS[i];
+      next = RANKS[i+1] || null;
+    }
+  }
+  return { current, next };
+}
+
+// ============================================================
+// 描画
+// ============================================================
 function renderHero() {
   document.getElementById('raceName').textContent = race.name || '—';
   const dl = race.deadline ? new Date(race.deadline) : null;
@@ -797,22 +1262,40 @@ function renderHero() {
     `<b>${race.place || '—'}</b> ${race.raceNum || ''}R / 締切 <b>${dlStr}</b>`;
 }
 
-function renderJineiBadge() {
-  const master = JINEI_MASTER[myKizuna.jineiId] || { name: myKizuna.jinei || '陣営', style: myKizuna.jineiStyle || '' };
-  document.getElementById('jineiName').textContent = master.name;
-  document.getElementById('jineiStyle').textContent = master.style;
-  if (myKizuna.oshiId) {
-    document.getElementById('jineiIcon').style.backgroundImage = `url('images/cards/card_${myKizuna.oshiId}.png')`;
-  } else {
-    document.getElementById('jineiIcon').style.background = master.color || 'var(--turf)';
+function renderWarrior(points) {
+  const m = JINEI_MASTER[myKizuna.jineiId] || { name: myKizuna.jinei || '陣営', style: myKizuna.jineiStyle || '', img: '' };
+  document.getElementById('warriorName').textContent = m.name;
+  document.getElementById('warriorStyle').textContent = m.style;
+  if (m.img) document.getElementById('warriorAvatar').src = m.img;
+
+  const totalPoints = (points && points.totalPoints) || 0;
+  const { current, next } = getRank(totalPoints);
+  document.getElementById('rankValue').textContent = current.name;
+  document.getElementById('rankPoints').textContent = `${totalPoints}pt`;
+
+  // ポイントバー（次のランクまでの進捗）
+  let pct = 100;
+  if (next) {
+    const range = next.min - current.min;
+    const progress = totalPoints - current.min;
+    pct = Math.min(100, Math.max(0, (progress / range) * 100));
   }
+  setTimeout(() => {
+    document.getElementById('pointsBar').style.width = pct + '%';
+  }, 200);
 }
 
 async function renderMainContent() {
   const status = race.status || 'open';
   const isClosed = status === 'closed' || status === 'settled' || isPastDeadline();
-  if (isClosed) await renderClosed(status);
-  else if (myVote) await renderVoted();
+  if (isClosed) {
+    document.getElementById('battleBanner').innerHTML = '<span>🏁 RESULT PHASE 🏁</span>';
+    await renderClosed(status);
+  }
+  else if (myVote) {
+    document.getElementById('battleBanner').innerHTML = '<span>⚔ ENGAGED ⚔</span>';
+    await renderVoted();
+  }
   else renderVoteArea();
 }
 function isPastDeadline() {
@@ -845,7 +1328,7 @@ function selectHorse(el) {
   selectedHorse = el.dataset.name;
   const btn = document.getElementById('voteBtn');
   btn.disabled = false;
-  btn.textContent = `「${selectedHorse}」に投票`;
+  btn.textContent = `⚔ ${selectedHorse} に参戦 ⚔`;
 }
 
 async function submitVote() {
@@ -888,12 +1371,16 @@ async function submitVote() {
       lastVotedAt: firebase.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
 
-    showToast('🎯 投票完了！', 'success');
+    // ENGAGED演出
+    showVoteOverlay();
     myVote = { horseName: selectedHorse, jineiId: myKizuna.jineiId };
+
     setTimeout(async () => {
+      hideVoteOverlay();
       document.getElementById('voteArea').classList.add('hidden');
+      document.getElementById('battleBanner').innerHTML = '<span>⚔ ENGAGED ⚔</span>';
       await renderVoted();
-    }, 800);
+    }, 1800);
 
   } catch (err) {
     console.error(err);
@@ -905,17 +1392,24 @@ async function submitVote() {
     } else {
       showToast('投票に失敗しました', 'error');
       btn.disabled = false;
-      btn.textContent = `「${selectedHorse}」に投票`;
+      btn.textContent = `⚔ ${selectedHorse} に参戦 ⚔`;
     }
   }
+}
+
+function showVoteOverlay() {
+  document.getElementById('voteOverlay').classList.add('show');
+}
+function hideVoteOverlay() {
+  document.getElementById('voteOverlay').classList.remove('show');
 }
 
 async function renderVoted() {
   document.getElementById('votedArea').classList.remove('hidden');
   document.getElementById('myPickText').textContent = myVote.horseName;
-  const master = JINEI_MASTER[myKizuna.jineiId];
-  if (master) {
-    document.getElementById('myJineiTitleEn').textContent = `${master.name.replace('陣営','').toUpperCase()} TALLY`;
+  const m = JINEI_MASTER[myKizuna.jineiId];
+  if (m) {
+    document.getElementById('myJineiTitleEn').textContent = `${m.name.replace('陣営','').toUpperCase()} TALLY`;
   }
   await refreshTally();
   setInterval(refreshTally, 30000);
@@ -960,28 +1454,29 @@ async function renderClosed(status) {
   if (status === 'settled' && race.winner) {
     document.getElementById('closedIcon').textContent = '🏆';
     document.getElementById('closedTitle').textContent = 'RESULT';
-    document.getElementById('closedDesc').innerHTML = `1着：<b style="color:var(--red-deep)">${escapeHtml(race.winner)}</b>`;
+    document.getElementById('closedDesc').innerHTML = `1着：<b style="color:var(--jc-deep)">${escapeHtml(race.winner)}</b>`;
   }
 
   const allSummary = await fetchAllJineiSummary(race.raceId);
   const list = document.getElementById('allJinei');
   list.innerHTML = Object.keys(JINEI_MASTER).map(jid => {
-    const master = JINEI_MASTER[jid];
+    const m = JINEI_MASTER[jid];
     const sum = allSummary[jid];
-    let pickName = '—';
-    let pickVotes = 0;
-    let total = 0;
+    let pickName = '—', pickVotes = 0, total = 0;
     if (sum && sum.votes) {
       total = sum.totalVotes || 0;
       const top = Object.entries(sum.votes).sort((a,b) => b[1] - a[1])[0];
       if (top) { pickName = top[0]; pickVotes = top[1]; }
     }
     const isHit = race.winner && race.winner === pickName;
+    const isMiss = race.winner && !isHit;
     return `
-      <div class="jinei-result ${isHit ? 'hit' : ''}" style="border-left:4px solid ${master.color}">
+      <div class="jinei-result ${isHit ? 'hit' : ''} ${isMiss ? 'miss' : ''}" style="border-left:5px solid ${m.main}">
+        ${isHit ? '<div class="hit-crown">👑</div>' : ''}
+        <img class="jinei-result-avatar" src="${m.img}" alt="">
         <div class="jinei-result-info">
-          <div class="jinei-result-name">${master.name}${isHit ? '<span class="hit-badge">🎯 HIT</span>' : ''}</div>
-          <div class="jinei-result-style">${master.style}</div>
+          <div class="jinei-result-name">${m.name}</div>
+          <div class="jinei-result-style">${m.style}</div>
         </div>
         <div>
           <div class="jinei-result-pick">${escapeHtml(pickName)}</div>
