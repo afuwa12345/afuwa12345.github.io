@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>マイページ | AFRO Horse</title>
+<meta name="description" content="AFRO Horseのマイページ。あなたの会員カード、陣営情報を確認できます。">
+<meta name="theme-color" content="#0e2e1f">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="canonical" href="https://afro-horse.com/mypage.html">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&family=Kosugi+Maru&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+body {
+  background: #0a1f15;
+  color: #fff;
+  font-family: 'Noto Sans JP', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ヘッダー */
+.header {
+  background: #0e2e1f;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #1a4a32;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 20px;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+.home-link {
+  color: #c0e8d0;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ローディング */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: #87b89c;
+}
+.loading.hide { display: none; }
+
+/* 未ログイン */
+.not-login {
+  display: none;
+  text-align: center;
+  padding: 80px 20px;
+}
+.not-login.show { display: block; }
+.not-login h2 {
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+.not-login p {
+  color: #c0e8d0;
+  margin-bottom: 30px;
+}
+
+/* マイページコンテンツ */
+.mypage {
+  display: none;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+.mypage.show { display: block; }
+
+/* タイトル */
+.page-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.page-title .label {
+  font-size: 11px;
+  color: #87b89c;
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+}
+.page-title h1 {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+}
+
+/* 会員カード */
+.card-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+#cardCanvas {
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(255, 217, 107, 0.25);
+  margin-bottom: 16px;
+}
+
+/* 情報カード */
+.info-card {
+  background: rgba(26, 74, 50, 0.5);
+  border: 1px solid #1a4a32;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.info-card h2 {
+  font-size: 14px;
+  color: #ffd96b;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.info-row:last-child { border-bottom: none; }
+.info-row .label {
+  font-size: 13px;
+  color: #87b89c;
+}
+.info-row .value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+.info-row .value.highlight {
+  color: #ffd96b;
+}
+.info-row img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  padding: 3px;
+}
+
+/* ボタン */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-align: center;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.btn-primary {
+  background: #ffd96b;
+  color: #0a1f15;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 217, 107, 0.4);
+}
+.btn-secondary {
+  background: transparent;
+  color: #87b89c;
+  border: 1px solid #1a4a32;
+}
+.btn-line {
+  background: #06C755;
+  color: #fff;
+  font-size: 16px;
+}
+.btn-danger {
+  background: transparent;
+  color: #c0392b;
+  border: 1px solid rgba(192, 57, 43, 0.3);
+}
+.btn-danger:hover {
+  background: rgba(192, 57, 43, 0.1);
+}
+
+/* ===== ランクスタンプ ON/OFF トグル ===== */
+.stamp-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,217,107,0.3);
+  border-radius: 999px;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+}
+.stamp-toggle-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffd96b;
+  letter-spacing: 0.04em;
+}
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #2a3a30;
+  border: 2px solid rgba(255,217,107,0.3);
+  border-radius: 999px;
+  transition: 0.3s;
+}
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #87b89c;
+  border-radius: 50%;
+  transition: 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+.toggle-switch input:checked + .toggle-slider {
+  background: linear-gradient(135deg, #ffd96b, #f4b942);
+  border-color: #fff5b8;
+  box-shadow: 0 0 12px rgba(255,217,107,0.5);
+}
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translate(22px, -50%);
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 8px rgba(255,217,107,0.6);
+}
+
+/* ===== キズナレース戦績 ===== */
+.kizuna-stats-card {
+  background: linear-gradient(135deg, rgba(26,74,50,0.6), rgba(14,46,31,0.8));
+  border: 2px solid #ffd96b;
+  position: relative;
+  overflow: hidden;
+}
+.kizuna-stats-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,217,107,0.15), transparent 50%),
+    radial-gradient(circle at 80% 100%, rgba(255,217,107,0.1), transparent 50%);
+  pointer-events: none;
+}
+.kizuna-stats-card > * { position: relative; z-index: 1; }
+
+/* ランクブロック */
+.rank-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,217,107,0.3);
+}
+.rank-stamp {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 12px rgba(255,217,107,0.4));
+  animation: stampFloat 3s ease-in-out infinite;
+}
+@keyframes stampFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+.rank-info { flex: 1; min-width: 0; }
+.rank-name {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 22px;
+  color: #ffd96b;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  text-shadow: 0 0 12px rgba(255,217,107,0.6);
+}
+.rank-points {
+  font-size: 13px;
+  color: #c0e8d0;
+  font-weight: 700;
+}
+.rank-points span {
+  font-size: 22px;
+  color: #fff;
+  font-weight: 900;
+  margin-right: 2px;
+}
+
+/* 次ランク進捗 */
+.progress-wrap {
+  margin-bottom: 16px;
+}
+.progress-wrap.hidden { display: none; }
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #87b89c;
+  margin-bottom: 4px;
+}
+.progress-next {
+  color: #ffd96b;
+  font-weight: 700;
+}
+.progress-bar-wrap {
+  height: 8px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255,217,107,0.2);
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd96b, #fff5b8);
+  box-shadow: 0 0 10px rgba(255,217,107,0.6);
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+  overflow: hidden;
+}
+.progress-bar::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent);
+}
+
+/* 戦績グリッド */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.stat-item {
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 8px 4px;
+  text-align: center;
+}
+.stat-label {
+  font-size: 9px;
+  color: #87b89c;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+.stat-value {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 22px;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.stat-value.hit { color: #ffd96b; }
+.stat-value.miss { color: #87b89c; }
+.stat-value.rate { color: #ffd96b; }
+.stat-unit {
+  font-size: 9px;
+  color: #87b89c;
+}
+
+/* キズナレースへボタン */
+.btn-kizuna {
+  background: linear-gradient(135deg, #c5292a, #8b1b1b);
+  color: #ffd96b;
+  border: 2px solid #ffd96b;
+  font-family: 'Dela Gothic One', sans-serif;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.4), 0 0 16px rgba(255,217,107,0.3);
+  margin-bottom: 0;
+  margin-top: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-kizuna:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.4), 0 0 20px rgba(255,217,107,0.5);
+}
+.btn-kizuna::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,217,107,0.3) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: btnSheen 3s ease-in-out infinite;
+}
+@keyframes btnSheen {
+  0%,100% { transform: translateX(-100%); }
+  60% { transform: translateX(100%); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* フッター */
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: #587264;
+  font-size: 12px;
+  border-top: 1px solid #1a4a32;
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html" class="logo">AFRO Horse</a>
+  <a href="index.html" class="home-link">← HOME</a>
+</header>
+
+<!-- ローディング -->
+<div class="loading" id="loading">
+  <div class="spinner" style="width:32px; height:32px; border-color:#ffd96b; border-top-color:transparent;"></div>
+  <p style="margin-top:16px;">読み込み中...</p>
+</div>
+
+<!-- 未ログイン -->
+<div class="not-login" id="notLogin">
+  <h2>マイページを見るには</h2>
+  <p>ログインが必要です</p>
+  <button class="btn btn-line" onclick="login()" style="max-width:300px; margin:0 auto;">
+    LINEでログイン
+  </button>
+  <p style="margin-top:20px; font-size:13px; color:#87b89c;">
+    まだ会員登録してない方は<br>
+    <a href="register.html" style="color:#ffd96b;">こちらから登録</a>
+  </p>
+</div>
+
+<!-- マイページ -->
+<div class="mypage" id="mypage">
+  <div class="page-title">
+    <div class="label">MEMBER</div>
+    <h1>マイページ</h1>
+  </div>
+  
+  <!-- カード -->
+  <div class="card-section">
+    <canvas id="cardCanvas"></canvas>
+
+    <!-- ランクスタンプ ON/OFF -->
+    <div class="stamp-toggle">
+      <span class="stamp-toggle-label">🏆 ランクスタンプ</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="stampToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <button class="btn btn-primary" onclick="downloadCard()">
+      📥 カードを保存
+    </button>
+  </div>
+  
+  <!-- 会員情報 -->
+  <div class="info-card">
+    <h2>👤 会員情報</h2>
+    <div class="info-row">
+      <span class="label">会員番号</span>
+      <span class="value highlight" id="infoMemberNo">#---</span>
+    </div>
+    <div class="info-row">
+      <span class="label">ユーザーネーム</span>
+      <span class="value" id="infoNickname">---</span>
+    </div>
+    <div class="info-row">
+      <span class="label">入隊日</span>
+      <span class="value" id="infoJoinedAt">---</span>
+    </div>
+  </div>
+  
+  <!-- 陣営情報 -->
+  <div class="info-card">
+    <h2>🎌 陣営</h2>
+    <div class="info-row">
+      <span class="label">所属陣営</span>
+      <span class="value highlight" id="infoJinei">---</span>
+    </div>
+    <div class="info-row">
+      <span class="label">予想スタイル</span>
+      <span class="value" id="infoJineiStyle">---</span>
+    </div>
+  </div>
+  
+  <!-- 推し馬 -->
+  <div class="info-card">
+    <h2>💛 推し馬</h2>
+    <div class="info-row">
+      <span class="label">マイパートナー</span>
+      <span style="display:flex; align-items:center; gap:10px;">
+        <span class="value highlight" id="infoOshi">---</span>
+        <img id="infoOshiImg" src="" alt="">
+      </span>
+    </div>
+  </div>
+
+  <!-- キズナレース戦績 -->
+  <div class="info-card kizuna-stats-card">
+    <h2>⚔ キズナレース戦績</h2>
+
+    <!-- ランクブロック -->
+    <div class="rank-block">
+      <img id="rankStampImg" src="" alt="" class="rank-stamp">
+      <div class="rank-info">
+        <div class="rank-name" id="rankName">新馬</div>
+        <div class="rank-points"><span id="totalPoints">0</span> pt</div>
+      </div>
+    </div>
+
+    <!-- 次ランク進捗 -->
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-label">
+        <span>次のランクまで</span>
+        <span class="progress-next" id="progressNext">あと— pt で「—」</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- 戦績 -->
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-label">参戦</div>
+        <div class="stat-value" id="statRaces">0</div>
+        <div class="stat-unit">レース</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">個人的中</div>
+        <div class="stat-value hit" id="statHits">0</div>
+        <div class="stat-unit">回</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">ハズレ</div>
+        <div class="stat-value miss" id="statMiss">0</div>
+        <div class="stat-unit">回</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">的中率</div>
+        <div class="stat-value rate" id="statRate">—</div>
+        <div class="stat-unit">%</div>
+      </div>
+    </div>
+
+    <!-- キズナレースに行くボタン -->
+    <a href="kizuna_race.html" class="btn btn-kizuna">⚔ キズナレースへ ⚔</a>
+  </div>
+  
+  <!-- アクション -->
+  <div style="margin-top: 30px;">
+    <button class="btn btn-danger" onclick="confirmLogout()">
+      ログアウト
+    </button>
+  </div>
+</div>
+
+<footer class="footer">
+  © 2026 AFRO Horse. All rights reserved.
+</footer>
+
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+// ========================================
+// カードレイアウト設定
+// ========================================
+const CARD_LAYOUT = {
+  font: 'Kosugi Maru',
+  name:  { x: 230, y: 1088, size: 50, color: '#000000', weight: '700', align: 'left' },
+  jinei: { x: 230, y: 1153, size: 45, color: '#0e2e1f', weight: '700', align: 'left' },
+  no:    { x: 883, y: 129,  size: 55, color: '#000000', weight: '700', align: 'center' },
+  date:  { x: 847, y: 1132, size: 45, color: '#000000', weight: '700', align: 'center' },
+  rankStamp: { x: 906, y: 943, size: 176 }  // 中心基準
+};
+
+// 6キャラデータ（カード画像URL用）
+const CHARACTERS = [
+  { id: 'afuwa', name: 'アフワ', img: 'images/afuwa.png', cardImg: 'images/cards/card_afuwa.png' },
+  { id: 'yancha', name: 'やんちゃアフワ', img: 'images/yanchaahuwa.png', cardImg: 'images/cards/card_yancha.png' },
+  { id: 'buruma', name: 'ブルマ', img: 'images/buruma.png', cardImg: 'images/cards/card_buruma.png' },
+  { id: 'chahuwa', name: 'チャフワ', img: 'images/chahuwa.png', cardImg: 'images/cards/card_chahuwa.png' },
+  { id: 'kurohuwa', name: 'クロフワ', img: 'images/kurohuwa.png', cardImg: 'images/cards/card_kurohuwa.png' },
+  { id: 'ginma', name: 'ギンマ', img: 'images/ginma.png', cardImg: 'images/cards/card_ginma.png' }
+];
+
+// ========================================
+// ランクマスタ（9段階）
+// ========================================
+const RANKS = [
+  { min: 0,    name: '新馬',     img: 1 },
+  { min: 10,   name: '未勝利',   img: 2 },
+  { min: 50,   name: '1勝クラス', img: 3 },
+  { min: 150,  name: '2勝クラス', img: 4 },
+  { min: 300,  name: '3勝クラス', img: 5 },
+  { min: 500,  name: 'OPクラス',  img: 6 },
+  { min: 800,  name: 'G3',       img: 7 },
+  { min: 1700, name: 'G2',       img: 8 },
+  { min: 3000, name: 'G1',       img: 9 },
+];
+
+function getRank(points) {
+  let current = RANKS[0];
+  let next = RANKS[1];
+  for (let i = 0; i < RANKS.length; i++) {
+    if (points >= RANKS[i].min) {
+      current = RANKS[i];
+      next = RANKS[i+1] || null;
+    }
+  }
+  return { current, next };
+}
+
+let userInfo = null;
+let kizunaInfo = null;
+let kizunaPoints = { totalPoints: 0, hitCount: 0, missCount: 0 };
+
+// ========================================
+// 起動
+// ========================================
+async function main() {
+  const user = await initAuth();
+  
+  if (!user) {
+    showNotLogin();
+    return;
+  }
+  
+  // ユーザーデータ取得
+  userInfo = getCurrentUserData();
+  
+  // キズナデータ取得
+  kizunaInfo = await getKizunaData(user.userId);
+  
+  if (!kizunaInfo || !kizunaInfo.jineiId) {
+    // 未入隊 → 登録ページへ
+    alert('まだ入隊していません。会員登録ページに移動します。');
+    location.href = 'register.html';
+    return;
+  }
+  
+  // キズナポイント先読み（カード生成にも使うため）
+  try {
+    const doc = await db.collection('kizuna_points').doc(user.userId).get();
+    if (doc.exists) kizunaPoints = doc.data();
+  } catch (e) { console.error('points fetch error', e); }
+  
+  // 表示
+  showMyPage();
+}
+
+function showNotLogin() {
+  document.getElementById('loading').classList.add('hide');
+  document.getElementById('notLogin').classList.add('show');
+}
+
+function showMyPage() {
+  document.getElementById('loading').classList.add('hide');
+  document.getElementById('mypage').classList.add('show');
+  
+  // 情報埋め込み
+  fillInfo();
+  
+  // カード生成
+  generateCard();
+
+  // キズナレース戦績読み込み
+  loadKizunaStats();
+
+  // ランクスタンプON/OFFトグル
+  const toggle = document.getElementById('stampToggle');
+  if (toggle) {
+    toggle.addEventListener('change', () => generateCard());
+  }
+}
+
+// ========================================
+// キズナレース戦績
+// ========================================
+async function loadKizunaStats() {
+  const totalPoints = kizunaPoints.totalPoints || 0;
+  const hitCount = kizunaPoints.hitCount || 0;
+  const missCount = kizunaPoints.missCount || 0;
+  const totalRaces = hitCount + missCount;
+  const hitRate = totalRaces > 0 ? Math.round((hitCount / totalRaces) * 100) : null;
+
+  // ランク計算
+  const { current, next } = getRank(totalPoints);
+
+  // ランクスタンプ
+  document.getElementById('rankStampImg').src = `images/cards/rank/rank_${current.img}.png`;
+  document.getElementById('rankName').textContent = current.name;
+  document.getElementById('totalPoints').textContent = totalPoints;
+
+  // 進捗バー
+  const progressWrap = document.getElementById('progressWrap');
+  if (next) {
+    const range = next.min - current.min;
+    const progress = totalPoints - current.min;
+    const pct = Math.min(100, Math.max(0, (progress / range) * 100));
+    document.getElementById('progressNext').textContent = `あと${next.min - totalPoints}pt で「${next.name}」`;
+    setTimeout(() => {
+      document.getElementById('progressBar').style.width = pct + '%';
+    }, 300);
+  } else {
+    // 最高ランク
+    document.getElementById('progressNext').textContent = '🏆 最高ランク到達！';
+    document.getElementById('progressBar').style.width = '100%';
+  }
+
+  // 戦績
+  document.getElementById('statRaces').textContent = totalRaces;
+  document.getElementById('statHits').textContent = hitCount;
+  document.getElementById('statMiss').textContent = missCount;
+  document.getElementById('statRate').textContent = hitRate !== null ? hitRate : '—';
+}
+
+// ========================================
+// 情報を画面に埋め込み
+// ========================================
+function fillInfo() {
+  // 会員番号
+  document.getElementById('infoMemberNo').textContent = 
+    '#' + String(userInfo.memberNumber || '---').padStart(3, '0');
+  
+  // ニックネーム
+  document.getElementById('infoNickname').textContent = userInfo.nickname || '---';
+  
+  // 入隊日
+  if (kizunaInfo.joinedAt) {
+    const date = kizunaInfo.joinedAt.toDate ? kizunaInfo.joinedAt.toDate() : new Date(kizunaInfo.joinedAt);
+    const dateStr = date.getFullYear() + '.' + 
+                    String(date.getMonth() + 1).padStart(2, '0') + '.' + 
+                    String(date.getDate()).padStart(2, '0');
+    document.getElementById('infoJoinedAt').textContent = dateStr;
+  }
+  
+  // 陣営
+  document.getElementById('infoJinei').textContent = kizunaInfo.jinei + ' 陣営';
+  document.getElementById('infoJineiStyle').textContent = kizunaInfo.jineiStyle;
+  
+  // 推し馬
+  const oshi = CHARACTERS.find(c => c.id === kizunaInfo.oshiId);
+  if (oshi) {
+    document.getElementById('infoOshi').textContent = oshi.name;
+    document.getElementById('infoOshiImg').src = oshi.img;
+  }
+}
+
+// ========================================
+// カード生成
+// ========================================
+async function generateCard() {
+  const canvas = document.getElementById('cardCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  // フォント読み込み待ち
+  try {
+    await document.fonts.load(`700 50px "${CARD_LAYOUT.font}"`);
+    await document.fonts.load(`700 45px "${CARD_LAYOUT.font}"`);
+    await document.fonts.ready;
+  } catch (e) {
+    console.warn('フォント読み込み待ち失敗:', e);
+  }
+  
+  const oshi = CHARACTERS.find(c => c.id === kizunaInfo.oshiId);
+  if (!oshi) {
+    console.error('推し馬データなし');
+    return;
+  }
+
+  // カード画像読み込み
+  let cardImg;
+  try {
+    cardImg = await loadImage(oshi.cardImg);
+  } catch (e) {
+    console.error('カード画像読み込み失敗:', oshi.cardImg);
+    return;
+  }
+  canvas.width = cardImg.width;
+  canvas.height = cardImg.height;
+  ctx.drawImage(cardImg, 0, 0);
+
+  // テキスト描画
+  drawCardText(ctx);
+
+  // ランクスタンプ描画（ON時のみ）
+  const stampEnabled = document.getElementById('stampToggle')?.checked ?? true;
+  if (stampEnabled) {
+    const { current } = getRank(kizunaPoints.totalPoints || 0);
+    try {
+      const stampImg = await loadImage(`images/cards/rank/rank_${current.img}.png`);
+      const { x, y, size } = CARD_LAYOUT.rankStamp;
+      ctx.drawImage(stampImg, x - size/2, y - size/2, size, size);
+    } catch (e) {
+      console.warn('ランクスタンプ読み込み失敗:', e);
+    }
+  }
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('画像読み込み失敗: ' + src));
+    img.src = src;
+  });
+}
+
+function drawCardText(ctx) {
+  const memberNo = '#' + String(userInfo.memberNumber || '---').padStart(3, '0');
+  
+  // 入隊日（保存されてるやつ）
+  let dateStr = '';
+  if (kizunaInfo.joinedAt) {
+    const date = kizunaInfo.joinedAt.toDate ? kizunaInfo.joinedAt.toDate() : new Date(kizunaInfo.joinedAt);
+    dateStr = date.getFullYear() + '.' + 
+              String(date.getMonth() + 1).padStart(2, '0') + '.' + 
+              String(date.getDate()).padStart(2, '0');
+  }
+  
+  drawText(ctx, userInfo.nickname || '', CARD_LAYOUT.name);
+  drawText(ctx, kizunaInfo.jinei + ' 陣営', CARD_LAYOUT.jinei);
+  drawText(ctx, memberNo, CARD_LAYOUT.no);
+  drawText(ctx, dateStr, CARD_LAYOUT.date);
+}
+
+function drawText(ctx, text, layout) {
+  ctx.fillStyle = layout.color;
+  ctx.font = `${layout.weight} ${layout.size}px "${CARD_LAYOUT.font}", "Noto Sans JP", sans-serif`;
+  ctx.textAlign = layout.align;
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, layout.x, layout.y);
+}
+
+// ========================================
+// カード保存
+// ========================================
+function downloadCard() {
+  const canvas = document.getElementById('cardCanvas');
+  const memberNo = String(userInfo.memberNumber || '000').padStart(3, '0');
+  
+  const link = document.createElement('a');
+  link.download = `afro-horse-card-${memberNo}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ========================================
+// ログアウト
+// ========================================
+function confirmLogout() {
+  if (confirm('ログアウトしますか？')) {
+    logout();
+  }
+}
+
+main();
+</script>
+
+</body>
+</html>
