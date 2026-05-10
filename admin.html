@@ -412,7 +412,14 @@ async function main() {
 
   // 管理者チェック
   if (!ADMIN_USER_IDS.includes(user.userId)) {
-    showDeny();
+    showDeny(`
+      この画面は管理者専用です。<br>
+      一般ユーザーは閲覧できません。
+      <div style="margin-top:20px;padding:12px;background:rgba(0,0,0,0.05);border-radius:6px;text-align:left;font-size:11px;color:var(--text-soft);font-family:monospace;word-break:break-all;border:1px dashed var(--gray)">
+        <b style="font-family:'Bebas Neue',cursive;letter-spacing:2px;color:var(--turf-deep)">YOUR USER ID:</b><br>
+        ${user.userId}
+      </div>
+    `);
     return;
   }
 
