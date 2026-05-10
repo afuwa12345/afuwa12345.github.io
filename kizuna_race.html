@@ -960,6 +960,205 @@ main > .section:first-of-type { padding-top: 14px; }
   text-shadow: 0 0 8px var(--jc-glow);
 }
 
+/* ===== 遊び方アコーディオン ===== */
+.how-to-section { padding: 16px 16px 0; }
+.how-to {
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2.5px solid var(--turf);
+  border-radius: 12px;
+  box-shadow: 0 4px 0 var(--turf-deep);
+  overflow: hidden;
+}
+.how-to-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 14px;
+  color: var(--turf-deep);
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.how-to-summary::-webkit-details-marker { display: none; }
+.how-to-summary:hover { background: rgba(14,46,31,0.05); }
+.how-to-summary:active { background: rgba(14,46,31,0.08); }
+.how-to-icon { font-size: 18px; }
+.how-to-title { flex: 1; }
+.how-to-arrow {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 14px;
+  color: var(--turf);
+  transition: transform 0.3s;
+}
+.how-to[open] .how-to-arrow { transform: rotate(180deg); }
+.how-to[open] .how-to-summary {
+  border-bottom: 2px dashed rgba(14,46,31,0.15);
+  background: rgba(14,46,31,0.04);
+}
+.how-to-body {
+  padding: 16px;
+  animation: howToOpen 0.3s ease-out;
+}
+@keyframes howToOpen {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.how-block { margin-bottom: 16px; }
+.how-block:last-child { margin-bottom: 0; }
+
+/* 世界観イントロ */
+.how-block-intro {
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 16px var(--gold-glow);
+}
+.how-block-intro::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 16px, rgba(255,255,255,0.03) 16px, rgba(255,255,255,0.03) 32px);
+  pointer-events: none;
+}
+.how-intro-text {
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--cream);
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.how-intro-text b {
+  color: var(--gold-glow);
+  font-family: 'Dela Gothic One', cursive;
+  font-weight: 400;
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+
+/* 6陣営ファクター一覧 */
+.how-factions {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.how-factions li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(90deg, var(--cream-soft), #fff);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+}
+.hf-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.3);
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.how-factions li b {
+  font-family: 'Dela Gothic One', cursive;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--turf-deep);
+  letter-spacing: 0.02em;
+  flex: 1;
+}
+.how-factions li > span:not(.hf-color) {
+  font-size: 11px;
+  color: var(--text-soft);
+  font-weight: 700;
+}
+
+/* Tip */
+.how-tip {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba(255,216,109,0.15), rgba(255,216,109,0.05));
+  border-left: 3px solid var(--gold);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--text-soft);
+  font-weight: 700;
+  line-height: 1.6;
+}
+.how-block-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 13px;
+  color: var(--turf-deep);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--gold);
+  display: inline-block;
+}
+.how-list, .how-notes {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  font-weight: 700;
+  padding-left: 22px;
+}
+.how-list li { margin-bottom: 4px; }
+.how-list b { color: var(--red-deep); }
+.how-notes li { margin-bottom: 3px; color: var(--text-soft); }
+.how-points {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.how-points li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(90deg, var(--cream-soft), #fff);
+  border-left: 3px solid var(--gold);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text);
+}
+.how-points li b {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 18px;
+  color: var(--red);
+  min-width: 50px;
+  letter-spacing: 1px;
+}
+.how-ranks {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+  line-height: 1.7;
+  background: rgba(14,46,31,0.04);
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px dashed rgba(14,46,31,0.2);
+}
+.how-ranks b {
+  color: var(--red-deep);
+  font-family: 'Dela Gothic One', cursive;
+  font-weight: 400;
+}
+
 /* ===== レースカード コンパクト版（投票後・締切後） ===== */
 .race-card.compact {
   padding: 12px 14px 10px;
@@ -1834,6 +2033,76 @@ main > .section:first-of-type { padding-top: 14px; }
   </div>
 
   <div id="mainView" class="hidden">
+
+    <!-- 遊び方アコーディオン -->
+    <div class="section how-to-section">
+      <details class="how-to">
+        <summary class="how-to-summary">
+          <span class="how-to-icon">📖</span>
+          <span class="how-to-title">遊び方を見る</span>
+          <span class="how-to-arrow">▼</span>
+        </summary>
+        <div class="how-to-body">
+
+          <!-- 世界観 -->
+          <div class="how-block how-block-intro">
+            <div class="how-intro-text">
+              あなたは6つの陣営のうち1つに所属する<b>戦士</b>。<br>
+              陣営ごとに<b>予想ファクター</b>が違うから、<br>
+              「6つの予想スタイル」が毎週ぶつかり合う！
+            </div>
+          </div>
+
+          <!-- 6陣営の予想ファクター -->
+          <div class="how-block">
+            <div class="how-block-title">⚔ 6陣営の予想ファクター</div>
+            <ul class="how-factions">
+              <li><span class="hf-color" style="background:#c5292a"></span><b>アフワ陣営</b><span>実績・本命派</span></li>
+              <li><span class="hf-color" style="background:#d4a017"></span><b>やんちゃアフワ陣営</b><span>穴党・ロマン派</span></li>
+              <li><span class="hf-color" style="background:#2563eb"></span><b>ブルマ陣営</b><span>データ派</span></li>
+              <li><span class="hf-color" style="background:#c2410c"></span><b>チャフワ陣営</b><span>直感・パドック派</span></li>
+              <li><span class="hf-color" style="background:#1f2937"></span><b>クロフワ陣営</b><span>調教派</span></li>
+              <li><span class="hf-color" style="background:#94a3b8"></span><b>ギンマ陣営</b><span>血統派</span></li>
+            </ul>
+          </div>
+
+          <div class="how-block">
+            <div class="how-block-title">🏇 流れ</div>
+            <ol class="how-list">
+              <li>陣営員それぞれが本命を1頭投票</li>
+              <li>陣営内で<b>最多得票の馬</b>が「陣営の本命」になる</li>
+              <li>締切後、6陣営の本命が一斉公開（例：「血統派の本命は？」）</li>
+              <li>結果が出たらポイントゲット！</li>
+            </ol>
+            <div class="how-tip">📌 「データ派と直感派、どっちが当てた？」みたいな視点で楽しめる予想バトル！</div>
+          </div>
+
+          <div class="how-block">
+            <div class="how-block-title">🏆 ポイント</div>
+            <ul class="how-points">
+              <li><b>+1pt</b> <span>投票するだけ</span></li>
+              <li><b>+10pt</b> <span>個人の本命的中（1着）</span></li>
+              <li><b>+5pt</b> <span>陣営の本命的中（陣営員全員）</span></li>
+            </ul>
+          </div>
+
+          <div class="how-block">
+            <div class="how-block-title">📈 ランク</div>
+            <div class="how-ranks">新馬 → 未勝利 → 1勝 → 2勝 → 3勝 → オープン → 重賞馬 → GⅢ → GⅡ → <b>GⅠ馬</b></div>
+          </div>
+
+          <div class="how-block">
+            <div class="how-block-title">⚠ 注意</div>
+            <ul class="how-notes">
+              <li>投票は1レース1回のみ・変更不可</li>
+              <li>締切後は投票できません</li>
+              <li>コメントは陣営内の仲間に表示されます（匿名）</li>
+            </ul>
+          </div>
+
+        </div>
+      </details>
+    </div>
 
     <!-- 戦士プロフィール（最上部・投票前のみ） -->
     <div class="section" id="warriorTopSection">
