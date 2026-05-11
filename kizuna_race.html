@@ -228,8 +228,18 @@ main {
 }
 
 /* Flex子要素：縮まないものと、伸びるもの */
-.tab-content > * { flex-shrink: 0; }
-.tab-content > .flex-grow { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+.tab-content > * {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.tab-content > .flex-grow {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 main > .section:first-of-type { padding-top: 14px; }
 .battle-banner::before, .battle-banner::after {
   content:'';
