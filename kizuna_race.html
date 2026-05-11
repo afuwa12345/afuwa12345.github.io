@@ -476,7 +476,278 @@ main > .section:first-of-type { padding-top: 14px; }
   transition: width 1s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* ===== 馬カード（戦闘カード） ===== */
+/* ===== タブナビゲーション ===== */
+.tab-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: linear-gradient(180deg, var(--turf-deep), var(--turf));
+  border-bottom: 3px solid var(--gold);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.tab-btn {
+  position: relative;
+  padding: 12px 4px 10px;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  -webkit-tap-highlight-color: transparent;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+}
+.tab-btn:hover { color: rgba(255,255,255,0.85); }
+.tab-btn:active { transform: scale(0.95); }
+.tab-btn.active {
+  color: var(--gold-glow);
+  border-bottom-color: var(--gold);
+  background: linear-gradient(180deg, rgba(255,216,109,0.1), transparent);
+}
+.tab-btn.active .tab-icon {
+  filter: drop-shadow(0 0 8px var(--gold-glow));
+  transform: scale(1.15);
+}
+.tab-icon {
+  font-size: 22px;
+  line-height: 1;
+  transition: transform 0.2s, filter 0.2s;
+}
+.tab-label {
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.tab-badge {
+  position: absolute;
+  top: 6px;
+  right: 18%;
+  background: var(--red);
+  color: #fff;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  width: 16px; height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 900;
+  animation: badgePulse 1.5s ease-in-out infinite;
+  border: 2px solid var(--turf-deep);
+}
+@keyframes badgePulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* タブコンテンツ */
+.tab-content {
+  display: none;
+  animation: tabFadeIn 0.3s ease-out;
+}
+.tab-content.active { display: block; }
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== HOMEタブ：レースカード（コンパクト版） ===== */
+.home-race-card {
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf) 50%, var(--turf-deep));
+  border: 3px solid var(--gold);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.25);
+  position: relative;
+  overflow: hidden;
+  color: var(--cream);
+}
+.home-race-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,216,109,0.18), transparent 50%),
+    repeating-linear-gradient(45deg, transparent, transparent 16px, rgba(255,255,255,0.04) 16px, rgba(255,255,255,0.04) 32px);
+  pointer-events: none;
+}
+.home-race-tag {
+  position: relative;
+  z-index: 1;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  color: var(--gold-glow);
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.home-race-title {
+  position: relative;
+  z-index: 1;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 22px;
+  color: var(--cream);
+  text-align: center;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 12px var(--gold-glow);
+  letter-spacing: 0.02em;
+}
+.home-race-info {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  color: rgba(248,241,222,0.85);
+  text-align: center;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.home-race-countdown {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 8px;
+  border: 1.5px solid var(--gold);
+}
+.home-race-deadline-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px;
+  color: var(--gold-glow);
+  letter-spacing: 2px;
+}
+.home-race-deadline-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 22px;
+  color: #fff;
+  font-weight: 900;
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+
+/* ===== HOMEタブ：CTAボタン ===== */
+.home-cta-btn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 3px solid var(--gold);
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--red), var(--red-deep));
+  color: var(--gold-glow);
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 15px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--red-deep), 0 8px 20px rgba(197,41,42,0.3), 0 0 16px var(--gold-glow);
+  transition: transform 0.15s, box-shadow 0.15s;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.home-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 var(--red-deep), 0 10px 24px rgba(197,41,42,0.4), 0 0 20px var(--gold-glow);
+}
+.home-cta-btn:active { transform: translateY(2px); }
+.home-cta-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,216,109,0.3) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: ctaSheen 3s ease-in-out infinite;
+}
+@keyframes ctaSheen {
+  0%,100% { transform: translateX(-100%); }
+  60% { transform: translateX(100%); }
+}
+.home-cta-btn-secondary {
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
+  box-shadow: 0 5px 0 #000, 0 8px 20px rgba(0,0,0,0.25), 0 0 16px var(--gold-glow);
+}
+.home-cta-btn-secondary:hover {
+  box-shadow: 0 7px 0 #000, 0 10px 24px rgba(0,0,0,0.3), 0 0 20px var(--gold-glow);
+}
+.home-cta-icon { font-size: 22px; line-height: 1; }
+.home-cta-text { flex: 1; text-align: center; }
+.home-cta-arrow {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 22px;
+  transition: transform 0.2s;
+}
+.home-cta-btn:hover .home-cta-arrow { transform: translateX(4px); }
+
+/* ===== Empty State（未投票・投票済み・締切後） ===== */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2.5px dashed var(--gold);
+  border-radius: 14px;
+}
+.empty-state.empty-success {
+  background: linear-gradient(135deg, rgba(26,71,49,0.08), rgba(255,216,109,0.08));
+  border-color: var(--turf);
+  border-style: solid;
+}
+.empty-state.empty-closed {
+  background: linear-gradient(135deg, rgba(197,41,42,0.06), rgba(255,216,109,0.06));
+  border-color: var(--red);
+  border-style: solid;
+}
+.empty-icon {
+  font-size: 50px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+.empty-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 18px;
+  color: var(--turf-deep);
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.empty-success .empty-title { color: var(--turf-deep); }
+.empty-closed .empty-title { color: var(--red-deep); }
+.empty-text {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-bottom: 20px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+.empty-text b { color: var(--red-deep); }
+.empty-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
+  color: var(--gold-glow);
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 13px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 0 #000, 0 0 12px var(--gold-glow);
+  transition: transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.empty-btn:hover { transform: translateY(-2px); }
+.empty-btn:active { transform: translateY(2px); }
+
+
 .horse-grid { display: grid; gap: 10px; margin-top: 14px; }
 
 /* 縦スクロールエリア */
@@ -2103,8 +2374,22 @@ main > .section:first-of-type { padding-top: 14px; }
   <p class="hero-sub">6つの陣営、6つの予想スタイル<br>あなたの本命が陣営の運命を決める</p>
 </section>
 
-<!-- バトル参戦バナー -->
-<div class="battle-banner" id="battleBanner"><span>⚔ VOTING PHASE ⚔</span></div>
+<!-- タブナビゲーション -->
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-tab="home">
+    <span class="tab-icon">🏠</span>
+    <span class="tab-label">HOME</span>
+  </button>
+  <button class="tab-btn" data-tab="vote">
+    <span class="tab-icon">⚔</span>
+    <span class="tab-label">投票</span>
+    <span class="tab-badge" id="voteTabBadge" style="display:none">!</span>
+  </button>
+  <button class="tab-btn" data-tab="stats">
+    <span class="tab-icon">📊</span>
+    <span class="tab-label">戦績</span>
+  </button>
+</nav>
 
 <main>
   <div class="section">
@@ -2124,6 +2409,9 @@ main > .section:first-of-type { padding-top: 14px; }
   </div>
 
   <div id="mainView" class="hidden">
+
+    <!-- ===== HOMEタブ ===== -->
+    <div class="tab-content active" id="tab-home">
 
     <!-- 遊び方アコーディオン -->
     <div class="section how-to-section">
@@ -2195,6 +2483,38 @@ main > .section:first-of-type { padding-top: 14px; }
       </details>
     </div>
 
+    <!-- HOMEタブ：今週のレース（コンパクト版） -->
+    <div class="section">
+      <div class="home-race-card" id="homeRaceCard">
+        <div class="home-race-tag">⚔ THIS WEEK'S RACE ⚔</div>
+        <div class="home-race-title" id="homeRaceName">—</div>
+        <div class="home-race-info" id="homeRaceMeta">—</div>
+        <div class="home-race-countdown" id="homeRaceCountdownBox">
+          <span class="home-race-deadline-label">DEADLINE</span>
+          <span class="home-race-deadline-value" id="homeRaceCountdown">--:--:--</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOMEタブ：アクションボタン -->
+    <div class="section">
+      <button class="home-cta-btn" onclick="switchTab('vote')" id="homeVoteBtn">
+        <span class="home-cta-icon">⚔</span>
+        <span class="home-cta-text">投票へ進む</span>
+        <span class="home-cta-arrow">→</span>
+      </button>
+      <button class="home-cta-btn home-cta-btn-secondary" onclick="switchTab('stats')">
+        <span class="home-cta-icon">📊</span>
+        <span class="home-cta-text">戦績を見る</span>
+        <span class="home-cta-arrow">→</span>
+      </button>
+    </div>
+
+    </div><!-- /tab-home -->
+
+    <!-- ===== 投票タブ ===== -->
+    <div class="tab-content" id="tab-vote">
+
     <!-- 戦士プロフィール（最上部・投票前のみ） -->
     <div class="section" id="warriorTopSection">
       <div class="warrior-card flash-in">
@@ -2248,6 +2568,41 @@ main > .section:first-of-type { padding-top: 14px; }
 
       <div class="vote-btn-wrap">
         <button class="vote-btn" id="voteBtn" disabled>本命を選択せよ</button>
+      </div>
+    </div>
+
+    <!-- 投票タブ：投票済み時メッセージ -->
+    <div id="voteDoneMsg" class="section hidden">
+      <div class="empty-state empty-success">
+        <div class="empty-icon">✓</div>
+        <div class="empty-title">投票完了！</div>
+        <div class="empty-text">あなたは <b id="voteDonePickName">—</b> に参戦しました。<br>結果は「戦績タブ」で確認できます。</div>
+        <button class="empty-btn" onclick="switchTab('stats')">📊 戦績タブへ →</button>
+      </div>
+    </div>
+
+    <!-- 投票タブ：締切後メッセージ -->
+    <div id="voteClosedMsg" class="section hidden">
+      <div class="empty-state empty-closed">
+        <div class="empty-icon">⏰</div>
+        <div class="empty-title">投票締切</div>
+        <div class="empty-text">このレースの投票は締め切られました。<br>結果は「戦績タブ」で確認できます。</div>
+        <button class="empty-btn" onclick="switchTab('stats')">📊 戦績タブへ →</button>
+      </div>
+    </div>
+
+    </div><!-- /tab-vote -->
+
+    <!-- ===== 戦績タブ ===== -->
+    <div class="tab-content" id="tab-stats">
+
+    <!-- 戦績タブ：未投票時 -->
+    <div id="statsEmptyMsg" class="section hidden">
+      <div class="empty-state">
+        <div class="empty-icon">📊</div>
+        <div class="empty-title">まだ投票していません</div>
+        <div class="empty-text">投票するとここに戦績が表示されます。<br>「投票タブ」で本命を選びましょう！</div>
+        <button class="empty-btn" onclick="switchTab('vote')">⚔ 投票タブへ →</button>
       </div>
     </div>
 
@@ -2322,6 +2677,8 @@ main > .section:first-of-type { padding-top: 14px; }
       </div>
       <div class="all-jinei" id="allJinei"></div>
     </div>
+
+    </div><!-- /tab-stats -->
 
   </div>
 </main>
@@ -2554,8 +2911,14 @@ function renderHero() {
   document.getElementById('raceName').textContent = race.name || '—';
   const dl = race.deadline ? new Date(race.deadline) : null;
   const dlStr = dl ? `${dl.getMonth()+1}/${dl.getDate()} ${String(dl.getHours()).padStart(2,'0')}:${String(dl.getMinutes()).padStart(2,'0')}` : '—';
-  document.getElementById('raceMeta').innerHTML =
-    `<b>${race.place || '—'}</b> ${race.raceNum || ''}R / 締切 <b>${dlStr}</b>`;
+  const metaHtml = `<b>${race.place || '—'}</b> ${race.raceNum || ''}R / 締切 <b>${dlStr}</b>`;
+  document.getElementById('raceMeta').innerHTML = metaHtml;
+
+  // HOMEタブのレースカードも更新
+  const homeName = document.getElementById('homeRaceName');
+  const homeMeta = document.getElementById('homeRaceMeta');
+  if (homeName) homeName.textContent = race.name || '—';
+  if (homeMeta) homeMeta.innerHTML = metaHtml;
 }
 
 function renderWarrior(points) {
@@ -2600,19 +2963,45 @@ function renderWarrior(points) {
 async function renderMainContent() {
   const status = race.status || 'open';
   const isClosed = status === 'closed' || status === 'settled' || isPastDeadline();
+
   if (isClosed) {
-    document.getElementById('battleBanner').innerHTML = '<span>🏁 RESULT PHASE 🏁</span>';
+    // 締切後
     compactRaceCard();
-    hideTopWarrior(); // 締切後は最上部の戦士隠す
+    hideTopWarrior();
+    document.getElementById('voteArea').classList.add('hidden');
+    document.getElementById('voteDoneMsg').classList.add('hidden');
+    document.getElementById('voteClosedMsg').classList.remove('hidden');
+    document.getElementById('statsEmptyMsg').classList.add('hidden');
     await renderClosed(status);
+
+    // 投票タブのバッジ消す
+    document.getElementById('voteTabBadge').style.display = 'none';
   }
   else if (myVote) {
-    document.getElementById('battleBanner').innerHTML = '<span>⚔ ENGAGED ⚔</span>';
+    // 投票済み
     compactRaceCard();
-    hideTopWarrior(); // 投票後は最上部の戦士隠す（メガに統合）
+    hideTopWarrior();
+    document.getElementById('voteArea').classList.add('hidden');
+    document.getElementById('voteClosedMsg').classList.add('hidden');
+    document.getElementById('voteDoneMsg').classList.remove('hidden');
+    document.getElementById('voteDonePickName').textContent = myVote.horseName || '—';
+    document.getElementById('statsEmptyMsg').classList.add('hidden');
     await renderVoted();
+
+    document.getElementById('voteTabBadge').style.display = 'none';
   }
-  else renderVoteArea();
+  else {
+    // 未投票・投票可能
+    renderVoteArea();
+    document.getElementById('voteDoneMsg').classList.add('hidden');
+    document.getElementById('voteClosedMsg').classList.add('hidden');
+    document.getElementById('votedArea').classList.add('hidden');
+    document.getElementById('closedArea').classList.add('hidden');
+    document.getElementById('statsEmptyMsg').classList.remove('hidden');
+
+    // 投票タブにバッジ表示（未投票通知）
+    document.getElementById('voteTabBadge').style.display = 'flex';
+  }
 }
 
 // 最上部の戦士セクションを隠す（投票後・締切後）
@@ -2739,7 +3128,10 @@ async function confirmedSubmit() {
     setTimeout(async () => {
       hideVoteOverlay();
       document.getElementById('voteArea').classList.add('hidden');
-      document.getElementById('battleBanner').innerHTML = '<span>⚔ ENGAGED ⚔</span>';
+      document.getElementById('voteDoneMsg').classList.remove('hidden');
+      document.getElementById('voteDonePickName').textContent = selectedHorse;
+      document.getElementById('statsEmptyMsg').classList.add('hidden');
+      document.getElementById('voteTabBadge').style.display = 'none';
       await renderVoted();
     }, 1800);
 
@@ -3000,20 +3392,24 @@ function startCountdown() {
   // 既に締切過ぎてる場合はカウントダウン動かさない（無限リロード防止）
   if (isPastDeadline()) {
     const el = document.getElementById('countdown');
+    const elHome = document.getElementById('homeRaceCountdown');
     if (el) {
       el.textContent = 'CLOSED';
       el.classList.add('urgent');
     }
+    if (elHome) elHome.textContent = 'CLOSED';
     return;
   }
   const target = new Date(race.deadline).getTime();
   const el = document.getElementById('countdown');
+  const elHome = document.getElementById('homeRaceCountdown');
   const update = () => {
     const now = Date.now();
     const diff = target - now;
     if (diff <= 0) {
       el.textContent = 'CLOSED';
       el.classList.add('urgent');
+      if (elHome) elHome.textContent = 'CLOSED';
       clearInterval(countdownTimer);
       // 締切瞬間に1回だけリロード（既にcloseな状態にする）
       setTimeout(() => location.reload(), 1200);
@@ -3022,12 +3418,37 @@ function startCountdown() {
     const h = Math.floor(diff / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
-    el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    const txt = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    el.textContent = txt;
+    if (elHome) elHome.textContent = txt;
     if (h === 0 && m < 10) el.classList.add('urgent');
   };
   update();
   countdownTimer = setInterval(update, 1000);
 }
+
+// ============================================================
+// タブ切替
+// ============================================================
+function switchTab(tabName) {
+  // タブボタンのアクティブ切替
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+  // タブコンテンツの表示切替
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.toggle('active', content.id === `tab-${tabName}`);
+  });
+  // スクロールを上に
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// タブボタンクリックイベント
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+});
 
 function showToast(msg, type) {
   const t = document.getElementById('toast');
