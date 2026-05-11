@@ -2953,8 +2953,8 @@ main > .section:first-of-type { padding-top: 14px; }
     <div class="tab-content" id="tab-vote">
 
     <!-- 戦士プロフィール（最上部・投票前のみ） -->
-    <!-- 戦士カード（sticky固定） -->
-    <div class="section warrior-sticky-wrap">
+    <!-- 戦士カード（sticky固定・投票後は非表示） -->
+    <div class="section warrior-sticky-wrap" id="warriorStickyVote">
       <div class="warrior-card-mini">
         <img class="warrior-mini-avatar" id="warriorAvatarVote" src="" alt="">
         <div class="warrior-mini-info">
@@ -3013,8 +3013,8 @@ main > .section:first-of-type { padding-top: 14px; }
       </div>
     </div>
 
-    <!-- 投票タブ：投票済み時メッセージ -->
-    <div id="voteDoneMsg" class="section hidden">
+    <!-- 投票タブ：投票済み時メッセージ（非表示） -->
+    <div id="voteDoneMsg" class="section hidden" style="display:none !important;">
       <div class="empty-state empty-success" style="padding: 16px;">
         <div class="empty-icon" style="font-size:36px; margin-bottom:6px;">✓</div>
         <div class="empty-title" style="font-size:14px; margin-bottom:4px;">投票完了！</div>
@@ -3553,6 +3553,10 @@ async function renderMainContent() {
 function hideTopWarrior() {
   const sec = document.getElementById('warriorTopSection');
   if (sec) sec.style.display = 'none';
+  // 戦士stickyカード（参戦タブ）も隠す
+  const sticky = document.getElementById('warriorStickyVote');
+  if (sticky) sticky.style.display = 'none';
+}
 }
 
 // レースカードをコンパクト化（カウントダウン非表示）
@@ -3567,6 +3571,11 @@ function isPastDeadline() {
 
 function renderVoteArea() {
   document.getElementById('voteArea').classList.remove('hidden');
+  // 戦士stickyカードを表示（投票前なので必要）
+  const sticky = document.getElementById('warriorStickyVote');
+  if (sticky) sticky.style.display = '';
+  const wts = document.getElementById('warriorTopSection');
+  if (wts) wts.style.display = '';
   // 頭数表示
   const countEl = document.getElementById('horseCountNum');
   if (countEl) countEl.textContent = `${horses.length}頭`;
