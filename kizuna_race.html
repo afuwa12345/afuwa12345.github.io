@@ -693,6 +693,15 @@ main > .section:first-of-type { padding-top: 14px; }
 /* ===== タブナビゲーション（下部固定） ===== */
 /* ===== 投票タブ：超ミニレースバー ===== */
 /* ===== 戦士カード ミニ版（HOME・参戦タブ用） ===== */
+.warrior-sticky-wrap {
+  position: sticky;
+  top: 56px;
+  z-index: 50;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  padding: 6px 12px 8px !important;
+  margin: 0;
+  max-width: 100%;
+}
 .warrior-card-mini {
   display: flex;
   align-items: center;
@@ -2880,7 +2889,7 @@ main > .section:first-of-type { padding-top: 14px; }
     <div class="tab-content active" id="tab-home">
 
     <!-- 戦士カード（コンパクト） -->
-    <div class="section" style="padding-top: 4px; padding-bottom: 4px;">
+    <div class="section warrior-sticky-wrap">
       <div class="warrior-card-mini">
         <img class="warrior-mini-avatar" id="warriorAvatarHome" src="" alt="">
         <div class="warrior-mini-info">
@@ -2944,9 +2953,9 @@ main > .section:first-of-type { padding-top: 14px; }
     <div class="tab-content" id="tab-vote">
 
     <!-- 戦士プロフィール（最上部・投票前のみ） -->
-    <div class="section" id="warriorTopSection" style="padding-top: 4px; padding-bottom: 4px;">
-      <!-- 戦士カード（コンパクト） -->
-      <div class="warrior-card-mini" style="margin-bottom: 6px;">
+    <!-- 戦士カード（sticky固定） -->
+    <div class="section warrior-sticky-wrap">
+      <div class="warrior-card-mini">
         <img class="warrior-mini-avatar" id="warriorAvatarVote" src="" alt="">
         <div class="warrior-mini-info">
           <div class="warrior-mini-tag">⚔ YOUR FACTION ⚔</div>
@@ -2959,7 +2968,10 @@ main > .section:first-of-type { padding-top: 14px; }
           <div class="warrior-mini-bar-wrap"><div class="warrior-mini-bar" id="pointsBarVote" style="width:0%"></div></div>
         </div>
       </div>
+    </div>
 
+    <!-- レースバーと隠し要素 -->
+    <div class="section" id="warriorTopSection" style="padding-top: 4px; padding-bottom: 4px;">
       <!-- 超ミニレースバー -->
       <div class="vote-race-bar" id="voteRaceBar">
         <div class="vote-race-bar-left">
