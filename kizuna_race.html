@@ -216,29 +216,13 @@ main {
   display: none;
   animation: tabFadeIn 0.3s ease-out;
   height: 100%;
-  overflow: hidden;
-  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
-.tab-content.active {
-  display: flex;
-}
+.tab-content.active { display: block; }
 @keyframes tabFadeIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Flex子要素：縮まないものと、伸びるもの */
-.tab-content > * {
-  flex-shrink: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-.tab-content > .flex-grow {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 main > .section:first-of-type { padding-top: 14px; }
 .battle-banner::before, .battle-banner::after {
@@ -865,12 +849,17 @@ main > .section:first-of-type { padding-top: 14px; }
   text-shadow: 0 0 8px var(--gold-glow);
 }
 
-/* 投票タブ馬カードエリア拡大（flex対応） */
-#tab-vote .horse-scroll-area { margin-top: 6px; }
+/* 投票タブ馬カードエリア（確実にスクロール可能に） */
+#tab-vote .horse-scroll-area {
+  margin-top: 6px;
+  display: block;
+}
 #tab-vote .horse-scroll-area .horse-grid {
-  max-height: none;
-  flex: 1;
-  min-height: 200px;
+  max-height: 50vh !important;
+  min-height: 180px;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch !important;
 }
 .tab-nav {
   position: fixed;
@@ -2889,8 +2878,8 @@ main > .section:first-of-type { padding-top: 14px; }
     </div>
 
     <!-- HOMEタブ：今週のレース（コンパクト版） -->
-    <div class="section flex-grow" style="padding-top: 4px; padding-bottom: 4px;">
-      <div class="home-race-card" id="homeRaceCard" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+    <div class="section" style="padding-top: 4px; padding-bottom: 4px;">
+      <div class="home-race-card" id="homeRaceCard">
         <div class="home-race-tag">⚔ THIS WEEK'S RACE ⚔</div>
         <div class="home-race-title" id="homeRaceName">—</div>
         <div class="home-race-info" id="homeRaceMeta">—</div>
@@ -2961,19 +2950,19 @@ main > .section:first-of-type { padding-top: 14px; }
       </div>
     </div>
 
-    <!-- 投票エリア（最大化・flex-grow） -->
-    <div id="voteArea" class="section flex-grow hidden" style="padding-top: 4px; padding-bottom: 4px;">
+    <!-- 投票エリア -->
+    <div id="voteArea" class="section hidden" style="padding-top: 4px; padding-bottom: 4px;">
       <!-- 馬カード（縦スクロールエリア・大きく） -->
-      <div class="horse-scroll-area" style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
+      <div class="horse-scroll-area">
         <div class="horse-scroll-header">
           <span class="horse-count-label">⚔ 本命を選べ</span>
           <span class="horse-count-num" id="horseCountNum">—頭</span>
           <span class="horse-scroll-hint">↕</span>
         </div>
-        <div class="horse-grid" id="horseGrid" style="flex: 1; min-height: 0;"></div>
+        <div class="horse-grid" id="horseGrid"></div>
       </div>
 
-      <div class="vote-btn-wrap" style="flex-shrink: 0;">
+      <div class="vote-btn-wrap">
         <button class="vote-btn" id="voteBtn" disabled>本命を選択せよ</button>
       </div>
     </div>
