@@ -699,6 +699,103 @@ main > .section:first-of-type { padding-top: 14px; }
 
 /* ===== タブナビゲーション（下部固定） ===== */
 /* ===== 投票タブ：超ミニレースバー ===== */
+/* ===== 戦士カード ミニ版（HOME・参戦タブ用） ===== */
+.warrior-card-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, var(--jc-deep, var(--turf-deep)), var(--jc-main, var(--gold)) 50%, var(--jc-deep, var(--turf-deep)));
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.3), 0 0 14px var(--jc-glow, rgba(255,216,109,0.3));
+  position: relative;
+  overflow: hidden;
+  color: var(--cream);
+  margin-bottom: 6px;
+}
+.warrior-card-mini::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.15), transparent 50%),
+    repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,0.04) 14px, rgba(255,255,255,0.04) 28px);
+  pointer-events: none;
+}
+.warrior-mini-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--turf-deep);
+  box-shadow: 0 0 10px var(--gold-glow);
+  position: relative; z-index: 1;
+}
+.warrior-mini-info {
+  flex: 1;
+  min-width: 0;
+  position: relative; z-index: 1;
+}
+.warrior-mini-tag {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 8px;
+  color: var(--gold-glow);
+  letter-spacing: 2px;
+  margin-bottom: 1px;
+}
+.warrior-mini-name {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 13px;
+  color: var(--cream);
+  line-height: 1.2;
+  text-shadow: 0 0 8px var(--gold-glow), 0 1px 0 rgba(0,0,0,0.4);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.warrior-mini-row {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-bottom: 3px;
+}
+.warrior-mini-rank-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 9px;
+  color: var(--gold-glow);
+  letter-spacing: 1px;
+}
+.warrior-mini-rank-value {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 11px;
+  color: #fff;
+}
+.warrior-mini-pts {
+  margin-left: auto;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 14px;
+  color: var(--gold-glow);
+  font-weight: 900;
+  text-shadow: 0 0 8px var(--gold-glow);
+  line-height: 1;
+}
+.warrior-mini-bar-wrap {
+  height: 4px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(255,216,109,0.3);
+}
+.warrior-mini-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-glow), #fff5b8);
+  box-shadow: 0 0 6px var(--gold-glow);
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ===== 投票タブ：超ミニレースバー ===== */
 .vote-race-bar {
   display: flex;
   align-items: center;
@@ -755,7 +852,9 @@ main > .section:first-of-type { padding-top: 14px; }
 /* 投票タブ馬カードエリア拡大 */
 #tab-vote .horse-scroll-area { margin-top: 6px; }
 #tab-vote .horse-scroll-area .horse-grid {
-  max-height: calc(100dvh - 56px - 65px - 130px);
+  /* 100dvh - ナビ(56) - 下部タブ(65) - 戦士ミニ(95) - レースバー(54) - 決定ボタン(70) - その他余白(30) */
+  max-height: calc(100dvh - 56px - 65px - 95px - 54px - 70px - 30px);
+  min-height: 200px;
 }
 .tab-nav {
   position: fixed;
@@ -2680,6 +2779,23 @@ main > .section:first-of-type { padding-top: 14px; }
     <!-- ===== HOMEタブ ===== -->
     <div class="tab-content active" id="tab-home">
 
+    <!-- 戦士カード（コンパクト） -->
+    <div class="section" style="padding-top: 8px; padding-bottom: 4px;">
+      <div class="warrior-card-mini">
+        <img class="warrior-mini-avatar" id="warriorAvatarHome" src="" alt="">
+        <div class="warrior-mini-info">
+          <div class="warrior-mini-tag">⚔ YOUR FACTION ⚔</div>
+          <div class="warrior-mini-name" id="warriorNameHome">—</div>
+          <div class="warrior-mini-row">
+            <span class="warrior-mini-rank-label">RANK</span>
+            <span class="warrior-mini-rank-value" id="rankValueHome">新馬</span>
+            <span class="warrior-mini-pts" id="rankPointsHome">0pt</span>
+          </div>
+          <div class="warrior-mini-bar-wrap"><div class="warrior-mini-bar" id="pointsBarHome" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ヒーロー画像（HOMEのみ） -->
     <section class="hero">
       <img src="images/kizuna_race_title.png" alt="みんなのキズナレース" class="kizuna-title-img">
@@ -2790,6 +2906,21 @@ main > .section:first-of-type { padding-top: 14px; }
 
     <!-- 戦士プロフィール（最上部・投票前のみ） -->
     <div class="section" id="warriorTopSection">
+      <!-- 戦士カード（コンパクト） -->
+      <div class="warrior-card-mini" style="margin-bottom: 8px;">
+        <img class="warrior-mini-avatar" id="warriorAvatarVote" src="" alt="">
+        <div class="warrior-mini-info">
+          <div class="warrior-mini-tag">⚔ YOUR FACTION ⚔</div>
+          <div class="warrior-mini-name" id="warriorNameVote">—</div>
+          <div class="warrior-mini-row">
+            <span class="warrior-mini-rank-label">RANK</span>
+            <span class="warrior-mini-rank-value" id="rankValueVote">新馬</span>
+            <span class="warrior-mini-pts" id="rankPointsVote">0pt</span>
+          </div>
+          <div class="warrior-mini-bar-wrap"><div class="warrior-mini-bar" id="pointsBarVote" style="width:0%"></div></div>
+        </div>
+      </div>
+
       <!-- 超ミニレースバー -->
       <div class="vote-race-bar" id="voteRaceBar">
         <div class="vote-race-bar-left">
@@ -3232,8 +3363,8 @@ function renderWarrior(points) {
     pct = Math.min(100, Math.max(0, (progress / range) * 100));
   }
 
-  // 両方の場所（最上部 / メガ）に同じデータを反映
-  ['', 'Mega'].forEach(suffix => {
+  // すべての場所（最上部 / メガ / Home / Vote）に同じデータを反映
+  ['', 'Mega', 'Home', 'Vote'].forEach(suffix => {
     const setText = (id, val) => {
       const el = document.getElementById(id + suffix);
       if (el) el.textContent = val;
@@ -3250,10 +3381,10 @@ function renderWarrior(points) {
   });
 
   setTimeout(() => {
-    const bar1 = document.getElementById('pointsBar');
-    const bar2 = document.getElementById('pointsBarMega');
-    if (bar1) bar1.style.width = pct + '%';
-    if (bar2) bar2.style.width = pct + '%';
+    ['pointsBar', 'pointsBarMega', 'pointsBarHome', 'pointsBarVote'].forEach(id => {
+      const bar = document.getElementById(id);
+      if (bar) bar.style.width = pct + '%';
+    });
   }, 200);
 }
 
