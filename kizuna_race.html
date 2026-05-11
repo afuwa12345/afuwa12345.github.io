@@ -153,49 +153,34 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  padding: 20px 16px 16px;
+  padding: 8px 16px 4px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  overflow: hidden;
-  background: radial-gradient(ellipse at 50% 30%, var(--turf-light) 0%, var(--turf) 50%, var(--turf-deep) 100%);
-  color: var(--cream);
-  border-bottom: 4px solid var(--gold);
+  overflow: visible;
+  background: transparent;
+  border-bottom: none;
   margin-bottom: 0;
 }
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(2px 2px at 15% 20%, rgba(255,216,109,0.5), transparent),
-    radial-gradient(2px 2px at 85% 30%, rgba(255,216,109,0.4), transparent),
-    radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1px 1px at 25% 80%, rgba(255,216,109,0.4), transparent),
-    radial-gradient(2px 2px at 75% 75%, rgba(255,255,255,0.3), transparent),
-    radial-gradient(1px 1px at 60% 15%, rgba(255,216,109,0.4), transparent);
-  pointer-events: none;
-  animation: twinkle 4s ease-in-out infinite;
-}
-@keyframes twinkle { 0%,100% { opacity: 0.5; } 50% { opacity: 0.95; } }
 
 .kizuna-title-img {
-  width: min(320px, 70vw);
-  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.45));
+  width: min(280px, 65vw);
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.25));
   animation: titleFloat 3.6s ease-in-out infinite;
   position: relative; z-index: 2;
 }
 @keyframes titleFloat {
   0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  50% { transform: translateY(-3px); }
 }
 .hero-sub {
-  margin-top: 6px;
-  color: rgba(248,241,222,0.9);
+  margin-top: 4px;
+  color: var(--text-soft);
   font-size: 0.7rem;
-  letter-spacing: 1.5px;
-  line-height: 1.5;
+  letter-spacing: 1px;
+  line-height: 1.4;
   font-weight: 700;
   position: relative; z-index: 2;
 }
@@ -242,9 +227,9 @@ main > .section:first-of-type { padding-top: 14px; }
 .section {
   max-width: 600px;
   margin: 0 auto;
-  padding: 14px 16px;
+  padding: 8px 14px;
 }
-.sec-label { text-align: center; margin-bottom: 14px; }
+.sec-label { text-align: center; margin-bottom: 10px; }
 .sec-label-en {
   font-family: 'Bebas Neue', cursive;
   font-size: 11px;
@@ -476,26 +461,29 @@ main > .section:first-of-type { padding-top: 14px; }
   transition: width 1s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* ===== タブナビゲーション ===== */
+/* ===== タブナビゲーション（下部固定） ===== */
 .tab-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  background: linear-gradient(180deg, var(--turf-deep), var(--turf));
-  border-bottom: 3px solid var(--gold);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  background: linear-gradient(180deg, var(--turf), var(--turf-deep));
+  border-top: 3px solid var(--gold);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.3);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .tab-btn {
   position: relative;
-  padding: 12px 4px 10px;
+  padding: 8px 4px 8px;
   background: transparent;
   border: none;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.55);
   font-family: 'Dela Gothic One', cursive;
-  font-size: 11px;
-  letter-spacing: 0.05em;
+  font-size: 10px;
+  letter-spacing: 0.04em;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -503,38 +491,38 @@ main > .section:first-of-type { padding-top: 14px; }
   align-items: center;
   gap: 2px;
   -webkit-tap-highlight-color: transparent;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -3px;
+  border-top: 3px solid transparent;
+  margin-top: -3px;
 }
 .tab-btn:hover { color: rgba(255,255,255,0.85); }
-.tab-btn:active { transform: scale(0.95); }
+.tab-btn:active { transform: scale(0.92); }
 .tab-btn.active {
   color: var(--gold-glow);
-  border-bottom-color: var(--gold);
-  background: linear-gradient(180deg, rgba(255,216,109,0.1), transparent);
+  border-top-color: var(--gold);
+  background: linear-gradient(0deg, rgba(255,216,109,0.12), transparent);
 }
 .tab-btn.active .tab-icon {
   filter: drop-shadow(0 0 8px var(--gold-glow));
-  transform: scale(1.15);
+  transform: scale(1.1);
 }
 .tab-icon {
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1;
   transition: transform 0.2s, filter 0.2s;
 }
 .tab-label {
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
 }
 .tab-badge {
   position: absolute;
-  top: 6px;
-  right: 18%;
+  top: 4px;
+  right: 22%;
   background: var(--red);
   color: #fff;
   font-family: 'Bebas Neue', cursive;
   font-size: 11px;
-  width: 16px; height: 16px;
+  width: 14px; height: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -548,6 +536,9 @@ main > .section:first-of-type { padding-top: 14px; }
   50% { transform: scale(1.15); }
 }
 
+/* main は下部タブの分パディング確保 */
+main { padding-bottom: 80px; }
+
 /* タブコンテンツ */
 .tab-content {
   display: none;
@@ -559,13 +550,13 @@ main > .section:first-of-type { padding-top: 14px; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== HOMEタブ：レースカード（コンパクト版） ===== */
+/* ===== HOMEタブ：レースカード（超コンパクト版） ===== */
 .home-race-card {
   background: linear-gradient(135deg, var(--turf-deep), var(--turf) 50%, var(--turf-deep));
-  border: 3px solid var(--gold);
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.25);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.2);
   position: relative;
   overflow: hidden;
   color: var(--cream);
@@ -574,38 +565,39 @@ main > .section:first-of-type { padding-top: 14px; }
   content: '';
   position: absolute; inset: 0;
   background:
-    radial-gradient(circle at 20% 0%, rgba(255,216,109,0.18), transparent 50%),
-    repeating-linear-gradient(45deg, transparent, transparent 16px, rgba(255,255,255,0.04) 16px, rgba(255,255,255,0.04) 32px);
+    radial-gradient(circle at 20% 0%, rgba(255,216,109,0.15), transparent 50%),
+    repeating-linear-gradient(45deg, transparent, transparent 16px, rgba(255,255,255,0.03) 16px, rgba(255,255,255,0.03) 32px);
   pointer-events: none;
 }
 .home-race-tag {
   position: relative;
   z-index: 1;
   font-family: 'Bebas Neue', cursive;
-  font-size: 11px;
+  font-size: 9px;
   color: var(--gold-glow);
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 .home-race-title {
   position: relative;
   z-index: 1;
   font-family: 'Dela Gothic One', cursive;
-  font-size: 22px;
+  font-size: 17px;
   color: var(--cream);
   text-align: center;
-  margin-bottom: 6px;
-  text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 12px var(--gold-glow);
+  margin-bottom: 2px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 10px var(--gold-glow);
   letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 .home-race-info {
   position: relative;
   z-index: 1;
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(248,241,222,0.85);
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-weight: 700;
 }
 .home-race-countdown {
@@ -614,53 +606,53 @@ main > .section:first-of-type { padding-top: 14px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 10px;
+  gap: 8px;
+  padding: 6px 8px;
   background: rgba(0,0,0,0.35);
-  border-radius: 8px;
-  border: 1.5px solid var(--gold);
+  border-radius: 6px;
+  border: 1px solid var(--gold);
 }
 .home-race-deadline-label {
   font-family: 'Bebas Neue', cursive;
-  font-size: 10px;
+  font-size: 9px;
   color: var(--gold-glow);
   letter-spacing: 2px;
 }
 .home-race-deadline-value {
   font-family: 'Bebas Neue', cursive;
-  font-size: 22px;
+  font-size: 18px;
   color: #fff;
   font-weight: 900;
   text-shadow: 0 0 10px var(--gold-glow);
 }
 
-/* ===== HOMEタブ：CTAボタン ===== */
+/* ===== HOMEタブ：CTAボタン（コンパクト） ===== */
 .home-cta-btn {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 16px;
-  border: 3px solid var(--gold);
-  border-radius: 12px;
+  gap: 6px;
+  padding: 10px;
+  border: 2.5px solid var(--gold);
+  border-radius: 10px;
   background: linear-gradient(135deg, var(--red), var(--red-deep));
   color: var(--gold-glow);
   font-family: 'Dela Gothic One', cursive;
-  font-size: 15px;
-  letter-spacing: 3px;
+  font-size: 13px;
+  letter-spacing: 2px;
   cursor: pointer;
-  box-shadow: 0 5px 0 var(--red-deep), 0 8px 20px rgba(197,41,42,0.3), 0 0 16px var(--gold-glow);
+  box-shadow: 0 4px 0 var(--red-deep), 0 0 14px var(--gold-glow);
   transition: transform 0.15s, box-shadow 0.15s;
-  text-shadow: 0 2px 0 rgba(0,0,0,0.4);
-  margin-bottom: 10px;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.4);
+  margin-bottom: 8px;
   position: relative;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
 }
 .home-cta-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 7px 0 var(--red-deep), 0 10px 24px rgba(197,41,42,0.4), 0 0 20px var(--gold-glow);
+  box-shadow: 0 6px 0 var(--red-deep), 0 0 18px var(--gold-glow);
 }
 .home-cta-btn:active { transform: translateY(2px); }
 .home-cta-btn::before {
@@ -676,16 +668,16 @@ main > .section:first-of-type { padding-top: 14px; }
 }
 .home-cta-btn-secondary {
   background: linear-gradient(135deg, var(--turf-deep), var(--turf));
-  box-shadow: 0 5px 0 #000, 0 8px 20px rgba(0,0,0,0.25), 0 0 16px var(--gold-glow);
+  box-shadow: 0 4px 0 #000, 0 0 14px var(--gold-glow);
 }
 .home-cta-btn-secondary:hover {
-  box-shadow: 0 7px 0 #000, 0 10px 24px rgba(0,0,0,0.3), 0 0 20px var(--gold-glow);
+  box-shadow: 0 6px 0 #000, 0 0 18px var(--gold-glow);
 }
-.home-cta-icon { font-size: 22px; line-height: 1; }
+.home-cta-icon { font-size: 18px; line-height: 1; }
 .home-cta-text { flex: 1; text-align: center; }
 .home-cta-arrow {
   font-family: 'Bebas Neue', cursive;
-  font-size: 22px;
+  font-size: 18px;
   transition: transform 0.2s;
 }
 .home-cta-btn:hover .home-cta-arrow { transform: translateX(4px); }
@@ -1323,23 +1315,23 @@ main > .section:first-of-type { padding-top: 14px; }
 }
 
 /* ===== 遊び方アコーディオン ===== */
-.how-to-section { padding: 10px 16px 0; }
+.how-to-section { padding: 4px 14px 0; }
 .how-to {
   background: linear-gradient(135deg, var(--cream-soft), #fff);
-  border: 2.5px solid var(--turf);
-  border-radius: 12px;
-  box-shadow: 0 4px 0 var(--turf-deep);
+  border: 2px solid var(--turf);
+  border-radius: 10px;
+  box-shadow: 0 3px 0 var(--turf-deep);
   overflow: hidden;
 }
 .how-to-summary {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
+  gap: 8px;
+  padding: 10px 14px;
   cursor: pointer;
   list-style: none;
   font-family: 'Dela Gothic One', cursive;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--turf-deep);
   letter-spacing: 0.04em;
   transition: background 0.2s;
