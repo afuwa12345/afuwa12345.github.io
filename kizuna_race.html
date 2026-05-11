@@ -207,7 +207,7 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
 main {
   position: relative;
   padding-top: 56px;
-  padding-bottom: 65px;
+  padding-bottom: calc(65px + env(safe-area-inset-bottom));
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
@@ -241,7 +241,7 @@ main {
 #tab-home > .hero {
   flex: 1 1 auto;
   min-height: 60px;
-  max-height: 100%;
+  max-height: 200px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -251,7 +251,7 @@ main {
 }
 #tab-home .kizuna-title-img {
   max-width: 100%;
-  max-height: calc(100% - 30px); /* サブテキスト分残す */
+  max-height: calc(100% - 30px);
   width: auto;
   height: auto;
   object-fit: contain;
