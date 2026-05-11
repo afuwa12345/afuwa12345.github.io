@@ -478,6 +478,97 @@ main > .section:first-of-type { padding-top: 14px; }
 
 /* ===== 馬カード（戦闘カード） ===== */
 .horse-grid { display: grid; gap: 10px; margin-top: 14px; }
+
+/* 縦スクロールエリア */
+.horse-scroll-area {
+  background: rgba(14,46,31,0.05);
+  border: 2px solid var(--turf);
+  border-radius: 12px;
+  padding: 10px;
+  margin-top: 8px;
+  position: relative;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
+}
+.horse-scroll-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px 8px;
+  border-bottom: 1.5px dashed rgba(14,46,31,0.2);
+  margin-bottom: 6px;
+}
+.horse-count-label {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 12px;
+  color: var(--turf-deep);
+  letter-spacing: 0.04em;
+}
+.horse-count-num {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 14px;
+  color: var(--red);
+  font-weight: 900;
+  flex: 1;
+}
+.horse-scroll-hint {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+  padding: 2px 6px;
+  background: var(--gold-glow);
+  border-radius: 4px;
+  font-weight: 900;
+  animation: hintBounce 2s ease-in-out infinite;
+}
+@keyframes hintBounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+.horse-scroll-area .horse-grid {
+  max-height: 360px;
+  overflow-y: auto;
+  margin-top: 0;
+  padding: 4px 4px 4px 4px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.horse-scroll-area .horse-grid::-webkit-scrollbar {
+  width: 6px;
+}
+.horse-scroll-area .horse-grid::-webkit-scrollbar-track {
+  background: rgba(14,46,31,0.08);
+  border-radius: 3px;
+}
+.horse-scroll-area .horse-grid::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--turf), var(--turf-deep));
+  border-radius: 3px;
+}
+.horse-scroll-area .horse-grid::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* グラデーションフェード（上下端） */
+.horse-scroll-area::before,
+.horse-scroll-area::after {
+  content: '';
+  position: absolute;
+  left: 10px; right: 10px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 2;
+}
+.horse-scroll-area::before {
+  top: 40px;
+  background: linear-gradient(180deg, rgba(248,241,222,0.95), transparent);
+  border-radius: 4px 4px 0 0;
+}
+.horse-scroll-area::after {
+  bottom: 10px;
+  background: linear-gradient(0deg, rgba(248,241,222,0.95), transparent);
+  border-radius: 0 0 4px 4px;
+}
+
 .horse-card {
   position: relative;
   background: linear-gradient(135deg, var(--cream-soft), #fff);
@@ -2144,7 +2235,16 @@ main > .section:first-of-type { padding-top: 14px; }
         <div class="sec-label-en">SELECT YOUR PICK</div>
         <div class="sec-label-ja">本命を選べ</div>
       </div>
-      <div class="horse-grid" id="horseGrid"></div>
+
+      <!-- 馬カード（縦スクロールエリア） -->
+      <div class="horse-scroll-area">
+        <div class="horse-scroll-header">
+          <span class="horse-count-label">⚔ 出走馬</span>
+          <span class="horse-count-num" id="horseCountNum">—頭</span>
+          <span class="horse-scroll-hint">↕ スクロール</span>
+        </div>
+        <div class="horse-grid" id="horseGrid"></div>
+      </div>
 
       <div class="vote-btn-wrap">
         <button class="vote-btn" id="voteBtn" disabled>本命を選択せよ</button>
@@ -2533,6 +2633,9 @@ function isPastDeadline() {
 
 function renderVoteArea() {
   document.getElementById('voteArea').classList.remove('hidden');
+  // 頭数表示
+  const countEl = document.getElementById('horseCountNum');
+  if (countEl) countEl.textContent = `${horses.length}頭`;
   const grid = document.getElementById('horseGrid');
   grid.innerHTML = horses.map(h => `
     <div class="horse-card" data-name="${escapeHtml(h.name)}" onclick="selectHorse(this)">
