@@ -47,16 +47,15 @@
   transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, color 0.4s ease;
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html { scroll-behavior: smooth; height: 100%; }
+html { scroll-behavior: smooth; }
 body {
   background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
   background-attachment: fixed;
   color: var(--text);
   font-family: 'Noto Sans JP', sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
-  height: 100dvh;
-  max-height: 100dvh;
+  min-height: 100vh;
 }
 body::before {
   content: '';
@@ -208,58 +207,15 @@ main {
   position: relative;
   padding-top: 56px;
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
-  height: 100dvh;
-  max-height: 100dvh;
-  overflow: hidden;
 }
 .tab-content {
   display: none;
   animation: tabFadeIn 0.3s ease-out;
-  height: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 .tab-content.active { display: block; }
 @keyframes tabFadeIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== HOMEタブだけ：画面固定＆タイトル画像可変 ===== */
-#tab-home.active {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-#tab-home > * {
-  flex-shrink: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-/* ヒーロー（タイトル画像エリア）だけ可変 */
-#tab-home > .hero {
-  flex: 1 1 auto;
-  min-height: 60px;
-  max-height: 200px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 0;
-}
-#tab-home .kizuna-title-img {
-  max-width: 100%;
-  max-height: calc(100% - 30px);
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  flex-shrink: 1;
-}
-#tab-home .hero-sub {
-  flex-shrink: 0;
-  margin-top: 4px;
 }
 main > .section:first-of-type { padding-top: 14px; }
 .battle-banner::before, .battle-banner::after {
