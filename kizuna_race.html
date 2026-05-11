@@ -153,7 +153,7 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  padding: 16px 16px 8px;
+  padding: 0 0 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -166,7 +166,9 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
 }
 
 .kizuna-title-img {
-  width: min(240px, 55vw);
+  width: 100%;
+  max-width: 100%;
+  display: block;
   filter: drop-shadow(0 6px 16px rgba(0,0,0,0.25));
   animation: titleFloat 3.6s ease-in-out infinite;
   position: relative; z-index: 2;
@@ -176,7 +178,8 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
   50% { transform: translateY(-3px); }
 }
 .hero-sub {
-  margin-top: 4px;
+  margin-top: 6px;
+  padding: 0 14px;
   color: var(--text-soft);
   font-size: 0.7rem;
   letter-spacing: 1px;
