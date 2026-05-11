@@ -698,6 +698,65 @@ main > .section:first-of-type { padding-top: 14px; }
 }
 
 /* ===== タブナビゲーション（下部固定） ===== */
+/* ===== 投票タブ：超ミニレースバー ===== */
+.vote-race-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf) 50%, var(--turf-deep));
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.vote-race-bar::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 16px, rgba(255,255,255,0.03) 16px, rgba(255,255,255,0.03) 32px);
+  pointer-events: none;
+}
+.vote-race-bar-left { position: relative; z-index: 1; flex: 1; min-width: 0; }
+.vote-race-bar-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 13px;
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  text-shadow: 0 0 8px var(--gold-glow);
+}
+.vote-race-bar-meta {
+  font-size: 10px;
+  color: rgba(248,241,222,0.75);
+  font-weight: 700;
+  margin-top: 1px;
+}
+.vote-race-bar-right { position: relative; z-index: 1; text-align: right; flex-shrink: 0; }
+.vote-race-bar-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 8px;
+  color: var(--gold-glow);
+  letter-spacing: 1px;
+}
+.vote-race-bar-time {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 0 8px var(--gold-glow);
+}
+
+/* 投票タブ馬カードエリア拡大 */
+#tab-vote .horse-scroll-area { margin-top: 6px; }
+#tab-vote .horse-scroll-area .horse-grid {
+  max-height: calc(100dvh - 56px - 65px - 130px);
+}
 .tab-nav {
   position: fixed;
   bottom: 0;
@@ -2590,7 +2649,7 @@ main > .section:first-of-type { padding-top: 14px; }
   </button>
   <button class="tab-btn" data-tab="vote">
     <span class="tab-icon">⚔</span>
-    <span class="tab-label">投票</span>
+    <span class="tab-label">参戦</span>
     <span class="tab-badge" id="voteTabBadge" style="display:none">!</span>
   </button>
   <button class="tab-btn" data-tab="stats">
@@ -2714,7 +2773,7 @@ main > .section:first-of-type { padding-top: 14px; }
     <div class="section">
       <button class="home-cta-btn" onclick="switchTab('vote')" id="homeVoteBtn">
         <span class="home-cta-icon">⚔</span>
-        <span class="home-cta-text">投票へ進む</span>
+        <span class="home-cta-text">参戦へ進む</span>
         <span class="home-cta-arrow">→</span>
       </button>
       <button class="home-cta-btn home-cta-btn-secondary" onclick="switchTab('stats')">
@@ -2731,51 +2790,38 @@ main > .section:first-of-type { padding-top: 14px; }
 
     <!-- 戦士プロフィール（最上部・投票前のみ） -->
     <div class="section" id="warriorTopSection">
-      <div class="warrior-card flash-in">
-        <div class="warrior-inner">
-          <div class="warrior-avatar-wrap">
-            <div class="warrior-ring"></div>
-            <img class="warrior-avatar" id="warriorAvatar" src="" alt="">
-          </div>
-          <div class="warrior-info">
-            <div class="warrior-tag">⚔ YOUR FACTION ⚔</div>
-            <div class="warrior-name" id="warriorName">—</div>
-            <div class="warrior-style" id="warriorStyle">—</div>
-            <div class="rank-row">
-              <span class="rank-label">RANK</span>
-              <span class="rank-value" id="rankValue">新馬</span>
-              <span class="rank-points" id="rankPoints">0pt</span>
-            </div>
-            <div class="points-bar-wrap"><div class="points-bar" id="pointsBar" style="width:0%"></div></div>
-          </div>
+      <!-- 超ミニレースバー -->
+      <div class="vote-race-bar" id="voteRaceBar">
+        <div class="vote-race-bar-left">
+          <div class="vote-race-bar-title" id="voteRaceBarTitle">—</div>
+          <div class="vote-race-bar-meta" id="voteRaceBarMeta">—</div>
+        </div>
+        <div class="vote-race-bar-right">
+          <div class="vote-race-bar-label">締切</div>
+          <div class="vote-race-bar-time" id="voteRaceBarCountdown">--:--:--</div>
         </div>
       </div>
 
-      <!-- レース情報 -->
-      <div class="race-card flash-in" id="raceCard">
-        <div class="race-tag">⚔ THIS WEEK&apos;S RACE ⚔</div>
-        <div class="race-title" id="raceName">—</div>
-        <div class="race-info" id="raceMeta">—</div>
-        <div class="countdown" id="countdownBox">
-          <span class="countdown-label">DEADLINE</span>
-          <span class="countdown-value" id="countdown">--:--:--</span>
-        </div>
+      <!-- 隠し要素：既存JSが warriorAvatar/Name/Style/rankValue 等を参照するため残す -->
+      <div style="display:none">
+        <img id="warriorAvatar"><span id="warriorName"></span><span id="warriorStyle"></span>
+        <span id="rankValue"></span><span id="rankPoints"></span><div id="pointsBar"></div>
+      </div>
+      <!-- 隠し要素：既存JSが raceCard 内の要素を参照する -->
+      <div class="race-card flash-in" id="raceCard" style="display:none">
+        <span id="raceName"></span><span id="raceMeta"></span>
+        <div id="countdownBox"><span id="countdown"></span></div>
       </div>
     </div>
 
-    <!-- 投票エリア -->
+    <!-- 投票エリア（最大化） -->
     <div id="voteArea" class="section hidden">
-      <div class="sec-label">
-        <div class="sec-label-en">SELECT YOUR PICK</div>
-        <div class="sec-label-ja">本命を選べ</div>
-      </div>
-
-      <!-- 馬カード（縦スクロールエリア） -->
+      <!-- 馬カード（縦スクロールエリア・大きく） -->
       <div class="horse-scroll-area">
         <div class="horse-scroll-header">
-          <span class="horse-count-label">⚔ 出走馬</span>
+          <span class="horse-count-label">⚔ 本命を選べ</span>
           <span class="horse-count-num" id="horseCountNum">—頭</span>
-          <span class="horse-scroll-hint">↕ スクロール</span>
+          <span class="horse-scroll-hint">↕</span>
         </div>
         <div class="horse-grid" id="horseGrid"></div>
       </div>
@@ -2787,22 +2833,92 @@ main > .section:first-of-type { padding-top: 14px; }
 
     <!-- 投票タブ：投票済み時メッセージ -->
     <div id="voteDoneMsg" class="section hidden">
-      <div class="empty-state empty-success">
-        <div class="empty-icon">✓</div>
-        <div class="empty-title">投票完了！</div>
-        <div class="empty-text">あなたは <b id="voteDonePickName">—</b> に参戦しました。<br>結果は「戦績タブ」で確認できます。</div>
-        <button class="empty-btn" onclick="switchTab('stats')">📊 戦績タブへ →</button>
+      <div class="empty-state empty-success" style="padding: 16px;">
+        <div class="empty-icon" style="font-size:36px; margin-bottom:6px;">✓</div>
+        <div class="empty-title" style="font-size:14px; margin-bottom:4px;">投票完了！</div>
+        <div class="empty-text" style="font-size:11px; margin-bottom:0;">あなたは <b id="voteDonePickName">—</b> に参戦しました</div>
       </div>
     </div>
 
     <!-- 投票タブ：締切後メッセージ -->
     <div id="voteClosedMsg" class="section hidden">
-      <div class="empty-state empty-closed">
-        <div class="empty-icon">⏰</div>
-        <div class="empty-title">投票締切</div>
-        <div class="empty-text">このレースの投票は締め切られました。<br>結果は「戦績タブ」で確認できます。</div>
-        <button class="empty-btn" onclick="switchTab('stats')">📊 戦績タブへ →</button>
+      <div class="empty-state empty-closed" style="padding: 16px;">
+        <div class="empty-icon" style="font-size:36px; margin-bottom:6px;">⏰</div>
+        <div class="empty-title" style="font-size:14px; margin-bottom:4px;">投票締切</div>
+        <div class="empty-text" style="font-size:11px; margin-bottom:0;">投票は締め切られました</div>
       </div>
+    </div>
+
+    <!-- 投票済み（メガカード＋仲間の声） -->
+    <div id="votedArea" class="section hidden">
+
+      <!-- メガ金色カード：侍 + ランキング統合 -->
+      <div class="warrior-card warrior-card-mega flash-in">
+        <!-- 上半分：侍プロフィール -->
+        <div class="warrior-mega-portrait">
+          <div class="warrior-avatar-wrap">
+            <div class="warrior-ring"></div>
+            <img class="warrior-avatar" id="warriorAvatarMega" src="" alt="">
+          </div>
+          <div class="warrior-info">
+            <div class="warrior-tag">⚔ YOUR FACTION ⚔</div>
+            <div class="warrior-name" id="warriorNameMega">—</div>
+            <div class="warrior-style" id="warriorStyleMega">—</div>
+            <div class="rank-row">
+              <span class="rank-label">RANK</span>
+              <span class="rank-value" id="rankValueMega">新馬</span>
+              <span class="rank-points" id="rankPointsMega">0pt</span>
+            </div>
+            <div class="points-bar-wrap"><div class="points-bar" id="pointsBarMega" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <!-- 区切り -->
+        <div class="warrior-mega-divider"></div>
+
+        <!-- 下半分：ランキング -->
+        <div class="warrior-mega-tally">
+          <div class="warrior-mega-tally-title">⚔ FACTION TALLY ⚔</div>
+          <div class="warrior-mega-tally-sub">陣営内ランキング</div>
+          <div id="tallyCard" class="horse-tally-list">
+            <div class="tally-empty">まだ票が集まっていません…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 自分のコメント（書いた時だけ表示） -->
+      <div class="my-cry-block" id="myCommentBlock" style="display:none">
+        <div class="my-cry-label">⚔ YOUR BATTLE CRY ⚔</div>
+        <div class="my-cry-text" id="myCommentText"></div>
+      </div>
+
+      <!-- 仲間の声 -->
+      <div class="sec-label" style="margin-top:16px">
+        <div class="sec-label-en">⚔ BATTLE CRIES ⚔</div>
+        <div class="sec-label-ja">仲間の声</div>
+      </div>
+      <div class="comments-list-wrap">
+        <div class="comments-list" id="commentsList">
+          <div class="comments-empty">まだ声が集まっていません…</div>
+        </div>
+        <div class="comments-count" id="commentsCount" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- 締切後（6陣営公開） -->
+    <div id="closedArea" class="section hidden">
+      <div class="status-block mini">
+        <span class="icon" id="closedIcon">🏁</span>
+        <div class="title" id="closedTitle">CLOSED</div>
+        <div class="desc" id="closedDesc">投票締切。結果をお待ちください</div>
+        <div class="your-pick" id="myPickClosed" style="display:none">YOUR PICK：<b id="myPickText2">—</b></div>
+      </div>
+
+      <div class="sec-label" style="margin-top:16px">
+        <div class="sec-label-en">⚔ 6 FACTIONS BATTLE ⚔</div>
+        <div class="sec-label-ja">6陣営の本命</div>
+      </div>
+      <div class="all-jinei" id="allJinei"></div>
     </div>
 
     </div><!-- /tab-vote -->
@@ -2851,88 +2967,6 @@ main > .section:first-of-type { padding-top: 14px; }
         </div>
       </div>
 
-    </div>
-
-    <!-- 旧：個人戦績ブロック（隠す） -->
-    <div id="statsEmptyMsg" class="section hidden">
-      <div class="empty-state">
-        <div class="empty-icon">📊</div>
-        <div class="empty-title">まだ投票していません</div>
-        <div class="empty-text">投票するとここに戦績が表示されます。</div>
-        <button class="empty-btn" onclick="switchTab('vote')">⚔ 投票タブへ →</button>
-      </div>
-    </div>
-
-    <!-- 投票済み -->
-    <div id="votedArea" class="section hidden">
-
-      <!-- メガ金色カード：侍 + ランキング統合 -->
-      <div class="warrior-card warrior-card-mega flash-in">
-        <!-- 上半分：侍プロフィール -->
-        <div class="warrior-mega-portrait">
-          <div class="warrior-avatar-wrap">
-            <div class="warrior-ring"></div>
-            <img class="warrior-avatar" id="warriorAvatarMega" src="" alt="">
-          </div>
-          <div class="warrior-info">
-            <div class="warrior-tag">⚔ YOUR FACTION ⚔</div>
-            <div class="warrior-name" id="warriorNameMega">—</div>
-            <div class="warrior-style" id="warriorStyleMega">—</div>
-            <div class="rank-row">
-              <span class="rank-label">RANK</span>
-              <span class="rank-value" id="rankValueMega">新馬</span>
-              <span class="rank-points" id="rankPointsMega">0pt</span>
-            </div>
-            <div class="points-bar-wrap"><div class="points-bar" id="pointsBarMega" style="width:0%"></div></div>
-          </div>
-        </div>
-
-        <!-- 区切り -->
-        <div class="warrior-mega-divider"></div>
-
-        <!-- 下半分：ランキング -->
-        <div class="warrior-mega-tally">
-          <div class="warrior-mega-tally-title">⚔ FACTION TALLY ⚔</div>
-          <div class="warrior-mega-tally-sub">陣営内ランキング</div>
-          <div id="tallyCard" class="horse-tally-list">
-            <div class="tally-empty">まだ票が集まっていません…</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 自分のコメント（書いた時だけ表示） -->
-      <div class="my-cry-block" id="myCommentBlock" style="display:none">
-        <div class="my-cry-label">⚔ YOUR BATTLE CRY ⚔</div>
-        <div class="my-cry-text" id="myCommentText"></div>
-      </div>
-
-      <!-- 仲間の声 -->
-      <div class="sec-label" style="margin-top:24px">
-        <div class="sec-label-en">⚔ BATTLE CRIES ⚔</div>
-        <div class="sec-label-ja">仲間の声</div>
-      </div>
-      <div class="comments-list-wrap">
-        <div class="comments-list" id="commentsList">
-          <div class="comments-empty">まだ声が集まっていません…</div>
-        </div>
-        <div class="comments-count" id="commentsCount" style="display:none"></div>
-      </div>
-    </div>
-
-    <!-- 締切後 -->
-    <div id="closedArea" class="section hidden">
-      <div class="status-block mini">
-        <span class="icon" id="closedIcon">🏁</span>
-        <div class="title" id="closedTitle">CLOSED</div>
-        <div class="desc" id="closedDesc">投票締切。結果をお待ちください</div>
-        <div class="your-pick" id="myPickClosed" style="display:none">YOUR PICK：<b id="myPickText2">—</b></div>
-      </div>
-
-      <div class="sec-label" style="margin-top:24px">
-        <div class="sec-label-en">⚔ 6 FACTIONS BATTLE ⚔</div>
-        <div class="sec-label-ja">6陣営の本命</div>
-      </div>
-      <div class="all-jinei" id="allJinei"></div>
     </div>
 
     </div><!-- /tab-stats -->
@@ -3176,6 +3210,12 @@ function renderHero() {
   const homeMeta = document.getElementById('homeRaceMeta');
   if (homeName) homeName.textContent = race.name || '—';
   if (homeMeta) homeMeta.innerHTML = metaHtml;
+
+  // 投票タブの超ミニレースバーも更新
+  const voteTitle = document.getElementById('voteRaceBarTitle');
+  const voteMeta = document.getElementById('voteRaceBarMeta');
+  if (voteTitle) voteTitle.textContent = race.name || '—';
+  if (voteMeta) voteMeta.textContent = `${race.place || '—'} ${race.raceNum || ''}R / 締切 ${dlStr}`;
 }
 
 function renderWarrior(points) {
@@ -3228,7 +3268,6 @@ async function renderMainContent() {
     document.getElementById('voteArea').classList.add('hidden');
     document.getElementById('voteDoneMsg').classList.add('hidden');
     document.getElementById('voteClosedMsg').classList.remove('hidden');
-    document.getElementById('statsEmptyMsg').classList.add('hidden');
     await renderClosed(status);
 
     // 投票タブのバッジ消す
@@ -3242,7 +3281,6 @@ async function renderMainContent() {
     document.getElementById('voteClosedMsg').classList.add('hidden');
     document.getElementById('voteDoneMsg').classList.remove('hidden');
     document.getElementById('voteDonePickName').textContent = myVote.horseName || '—';
-    document.getElementById('statsEmptyMsg').classList.add('hidden');
     await renderVoted();
 
     document.getElementById('voteTabBadge').style.display = 'none';
@@ -3254,7 +3292,6 @@ async function renderMainContent() {
     document.getElementById('voteClosedMsg').classList.add('hidden');
     document.getElementById('votedArea').classList.add('hidden');
     document.getElementById('closedArea').classList.add('hidden');
-    document.getElementById('statsEmptyMsg').classList.remove('hidden');
 
     // 投票タブにバッジ表示（未投票通知）
     document.getElementById('voteTabBadge').style.display = 'flex';
@@ -3387,7 +3424,6 @@ async function confirmedSubmit() {
       document.getElementById('voteArea').classList.add('hidden');
       document.getElementById('voteDoneMsg').classList.remove('hidden');
       document.getElementById('voteDonePickName').textContent = selectedHorse;
-      document.getElementById('statsEmptyMsg').classList.add('hidden');
       document.getElementById('voteTabBadge').style.display = 'none';
       await renderVoted();
     }, 1800);
@@ -3650,16 +3686,19 @@ function startCountdown() {
   if (isPastDeadline()) {
     const el = document.getElementById('countdown');
     const elHome = document.getElementById('homeRaceCountdown');
+    const elVote = document.getElementById('voteRaceBarCountdown');
     if (el) {
       el.textContent = 'CLOSED';
       el.classList.add('urgent');
     }
     if (elHome) elHome.textContent = 'CLOSED';
+    if (elVote) elVote.textContent = 'CLOSED';
     return;
   }
   const target = new Date(race.deadline).getTime();
   const el = document.getElementById('countdown');
   const elHome = document.getElementById('homeRaceCountdown');
+  const elVote = document.getElementById('voteRaceBarCountdown');
   const update = () => {
     const now = Date.now();
     const diff = target - now;
@@ -3667,8 +3706,8 @@ function startCountdown() {
       el.textContent = 'CLOSED';
       el.classList.add('urgent');
       if (elHome) elHome.textContent = 'CLOSED';
+      if (elVote) elVote.textContent = 'CLOSED';
       clearInterval(countdownTimer);
-      // 締切瞬間に1回だけリロード（既にcloseな状態にする）
       setTimeout(() => location.reload(), 1200);
       return;
     }
@@ -3678,6 +3717,7 @@ function startCountdown() {
     const txt = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     el.textContent = txt;
     if (elHome) elHome.textContent = txt;
+    if (elVote) elVote.textContent = txt;
     if (h === 0 && m < 10) el.classList.add('urgent');
   };
   update();
