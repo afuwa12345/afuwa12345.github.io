@@ -1736,8 +1736,110 @@ main > .section:first-of-type { padding-top: 14px; }
   text-shadow: 0 0 8px var(--jc-glow);
 }
 
-/* ===== 遊び方アコーディオン ===== */
+/* ===== 遊び方ボタン（モーダル開く） ===== */
 .how-to-section { padding: 2px 12px 0; }
+.how-to-btn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2px solid var(--turf);
+  border-radius: 10px;
+  box-shadow: 0 3px 0 var(--turf-deep);
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 13px;
+  color: var(--turf-deep);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.how-to-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--turf-deep);
+}
+.how-to-btn .how-to-icon { font-size: 16px; }
+.how-to-btn .how-to-title { flex: 1; text-align: left; }
+.how-to-btn .how-to-arrow { font-size: 11px; color: var(--gold); }
+
+/* ===== 遊び方モーダル ===== */
+.howto-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(14, 46, 31, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: howtoFadeIn 0.25s ease-out;
+}
+.howto-modal.show { display: flex; }
+@keyframes howtoFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.howto-modal-inner {
+  width: 100%;
+  max-width: 480px;
+  max-height: calc(100dvh - 60px);
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 3px solid var(--gold);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 24px var(--gold-glow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: howtoSlideIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes howtoSlideIn {
+  from { transform: translateY(20px) scale(0.95); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+.howto-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, var(--turf-deep), var(--turf));
+  color: var(--cream);
+  border-bottom: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+.howto-modal-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+.howto-modal-close {
+  width: 32px; height: 32px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  background: rgba(0,0,0,0.3);
+  color: var(--cream);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s;
+}
+.howto-modal-close:active { transform: scale(0.92); }
+.howto-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px;
+}
+
+/* ===== 遊び方アコーディオン（旧） ===== */
+.how-to-section-legacy { padding: 2px 12px 0; }
 .how-to {
   background: linear-gradient(135deg, var(--cream-soft), #fff);
   border: 2px solid var(--turf);
@@ -2844,74 +2946,13 @@ main > .section:first-of-type { padding-top: 14px; }
       <p class="hero-sub">6つの陣営、6つの予想スタイル<br>あなたの本命が陣営の運命を決める</p>
     </section>
 
-    <!-- 遊び方アコーディオン -->
+    <!-- 遊び方ボタン（モーダル開く） -->
     <div class="section how-to-section">
-      <details class="how-to">
-        <summary class="how-to-summary">
-          <span class="how-to-icon">📖</span>
-          <span class="how-to-title">遊び方を見る</span>
-          <span class="how-to-arrow">▼</span>
-        </summary>
-        <div class="how-to-body">
-
-          <!-- 世界観 -->
-          <div class="how-block how-block-intro">
-            <div class="how-intro-text">
-              あなたは6つの陣営のうち1つに所属する<b>戦士</b>。<br>
-              陣営ごとに<b>予想ファクター</b>が違うから、<br>
-              「6つの予想スタイル」が毎週ぶつかり合う！
-            </div>
-          </div>
-
-          <!-- 6陣営の予想ファクター -->
-          <div class="how-block">
-            <div class="how-block-title">⚔ 6陣営の予想ファクター</div>
-            <ul class="how-factions">
-              <li><span class="hf-color" style="background:#c5292a"></span><b>アフワ陣営</b><span>実績・本命派</span></li>
-              <li><span class="hf-color" style="background:#d4a017"></span><b>やんちゃアフワ陣営</b><span>穴党・ロマン派</span></li>
-              <li><span class="hf-color" style="background:#2563eb"></span><b>ブルマ陣営</b><span>データ派</span></li>
-              <li><span class="hf-color" style="background:#c2410c"></span><b>チャフワ陣営</b><span>直感・パドック派</span></li>
-              <li><span class="hf-color" style="background:#1f2937"></span><b>クロフワ陣営</b><span>調教派</span></li>
-              <li><span class="hf-color" style="background:#94a3b8"></span><b>ギンマ陣営</b><span>血統派</span></li>
-            </ul>
-          </div>
-
-          <div class="how-block">
-            <div class="how-block-title">🏇 流れ</div>
-            <ol class="how-list">
-              <li>陣営員それぞれが本命を1頭投票</li>
-              <li>陣営内で<b>最多得票の馬</b>が「陣営の本命」になる</li>
-              <li>締切後、6陣営の本命が一斉公開（例：「血統派の本命は？」）</li>
-              <li>結果が出たらポイントゲット！</li>
-            </ol>
-            <div class="how-tip">📌 「データ派と直感派、どっちが当てた？」みたいな視点で楽しめる予想バトル！</div>
-          </div>
-
-          <div class="how-block">
-            <div class="how-block-title">🏆 ポイント</div>
-            <ul class="how-points">
-              <li><b>+1pt</b> <span>投票するだけ</span></li>
-              <li><b>+10pt</b> <span>個人の本命的中（1着）</span></li>
-              <li><b>+5pt</b> <span>陣営の本命的中（陣営員全員）</span></li>
-            </ul>
-          </div>
-
-          <div class="how-block">
-            <div class="how-block-title">📈 ランク</div>
-            <div class="how-ranks">新馬 → 未勝利 → 1勝 → 2勝 → 3勝 → オープン → 重賞馬 → GⅢ → GⅡ → <b>GⅠ馬</b></div>
-          </div>
-
-          <div class="how-block">
-            <div class="how-block-title">⚠ 注意</div>
-            <ul class="how-notes">
-              <li>投票は1レース1回のみ・変更不可</li>
-              <li>締切後は投票できません</li>
-              <li>コメントは陣営内の仲間に表示されます（匿名）</li>
-            </ul>
-          </div>
-
-        </div>
-      </details>
+      <button type="button" class="how-to-btn" onclick="openHowToModal()">
+        <span class="how-to-icon">📖</span>
+        <span class="how-to-title">遊び方を見る</span>
+        <span class="how-to-arrow">▶</span>
+      </button>
     </div>
 
     <!-- HOMEタブ：今週のレース（コンパクト版） -->
@@ -3146,6 +3187,75 @@ main > .section:first-of-type { padding-top: 14px; }
 
   </div>
 </main>
+
+<!-- 遊び方モーダル -->
+<div class="howto-modal" id="howToModal" onclick="closeHowToModalIfBackdrop(event)">
+  <div class="howto-modal-inner">
+    <div class="howto-modal-header">
+      <span class="howto-modal-title">📖 遊び方</span>
+      <button type="button" class="howto-modal-close" onclick="closeHowToModal()" aria-label="閉じる">✕</button>
+    </div>
+    <div class="howto-modal-body">
+
+      <!-- 世界観 -->
+      <div class="how-block how-block-intro">
+        <div class="how-intro-text">
+          あなたは6つの陣営のうち1つに所属する<b>戦士</b>。<br>
+          陣営ごとに<b>予想ファクター</b>が違うから、<br>
+          「6つの予想スタイル」が毎週ぶつかり合う！
+        </div>
+      </div>
+
+      <!-- 6陣営の予想ファクター -->
+      <div class="how-block">
+        <div class="how-block-title">⚔ 6陣営の予想ファクター</div>
+        <ul class="how-factions">
+          <li><span class="hf-color" style="background:#c5292a"></span><b>アフワ陣営</b><span>実績・本命派</span></li>
+          <li><span class="hf-color" style="background:#d4a017"></span><b>やんちゃアフワ陣営</b><span>穴党・ロマン派</span></li>
+          <li><span class="hf-color" style="background:#2563eb"></span><b>ブルマ陣営</b><span>データ派</span></li>
+          <li><span class="hf-color" style="background:#c2410c"></span><b>チャフワ陣営</b><span>直感・パドック派</span></li>
+          <li><span class="hf-color" style="background:#1f2937"></span><b>クロフワ陣営</b><span>調教派</span></li>
+          <li><span class="hf-color" style="background:#94a3b8"></span><b>ギンマ陣営</b><span>血統派</span></li>
+        </ul>
+      </div>
+
+      <div class="how-block">
+        <div class="how-block-title">🏇 流れ</div>
+        <ol class="how-list">
+          <li>陣営員それぞれが本命を1頭投票</li>
+          <li>陣営内で<b>最多得票の馬</b>が「陣営の本命」になる</li>
+          <li>締切後、6陣営の本命が一斉公開（例：「血統派の本命は？」）</li>
+          <li>結果が出たらポイントゲット！</li>
+        </ol>
+        <div class="how-tip">📌 「データ派と直感派、どっちが当てた？」みたいな視点で楽しめる予想バトル！</div>
+      </div>
+
+      <div class="how-block">
+        <div class="how-block-title">🏆 ポイント</div>
+        <ul class="how-points">
+          <li><b>+1pt</b> <span>投票するだけ</span></li>
+          <li><b>+10pt</b> <span>個人の本命的中（1着）</span></li>
+          <li><b>+5pt</b> <span>陣営の本命的中（陣営員全員）</span></li>
+        </ul>
+      </div>
+
+      <div class="how-block">
+        <div class="how-block-title">📈 ランク</div>
+        <div class="how-ranks">新馬 → 未勝利 → 1勝 → 2勝 → 3勝 → オープン → 重賞馬 → GⅢ → GⅡ → <b>GⅠ馬</b></div>
+      </div>
+
+      <div class="how-block">
+        <div class="how-block-title">⚠ 注意</div>
+        <ul class="how-notes">
+          <li>投票は1レース1回のみ・変更不可</li>
+          <li>締切後は投票できません</li>
+          <li>コメントは陣営内の仲間に表示されます（匿名）</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- 投票完了オーバーレイ -->
 <div class="vote-overlay" id="voteOverlay">
@@ -3900,6 +4010,20 @@ function startCountdown() {
 // ============================================================
 // タブ切替
 // ============================================================
+// 遊び方モーダル開閉
+function openHowToModal() {
+  const m = document.getElementById('howToModal');
+  if (m) m.classList.add('show');
+}
+function closeHowToModal() {
+  const m = document.getElementById('howToModal');
+  if (m) m.classList.remove('show');
+}
+function closeHowToModalIfBackdrop(e) {
+  // 背景クリックで閉じる（中身クリックは閉じない）
+  if (e.target.id === 'howToModal') closeHowToModal();
+}
+
 function switchTab(tabName) {
   // タブボタンのアクティブ切替
   document.querySelectorAll('.tab-btn').forEach(btn => {
