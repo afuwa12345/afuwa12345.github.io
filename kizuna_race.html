@@ -47,15 +47,16 @@
   transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, color 0.4s ease;
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; height: 100%; }
 body {
   background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
   background-attachment: fixed;
   color: var(--text);
   font-family: 'Noto Sans JP', sans-serif;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
-  min-height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
 }
 body::before {
   content: '';
@@ -178,12 +179,12 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
   50% { transform: translateY(-3px); }
 }
 .hero-sub {
-  margin-top: 6px;
+  margin-top: 4px;
   padding: 0 14px;
   color: var(--text-soft);
-  font-size: 0.7rem;
-  letter-spacing: 1px;
-  line-height: 1.4;
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
   font-weight: 700;
   position: relative; z-index: 2;
 }
@@ -203,7 +204,26 @@ nav, .hero, .section, .menu-overlay { position: relative; z-index: 2; }
   overflow: hidden;
   margin-bottom: 0;
 }
-main { padding-top: 56px; padding-bottom: 80px; }
+main {
+  position: relative;
+  padding-top: 56px;
+  padding-bottom: 65px;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+.tab-content {
+  display: none;
+  animation: tabFadeIn 0.3s ease-out;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tab-content.active { display: block; }
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 main > .section:first-of-type { padding-top: 14px; }
 .battle-banner::before, .battle-banner::after {
   content:'';
@@ -230,9 +250,9 @@ main > .section:first-of-type { padding-top: 14px; }
 .section {
   max-width: 600px;
   margin: 0 auto;
-  padding: 8px 14px;
+  padding: 5px 12px;
 }
-.sec-label { text-align: center; margin-bottom: 10px; }
+.sec-label { text-align: center; margin-bottom: 8px; }
 .sec-label-en {
   font-family: 'Bebas Neue', cursive;
   font-size: 11px;
@@ -464,6 +484,219 @@ main > .section:first-of-type { padding-top: 14px; }
   transition: width 1s cubic-bezier(0.4,0,0.2,1);
 }
 
+/* ===== 戦績タブ：陣営戦績 ===== */
+.jinei-stats-section { padding: 8px 12px; }
+.jinei-hero {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
+  background: linear-gradient(135deg, var(--jc-deep, var(--turf-deep)), var(--jc-main, var(--turf)) 50%, var(--jc-deep, var(--turf-deep)));
+  border: 3px solid var(--gold);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 8px 22px rgba(0,0,0,0.2), 0 0 18px var(--jc-glow, rgba(255,216,109,0.3));
+  position: relative;
+  overflow: hidden;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+.jinei-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 50%),
+    repeating-linear-gradient(45deg, transparent, transparent 16px, rgba(0,0,0,0.06) 16px, rgba(0,0,0,0.06) 32px);
+  pointer-events: none;
+}
+.jinei-hero-portrait {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.jinei-hero-portrait img {
+  width: 100%;
+  max-width: 130px;
+  height: auto;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5)) drop-shadow(0 0 12px var(--gold-glow));
+  animation: heroBob 4s ease-in-out infinite;
+}
+@keyframes heroBob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.jinei-hero-stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.jinei-hero-tag {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 9px;
+  color: var(--gold-glow);
+  letter-spacing: 3px;
+  margin-bottom: 2px;
+}
+.jinei-hero-name {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 15px;
+  color: var(--cream);
+  margin-bottom: 1px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 10px var(--gold-glow);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+.jinei-hero-style {
+  font-size: 10px;
+  color: rgba(248,241,222,0.85);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.jinei-hero-divider {
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin-bottom: 8px;
+}
+.jinei-stat-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.jinei-stat-row.big {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(255,216,109,0.4);
+}
+.jinei-stat-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px;
+  color: var(--gold-glow);
+  letter-spacing: 1px;
+  min-width: 44px;
+}
+.jinei-stat-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 22px;
+  color: #fff;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 0 8px var(--gold-glow);
+}
+.jinei-stat-row.big .jinei-stat-value {
+  font-size: 28px;
+}
+.jinei-stat-value.hit { color: var(--gold-glow); }
+.jinei-stat-value.rate { color: var(--gold-glow); }
+.jinei-stat-unit {
+  font-size: 10px;
+  color: rgba(248,241,222,0.7);
+  font-weight: 700;
+}
+
+/* レース履歴 */
+.jinei-history-wrap {
+  background: linear-gradient(135deg, var(--cream-soft), #fff);
+  border: 2px solid var(--turf);
+  border-radius: 12px;
+  padding: 8px 10px;
+  box-shadow: 0 3px 0 var(--turf-deep);
+  max-height: calc(100dvh - 380px);
+  display: flex;
+  flex-direction: column;
+}
+.jinei-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 4px 8px;
+  border-bottom: 1.5px dashed rgba(14,46,31,0.2);
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+.jinei-history-title {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 13px;
+  color: var(--turf-deep);
+  letter-spacing: 0.04em;
+}
+.jinei-history-hint {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 10px;
+  color: var(--text-soft);
+  background: var(--gold-glow);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 900;
+  animation: hintBounce 2s ease-in-out infinite;
+}
+.jinei-history-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 2px;
+}
+.jinei-history-list::-webkit-scrollbar { width: 5px; }
+.jinei-history-list::-webkit-scrollbar-thumb { background: var(--turf); border-radius: 3px; }
+.jinei-history-empty {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+.jinei-history-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(14,46,31,0.04);
+  border-left: 3px solid var(--gold);
+  border-radius: 6px;
+  margin-bottom: 5px;
+  font-size: 11px;
+}
+.jinei-history-item.hit {
+  background: linear-gradient(90deg, rgba(255,216,109,0.18), rgba(255,216,109,0.05));
+  border-left-color: var(--gold);
+}
+.jinei-history-item.miss {
+  background: rgba(0,0,0,0.04);
+  border-left-color: var(--text-soft);
+  opacity: 0.7;
+}
+.jh-result {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.jh-info { flex: 1; min-width: 0; }
+.jh-name {
+  font-family: 'Dela Gothic One', cursive;
+  font-size: 12px;
+  color: var(--turf-deep);
+  margin-bottom: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.jh-pick {
+  font-size: 10px;
+  color: var(--text-soft);
+  font-weight: 700;
+}
+.jh-pick b { color: var(--red-deep); }
+.jinei-history-item.hit .jh-pick b { color: var(--gold); }
+.jh-date {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 11px;
+  color: var(--text-soft);
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
 /* ===== タブナビゲーション（下部固定） ===== */
 .tab-nav {
   position: fixed;
@@ -541,24 +774,15 @@ main > .section:first-of-type { padding-top: 14px; }
 
 /* main は下部タブの分パディング確保（main {} で上にも設定済み） */
 
-/* タブコンテンツ */
-.tab-content {
-  display: none;
-  animation: tabFadeIn 0.3s ease-out;
-}
-.tab-content.active { display: block; }
-@keyframes tabFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* タブコンテンツ定義は上部のmain設定済み */
 
 /* ===== HOMEタブ：レースカード（超コンパクト版） ===== */
 .home-race-card {
   background: linear-gradient(135deg, var(--turf-deep), var(--turf) 50%, var(--turf-deep));
   border: 2px solid var(--gold);
-  border-radius: 12px;
-  padding: 10px 14px;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.15);
   position: relative;
   overflow: hidden;
   color: var(--cream);
@@ -575,20 +799,20 @@ main > .section:first-of-type { padding-top: 14px; }
   position: relative;
   z-index: 1;
   font-family: 'Bebas Neue', cursive;
-  font-size: 9px;
+  font-size: 8px;
   color: var(--gold-glow);
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .home-race-title {
   position: relative;
   z-index: 1;
   font-family: 'Dela Gothic One', cursive;
-  font-size: 17px;
+  font-size: 15px;
   color: var(--cream);
   text-align: center;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 10px var(--gold-glow);
   letter-spacing: 0.02em;
   line-height: 1.2;
@@ -596,10 +820,10 @@ main > .section:first-of-type { padding-top: 14px; }
 .home-race-info {
   position: relative;
   z-index: 1;
-  font-size: 11px;
+  font-size: 10px;
   color: rgba(248,241,222,0.85);
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   font-weight: 700;
 }
 .home-race-countdown {
@@ -608,21 +832,21 @@ main > .section:first-of-type { padding-top: 14px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 6px 8px;
+  gap: 6px;
+  padding: 4px 6px;
   background: rgba(0,0,0,0.35);
-  border-radius: 6px;
+  border-radius: 5px;
   border: 1px solid var(--gold);
 }
 .home-race-deadline-label {
   font-family: 'Bebas Neue', cursive;
-  font-size: 9px;
+  font-size: 8px;
   color: var(--gold-glow);
   letter-spacing: 2px;
 }
 .home-race-deadline-value {
   font-family: 'Bebas Neue', cursive;
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
   font-weight: 900;
   text-shadow: 0 0 10px var(--gold-glow);
@@ -635,26 +859,25 @@ main > .section:first-of-type { padding-top: 14px; }
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 10px;
-  border: 2.5px solid var(--gold);
-  border-radius: 10px;
+  padding: 8px 10px;
+  border: 2px solid var(--gold);
+  border-radius: 8px;
   background: linear-gradient(135deg, var(--red), var(--red-deep));
   color: var(--gold-glow);
   font-family: 'Dela Gothic One', cursive;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 2px;
   cursor: pointer;
-  box-shadow: 0 4px 0 var(--red-deep), 0 0 14px var(--gold-glow);
+  box-shadow: 0 3px 0 var(--red-deep), 0 0 12px var(--gold-glow);
   transition: transform 0.15s, box-shadow 0.15s;
   text-shadow: 0 1px 0 rgba(0,0,0,0.4);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   position: relative;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
 }
 .home-cta-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 0 var(--red-deep), 0 0 18px var(--gold-glow);
 }
 .home-cta-btn:active { transform: translateY(2px); }
 .home-cta-btn::before {
@@ -670,16 +893,13 @@ main > .section:first-of-type { padding-top: 14px; }
 }
 .home-cta-btn-secondary {
   background: linear-gradient(135deg, var(--turf-deep), var(--turf));
-  box-shadow: 0 4px 0 #000, 0 0 14px var(--gold-glow);
+  box-shadow: 0 3px 0 #000, 0 0 12px var(--gold-glow);
 }
-.home-cta-btn-secondary:hover {
-  box-shadow: 0 6px 0 #000, 0 0 18px var(--gold-glow);
-}
-.home-cta-icon { font-size: 18px; line-height: 1; }
+.home-cta-icon { font-size: 16px; line-height: 1; }
 .home-cta-text { flex: 1; text-align: center; }
 .home-cta-arrow {
   font-family: 'Bebas Neue', cursive;
-  font-size: 18px;
+  font-size: 16px;
   transition: transform 0.2s;
 }
 .home-cta-btn:hover .home-cta-arrow { transform: translateX(4px); }
@@ -1317,23 +1537,23 @@ main > .section:first-of-type { padding-top: 14px; }
 }
 
 /* ===== 遊び方アコーディオン ===== */
-.how-to-section { padding: 4px 14px 0; }
+.how-to-section { padding: 2px 12px 0; }
 .how-to {
   background: linear-gradient(135deg, var(--cream-soft), #fff);
   border: 2px solid var(--turf);
-  border-radius: 10px;
-  box-shadow: 0 3px 0 var(--turf-deep);
+  border-radius: 8px;
+  box-shadow: 0 2px 0 var(--turf-deep);
   overflow: hidden;
 }
 .how-to-summary {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   cursor: pointer;
   list-style: none;
   font-family: 'Dela Gothic One', cursive;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--turf-deep);
   letter-spacing: 0.04em;
   transition: background 0.2s;
@@ -2587,15 +2807,58 @@ main > .section:first-of-type { padding-top: 14px; }
 
     </div><!-- /tab-vote -->
 
-    <!-- ===== 戦績タブ ===== -->
+    <!-- ===== 戦績タブ（陣営の戦績） ===== -->
     <div class="tab-content" id="tab-stats">
 
-    <!-- 戦績タブ：未投票時 -->
+    <div class="section jinei-stats-section">
+
+      <!-- 陣営ヒーロー：侍画像どーん＋戦績 -->
+      <div class="jinei-hero">
+        <div class="jinei-hero-portrait">
+          <img id="jineiHeroAvatar" src="" alt="">
+        </div>
+        <div class="jinei-hero-stats">
+          <div class="jinei-hero-tag">YOUR FACTION</div>
+          <div class="jinei-hero-name" id="jineiHeroName">—</div>
+          <div class="jinei-hero-style" id="jineiHeroStyle">—</div>
+          <div class="jinei-hero-divider"></div>
+          <div class="jinei-stat-row">
+            <span class="jinei-stat-label">参戦</span>
+            <span class="jinei-stat-value" id="jineiStatRaces">0</span>
+            <span class="jinei-stat-unit">レース</span>
+          </div>
+          <div class="jinei-stat-row">
+            <span class="jinei-stat-label">的中</span>
+            <span class="jinei-stat-value hit" id="jineiStatHits">0</span>
+            <span class="jinei-stat-unit">回</span>
+          </div>
+          <div class="jinei-stat-row big">
+            <span class="jinei-stat-label">的中率</span>
+            <span class="jinei-stat-value rate" id="jineiStatRate">—</span>
+            <span class="jinei-stat-unit">%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- レース履歴 -->
+      <div class="jinei-history-wrap">
+        <div class="jinei-history-header">
+          <span class="jinei-history-title">🏇 これまでの戦歴</span>
+          <span class="jinei-history-hint">↕</span>
+        </div>
+        <div class="jinei-history-list" id="jineiHistoryList">
+          <div class="jinei-history-empty">読み込み中...</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 旧：個人戦績ブロック（隠す） -->
     <div id="statsEmptyMsg" class="section hidden">
       <div class="empty-state">
         <div class="empty-icon">📊</div>
         <div class="empty-title">まだ投票していません</div>
-        <div class="empty-text">投票するとここに戦績が表示されます。<br>「投票タブ」で本命を選びましょう！</div>
+        <div class="empty-text">投票するとここに戦績が表示されます。</div>
         <button class="empty-btn" onclick="switchTab('vote')">⚔ 投票タブへ →</button>
       </div>
     </div>
@@ -3435,6 +3698,90 @@ function switchTab(tabName) {
   });
   // スクロールを上に
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // 戦績タブを開いた時、陣営戦績をロード
+  if (tabName === 'stats') {
+    loadJineiStats();
+  }
+}
+
+// 陣営戦績データ読み込み＆描画
+let jineiStatsLoaded = false;
+async function loadJineiStats() {
+  if (!myKizuna || !myKizuna.jineiId) return;
+
+  const m = JINEI_MASTER[myKizuna.jineiId] || {};
+  // ヒーロー部分
+  document.getElementById('jineiHeroAvatar').src = m.img || '';
+  document.getElementById('jineiHeroName').textContent = m.name || '—';
+  document.getElementById('jineiHeroStyle').textContent = m.style || '—';
+
+  if (jineiStatsLoaded) return; // 一度ロードしたらキャッシュ
+  jineiStatsLoaded = true;
+
+  const list = document.getElementById('jineiHistoryList');
+  list.innerHTML = '<div class="jinei-history-empty">読み込み中...</div>';
+
+  try {
+    // 全 settled レースを取得
+    const snap = await db.collection('kizuna_races')
+      .where('status', '==', 'settled')
+      .get();
+
+    let totalRaces = 0;
+    let hits = 0;
+    const history = [];
+
+    snap.forEach(doc => {
+      const r = doc.data();
+      const jHonmei = (r.jineiHonmei || {})[myKizuna.jineiId];
+      if (!jHonmei) return; // 自陣営参戦なし
+      totalRaces++;
+      const isHit = jHonmei === r.winner;
+      if (isHit) hits++;
+      history.push({
+        raceId: r.raceId,
+        name: r.name || '—',
+        jineiPick: jHonmei,
+        winner: r.winner || '—',
+        isHit: isHit,
+        date: r.dateMMDD || '',
+        settledAt: r.settledAt,
+      });
+    });
+
+    // 新しい順にソート
+    history.sort((a, b) => {
+      const aT = a.settledAt && a.settledAt.toMillis ? a.settledAt.toMillis() : 0;
+      const bT = b.settledAt && b.settledAt.toMillis ? b.settledAt.toMillis() : 0;
+      return bT - aT;
+    });
+
+    const hitRate = totalRaces > 0 ? Math.round((hits / totalRaces) * 100) : null;
+
+    // 表示更新
+    document.getElementById('jineiStatRaces').textContent = totalRaces;
+    document.getElementById('jineiStatHits').textContent = hits;
+    document.getElementById('jineiStatRate').textContent = hitRate !== null ? hitRate : '—';
+
+    if (history.length === 0) {
+      list.innerHTML = '<div class="jinei-history-empty">まだ戦歴がありません<br><small>結果が出たレースの履歴がここに表示されます</small></div>';
+    } else {
+      list.innerHTML = history.map(h => `
+        <div class="jinei-history-item ${h.isHit ? 'hit' : 'miss'}">
+          <div class="jh-result">${h.isHit ? '🏆' : '💀'}</div>
+          <div class="jh-info">
+            <div class="jh-name">${escapeHtml(h.name)}</div>
+            <div class="jh-pick">本命: <b>${escapeHtml(h.jineiPick)}</b> / 1着: ${escapeHtml(h.winner)}</div>
+          </div>
+          <div class="jh-date">${escapeHtml(h.date)}</div>
+        </div>
+      `).join('');
+    }
+  } catch (err) {
+    console.error('陣営戦績取得エラー', err);
+    list.innerHTML = '<div class="jinei-history-empty">戦歴の取得に失敗しました</div>';
+  }
 }
 
 // タブボタンクリックイベント
