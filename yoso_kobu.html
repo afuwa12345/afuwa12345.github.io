@@ -1791,7 +1791,7 @@
   }
 
   // 起動時に1回読み込み
-  db.collection("korogashi").document("current").get().then(doc => {
+  db.collection("korogashi").doc("current").get().then(doc => {
     if (doc.exists) {
       console.log("[Firestore] current =", doc.data());
       updateCurrentDisplay(doc.data());
@@ -1801,14 +1801,14 @@
   }).catch(err => console.error("[Firestore] エラー:", err));
 
   // リアルタイム購読
-  db.collection("korogashi").document("current").onSnapshot(doc => {
+  db.collection("korogashi").doc("current").onSnapshot(doc => {
     if (!doc.exists) return;
     console.log("[Firestore] current 更新:", doc.data());
     updateCurrentDisplay(doc.data());
   });
 
   // record(歴代記録)購読
-  db.collection("korogashi").document("record").onSnapshot(doc => {
+  db.collection("korogashi").doc("record").onSnapshot(doc => {
     if (!doc.exists) return;
     const data = doc.data();
     console.log("[Firestore] record 更新:", data);
