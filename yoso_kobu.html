@@ -1251,12 +1251,12 @@
 
   <div class="racebar">
     <div class="raceinfo">
-      <div class="racebadge">3R</div>
-      <div class="racetxt"><b>東京</b> ・ 芝1400m<br>14:25発走 ・ 全16頭</div>
+      <div class="racebadge" id="race-badge">--</div>
+      <div class="racetxt" id="race-txt"><b>--</b><br>レース待機中</div>
     </div>
     <div class="timer" id="timer-box">
       <div class="lbl" id="timer-lbl">CLOSING IN</div>
-      <div class="num" id="timer-num">07:23</div>
+      <div class="num" id="timer-num">--:--</div>
     </div>
   </div>
 
@@ -1291,15 +1291,8 @@
 
     <!-- 投票前 -->
     <div class="view active" id="view-pre">
-      <div class="horses">
-        <div class="horse"><div class="num w1">1</div><div class="info"><div class="name">アフロキング</div><div class="sub">牡4 ・ 武豊</div></div></div>
-        <div class="horse selected"><div class="num w2">2</div><div class="info"><div class="name">ギンマスター</div><div class="sub">牡5 ・ ルメール</div></div></div>
-        <div class="horse"><div class="num w3">3</div><div class="info"><div class="name">クロフワブレード</div><div class="sub">牝3 ・ 川田将雅</div></div></div>
-        <div class="horse"><div class="num w4">4</div><div class="info"><div class="name">チャフワサンダー</div><div class="sub">牡4 ・ 横山武史</div></div></div>
-        <div class="horse"><div class="num w5">5</div><div class="info"><div class="name">ブルマシャイン</div><div class="sub">牡3 ・ 戸崎圭太</div></div></div>
-        <div class="horse"><div class="num w6">6</div><div class="info"><div class="name">ヤンチャアフロ</div><div class="sub">牡6 ・ 福永祐一</div></div></div>
-        <div class="horse"><div class="num w7">7</div><div class="info"><div class="name">ゴールドダンサー</div><div class="sub">牝4 ・ 岩田望来</div></div></div>
-        <div class="horse"><div class="num w8">8</div><div class="info"><div class="name">レッドナイトメア</div><div class="sub">牡5 ・ 池添謙一</div></div></div>
+      <div class="horses" id="horses-list">
+        <!-- 動的生成 -->
       </div>
     </div>
 
@@ -1812,12 +1805,84 @@
     if (!doc.exists) return;
     const data = doc.data();
     console.log("[Firestore] record 更新:", data);
-    // streak-meta に歴代最高ポット額を表示
     const streakMetaEl = document.getElementById('streak-meta');
     if (streakMetaEl && data.maxPot) {
       streakMetaEl.textContent = '部の歴代最高 ¥' + data.maxPot.toLocaleString();
     }
-    // TODO: 新記録達成時のモーダル発火
+  });
+
+  // ===== レース購読 =====
+  let currentRaceUnsub = null;
+  let lastRaceId = null;
+
+  function subscribeRace(raceId) {
+    if (!raceId) {
+      // レース未設定
+      document.getElementById('race-badge').textContent = '--';
+      document.getElementById('race-txt').innerHTML = '<b>準備中</b><br>次のレース待ち';
+      document.getElementById('horses-list').innerHTML = 
+        '<div style="text-align:center;padding:24px;color:#999;font-weight:700;">レース準備中…</div>';
+      return null;
+    }
+
+    return db.collection("races").doc(raceId).onSnapshot(doc => {
+      if (!doc.exists) {
+        console.log("[Firestore] races/" + raceId + " 存在しない");
+        return;
+      }
+      const data = doc.data();
+      console.log("[Firestore] race 更新:", data);
+
+      // レース情報表示
+      const info = data.info || {};
+      document.getElementById('race-badge').textContent = (info.raceNum || '?') + 'R';
+      
+      // 距離・芝/ダ表示(取れた範囲で)
+      let distInfo = info.distance ? info.distance + 'm' : '';
+      const txtEl = document.getElementById('race-txt');
+      const numHorses = (data.horses || []).length;
+      const startTimeStr = info.startTime 
+        ? info.startTime.slice(0, 2) + ':' + info.startTime.slice(2, 4) 
+        : '';
+      txtEl.innerHTML = `<b>${info.jyoName || '?'}</b> ${distInfo ? '・ ' + distInfo : ''}<br>${startTimeStr ? startTimeStr + '発走 ・ ' : ''}全${numHorses}頭`;
+
+      // 馬リスト動的生成
+      const horsesEl = document.getElementById('horses-list');
+      horsesEl.innerHTML = '';
+      (data.horses || []).forEach(h => {
+        const div = document.createElement('div');
+        div.className = 'horse';
+        div.dataset.umaban = h.umaban;
+        const wakuClass = 'w' + (h.wakuban || 1);
+        div.innerHTML = `
+          <div class="num ${wakuClass}">${h.umaban}</div>
+          <div class="info">
+            <div class="name">${h.horseName || '(不明)'}</div>
+            <div class="sub">　</div>
+          </div>
+        `;
+        div.onclick = () => {
+          // 既存の選択を解除
+          horsesEl.querySelectorAll('.horse.selected').forEach(el => el.classList.remove('selected'));
+          // 自分を選択
+          div.classList.add('selected');
+        };
+        horsesEl.appendChild(div);
+      });
+    });
+  }
+
+  // current の購読を拡張(currentRaceIdの変化を検知)
+  db.collection("korogashi").doc("current").onSnapshot(doc => {
+    if (!doc.exists) return;
+    const data = doc.data();
+    // currentRaceId 変化時に再購読
+    if (data.currentRaceId !== lastRaceId) {
+      console.log("[Firestore] currentRaceId 変化:", lastRaceId, "->", data.currentRaceId);
+      if (currentRaceUnsub) currentRaceUnsub();
+      currentRaceUnsub = subscribeRace(data.currentRaceId);
+      lastRaceId = data.currentRaceId;
+    }
   });
 </script>
 
