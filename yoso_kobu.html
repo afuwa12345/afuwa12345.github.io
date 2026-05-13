@@ -1866,6 +1866,8 @@
           horsesEl.querySelectorAll('.horse.selected').forEach(el => el.classList.remove('selected'));
           // 自分を選択
           div.classList.add('selected');
+          // 推しキャラの吹き出し更新
+          updateMessageForHorse(h.umaban, h.horseName);
         };
         horsesEl.appendChild(div);
       });
@@ -1902,12 +1904,12 @@
 
   const LINES = {
     pre: {
-      afuwa:    () => '2番 ギンマスター…ぼ、ぼく信じてみる…',
-      yancha:   () => '2番 ギンマスターだな!イケるぞ!',
-      ginma:    () => '2番 ギンマスター……フッ、悪くない判断',
-      kurohuwa: () => '2番 ギンマスター。決めた。',
-      chahuwa:  () => '2番 ギンマスターがいいの〜🎉',
-      buruma:   () => '2番 ギンマスター!絶対くるよ〜!',
+      afuwa:    (n, nm) => `${n}番 ${nm}…ぼ、ぼく信じてみる…`,
+      yancha:   (n, nm) => `${n}番 ${nm}だな!イケるぞ!`,
+      ginma:    (n, nm) => `${n}番 ${nm}……フッ、悪くない判断`,
+      kurohuwa: (n, nm) => `${n}番 ${nm}。決めた。`,
+      chahuwa:  (n, nm) => `${n}番 ${nm}がいいの〜🎉`,
+      buruma:   (n, nm) => `${n}番 ${nm}!絶対くるよ〜!`,
     },
     after: {
       afuwa:    () => 'と、投票したよ…締切まで待つね…ドキドキ…',
@@ -2136,6 +2138,16 @@
       if (e.target === bg) bg.classList.remove('show');
     });
   });
+
+  // 馬選択時のメッセージ更新
+  function updateMessageForHorse(umaban, horseName) {
+    const seriff = LINES.pre[oshiKey];
+    if (typeof seriff !== 'function') return;
+    const msgEl = document.getElementById('msgtext');
+    if (msgEl) {
+      msgEl.textContent = seriff(umaban, horseName);
+    }
+  }
 
   applyOshi();
   setTab('pre');
