@@ -1227,7 +1227,7 @@
       <div class="sub">AFRO HORSE MEMBERS</div>
     </div>
     <div class="member-col">
-      <div class="member" id="member-badge">
+      <div class="member" id="member-badge" style="visibility:hidden">
         <div class="avatar"><img id="oshi-avatar" src=""></div>
         <div class="info">
           <div class="name">こう</div>
@@ -1817,6 +1817,9 @@
       mainBtn.className = 'vote-btn signup';
       mainBtn.onclick = () => login();
     }
+    // member-badge を確実に非表示(visibility:hidden 状態維持)
+    const badge = document.getElementById('member-badge');
+    if (badge) badge.style.visibility = 'hidden';
   }
   
   function updateMemberBadge(user, kizuna) {
@@ -1827,7 +1830,10 @@
     if (nameEl) nameEl.textContent = user.displayName || '';
     if (oshiEl && kizuna && kizuna.oshi) {
       oshiEl.textContent = '♥' + kizuna.oshi + '推し';
+    } else if (oshiEl) {
+      oshiEl.textContent = '会員';
     }
+    badge.style.visibility = 'visible';
   }
 
   // current 表示更新関数
