@@ -12,7 +12,7 @@
 <!-- 認証モジュール -->
 <script src="js/auth.js"></script>
 
-<!-- Build: 20260513-143656 -->
+<!-- Build: 20260513-145317 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Sans+JP:wght@400;700;900&family=DotGothic16&display=swap" rel="stylesheet">
@@ -2946,7 +2946,7 @@ function startBgm() {
   other.currentTime = 0;
   current.volume = bgmVolume;
   current.play().catch(err => {
-    alert('BGM再生エラー：' + err.name + ' / ' + err.message);
+    console.log('BGM再生失敗:', err);
   });
 }
 function stopBgm() {
@@ -2992,6 +2992,8 @@ function playMinorJingle() {
   if (!bgmEnabled) return;
   const ctx = getVoiceCtx();
   if (!ctx) return;
+  // suspended なら resume を試みる
+  if (ctx.state === 'suspended') ctx.resume();
   const yancha = isYanchaTime();
   const notes = yancha ? [392, 466] : [659, 880];  // 2音
   try {
@@ -3017,6 +3019,8 @@ function playCornerJingle() {
   if (!bgmEnabled) return;
   const ctx = getVoiceCtx();
   if (!ctx) return;
+  // suspended なら resume を試みる
+  if (ctx.state === 'suspended') ctx.resume();
   const yancha = isYanchaTime();
   const notes = yancha ? [392, 466, 523] : [523, 659, 784, 1047];
   try {
