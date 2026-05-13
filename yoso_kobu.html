@@ -1957,12 +1957,35 @@
     updateMessage();
   }
 
+  let selectedHorse = null;  // 現在選択中の馬
+
+  // 馬未選択時の汎用セリフ(キャラ別)
+  const PRE_UNSELECTED = {
+    afuwa:    'みんな、どれにする…?',
+    yancha:   'どれが熱いか、選ぼうぜ!',
+    ginma:    'さて、どれを推すか…',
+    kurohuwa: '選べ。',
+    chahuwa:  'どれにしよ〜?ワクワク〜!',
+    buruma:   'みんなで決めよ〜!',
+  };
+
   function updateMessage() {
     let key = currentTab;
     if (currentTab === 'win' || currentTab === 'lose') key = 'pickdone';
     if (currentTab === 'pick' || currentTab === 'picktie') key = 'closed';
     const fn = LINES[key] && LINES[key][oshiKey];
-    if (fn) msgtext.innerHTML = fn() + '<span class="arrow">▼</span>';
+    if (!fn) return;
+    let text;
+    if (key === 'pre' || key === 'after') {
+      if (selectedHorse) {
+        text = fn(selectedHorse.umaban, selectedHorse.horseName);
+      } else {
+        text = PRE_UNSELECTED[oshiKey] || 'どれにする?';
+      }
+    } else {
+      text = fn();
+    }
+    msgtext.innerHTML = text + '<span class="arrow">▼</span>';
   }
 
   function setTab(tab) {
@@ -2139,14 +2162,10 @@
     });
   });
 
-  // 馬選択時のメッセージ更新
+  // 馬選択時のメッセージ更新(selectedHorse 経由)
   function updateMessageForHorse(umaban, horseName) {
-    const seriff = LINES.pre[oshiKey];
-    if (typeof seriff !== 'function') return;
-    const msgEl = document.getElementById('msgtext');
-    if (msgEl) {
-      msgEl.textContent = seriff(umaban, horseName);
-    }
+    selectedHorse = { umaban, horseName };
+    updateMessage();
   }
 
   applyOshi();
