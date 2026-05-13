@@ -1212,6 +1212,10 @@
 <!-- Firebase SDK (compat版・script読み込み) -->
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<!-- LIFF SDK -->
+<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<!-- AFRO Horse 認証モジュール -->
+<script src="/js/auth.js"></script>
 </head>
 <body>
 
@@ -1761,19 +1765,70 @@
   </div>
 </div>
 
-<!-- ============ Firebase 接続 ============ -->
+<!-- ============ Firebase 接続(auth.js経由) ============ -->
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCgQbQDeruu4XnE4X585GANZ2gQeJ7ViEg",
-    authDomain: "afro-horse.firebaseapp.com",
-    projectId: "afro-horse",
-    storageBucket: "afro-horse.firebasestorage.app",
-    messagingSenderId: "744565672066",
-    appId: "1:744565672066:web:de766cc9d8699e085c8c9b",
-    measurementId: "G-D4544ECRLL"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  // auth.js が firebase.initializeApp() と db を作るので、それを利用
+  // ※ auth.js が読み込まれた時点で window.db が使える状態
+  
+  // LIFF 認証初期化
+  let kizunaData = null;  // 推しキャラ等の情報
+  
+  async function initKorogashi() {
+    // LIFF 認証
+    const user = await initAuth();
+    
+    if (!user) {
+      // 未ログイン → ログインを促す(LIFF環境なら自動でログインページに飛ぶはず)
+      console.log('未ログイン');
+      showGuestView();
+      return;
+    }
+    
+    console.log('ログイン済み:', user.displayName);
+    
+    // キズナ情報取得(推しキャラ)
+    kizunaData = await getKizunaData(user.userId);
+    if (kizunaData && kizunaData.oshiId) {
+      // 推しキャラを適用
+      oshiKey = kizunaData.oshiId;
+      applyOshi();
+    }
+    
+    // member-badge にユーザー情報表示
+    updateMemberBadge(user, kizunaData);
+    
+    // Firestore 購読開始
+    subscribeKorogashi();
+  }
+  
+  function showGuestView() {
+    // 既存のguestビューに切り替え
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const gv = document.getElementById('view-guest');
+    if (gv) gv.classList.add('active');
+    // 周辺要素隠す
+    const els = ['.stats', '.racebar', '.charwrap'];
+    els.forEach(s => { const e = document.querySelector(s); if (e) e.style.display = 'none'; });
+    const lineBtn = document.getElementById('line-btn');
+    if (lineBtn) lineBtn.style.display = 'none';
+    const mainBtn = document.getElementById('main-btn');
+    if (mainBtn) {
+      mainBtn.innerHTML = '🎴 会員登録して参加する';
+      mainBtn.className = 'vote-btn signup';
+      mainBtn.onclick = () => login();
+    }
+  }
+  
+  function updateMemberBadge(user, kizuna) {
+    const badge = document.getElementById('member-badge');
+    if (!badge) return;
+    const nameEl = badge.querySelector('.mb-name');
+    const oshiEl = badge.querySelector('.mb-oshi');
+    if (nameEl) nameEl.textContent = user.displayName || '';
+    if (oshiEl && kizuna && kizuna.oshi) {
+      oshiEl.textContent = '♥' + kizuna.oshi + '推し';
+    }
+  }
 
   // current 表示更新関数
   function updateCurrentDisplay(data) {
@@ -1783,33 +1838,46 @@
     if (potEl) potEl.textContent = (data.pot ?? 100).toLocaleString();
   }
 
-  // 起動時に1回読み込み
-  db.collection("korogashi").doc("current").get().then(doc => {
-    if (doc.exists) {
-      console.log("[Firestore] current =", doc.data());
-      updateCurrentDisplay(doc.data());
-    } else {
-      console.log("[Firestore] current 未作成");
-    }
-  }).catch(err => console.error("[Firestore] エラー:", err));
+  function subscribeKorogashi() {
+    // 起動時に1回読み込み
+    db.collection("korogashi").doc("current").get().then(doc => {
+      if (doc.exists) {
+        console.log("[Firestore] current =", doc.data());
+        updateCurrentDisplay(doc.data());
+      } else {
+        console.log("[Firestore] current 未作成");
+      }
+    }).catch(err => console.error("[Firestore] エラー:", err));
 
-  // リアルタイム購読
-  db.collection("korogashi").doc("current").onSnapshot(doc => {
-    if (!doc.exists) return;
-    console.log("[Firestore] current 更新:", doc.data());
-    updateCurrentDisplay(doc.data());
-  });
+    // current のリアルタイム購読(連勝・ポット表示更新 + currentRaceId変化検知)
+    db.collection("korogashi").doc("current").onSnapshot(doc => {
+      if (!doc.exists) return;
+      const data = doc.data();
+      console.log("[Firestore] current 更新:", data);
+      updateCurrentDisplay(data);
 
-  // record(歴代記録)購読
-  db.collection("korogashi").doc("record").onSnapshot(doc => {
-    if (!doc.exists) return;
-    const data = doc.data();
-    console.log("[Firestore] record 更新:", data);
-    const streakMetaEl = document.getElementById('streak-meta');
-    if (streakMetaEl && data.maxPot) {
-      streakMetaEl.textContent = '部の歴代最高 ¥' + data.maxPot.toLocaleString();
-    }
-  });
+      // currentRaceId 変化時にレース購読を切替
+      if (data.currentRaceId !== lastRaceId) {
+        console.log("[Firestore] currentRaceId 変化:", lastRaceId, "->", data.currentRaceId);
+        if (currentRaceUnsub) currentRaceUnsub();
+        currentRaceUnsub = subscribeRace(data.currentRaceId);
+        lastRaceId = data.currentRaceId;
+      }
+    });
+
+    // record 購読
+    db.collection("korogashi").doc("record").onSnapshot(doc => {
+      if (!doc.exists) return;
+      const data = doc.data();
+      console.log("[Firestore] record 更新:", data);
+      const streakMetaEl = document.getElementById('streak-meta');
+      if (streakMetaEl && data.maxPot) {
+        streakMetaEl.textContent = '部の歴代最高 ¥' + data.maxPot.toLocaleString();
+      }
+    });
+  }
+
+
 
   // ===== レース購読 =====
   let currentRaceUnsub = null;
@@ -1874,18 +1942,7 @@
     });
   }
 
-  // current の購読を拡張(currentRaceIdの変化を検知)
-  db.collection("korogashi").doc("current").onSnapshot(doc => {
-    if (!doc.exists) return;
-    const data = doc.data();
-    // currentRaceId 変化時に再購読
-    if (data.currentRaceId !== lastRaceId) {
-      console.log("[Firestore] currentRaceId 変化:", lastRaceId, "->", data.currentRaceId);
-      if (currentRaceUnsub) currentRaceUnsub();
-      currentRaceUnsub = subscribeRace(data.currentRaceId);
-      lastRaceId = data.currentRaceId;
-    }
-  });
+
 </script>
 
 <script>
@@ -2170,6 +2227,9 @@
 
   applyOshi();
   setTab('pre');
+
+  // 認証&Firestore接続開始
+  initKorogashi();
 
   // 参加コードコピー
   function copyPass() {
