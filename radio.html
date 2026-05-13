@@ -12,7 +12,7 @@
 <!-- 認証モジュール -->
 <script src="js/auth.js"></script>
 
-<!-- Build: 20260513-142946 -->
+<!-- Build: 20260513-143656 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Sans+JP:wght@400;700;900&family=DotGothic16&display=swap" rel="stylesheet">
@@ -3270,10 +3270,13 @@ async function checkMembershipAndStart() {
     
     const user = await initAuth();
     if (!user) {
-      // 未ログイン → LIFF.login() が呼ばれてリダイレクト
-      loadingEl.textContent = 'LINEログインへ移動中...';
+      // 未ログイン → ポップアップ表示（自動ログインしない）
+      loadingEl.style.display = 'none';
       gateEl.classList.add('show');
-      if (typeof login === 'function') login();
+      registerBtn.textContent = '🔑 LINEでログイン';
+      registerBtn.onclick = () => {
+        if (typeof login === 'function') login();
+      };
       return;
     }
     
@@ -3283,8 +3286,9 @@ async function checkMembershipAndStart() {
       // 非会員 → ゲート表示
       loadingEl.style.display = 'none';
       gateEl.classList.add('show');
+      registerBtn.textContent = '🎴 会員登録ページへ';
       registerBtn.onclick = () => {
-        window.location.href = './kizuna.html';  // 会員登録ページに飛ばす
+        window.location.href = './kizuna.html';
       };
       return;
     }
@@ -3294,9 +3298,13 @@ async function checkMembershipAndStart() {
     playNextCorner();
   } catch(e) {
     console.error('認証エラー:', e);
-    // エラー時もラジオは止めない（ゲスト扱い）
-    loadingEl.textContent = '認証エラー：' + e.message;
+    // エラー時はゲスト扱いでポップアップ表示
+    loadingEl.style.display = 'none';
     gateEl.classList.add('show');
+    registerBtn.textContent = '🔑 LINEでログイン';
+    registerBtn.onclick = () => {
+      if (typeof login === 'function') login();
+    };
   }
 }
 
