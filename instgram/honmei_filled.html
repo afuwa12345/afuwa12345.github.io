@@ -188,15 +188,15 @@ textarea{resize:vertical;min-height:50px}
       <div class="section-title">▼ 注目馬ピックアップ（全レース統合）</div>
       <div style="font-size:10px;color:#888;margin-bottom:8px">複数キャラが選んだ馬を1枚に集約。空欄ならスキップ</div>
       <label>注目馬1 [レース名 / 馬名 / 情報 / 推すキャラ]</label>
-      <input id="ff1race" placeholder="レース名（短縮形：天皇春、青葉等）" value="新潟大賞典">
-      <input id="ff1name" placeholder="馬名" value="ドゥラドーレス">
-      <input id="ff1info" placeholder="情報（4歳、父ディープ等）" value="<b>本命候補</b>">
-      <input id="ff1support" placeholder="推すキャラ：アフワ,ギンマ" value="アフワ,クロフワ,チャフワ">
+      <input id="ff1race" placeholder="レース名（短縮形：天皇春、青葉等）" value="平安S">
+      <input id="ff1name" placeholder="馬名" value="リアライズカミオン / シュラザック">
+      <input id="ff1info" placeholder="情報（4歳、父ディープ等）" value="複数キャラが分裂・どちらも要マーク">
+      <input id="ff1support" placeholder="推すキャラ：アフワ,ギンマ" value="アフワ,チャフワ,ブルマ,ギンマ">
       <label>注目馬2</label>
-      <input id="ff2race" placeholder="レース名" value="NHKマイルC">
-      <input id="ff2name" placeholder="馬名" value="チェルヴィニア">
+      <input id="ff2race" placeholder="レース名" value="オークス">
+      <input id="ff2name" placeholder="馬名" value="ドリームコア">
       <input id="ff2info" placeholder="情報" value="<b>本命候補</b>">
-      <input id="ff2support" placeholder="推すキャラ" value="アフワ,クロフワ,ブルマ">
+      <input id="ff2support" placeholder="推すキャラ" value="アフワ,チャフワ">
       <label>注目馬3（任意）</label>
       <input id="ff3race" placeholder="レース名" value="">
       <input id="ff3name" placeholder="馬名" value="">
@@ -219,35 +219,35 @@ let currentTheme = 'classic';
 let currentRaceIdx = 0;
 let races = [
   {
-    "raceName": "新潟大賞典",
+    "raceName": "平安S",
     "grade": "G3",
-    "b1n": "ドゥラドーレス",
-    "b1c": "GBM31.4%で堅実",
-    "b2n": "サフィラ",
+    "b1n": "リアライズカミオン",
+    "b1c": "GBM16.6%で堅実",
+    "b2n": "シュラザック",
     "b2c": "血統お宝の穴馬というわけだ",
-    "b3n": "ドゥラドーレス",
+    "b3n": "アクションプラン",
     "b3c": "強い相手と戦ってきた実戦経験",
-    "b4n": "ラインベック",
+    "b4n": "シュラザック",
     "b4c": "スピード上昇中の絶好調馬",
-    "b5n": "ドゥラドーレス",
-    "b5c": "騎手勝率27.0%",
-    "b6n": "トーセンリョウ",
+    "b5n": "リアライズカミオン",
+    "b5c": "騎手勝率17.2%",
+    "b6n": "ヴァンヤール",
     "b6c": "評価より走るぜ、下剋上だ"
   },
   {
-    "raceName": "NHKマイルC",
+    "raceName": "オークス",
     "grade": "G1",
-    "b1n": "チェルヴィニア",
-    "b1c": "GBM19.4%で堅実",
-    "b2n": "ケリフレッドアスク",
+    "b1n": "ドリームコア",
+    "b1c": "GBM23.7%で堅実",
+    "b2n": "スマートプリエール",
     "b2c": "血統お宝の穴馬というわけだ",
-    "b3n": "チェルヴィニア",
+    "b3n": "スターアニス",
     "b3c": "強い相手と戦ってきた実戦経験",
-    "b4n": "チェルヴィニア",
+    "b4n": "アンジュドジョワ",
     "b4c": "スピード上昇中の絶好調馬",
-    "b5n": "カムニャック",
-    "b5c": "騎手勝率25.7%",
-    "b6n": "ラヴァンダ",
+    "b5n": "ドリームコア",
+    "b5c": "騎手勝率27.0%",
+    "b6n": "スウィートハピネス",
     "b6c": "評価より走るぜ、下剋上だ"
   }
 ];
