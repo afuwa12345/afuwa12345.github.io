@@ -1,139 +1,139 @@
 {
-  "week_label": "05/16・05/17",
-  "generated_at": "2026/05/14 20:46",
+  "week_label": "05/23・05/24",
+  "generated_at": "2026/05/21 20:21",
   "picks": {
     "afuwa": {
-      "race": "新潟 10R",
-      "race_name": "2勝",
-      "date": "05/16",
+      "race": "東京 9R",
+      "race_name": "1勝",
+      "date": "05/23",
       "honmei": {
-        "name": "ディアウス",
+        "name": "イクシード",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "スマートスピア",
+          "name": "エンジョイドアスク",
           "bango": "未"
         },
         {
-          "name": "アークドール",
+          "name": "ヴェガリア",
           "bango": "未"
         }
       ],
-      "gbm": 64.0,
-      "reason": "GBM64.0%で堅実"
+      "gbm": 50.7,
+      "reason": "GBM50.7%で堅実"
     },
     "yancha": {
-      "race": "新潟 7R",
-      "race_name": "1勝",
-      "date": "05/16",
+      "race": "京都 9R",
+      "race_name": "2勝",
+      "date": "05/24",
       "honmei": {
-        "name": "ペイシャマリーン",
+        "name": "ジョイエッロ",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "シャンハイナイト",
+          "name": "マテンロウギフト",
           "bango": "未"
         },
         {
-          "name": "アルバニー",
+          "name": "ナイトスラッガー",
           "bango": "未"
         }
       ],
-      "gbm": 53.3,
-      "reason": "1位と2位の差31.4%で一発狙い"
+      "gbm": 45.8,
+      "reason": "1位と2位の差28.9%で一発狙い"
     },
     "buruma": {
-      "race": "新潟 5R",
+      "race": "新潟 7R",
       "race_name": "未勝利",
-      "date": "05/17",
+      "date": "05/23",
       "honmei": {
-        "name": "ウインポーシャ",
+        "name": "ゾネブルーム",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "レゼルフォート",
+          "name": "ベルトラッキ",
           "bango": "未"
         },
         {
-          "name": "ウインターブレス",
+          "name": "ノリマル",
           "bango": "未"
         }
       ],
-      "gbm": 8.7,
+      "gbm": 12.3,
       "reason": "スピード上昇中"
     },
     "chafuwa": {
-      "race": "京都 12R",
-      "race_name": "2勝",
-      "date": "05/16",
+      "race": "京都 5R",
+      "race_name": "未勝利",
+      "date": "05/23",
       "honmei": {
-        "name": "ライトニングゼウス",
+        "name": "ペガサスジルシ",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ドンパッショーネ",
+          "name": "フローマジック",
           "bango": "未"
         },
         {
-          "name": "メイショウドライブ",
+          "name": "パンチャマハブータ",
           "bango": "未"
         }
       ],
-      "gbm": 26.1,
-      "reason": "騎手勝率27.5%"
+      "gbm": 16.0,
+      "reason": "騎手勝率31.8%"
     },
     "kurofuwa": {
-      "race": "新潟 8R",
+      "race": "東京 7R",
       "race_name": "1勝",
-      "date": "05/16",
+      "date": "05/23",
       "honmei": {
-        "name": "ダノンヴェステル",
+        "name": "フィールドノート",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ソナタン",
+          "name": "カザンラク",
           "bango": "未"
         },
         {
-          "name": "ファルコンミノル",
+          "name": "インマイポケット",
           "bango": "未"
         },
         {
-          "name": "ボーヌロマネ",
+          "name": "ソニックライン",
           "bango": "未"
         },
         {
-          "name": "ザラタン",
+          "name": "ブルスカメンテ",
           "bango": "未"
         }
       ],
-      "gbm": 63.2,
+      "gbm": 49.3,
       "reason": "上位5頭の合計スコア最高"
     },
     "ginma": {
-      "race": "東京 11R",
-      "race_name": "3勝",
-      "date": "05/16",
+      "race": "京都 4R",
+      "race_name": "未勝利",
+      "date": "05/23",
       "honmei": {
-        "name": "キングスコール",
+        "name": "テンダーワーズ",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ハーツコンチェルト",
+          "name": "インフィオラータ",
           "bango": "未"
         },
         {
-          "name": "バレンタインガール",
+          "name": "サンダーバード",
           "bango": "未"
         }
       ],
-      "gbm": 5.2,
+      "gbm": 5.1,
       "reason": "血統◎だが評価低め"
     }
   }
