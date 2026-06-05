@@ -188,15 +188,15 @@ textarea{resize:vertical;min-height:50px}
       <div class="section-title">▼ 注目馬ピックアップ（全レース統合）</div>
       <div style="font-size:10px;color:#888;margin-bottom:8px">複数キャラが選んだ馬を1枚に集約。空欄ならスキップ</div>
       <label>注目馬1 [レース名 / 馬名 / 情報 / 推すキャラ]</label>
-      <input id="ff1race" placeholder="レース名（短縮形：天皇春、青葉等）" value="オークス">
-      <input id="ff1name" placeholder="馬名" value="アスクエジンバラ">
-      <input id="ff1info" placeholder="情報（4歳、父ディープ等）" value="<b>有力候補</b>">
-      <input id="ff1support" placeholder="推すキャラ：アフワ,ギンマ" value="アフワ,クロフワ,チャフワ">
+      <input id="ff1race" placeholder="レース名（短縮形：天皇春、青葉等）" value="安田記念">
+      <input id="ff1name" placeholder="馬名" value="スズハローム">
+      <input id="ff1info" placeholder="情報（4歳、父ディープ等）" value="<b>妙味あり</b>">
+      <input id="ff1support" placeholder="推すキャラ：アフワ,ギンマ" value="ギンマ,やんちゃアフワ">
       <label>注目馬2</label>
-      <input id="ff2race" placeholder="レース名" value="京都芝1200重賞">
-      <input id="ff2name" placeholder="馬名" value="エイシンディード / タガノアラリア">
-      <input id="ff2info" placeholder="情報" value="複数キャラが分裂・どちらも要マーク">
-      <input id="ff2support" placeholder="推すキャラ" value="アフワ,チャフワ,ブルマ,やんちゃアフワ">
+      <input id="ff2race" placeholder="レース名" value="">
+      <input id="ff2name" placeholder="馬名" value="">
+      <input id="ff2info" placeholder="情報" value="">
+      <input id="ff2support" placeholder="推すキャラ" value="">
       <label>注目馬3（任意）</label>
       <input id="ff3race" placeholder="レース名" value="">
       <input id="ff3name" placeholder="馬名" value="">
@@ -219,51 +219,19 @@ let currentTheme = 'classic';
 let currentRaceIdx = 0;
 let races = [
   {
-    "raceName": "京都芝1200重賞",
-    "grade": "G3",
-    "b1n": "エイシンディード",
-    "b1c": "GBM14.8%で堅実",
-    "b2n": "メランコリニスタ",
-    "b2c": "血統お宝の穴馬というわけだ",
-    "b3n": "タマモイカロス",
-    "b3c": "強い相手と戦ってきた実戦経験",
-    "b4n": "タガノアラリア",
-    "b4c": "スピード上昇中の絶好調馬",
-    "b5n": "エイシンディード",
-    "b5c": "騎手勝率7.1%",
-    "b6n": "タガノアラリア",
-    "b6c": "評価より走るぜ、下剋上だ"
-  },
-  {
-    "raceName": "オークス",
+    "raceName": "安田記念",
     "grade": "G1",
-    "b1n": "アスクエジンバラ",
-    "b1c": "GBM14.1%で堅実",
-    "b2n": "バステール",
+    "b1n": "シックスペンス",
+    "b1c": "GBM10.5%で堅実",
+    "b2n": "スズハローム",
     "b2c": "血統お宝の穴馬というわけだ",
-    "b3n": "アスクエジンバラ",
+    "b3n": "レーベンスティール",
     "b3c": "強い相手と戦ってきた実戦経験",
-    "b4n": "コンジェスタス",
+    "b4n": "ワールズエンド",
     "b4c": "スピード上昇中の絶好調馬",
-    "b5n": "アスクエジンバラ",
-    "b5c": "騎手勝率7.1%",
-    "b6n": "ロブチェン",
-    "b6c": "評価より走るぜ、下剋上だ"
-  },
-  {
-    "raceName": "目黒記念",
-    "grade": "G2",
-    "b1n": "ファイアンクランツ",
-    "b1c": "GBM18.3%で堅実",
-    "b2n": "キングスコール",
-    "b2c": "血統お宝の穴馬というわけだ",
-    "b3n": "キングズパレス",
-    "b3c": "強い相手と戦ってきた実戦経験",
-    "b4n": "アスクセクシーモア",
-    "b4c": "スピード上昇中の絶好調馬",
-    "b5n": "ウィクトルウェルス",
-    "b5c": "騎手勝率22.4%",
-    "b6n": "ボーンディスウェイ",
+    "b5n": "トロヴァトーレ",
+    "b5c": "騎手勝率25.4%",
+    "b6n": "スズハローム",
     "b6c": "評価より走るぜ、下剋上だ"
   }
 ];
