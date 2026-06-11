@@ -188,15 +188,15 @@ textarea{resize:vertical;min-height:50px}
       <div class="section-title">▼ 注目馬ピックアップ（全レース統合）</div>
       <div style="font-size:10px;color:#888;margin-bottom:8px">複数キャラが選んだ馬を1枚に集約。空欄ならスキップ</div>
       <label>注目馬1 [レース名 / 馬名 / 情報 / 推すキャラ]</label>
-      <input id="ff1race" placeholder="レース名（短縮形：天皇春、青葉等）" value="安田記念">
-      <input id="ff1name" placeholder="馬名" value="スズハローム">
-      <input id="ff1info" placeholder="情報（4歳、父ディープ等）" value="<b>妙味あり</b>">
-      <input id="ff1support" placeholder="推すキャラ：アフワ,ギンマ" value="ギンマ,やんちゃアフワ">
+      <input id="ff1race" placeholder="レース名（短縮形：天皇春、青葉等）" value="函館スプリントS">
+      <input id="ff1name" placeholder="馬名" value="インビンシブルパパ">
+      <input id="ff1info" placeholder="情報（4歳、父ディープ等）" value="<b>有力候補</b>">
+      <input id="ff1support" placeholder="推すキャラ：アフワ,ギンマ" value="アフワ,クロフワ,チャフワ">
       <label>注目馬2</label>
-      <input id="ff2race" placeholder="レース名" value="">
-      <input id="ff2name" placeholder="馬名" value="">
-      <input id="ff2info" placeholder="情報" value="">
-      <input id="ff2support" placeholder="推すキャラ" value="">
+      <input id="ff2race" placeholder="レース名" value="宝塚記念">
+      <input id="ff2name" placeholder="馬名" value="ミュージアムマイル">
+      <input id="ff2info" placeholder="情報" value="<b>有力候補</b>">
+      <input id="ff2support" placeholder="推すキャラ" value="アフワ,クロフワ,チャフワ">
       <label>注目馬3（任意）</label>
       <input id="ff3race" placeholder="レース名" value="">
       <input id="ff3name" placeholder="馬名" value="">
@@ -219,19 +219,35 @@ let currentTheme = 'classic';
 let currentRaceIdx = 0;
 let races = [
   {
-    "raceName": "安田記念",
-    "grade": "G1",
-    "b1n": "シックスペンス",
-    "b1c": "GBM10.5%で堅実",
-    "b2n": "スズハローム",
+    "raceName": "函館スプリントS",
+    "grade": "G3",
+    "b1n": "インビンシブルパパ",
+    "b1c": "GBM14.2%で堅実",
+    "b2n": "ルシード",
     "b2c": "血統お宝の穴馬というわけだ",
-    "b3n": "レーベンスティール",
+    "b3n": "インビンシブルパパ",
     "b3c": "強い相手と戦ってきた実戦経験",
-    "b4n": "ワールズエンド",
+    "b4n": "クラスペディア",
     "b4c": "スピード上昇中の絶好調馬",
-    "b5n": "トロヴァトーレ",
-    "b5c": "騎手勝率25.4%",
-    "b6n": "スズハローム",
+    "b5n": "インビンシブルパパ",
+    "b5c": "騎手勝率7.1%",
+    "b6n": "エーティーマクフィ",
+    "b6c": "評価より走るぜ、下剋上だ"
+  },
+  {
+    "raceName": "宝塚記念",
+    "grade": "G1",
+    "b1n": "ミュージアムマイル",
+    "b1c": "GBM15.0%で堅実",
+    "b2n": "スティンガーグラス",
+    "b2c": "血統お宝の穴馬というわけだ",
+    "b3n": "ミュージアムマイル",
+    "b3c": "強い相手と戦ってきた実戦経験",
+    "b4n": "マイユニバース",
+    "b4c": "スピード上昇中の絶好調馬",
+    "b5n": "ミュージアムマイル",
+    "b5c": "騎手勝率7.1%",
+    "b6n": "コスモキュランダ",
     "b6c": "評価より走るぜ、下剋上だ"
   }
 ];
