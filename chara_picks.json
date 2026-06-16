@@ -1,139 +1,139 @@
 {
-  "week_label": "06/06・06/07",
-  "generated_at": "2026/06/04 22:14",
+  "week_label": "06/13・06/14",
+  "generated_at": "2026/06/11 21:43",
   "picks": {
     "afuwa": {
-      "race": "阪神 9R",
-      "race_name": "1勝",
-      "date": "06/06",
+      "race": "函館 6R",
+      "race_name": "未勝利",
+      "date": "06/13",
       "honmei": {
-        "name": "カフジエメンタール",
+        "name": "コイオステソーロ",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ブラックシャリマー",
+          "name": "キセログラフィカ",
           "bango": "未"
         },
         {
-          "name": "ジェゼロ",
+          "name": "オンザムービー",
           "bango": "未"
         }
       ],
-      "gbm": 41.7,
-      "reason": "GBM41.7%で堅実"
+      "gbm": 42.9,
+      "reason": "GBM42.9%で堅実"
     },
     "yancha": {
-      "race": "東京 8R",
-      "race_name": "1勝",
-      "date": "06/06",
+      "race": "東京 9R",
+      "race_name": "2勝",
+      "date": "06/14",
       "honmei": {
-        "name": "ヴンダーバール",
+        "name": "コムユンプリュム",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "リバースザトレンド",
+          "name": "ルクスジニア",
           "bango": "未"
         },
         {
-          "name": "アンディラメナ",
+          "name": "クールデイトナ",
           "bango": "未"
         }
       ],
-      "gbm": 29.3,
-      "reason": "1位と2位の差11.9%で一発狙い"
+      "gbm": 39.8,
+      "reason": "1位と2位の差19.9%で一発狙い"
     },
     "buruma": {
-      "race": "東京 4R",
+      "race": "東京 2R",
       "race_name": "未勝利",
-      "date": "06/07",
+      "date": "06/13",
       "honmei": {
-        "name": "ファイナルフォーム",
+        "name": "ゾネブルーム",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "クールフィデル",
+          "name": "ヴァルカンテソーロ",
           "bango": "未"
         },
         {
-          "name": "ワイズファミリア",
+          "name": "カルダモン",
           "bango": "未"
         }
       ],
-      "gbm": 1.4,
+      "gbm": 15.5,
       "reason": "スピード上昇中"
     },
     "chafuwa": {
       "race": "東京 11R",
-      "race_name": "Ｇ１",
-      "date": "06/07",
+      "race_name": "ｵｰﾌﾟﾝ",
+      "date": "06/13",
       "honmei": {
-        "name": "トロヴァトーレ",
+        "name": "カネラフィーナ",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "シックスペンス",
+          "name": "ナムラエイハブ",
           "bango": "未"
         },
         {
-          "name": "レーベンスティール",
+          "name": "ダノンエアズロック",
           "bango": "未"
         }
       ],
-      "gbm": 5.7,
+      "gbm": 22.7,
       "reason": "騎手勝率25.4%"
     },
     "kurofuwa": {
-      "race": "阪神 12R",
-      "race_name": "1勝",
-      "date": "06/07",
+      "race": "東京 3R",
+      "race_name": "未勝利",
+      "date": "06/13",
       "honmei": {
-        "name": "オーレアミスト",
+        "name": "メビウスロマンス",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ブレスドナイル",
+          "name": "ルナーファントム",
           "bango": "未"
         },
         {
-          "name": "ガウラディスコ",
+          "name": "フォルナカリア",
           "bango": "未"
         },
         {
-          "name": "チェリヴェント",
+          "name": "ミリオングローリー",
           "bango": "未"
         },
         {
-          "name": "ウルフ",
+          "name": "アーリマックス",
           "bango": "未"
         }
       ],
-      "gbm": 29.0,
+      "gbm": 36.5,
       "reason": "上位5頭の合計スコア最高"
     },
     "ginma": {
-      "race": "阪神 7R",
-      "race_name": "1勝",
-      "date": "06/07",
+      "race": "阪神 11R",
+      "race_name": "ｵｰﾌﾟﾝ",
+      "date": "06/13",
       "honmei": {
-        "name": "コンテナライン",
+        "name": "クインズショコラ",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "リアンドゥクール",
+          "name": "ゴールデンクラウド",
           "bango": "未"
         },
         {
-          "name": "ケイツーリーブル",
+          "name": "レヴォントゥレット",
           "bango": "未"
         }
       ],
-      "gbm": 5.3,
+      "gbm": 8.0,
       "reason": "血統◎だが評価低め"
     }
   }
