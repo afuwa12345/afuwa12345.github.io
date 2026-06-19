@@ -1,139 +1,139 @@
 {
-  "week_label": "06/13・06/14",
-  "generated_at": "2026/06/11 21:43",
+  "week_label": "06/20・06/21",
+  "generated_at": "2026/06/19 22:18",
   "picks": {
     "afuwa": {
-      "race": "函館 6R",
-      "race_name": "未勝利",
-      "date": "06/13",
+      "race": "東京 7R",
+      "race_name": "1勝",
+      "date": "06/21",
       "honmei": {
-        "name": "コイオステソーロ",
+        "name": "ヴンダーバール",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "キセログラフィカ",
+          "name": "シオンダンサー",
           "bango": "未"
         },
         {
-          "name": "オンザムービー",
+          "name": "クラリネットソナタ",
           "bango": "未"
         }
       ],
-      "gbm": 42.9,
-      "reason": "GBM42.9%で堅実"
+      "gbm": 47.7,
+      "reason": "GBM47.7%で堅実"
     },
     "yancha": {
-      "race": "東京 9R",
-      "race_name": "2勝",
-      "date": "06/14",
+      "race": "函館 2R",
+      "race_name": "未勝利",
+      "date": "06/21",
       "honmei": {
-        "name": "コムユンプリュム",
+        "name": "ロードステラート",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ルクスジニア",
+          "name": "ハイドパーク",
           "bango": "未"
         },
         {
-          "name": "クールデイトナ",
+          "name": "テンカフブ",
           "bango": "未"
         }
       ],
-      "gbm": 39.8,
-      "reason": "1位と2位の差19.9%で一発狙い"
+      "gbm": 37.9,
+      "reason": "1位と2位の差23.5%で一発狙い"
     },
     "buruma": {
-      "race": "東京 2R",
+      "race": "阪神 2R",
       "race_name": "未勝利",
-      "date": "06/13",
+      "date": "06/20",
       "honmei": {
-        "name": "ゾネブルーム",
-        "bango": "未"
+        "name": "マリリンバローズ",
+        "bango": "12"
       },
       "aite": [
         {
-          "name": "ヴァルカンテソーロ",
-          "bango": "未"
+          "name": "ルクスドリーム",
+          "bango": "14"
         },
         {
-          "name": "カルダモン",
-          "bango": "未"
+          "name": "シャインゴーツ",
+          "bango": "2"
         }
       ],
-      "gbm": 15.5,
+      "gbm": 32.1,
       "reason": "スピード上昇中"
     },
     "chafuwa": {
-      "race": "東京 11R",
-      "race_name": "ｵｰﾌﾟﾝ",
-      "date": "06/13",
+      "race": "東京 3R",
+      "race_name": "未勝利",
+      "date": "06/20",
       "honmei": {
-        "name": "カネラフィーナ",
-        "bango": "未"
+        "name": "ジュナベーラ",
+        "bango": "7"
       },
       "aite": [
         {
-          "name": "ナムラエイハブ",
-          "bango": "未"
+          "name": "セキテイリノ",
+          "bango": "3"
         },
         {
-          "name": "ダノンエアズロック",
-          "bango": "未"
+          "name": "ウインアプローチ",
+          "bango": "13"
         }
       ],
-      "gbm": 22.7,
+      "gbm": 10.2,
       "reason": "騎手勝率25.4%"
     },
     "kurofuwa": {
-      "race": "東京 3R",
-      "race_name": "未勝利",
-      "date": "06/13",
+      "race": "函館 9R",
+      "race_name": "1勝",
+      "date": "06/20",
       "honmei": {
-        "name": "メビウスロマンス",
-        "bango": "未"
+        "name": "デルマリシリ",
+        "bango": "2"
       },
       "aite": [
         {
-          "name": "ルナーファントム",
-          "bango": "未"
+          "name": "プリンセスモコ",
+          "bango": "6"
         },
         {
-          "name": "フォルナカリア",
-          "bango": "未"
+          "name": "ウォーターサグラダ",
+          "bango": "7"
         },
         {
-          "name": "ミリオングローリー",
-          "bango": "未"
+          "name": "メイショウハッケイ",
+          "bango": "1"
         },
         {
-          "name": "アーリマックス",
-          "bango": "未"
+          "name": "ロンドンオービタル",
+          "bango": "11"
         }
       ],
-      "gbm": 36.5,
+      "gbm": 30.6,
       "reason": "上位5頭の合計スコア最高"
     },
     "ginma": {
-      "race": "阪神 11R",
-      "race_name": "ｵｰﾌﾟﾝ",
-      "date": "06/13",
+      "race": "東京 8R",
+      "race_name": "1勝",
+      "date": "06/20",
       "honmei": {
-        "name": "クインズショコラ",
-        "bango": "未"
+        "name": "オメガディコン",
+        "bango": "13"
       },
       "aite": [
         {
-          "name": "ゴールデンクラウド",
-          "bango": "未"
+          "name": "タイセイプランセス",
+          "bango": "1"
         },
         {
-          "name": "レヴォントゥレット",
-          "bango": "未"
+          "name": "ダノンファンスター",
+          "bango": "3"
         }
       ],
-      "gbm": 8.0,
+      "gbm": 6.5,
       "reason": "血統◎だが評価低め"
     }
   }
