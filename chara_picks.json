@@ -1,48 +1,48 @@
 {
-  "week_label": "06/20・06/21",
-  "generated_at": "2026/06/19 22:18",
+  "week_label": "06/20・06/28",
+  "generated_at": "2026/07/02 19:51",
   "picks": {
     "afuwa": {
-      "race": "東京 7R",
-      "race_name": "1勝",
-      "date": "06/21",
+      "race": "小倉 9R",
+      "race_name": "2勝",
+      "date": "06/28",
       "honmei": {
-        "name": "ヴンダーバール",
-        "bango": "未"
+        "name": "サラトガチップス",
+        "bango": "5"
       },
       "aite": [
         {
-          "name": "シオンダンサー",
-          "bango": "未"
+          "name": "ナリタエスペランサ",
+          "bango": "7"
         },
         {
-          "name": "クラリネットソナタ",
-          "bango": "未"
+          "name": "マテンロウシルビア",
+          "bango": "8"
         }
       ],
-      "gbm": 47.7,
-      "reason": "GBM47.7%で堅実"
+      "gbm": 37.7,
+      "reason": "GBM37.7%で堅実"
     },
     "yancha": {
-      "race": "函館 2R",
-      "race_name": "未勝利",
-      "date": "06/21",
+      "race": "東京 9R",
+      "race_name": "2勝",
+      "date": "06/20",
       "honmei": {
-        "name": "ロードステラート",
-        "bango": "未"
+        "name": "ピックデムッシュ",
+        "bango": "3"
       },
       "aite": [
         {
-          "name": "ハイドパーク",
-          "bango": "未"
+          "name": "レーヴドロペラ",
+          "bango": "8"
         },
         {
-          "name": "テンカフブ",
-          "bango": "未"
+          "name": "チャリングクロス",
+          "bango": "7"
         }
       ],
-      "gbm": 37.9,
-      "reason": "1位と2位の差23.5%で一発狙い"
+      "gbm": 33.9,
+      "reason": "1位と2位の差19.2%で一発狙い"
     },
     "buruma": {
       "race": "阪神 2R",
@@ -87,32 +87,32 @@
       "reason": "騎手勝率25.4%"
     },
     "kurofuwa": {
-      "race": "函館 9R",
+      "race": "小倉 8R",
       "race_name": "1勝",
-      "date": "06/20",
+      "date": "06/28",
       "honmei": {
-        "name": "デルマリシリ",
-        "bango": "2"
+        "name": "サリエンテ",
+        "bango": "9"
       },
       "aite": [
         {
-          "name": "プリンセスモコ",
-          "bango": "6"
-        },
-        {
-          "name": "ウォーターサグラダ",
-          "bango": "7"
-        },
-        {
-          "name": "メイショウハッケイ",
+          "name": "グランドオーパス",
           "bango": "1"
         },
         {
-          "name": "ロンドンオービタル",
-          "bango": "11"
+          "name": "エンベッカ",
+          "bango": "4"
+        },
+        {
+          "name": "エレガンシア",
+          "bango": "6"
+        },
+        {
+          "name": "レーヌマロン",
+          "bango": "7"
         }
       ],
-      "gbm": 30.6,
+      "gbm": 37.7,
       "reason": "上位5頭の合計スコア最高"
     },
     "ginma": {
@@ -129,8 +129,8 @@
           "bango": "1"
         },
         {
-          "name": "ダノンファンスター",
-          "bango": "3"
+          "name": "ウインドラート",
+          "bango": "4"
         }
       ],
       "gbm": 6.5,
