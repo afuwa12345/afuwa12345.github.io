@@ -1,139 +1,139 @@
 {
-  "week_label": "06/20・06/28",
-  "generated_at": "2026/07/02 19:51",
+  "week_label": "07/18・07/19",
+  "generated_at": "2026/07/18 10:32",
   "picks": {
     "afuwa": {
-      "race": "小倉 9R",
-      "race_name": "2勝",
-      "date": "06/28",
+      "race": "小倉 12R",
+      "race_name": "1勝",
+      "date": "07/19",
       "honmei": {
-        "name": "サラトガチップス",
-        "bango": "5"
+        "name": "ミッキージャンプ",
+        "bango": "未"
       },
       "aite": [
         {
-          "name": "ナリタエスペランサ",
-          "bango": "7"
+          "name": "ロングトールサリー",
+          "bango": "未"
         },
         {
-          "name": "マテンロウシルビア",
-          "bango": "8"
+          "name": "フレイムスター",
+          "bango": "未"
         }
       ],
-      "gbm": 37.7,
-      "reason": "GBM37.7%で堅実"
+      "gbm": 54.0,
+      "reason": "GBM54.0%で堅実"
     },
     "yancha": {
-      "race": "東京 9R",
-      "race_name": "2勝",
-      "date": "06/20",
+      "race": "函館 11R",
+      "race_name": "ｵｰﾌﾟﾝ",
+      "date": "07/18",
       "honmei": {
-        "name": "ピックデムッシュ",
-        "bango": "3"
+        "name": "ウェイワードアクト",
+        "bango": "10"
       },
       "aite": [
         {
-          "name": "レーヴドロペラ",
-          "bango": "8"
-        },
-        {
-          "name": "チャリングクロス",
-          "bango": "7"
-        }
-      ],
-      "gbm": 33.9,
-      "reason": "1位と2位の差19.2%で一発狙い"
-    },
-    "buruma": {
-      "race": "阪神 2R",
-      "race_name": "未勝利",
-      "date": "06/20",
-      "honmei": {
-        "name": "マリリンバローズ",
-        "bango": "12"
-      },
-      "aite": [
-        {
-          "name": "ルクスドリーム",
-          "bango": "14"
-        },
-        {
-          "name": "シャインゴーツ",
-          "bango": "2"
-        }
-      ],
-      "gbm": 32.1,
-      "reason": "スピード上昇中"
-    },
-    "chafuwa": {
-      "race": "東京 3R",
-      "race_name": "未勝利",
-      "date": "06/20",
-      "honmei": {
-        "name": "ジュナベーラ",
-        "bango": "7"
-      },
-      "aite": [
-        {
-          "name": "セキテイリノ",
-          "bango": "3"
-        },
-        {
-          "name": "ウインアプローチ",
-          "bango": "13"
-        }
-      ],
-      "gbm": 10.2,
-      "reason": "騎手勝率25.4%"
-    },
-    "kurofuwa": {
-      "race": "小倉 8R",
-      "race_name": "1勝",
-      "date": "06/28",
-      "honmei": {
-        "name": "サリエンテ",
-        "bango": "9"
-      },
-      "aite": [
-        {
-          "name": "グランドオーパス",
+          "name": "チュウワクリスエス",
           "bango": "1"
         },
         {
-          "name": "エンベッカ",
-          "bango": "4"
-        },
-        {
-          "name": "エレガンシア",
-          "bango": "6"
-        },
-        {
-          "name": "レーヌマロン",
-          "bango": "7"
+          "name": "マーブルロック",
+          "bango": "13"
         }
       ],
-      "gbm": 37.7,
-      "reason": "上位5頭の合計スコア最高"
+      "gbm": 46.9,
+      "reason": "1位と2位の差29.9%で一発狙い"
     },
-    "ginma": {
-      "race": "東京 8R",
-      "race_name": "1勝",
-      "date": "06/20",
+    "buruma": {
+      "race": "小倉 10R",
+      "race_name": "2勝",
+      "date": "07/18",
       "honmei": {
-        "name": "オメガディコン",
+        "name": "ハピアーザンエバー",
+        "bango": "11"
+      },
+      "aite": [
+        {
+          "name": "コスモストーム",
+          "bango": "1"
+        },
+        {
+          "name": "タマモナポリ",
+          "bango": "6"
+        }
+      ],
+      "gbm": 10.7,
+      "reason": "スピード上昇中"
+    },
+    "chafuwa": {
+      "race": "小倉 6R",
+      "race_name": "未勝利",
+      "date": "07/18",
+      "honmei": {
+        "name": "ラクホマレ",
         "bango": "13"
       },
       "aite": [
         {
-          "name": "タイセイプランセス",
-          "bango": "1"
+          "name": "キープシャイニング",
+          "bango": "6"
         },
         {
-          "name": "ウインドラート",
-          "bango": "4"
+          "name": "ルクスドリーム",
+          "bango": "9"
         }
       ],
-      "gbm": 6.5,
+      "gbm": 6.4,
+      "reason": "騎手勝率23.7%"
+    },
+    "kurofuwa": {
+      "race": "小倉 12R",
+      "race_name": "1勝",
+      "date": "07/18",
+      "honmei": {
+        "name": "ジューンセクレタ",
+        "bango": "6"
+      },
+      "aite": [
+        {
+          "name": "ブラックレジェンド",
+          "bango": "7"
+        },
+        {
+          "name": "フランキーバローズ",
+          "bango": "10"
+        },
+        {
+          "name": "バートラガッツ",
+          "bango": "5"
+        },
+        {
+          "name": "モズプリヴェール",
+          "bango": "14"
+        }
+      ],
+      "gbm": 46.4,
+      "reason": "上位5頭の合計スコア最高"
+    },
+    "ginma": {
+      "race": "函館 5R",
+      "race_name": "未勝利",
+      "date": "07/18",
+      "honmei": {
+        "name": "フロムザムーン",
+        "bango": "7"
+      },
+      "aite": [
+        {
+          "name": "チャーチルデュース",
+          "bango": "3"
+        },
+        {
+          "name": "ペガサスウィンド",
+          "bango": "9"
+        }
+      ],
+      "gbm": 5.1,
       "reason": "血統◎だが評価低め"
     }
   }
