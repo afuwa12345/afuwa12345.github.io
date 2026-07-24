@@ -1,139 +1,139 @@
 {
-  "week_label": "07/18・07/19",
-  "generated_at": "2026/07/18 10:32",
+  "week_label": "07/25・07/26",
+  "generated_at": "2026/07/24 19:37",
   "picks": {
     "afuwa": {
-      "race": "小倉 12R",
-      "race_name": "1勝",
-      "date": "07/19",
+      "race": "中京 6R",
+      "race_name": "2勝",
+      "date": "07/26",
       "honmei": {
-        "name": "ミッキージャンプ",
+        "name": "マディソンガール",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ロングトールサリー",
+          "name": "ホウオウタイタン",
           "bango": "未"
         },
         {
-          "name": "フレイムスター",
+          "name": "サヴォアフェール",
           "bango": "未"
         }
       ],
-      "gbm": 54.0,
-      "reason": "GBM54.0%で堅実"
+      "gbm": 42.0,
+      "reason": "GBM42.0%で堅実"
     },
     "yancha": {
-      "race": "函館 11R",
-      "race_name": "ｵｰﾌﾟﾝ",
-      "date": "07/18",
+      "race": "新潟 10R",
+      "race_name": "未勝利",
+      "date": "07/25",
       "honmei": {
-        "name": "ウェイワードアクト",
-        "bango": "10"
+        "name": "カーボフリオ",
+        "bango": "12"
       },
       "aite": [
         {
-          "name": "チュウワクリスエス",
-          "bango": "1"
+          "name": "ゴールドビリーヴ",
+          "bango": "9"
         },
         {
-          "name": "マーブルロック",
-          "bango": "13"
+          "name": "ナツミカンチャン",
+          "bango": "5"
         }
       ],
-      "gbm": 46.9,
-      "reason": "1位と2位の差29.9%で一発狙い"
+      "gbm": 25.0,
+      "reason": "1位と2位の差14.0%で一発狙い"
     },
     "buruma": {
-      "race": "小倉 10R",
-      "race_name": "2勝",
-      "date": "07/18",
+      "race": "中京 8R",
+      "race_name": "1勝",
+      "date": "07/25",
       "honmei": {
-        "name": "ハピアーザンエバー",
-        "bango": "11"
+        "name": "ブラックシャリマー",
+        "bango": "5"
       },
       "aite": [
         {
-          "name": "コスモストーム",
-          "bango": "1"
+          "name": "ロードフィレール",
+          "bango": "8"
         },
         {
-          "name": "タマモナポリ",
-          "bango": "6"
+          "name": "サイモンシャリオ",
+          "bango": "7"
         }
       ],
-      "gbm": 10.7,
+      "gbm": 23.9,
       "reason": "スピード上昇中"
     },
     "chafuwa": {
-      "race": "小倉 6R",
+      "race": "中京 12R",
       "race_name": "未勝利",
-      "date": "07/18",
+      "date": "07/25",
       "honmei": {
-        "name": "ラクホマレ",
-        "bango": "13"
+        "name": "ビッグヒーロー",
+        "bango": "4"
       },
       "aite": [
         {
-          "name": "キープシャイニング",
-          "bango": "6"
+          "name": "ララディアーブル",
+          "bango": "8"
         },
         {
-          "name": "ルクスドリーム",
-          "bango": "9"
+          "name": "ミッキーラヴィータ",
+          "bango": "13"
         }
       ],
-      "gbm": 6.4,
-      "reason": "騎手勝率23.7%"
+      "gbm": 31.4,
+      "reason": "騎手勝率25.4%"
     },
     "kurofuwa": {
-      "race": "小倉 12R",
+      "race": "新潟 5R",
       "race_name": "1勝",
-      "date": "07/18",
+      "date": "07/25",
       "honmei": {
-        "name": "ジューンセクレタ",
-        "bango": "6"
+        "name": "フィールドノート",
+        "bango": "5"
       },
       "aite": [
         {
-          "name": "ブラックレジェンド",
+          "name": "オルグジェシダ",
           "bango": "7"
         },
         {
-          "name": "フランキーバローズ",
+          "name": "ヴァリスマリネリス",
           "bango": "10"
         },
         {
-          "name": "バートラガッツ",
-          "bango": "5"
+          "name": "キシダンチョウ",
+          "bango": "11"
         },
         {
-          "name": "モズプリヴェール",
-          "bango": "14"
+          "name": "メイショウキンタイ",
+          "bango": "3"
         }
       ],
-      "gbm": 46.4,
+      "gbm": 40.8,
       "reason": "上位5頭の合計スコア最高"
     },
     "ginma": {
-      "race": "函館 5R",
+      "race": "中京 4R",
       "race_name": "未勝利",
-      "date": "07/18",
+      "date": "07/26",
       "honmei": {
-        "name": "フロムザムーン",
-        "bango": "7"
+        "name": "ラスカルキッド",
+        "bango": "未"
       },
       "aite": [
         {
-          "name": "チャーチルデュース",
-          "bango": "3"
+          "name": "マテンロウアワー",
+          "bango": "未"
         },
         {
-          "name": "ペガサスウィンド",
-          "bango": "9"
+          "name": "エアアルチーナ",
+          "bango": "未"
         }
       ],
-      "gbm": 5.1,
+      "gbm": 5.3,
       "reason": "血統◎だが評価低め"
     }
   }
