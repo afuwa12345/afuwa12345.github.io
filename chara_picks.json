@@ -1,139 +1,139 @@
 {
-  "week_label": "07/25・07/26",
-  "generated_at": "2026/07/24 19:37",
+  "week_label": "08/15・08/16",
+  "generated_at": "2026/08/14 23:19",
   "picks": {
     "afuwa": {
-      "race": "中京 6R",
-      "race_name": "2勝",
-      "date": "07/26",
+      "race": "中京 10R",
+      "race_name": "1勝",
+      "date": "08/16",
       "honmei": {
-        "name": "マディソンガール",
+        "name": "リポジノ",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ホウオウタイタン",
+          "name": "ベルソテイラ",
           "bango": "未"
         },
         {
-          "name": "サヴォアフェール",
+          "name": "エイコーンドリーム",
           "bango": "未"
         }
       ],
-      "gbm": 42.0,
-      "reason": "GBM42.0%で堅実"
+      "gbm": 37.2,
+      "reason": "GBM37.2%で堅実"
     },
     "yancha": {
       "race": "新潟 10R",
       "race_name": "未勝利",
-      "date": "07/25",
+      "date": "08/16",
       "honmei": {
         "name": "カーボフリオ",
-        "bango": "12"
+        "bango": "未"
       },
       "aite": [
         {
-          "name": "ゴールドビリーヴ",
-          "bango": "9"
+          "name": "ラショナルポイント",
+          "bango": "未"
         },
         {
-          "name": "ナツミカンチャン",
-          "bango": "5"
+          "name": "カグヤヒメ",
+          "bango": "未"
         }
       ],
-      "gbm": 25.0,
-      "reason": "1位と2位の差14.0%で一発狙い"
+      "gbm": 27.2,
+      "reason": "1位と2位の差16.7%で一発狙い"
     },
     "buruma": {
-      "race": "中京 8R",
+      "race": "札幌 7R",
       "race_name": "1勝",
-      "date": "07/25",
+      "date": "08/15",
       "honmei": {
-        "name": "ブラックシャリマー",
-        "bango": "5"
+        "name": "キタノサリスカ",
+        "bango": "14"
       },
       "aite": [
         {
-          "name": "ロードフィレール",
-          "bango": "8"
+          "name": "メリザンド",
+          "bango": "1"
         },
         {
-          "name": "サイモンシャリオ",
-          "bango": "7"
+          "name": "アドマイヤシュラ",
+          "bango": "9"
         }
       ],
-      "gbm": 23.9,
+      "gbm": 8.6,
       "reason": "スピード上昇中"
     },
     "chafuwa": {
-      "race": "中京 12R",
+      "race": "新潟 1R",
       "race_name": "未勝利",
-      "date": "07/25",
+      "date": "08/15",
       "honmei": {
-        "name": "ビッグヒーロー",
-        "bango": "4"
+        "name": "フルーツバスケット",
+        "bango": "3"
       },
       "aite": [
         {
-          "name": "ララディアーブル",
-          "bango": "8"
+          "name": "シュートザワークス",
+          "bango": "6"
         },
         {
-          "name": "ミッキーラヴィータ",
-          "bango": "13"
+          "name": "コナパームス",
+          "bango": "4"
         }
       ],
-      "gbm": 31.4,
+      "gbm": 14.9,
       "reason": "騎手勝率25.4%"
     },
     "kurofuwa": {
       "race": "新潟 5R",
       "race_name": "1勝",
-      "date": "07/25",
+      "date": "08/15",
       "honmei": {
-        "name": "フィールドノート",
-        "bango": "5"
+        "name": "ミスターマーボー",
+        "bango": "7"
       },
       "aite": [
         {
-          "name": "オルグジェシダ",
-          "bango": "7"
-        },
-        {
-          "name": "ヴァリスマリネリス",
-          "bango": "10"
-        },
-        {
-          "name": "キシダンチョウ",
+          "name": "デルマケセラセラ",
           "bango": "11"
         },
         {
-          "name": "メイショウキンタイ",
-          "bango": "3"
+          "name": "ポタリング",
+          "bango": "9"
+        },
+        {
+          "name": "デスサイズ",
+          "bango": "5"
+        },
+        {
+          "name": "シャオママル",
+          "bango": "12"
         }
       ],
-      "gbm": 40.8,
+      "gbm": 30.4,
       "reason": "上位5頭の合計スコア最高"
     },
     "ginma": {
-      "race": "中京 4R",
-      "race_name": "未勝利",
-      "date": "07/26",
+      "race": "中京 11R",
+      "race_name": "1勝",
+      "date": "08/15",
       "honmei": {
-        "name": "ラスカルキッド",
-        "bango": "未"
+        "name": "サリーチェ",
+        "bango": "9"
       },
       "aite": [
         {
-          "name": "マテンロウアワー",
-          "bango": "未"
+          "name": "プチプランス",
+          "bango": "3"
         },
         {
-          "name": "エアアルチーナ",
-          "bango": "未"
+          "name": "イージーライダー",
+          "bango": "4"
         }
       ],
-      "gbm": 5.3,
+      "gbm": 5.2,
       "reason": "血統◎だが評価低め"
     }
   }
