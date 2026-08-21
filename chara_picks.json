@@ -1,139 +1,139 @@
 {
-  "week_label": "08/15・08/16",
-  "generated_at": "2026/08/14 23:19",
+  "week_label": "08/22・08/23",
+  "generated_at": "2026/08/21 19:08",
   "picks": {
     "afuwa": {
-      "race": "中京 10R",
-      "race_name": "1勝",
-      "date": "08/16",
+      "race": "中京 9R",
+      "race_name": "未勝利",
+      "date": "08/23",
       "honmei": {
-        "name": "リポジノ",
+        "name": "メイショウゲキリン",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ベルソテイラ",
+          "name": "アルヴィア",
           "bango": "未"
         },
         {
-          "name": "エイコーンドリーム",
+          "name": "グラウンドビート",
           "bango": "未"
         }
       ],
-      "gbm": 37.2,
-      "reason": "GBM37.2%で堅実"
+      "gbm": 47.2,
+      "reason": "GBM47.2%で堅実"
     },
     "yancha": {
-      "race": "新潟 10R",
+      "race": "新潟 12R",
       "race_name": "未勝利",
-      "date": "08/16",
+      "date": "08/22",
       "honmei": {
-        "name": "カーボフリオ",
+        "name": "ミスタートントン",
+        "bango": "10"
+      },
+      "aite": [
+        {
+          "name": "ジャメビュ",
+          "bango": "12"
+        },
+        {
+          "name": "オレンジリバー",
+          "bango": "4"
+        }
+      ],
+      "gbm": 43.0,
+      "reason": "1位と2位の差23.5%で一発狙い"
+    },
+    "buruma": {
+      "race": "中京 5R",
+      "race_name": "1勝",
+      "date": "08/23",
+      "honmei": {
+        "name": "マーゴットレジーナ",
         "bango": "未"
       },
       "aite": [
         {
-          "name": "ラショナルポイント",
+          "name": "シルバーリム",
           "bango": "未"
         },
         {
-          "name": "カグヤヒメ",
+          "name": "ヴィスコンテッサ",
           "bango": "未"
         }
       ],
-      "gbm": 27.2,
-      "reason": "1位と2位の差16.7%で一発狙い"
-    },
-    "buruma": {
-      "race": "札幌 7R",
-      "race_name": "1勝",
-      "date": "08/15",
-      "honmei": {
-        "name": "キタノサリスカ",
-        "bango": "14"
-      },
-      "aite": [
-        {
-          "name": "メリザンド",
-          "bango": "1"
-        },
-        {
-          "name": "アドマイヤシュラ",
-          "bango": "9"
-        }
-      ],
-      "gbm": 8.6,
+      "gbm": 17.8,
       "reason": "スピード上昇中"
     },
     "chafuwa": {
-      "race": "新潟 1R",
-      "race_name": "未勝利",
-      "date": "08/15",
+      "race": "札幌 9R",
+      "race_name": "ｵｰﾌﾟﾝ",
+      "date": "08/22",
       "honmei": {
-        "name": "フルーツバスケット",
-        "bango": "3"
+        "name": "ラードンチェイス",
+        "bango": "10"
       },
       "aite": [
         {
-          "name": "シュートザワークス",
-          "bango": "6"
-        },
-        {
-          "name": "コナパームス",
-          "bango": "4"
-        }
-      ],
-      "gbm": 14.9,
-      "reason": "騎手勝率25.4%"
-    },
-    "kurofuwa": {
-      "race": "新潟 5R",
-      "race_name": "1勝",
-      "date": "08/15",
-      "honmei": {
-        "name": "ミスターマーボー",
-        "bango": "7"
-      },
-      "aite": [
-        {
-          "name": "デルマケセラセラ",
+          "name": "エンジェルボヌール",
           "bango": "11"
         },
         {
-          "name": "ポタリング",
-          "bango": "9"
-        },
-        {
-          "name": "デスサイズ",
+          "name": "スターオブヴェイズ",
           "bango": "5"
-        },
-        {
-          "name": "シャオママル",
-          "bango": "12"
         }
       ],
-      "gbm": 30.4,
-      "reason": "上位5頭の合計スコア最高"
+      "gbm": 4.5,
+      "reason": "騎手勝率25.4%"
     },
-    "ginma": {
-      "race": "中京 11R",
+    "kurofuwa": {
+      "race": "札幌 6R",
       "race_name": "1勝",
-      "date": "08/15",
+      "date": "08/23",
       "honmei": {
-        "name": "サリーチェ",
-        "bango": "9"
+        "name": "ルールザウェイヴ",
+        "bango": "未"
       },
       "aite": [
         {
-          "name": "プチプランス",
-          "bango": "3"
+          "name": "ファニーバニー",
+          "bango": "未"
         },
         {
-          "name": "イージーライダー",
-          "bango": "4"
+          "name": "モノポリオ",
+          "bango": "未"
+        },
+        {
+          "name": "モルニケ",
+          "bango": "未"
+        },
+        {
+          "name": "ベアサナエチャン",
+          "bango": "未"
         }
       ],
-      "gbm": 5.2,
+      "gbm": 43.1,
+      "reason": "上位5頭の合計スコア最高"
+    },
+    "ginma": {
+      "race": "札幌 3R",
+      "race_name": "未勝利",
+      "date": "08/23",
+      "honmei": {
+        "name": "アメリカンダンス",
+        "bango": "未"
+      },
+      "aite": [
+        {
+          "name": "ファイアリービート",
+          "bango": "未"
+        },
+        {
+          "name": "セラサイト",
+          "bango": "未"
+        }
+      ],
+      "gbm": 5.9,
       "reason": "血統◎だが評価低め"
     }
   }
