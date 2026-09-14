@@ -1105,8 +1105,6 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
 }
 </style>
 
-<script src="week_data.js"></script>
-<script src="race-data.js"></script>
 <!-- AFRO Horse 会員機能：メニュー初期非表示（一瞬出る対策） -->
 <style>
   .menu-overlay {
@@ -1128,10 +1126,8 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
 
 <div class="menu-overlay" id="menuOverlay">
   <a href="afrohorse_characters.html" onclick="toggleMenu()">CHARACTERS</a>
-  <a href="#prediction" onclick="toggleMenu()">PREDICTION</a>
   <a href="tools.html" onclick="toggleMenu()">TOOLS</a>
   <a href="#games" onclick="toggleMenu()">GAMES</a>
-  <a href="#members" onclick="toggleMenu()">MEMBERS</a>
   <a href="#goods" onclick="toggleMenu()">GOODS</a>
   <a href="#linestamp" onclick="toggleMenu()">LINE STAMP</a>
   <a href="#follow" onclick="toggleMenu()">SNS</a>
@@ -1146,21 +1142,7 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   </div>
   <div class="hero-eye">EST. 2025</div>
   <h1 class="hero-title">AFRO<em>HORSE</em></h1>
-  <p class="hero-sub">競馬予想 × アフロスタイル<br>完全無料の競馬ツールサイト</p>
-</section>
-
-<!-- ===== 今週末の重賞（自動更新） ===== -->
-<section class="section weekend-races-section">
-  <div class="sec-label">
-    <div class="sec-label-en">THIS WEEKEND'S RACES</div>
-    <div class="sec-label-ja">今週末の重賞</div>
-  </div>
-  <div id="weekend-races-container" class="weekend-races">
-    <div class="weekend-loading">読み込み中...</div>
-  </div>
-  <div class="weekend-footer">
-    <a href="schedule.html" class="weekend-more">▶ 年間スケジュールを見る</a>
-  </div>
+  <p class="hero-sub">競馬ツール × アフロスタイル<br>完全無料の競馬ツールサイト</p>
 </section>
 
 <section class="section">
@@ -1188,28 +1170,6 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
       </div>
     </a>
 
-    <div class="main-card hub-card hub-pred" id="prediction">
-      <div class="hub-header">
-        <img class="hub-icon" src="images/index/chafuwa1.png" alt="チャフワ">
-        <div class="hub-titles">
-          <div class="hub-en">PREDICTION</div>
-          <div class="hub-ja">予想</div>
-        </div>
-      </div>
-      <div class="hub-list">
-        <a href="#afro-yoso" class="hub-link">
-          <div class="hub-link-icon">🏇</div>
-          <div class="hub-link-name">アフロ馬<br>予想</div>
-          <div class="hub-link-tag">YOSO</div>
-        </a>
-        <a href="#thisweek-pick" class="hub-link">
-          <div class="hub-link-icon">⭐</div>
-          <div class="hub-link-name">今週の<br>ピック</div>
-          <div class="hub-link-tag">THIS WEEK</div>
-        </a>
-      </div>
-    </div>
-
     <div class="main-card hub-card hub-games" id="games">
       <div class="hub-header">
         <img class="hub-icon" src="images/index/kurofuwa1.png" alt="クロフワ">
@@ -1219,119 +1179,21 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
         </div>
       </div>
       <div class="hub-list">
-        <a href="afrohorse_chara_battle.html" class="hub-link">
-          <div class="hub-link-icon">⚔️</div>
-          <div class="hub-link-name">アフロ馬<br>バトル</div>
-          <div class="hub-link-tag">BATTLE</div>
-        </a>
-        <a href="korogashi.html" class="hub-link">
-          <div class="hub-link-icon">🎲</div>
-          <div class="hub-link-name">ブルマの<br>複勝転がし</div>
-          <div class="hub-link-tag">KOROGASHI</div>
-        </a>
         <a href="afuwa_quiz.html" class="hub-link">
           <div class="hub-link-icon">🐴</div>
           <div class="hub-link-name">アフワの<br>馬Quiz</div>
           <div class="hub-link-tag">QUIZ</div>
         </a>
-      </div>
-    </div>
-
-    <div class="main-card hub-card hub-members" id="members">
-      <div class="hub-header">
-        <img class="hub-icon" src="images/vip_afuwa.png" alt="VIPアフワ">
-        <div class="hub-titles">
-          <div class="hub-en">MEMBERS ONLY</div>
-          <div class="hub-ja">会員限定</div>
-        </div>
-        <div class="members-badge">🔒 MEMBERS</div>
-      </div>
-      <div class="hub-list">
-        <a href="kizuna_race.html" class="hub-link kizuna-link">
-          <img class="kizuna-banner" src="images/kizuna_race_title.png" alt="みんなのキズナレース">
-        </a>
-        <a href="radio.html" class="hub-link kizuna-link">
-          <img class="kizuna-banner" src="images/afuwa_radio.png" alt="アフワラジオ">
+        <a href="radio.html" class="hub-link">
+          <div class="hub-link-icon">📻</div>
+          <div class="hub-link-name">アフワの<br>ラジオ</div>
+          <div class="hub-link-tag">RADIO</div>
         </a>
       </div>
     </div>
 
   </div>
 </section>
-
-<section class="section" id="afro-yoso">
-  <div class="sec-label">
-    <div class="sec-label-en">AFRO HORSE PREDICTION</div>
-    <div class="sec-label-ja">今週の予想</div>
-  </div>
-  <div class="afro-yoso">
-    <div class="afro-yoso-header">
-      <img class="afro-yoso-img" src="images/index/afuwa1.png" alt="アフワ">
-      <div class="afro-yoso-titles">
-        <div class="afro-yoso-eye">★ THIS WEEK</div>
-        <div class="afro-yoso-title">アフロ馬の<br><em>今週の予想</em></div>
-      </div>
-    </div>
-    <div class="afro-yoso-desc">
-      アフロホースの本命はこれだ！<br>
-      全力で選んだ渾身の一本と、過去の成績をチェック🔥
-    </div>
-    <div class="afro-yoso-btns">
-      <a href="yoso.html" class="afro-yoso-btn primary">
-        <span class="afro-yoso-btn-en">YOSO</span>
-        予想を見る →
-      </a>
-      <a href="afrohorse_seiseki.html" class="afro-yoso-btn sub">
-        <span class="afro-yoso-btn-en">RESULTS</span>
-        過去の結果 →
-      </a>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="thisweek-pick">
-  <div class="sec-label">
-    <div class="sec-label-en">THIS WEEK'S PICK</div>
-    <div class="sec-label-ja">今週のピック</div>
-  </div>
-  <div class="pred-detail">
-    <div class="pred-header">
-      <div class="pred-header-text">
-        <div class="pred-eye">⭐ GBM RECOMMEND</div>
-        <div class="pred-title">今週の推奨馬</div>
-        <div class="pred-date" id="analysis-date">読み込み中...</div>
-      </div>
-      <img class="pred-header-img" src="images/kuro_gin_cya.png" alt="">
-    </div>
-    <div class="pred-list" id="rec-list">
-      <div style="color:var(--gray);font-size:.8rem;padding:8px 0;">データ読み込み中...</div>
-    </div>
-  </div>
-</section>
-
-<script>
-(function(){
-  if(typeof WEEK_DATA === 'undefined') return;
-  const d = WEEK_DATA;
-  const dateEl = document.getElementById('analysis-date');
-  if(dateEl) dateEl.textContent = d.dates ? d.dates.join(' · ') : '';
-  const recList = document.getElementById('rec-list');
-  if(d.recommendations && d.recommendations.length > 0){
-    recList.innerHTML = d.recommendations.slice(0,5).map(r => {
-      const dateVal = r.date_label || r.date || '';
-      const dateStr = dateVal ? `<span class="rec-date">${dateVal}</span>` : '';
-      return `<div class="rec-horse-item">
-        <div class="rec-hon">◎</div>
-        ${dateStr}
-        <span class="rec-race">${r.place} ${r.r}R</span>
-        <span class="rec-name">${r.name}</span>
-      </div>`;
-    }).join('');
-  } else {
-    recList.innerHTML = '<div style="color:var(--gray);font-size:.8rem;padding:8px 0;">今週の推奨馬はありません</div>';
-  }
-})();
-</script>
 
 <section class="section">
   <div class="sec-label">
@@ -1362,7 +1224,6 @@ nav, .hero, .section, .footer, .menu-overlay { position: relative; z-index: 2; }
   <div class="footer-tag">WIN WITH STYLE</div>
   <div class="footer-links">
     <a href="afrohorse_characters.html">キャラクター</a>
-    <a href="#prediction">予想</a>
     <a href="tools.html">ツール</a>
     <a href="#games">GAMES</a>
     <a href="about.html">運営者情報</a>
@@ -1390,110 +1251,7 @@ window.addEventListener('scroll', () => {
 }, {passive:true});
 </script>
 
-<!-- ===== 今週末の重賞 自動表示 ===== -->
-<script>
-(function(){
-  if (typeof RACE_DATA === 'undefined') return;
 
-  const container = document.getElementById('weekend-races-container');
-  if (!container) return;
-
-  // 6体のキャラクター画像
-  const JOCKEY_IMAGES = [
-    'images/index/afuwa2.png',
-    'images/index/yancha2.png',
-    'images/index/buruma2.png',
-    'images/index/chafuwa2.png',
-    'images/index/kurofuwa2.png',
-    'images/index/ginma2.png'
-  ];
-  const JOCKEY_NAMES = ['アフワ','やんちゃアフワ','ブルマ','チャフワ','クロフワ','ギンマ'];
-
-  // 年初からの週番号
-  function getWeekNumber() {
-    const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 1);
-    const diff = (now - start) / (1000 * 60 * 60 * 24);
-    return Math.floor(diff / 7);
-  }
-
-  // 今週末＋来週末（次の重賞があるまで）を取得
-  let races = getThisWeekendRaces();
-  let label = '今週末';
-
-  // 今週末になければ来週末
-  if (races.length === 0) {
-    races = getNextWeekendRaces();
-    label = '来週末';
-  }
-
-  if (races.length === 0) {
-    container.innerHTML = '<div class="weekend-empty">直近の重賞情報はありません。<br>年間スケジュールから今後のレースをチェック！</div>';
-    return;
-  }
-
-  // グレード判定
-  function gradeClass(grade) {
-    if (grade.includes('Ⅰ') && grade.includes('J')) return 'jg';
-    if (grade.includes('Ⅰ')) return 'g1';
-    if (grade.includes('Ⅱ')) return 'g2';
-    if (grade.includes('Ⅲ')) return 'g3';
-    return 'g3';
-  }
-
-  // 日付ソート
-  races.sort((a, b) => a.date.localeCompare(b.date));
-
-  // 週番号でローテのオフセットを決定（毎週キャラの並び順がズレる）
-  const weekOffset = getWeekNumber();
-
-  let html = '';
-  races.forEach((r, i) => {
-    const cls = gradeClass(r.grade);
-    const cardCls = (cls === 'g1' || cls === 'jg') ? 'g1-card' : (cls === 'g2' ? 'g2-card' : '');
-    const d = new Date(r.date);
-    const md = (d.getMonth()+1) + '/' + d.getDate();
-    const w = ['日','月','火','水','木','金','土'][d.getDay()];
-
-    // レースインデックス + 週オフセット で6人を割り当て（毎週変わる）
-    const jockeyIdx = (i + weekOffset) % 6;
-    const jockeyImg = JOCKEY_IMAGES[jockeyIdx];
-    const jockeyName = JOCKEY_NAMES[jockeyIdx];
-
-    // schedule.htmlで該当レースにジャンプするためのハッシュ（レース名URLエンコード）
-    const raceHash = encodeURIComponent(r.name);
-    const linkUrl = `schedule.html?race=${raceHash}#race-${raceHash}`;
-
-    html += `
-      <a href="${linkUrl}" class="weekend-card ${cardCls}">
-        <div class="weekend-date">${md}<small>${w}曜</small></div>
-        <img class="weekend-jockey" src="${jockeyImg}" alt="${jockeyName}">
-        <div class="weekend-info">
-          <div class="weekend-name">${r.name}</div>
-          <div class="weekend-course">${r.course}競馬場</div>
-        </div>
-        <div class="weekend-grade wg-${cls}">${r.grade}</div>
-      </a>
-    `;
-  });
-
-  // 「来週末」のときラベル表示
-  if (label === '来週末') {
-    container.insertAdjacentHTML('beforebegin',
-      '<div style="text-align:center; font-size:12px; color:var(--gray); margin-bottom:10px; letter-spacing:1px;">※今週末の重賞はないので来週末を表示</div>'
-    );
-  }
-
-  container.innerHTML = html;
-})();
-</script>
-
-<!-- AFRO Horse 会員機能 -->
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/header.js"></script>
 
 </body>
 </html>

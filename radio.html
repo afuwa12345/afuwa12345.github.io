@@ -5,12 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AFRO HORSE RADIO 24h</title>
 <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <!-- LIFF SDK -->
-<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <!-- 認証モジュール -->
-<script src="js/auth.js"></script>
 
 <!-- Build: 20260513-150226 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -254,34 +250,6 @@ footer{text-align:center;color:var(--mute);font-family:'DotGothic16',monospace;f
 </head>
 <body>
 
-<!-- 会員限定ゲート -->
-<div id="guestGate" class="guest-gate">
-  <div class="guest-card">
-    <div class="guest-lock">🔒</div>
-    <div class="guest-title">会員限定コンテンツ</div>
-    <div class="guest-sub">AFRO HORSE RADIO は<br>会員限定で楽しめる無料ラジオです</div>
-    <div class="guest-features">
-      <div class="guest-f">
-        <span class="fi">🎙️</span>
-        <span class="ft"><b>24時間ノンストップ</b><br><small>競馬ファン向けラジオ</small></span>
-      </div>
-      <div class="guest-f">
-        <span class="fi">🐎</span>
-        <span class="ft"><b>名馬・名騎手・歴史</b><br><small>競馬の魅力を深掘り</small></span>
-      </div>
-      <div class="guest-f">
-        <span class="fi">💌</span>
-        <span class="ft"><b>リスナーお便り</b><br><small>あなたの声が読まれるかも</small></span>
-      </div>
-      <div class="guest-f">
-        <span class="fi">🎵</span>
-        <span class="ft"><b>BGM＆効果音</b><br><small>カフェ＆夜の世界観</small></span>
-      </div>
-    </div>
-    <button class="register-btn" id="registerBtn">🎴 会員登録ページへ</button>
-    <div class="guest-loading" id="guestLoading">認証チェック中...</div>
-  </div>
-</div>
 
 
 <nav class="top-nav">
@@ -294,9 +262,7 @@ footer{text-align:center;color:var(--mute);font-family:'DotGothic16',monospace;f
 <div class="top-menu-overlay" id="topMenuOverlay">
   <a href="index.html" onclick="topToggleMenu()">TOP</a>
   <a href="afrohorse_characters.html" onclick="topToggleMenu()">CHARACTERS</a>
-  <a href="yoso.html" onclick="topToggleMenu()">PREDICTION</a>
   <a href="tools.html" onclick="topToggleMenu()">TOOLS</a>
-  <a href="schedule.html" onclick="topToggleMenu()">SCHEDULE</a>
 </div>
 
 <script>
@@ -3255,64 +3221,8 @@ setInterval(() => {
 updateBackButton();
 refillQueue();
 
-// =========================================
-// 会員認証チェック
-// =========================================
-async function checkMembershipAndStart() {
-  const loadingEl = document.getElementById('guestLoading');
-  const registerBtn = document.getElementById('registerBtn');
-  const gateEl = document.getElementById('guestGate');
-  
-  try {
-    // LIFF初期化
-    if (typeof initAuth !== 'function') {
-      console.warn('auth.js が読み込まれていません');
-      // 認証なしでも動作するように、通常起動
-      playNextCorner();
-      return;
-    }
-    
-    const user = await initAuth();
-    if (!user) {
-      // 未ログイン → ポップアップ表示（自動ログインしない）
-      loadingEl.style.display = 'none';
-      gateEl.classList.add('show');
-      registerBtn.textContent = '🔑 LINEでログイン';
-      registerBtn.onclick = () => {
-        if (typeof login === 'function') login();
-      };
-      return;
-    }
-    
-    // 会員データ取得
-    const kizuna = await getKizunaData(user.userId);
-    if (!kizuna) {
-      // 非会員 → ゲート表示
-      loadingEl.style.display = 'none';
-      gateEl.classList.add('show');
-      registerBtn.textContent = '🎴 会員登録ページへ';
-      registerBtn.onclick = () => {
-        window.location.href = './kizuna.html';
-      };
-      return;
-    }
-    
-    // 会員 → ラジオスタート！
-    console.log('会員確認OK:', kizuna);
-    playNextCorner();
-  } catch(e) {
-    console.error('認証エラー:', e);
-    // エラー時はゲスト扱いでポップアップ表示
-    loadingEl.style.display = 'none';
-    gateEl.classList.add('show');
-    registerBtn.textContent = '🔑 LINEでログイン';
-    registerBtn.onclick = () => {
-      if (typeof login === 'function') login();
-    };
-  }
-}
-
-checkMembershipAndStart();
+// 開いたらそのまま再生（会員ゲートは廃止）
+playNextCorner();
 
 </script>
 </body>
