@@ -1,0 +1,9 @@
+# サイトとして配らないもの。
+# リポジトリ直下をそのまま配る指定にしているので、
+# ここに書いたものはアップロードの対象から外れる。
+.git
+.github
+node_modules
+wrangler.jsonc
+.assetsignore
+CNAME
