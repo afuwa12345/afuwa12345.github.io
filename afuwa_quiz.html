@@ -25,18 +25,20 @@
   position:fixed;top:0;left:0;right:0;z-index:200;
   padding:0 20px;height:56px;
   display:flex;align-items:center;justify-content:space-between;
-  background:#8A6410;
+  background:#5A3A86;
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid #5C4309;
+  border-bottom:1px solid #422A63;
   box-shadow:0 1px 12px rgba(0,0,0,.18);
 }
 .site-nav-logo{
   font-family:'Dela Gothic One',sans-serif;
-  font-size:22px;letter-spacing:2px;
-  color:#f8f1de;text-decoration:none;
+  font-size:18px;letter-spacing:.01em;
+  color:#FBF5E2;text-decoration:none;
 }
 .site-nav-logo em{font-style:normal;color:#FFF0C2}
+@media (max-width:480px){ .site-nav{padding:0 12px} .site-nav-logo{font-size:15px} }
+@media (max-width:360px){ .site-nav-logo{font-size:13.5px} }
 .site-nav-back{
   color:#f8f1de;font-size:11px;
   text-decoration:none;letter-spacing:2px;

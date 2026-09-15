@@ -89,13 +89,40 @@
 
   /* コンボの表示 */
   .ahud-val.combo.hot { color: var(--magenta); text-shadow: 0 0 12px var(--magenta); }
+  .ahud-val.combo.bump { animation: wBump .3s ease-out; }
+  @keyframes wBump { 0% { transform: scale(1); } 40% { transform: scale(1.45); } 100% { transform: scale(1); } }
+
+  /* 得点のうしろに付く「×5」 */
+  .afloat .cx {
+    display: block; font-size: 15px; line-height: 1;
+    color: var(--magenta); text-shadow: 0 0 10px var(--magenta);
+  }
+
+  /* 5の倍数でどんと出る */
+  .w-banner {
+    position: absolute; left: 0; right: 0; top: 38%; z-index: 60;
+    text-align: center; pointer-events: none;
+  }
+  .w-banner b {
+    display: inline-block;
+    font-family: 'Bebas Neue', sans-serif; font-size: 58px; letter-spacing: 3px;
+    color: var(--gold); -webkit-text-stroke: 2px #2a1400;
+    text-shadow: 0 0 18px var(--magenta), 0 0 42px var(--magenta);
+  }
+  .w-banner.on b { animation: wBanner .85s cubic-bezier(.2,1.3,.4,1) forwards; }
+  @keyframes wBanner {
+    0%   { opacity: 0; transform: scale(.4) rotate(-8deg); }
+    35%  { opacity: 1; transform: scale(1.18) rotate(2deg); }
+    60%  { opacity: 1; transform: scale(1) rotate(0); }
+    100% { opacity: 0; transform: scale(1.05) translateY(-26px); }
+  }
 
   /* 秒読み */
   #cue { z-index: 30; }
   #cue .acue-big { font-size: 74px; color: var(--gold); }
 </style>
 </head>
-<body>
+<body class="nav-game">
 
 <div class="abg"></div>
 
@@ -143,6 +170,7 @@
   <div class="ain grow">
     <div class="astage" id="stage">
       <div class="w-grid" id="grid"></div>
+      <div class="w-banner" id="wBanner"></div>
       <div class="acue" id="cue" hidden><div class="acue-big" id="cueBig">3</div></div>
     </div>
     <p class="astage-note">金色のアフロ＝やんちゃアフワは叩かない</p>
@@ -160,6 +188,7 @@
   var GOOD = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma'];
   var BAD  = 'yancha';
   var HOLES = 9, LIMIT = 60, BASE = 100, PENALTY = -200;
+  var COMBO_STEP = 25, COMBO_MAX = 19;   /* 20連続で 575 点まで伸びる */
 
   var stage  = document.getElementById('stage');
   var grid   = document.getElementById('grid');
@@ -199,18 +228,42 @@
     combo = v;
     hCombo.textContent = combo;
     hCombo.classList.toggle('hot', combo >= 5);
+    if (v > 0) {
+      hCombo.classList.remove('bump');
+      void hCombo.offsetWidth;
+      hCombo.classList.add('bump');
+    }
   }
 
-  function float(el, text, cls) {
+  function float(el, text, cls, sub) {
     var r = el.getBoundingClientRect();
     var s = stage.getBoundingClientRect();
     var f = document.createElement('span');
     f.className = 'afloat ' + cls;
     f.textContent = text;
+    if (sub) {
+      var s = document.createElement('span');
+      s.className = 'cx'; s.textContent = sub;
+      f.appendChild(s);
+    }
     f.style.left = (r.left - s.left + r.width / 2) + 'px';
     f.style.top  = (r.top - s.top + r.height * 0.3) + 'px';
     stage.appendChild(f);
     setTimeout(function () { f.remove(); }, 700);
+  }
+
+  /* 5の倍数で画面の真ん中にどんと出す */
+  var bnTimer = null;
+  function banner(n) {
+    var el = document.getElementById('wBanner');
+    if (!el) return;
+    el.innerHTML = '<b>COMBO ' + n + '!</b>';
+    el.classList.remove('on');
+    void el.offsetWidth;
+    el.classList.add('on');
+    clearTimeout(bnTimer);
+    bnTimer = setTimeout(function () { el.classList.remove('on'); el.innerHTML = ''; }, 900);
+    if (window.Sfx && Sfx.up) Sfx.up();
   }
 
   /* 経過とともに、出てる時間が短く・間隔もつまる */
@@ -256,10 +309,13 @@
       stage.classList.add('ashake');
     } else {
       setCombo(combo + 1);
-      var pts = BASE + Math.min(combo - 1, 9) * 20;
+      var pts = BASE + Math.min(combo - 1, COMBO_MAX) * COMBO_STEP;
       setScore(score + pts);
-      float(h.el, '+' + pts, 'plus');
+      float(h.el, '+' + pts, 'plus', combo >= 2 ? '\u00d7' + combo : '');
       Sfx.hit();
+      /* コンボが伸びるほど高い音をかぶせる */
+      if (window.Sfx && Sfx.note) Sfx.note(Math.round(523 * Math.pow(2, Math.min(combo - 1, 15) / 12)));
+      if (combo % 5 === 0) banner(combo);
     }
     h.timer = setTimeout(function () { hide(h); }, 300);
   }

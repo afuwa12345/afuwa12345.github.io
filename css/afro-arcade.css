@@ -53,15 +53,28 @@ body {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: 52px; padding: 0 14px;
   display: flex; align-items: center; justify-content: space-between;
-  background: #8A6410;
-  border-bottom: 1px solid #5C4309;
+  background: var(--navbg, #8A6410);
+  border-bottom: 1px solid var(--navbd, #5C4309);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }
 .anav-logo {
   font-family: 'Dela Gothic One', sans-serif; font-size: 18px;
-  letter-spacing: 1px; color: #f8f1de; text-decoration: none;
+  letter-spacing: .01em; color: var(--paper, #FBF5E2); text-decoration: none;
 }
 .anav-logo em { font-style: normal; color: #FFF0C2; }
+/* セクションごとの帯の色 */
+body.nav-game  { --navbg: #5A3A86; --navbd: #422A63; }  /* ゲーム：紫 */
+body.nav-world { --navbg: #8A6410; --navbd: #5C4309; }  /* ワールド：金茶 */
+
+/* 通常ページのナビと同じく、狭い画面ではロゴを縮める */
+@media (max-width: 480px) {
+  .anav { padding: 0 12px; }
+  .anav-logo { font-size: 15px; }
+}
+@media (max-width: 360px) {
+  .anav-logo { font-size: 13.5px; }
+}
+
 .anav-r { display: flex; align-items: center; gap: 7px; }
 .anav-btn {
   font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 1.5px;
