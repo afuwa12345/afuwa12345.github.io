@@ -703,6 +703,8 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
   margin: 0 0 2px; line-height: 1.7;
 }
 .race {
+  text-decoration: none; color: inherit;
+  transition: transform .14s, box-shadow .14s;
   display: grid; grid-template-columns: 52px 46px 1fr auto;
   align-items: center; gap: 10px;
   background: var(--white); border: 1px solid var(--rule);
@@ -727,10 +729,14 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 .race-grade.g2 { background: #24609E; }
 .race-grade.g3 { background: var(--turf-2); }
 .race-grade.jg { background: var(--gold); }
+a.race:hover { transform: translateY(-2px); box-shadow: var(--sh-md); }
+a.race:active { transform: translateY(0); }
 @media (max-width: 360px) {
   .race { grid-template-columns: 44px 38px 1fr auto; gap: 8px; padding: 9px 10px; }
   .race-name { font-size: 13px; }
 }
+
+.races-more { display: block; text-align: right; margin: 9px 0 0; }
 
 /* ---------- 見出し帯の「説明」ボタン ---------- */
 .phead-help {

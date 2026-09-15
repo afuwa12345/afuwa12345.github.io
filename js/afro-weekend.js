@@ -69,7 +69,10 @@
     var j = JOCKEYS[(i + off) % JOCKEYS.length];
     var kind = gradeKind(r.grade);
 
-    html += '<div class="race">' +
+    /* 年間スケジュール側で該当レースを開く（?race= を見て展開してくれる） */
+    var href = 'schedule.html?race=' + encodeURIComponent(r.name);
+
+    html += '<a class="race" href="' + href + '">' +
               '<div class="race-date">' + (d.getMonth() + 1) + '/' + d.getDate() +
                 '<small>' + WD[d.getDay()] + '</small></div>' +
               '<img class="race-jockey" src="' + j.img + '" alt="' + esc(j.name) + '" loading="lazy">' +
@@ -78,7 +81,7 @@
                 '<div class="race-meta">' + esc(r.course) + '　' + esc(r.dist) + '</div>' +
               '</div>' +
               '<span class="race-grade ' + kind + '">' + esc(r.grade) + '</span>' +
-            '</div>';
+            '</a>';
   }
 
   box.innerHTML = html;
