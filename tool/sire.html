@@ -43,11 +43,10 @@
   --text-soft:#5a4f3d;
   --gray:#7a6e5a;
 }
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-.hero, .selector-wrap, .search-wrap, #resultArea, .ticker-outer { position:relative; z-index:2; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }.hero, .selector-wrap, .search-wrap, #resultArea { position:relative; z-index:2; }
 /* ===== HERO ===== */
 .hero {
-  margin-top:56px;
+  
   padding:20px 20px 24px;
   display:flex;flex-direction:column;
   justify-content:center;align-items:center;
@@ -81,20 +80,6 @@
   text-shadow:0 1px 3px rgba(0,0,0,0.4);
 }
 /* ===== TICKER ===== */
-.ticker-outer {
-  overflow:hidden;
-  background:var(--turf-deep);
-  padding:12px 0;
-  border-bottom:4px solid var(--gold);
-}
-.ticker-track { display:flex; animation:tick 22s linear infinite; width:max-content; }
-.ticker-item {
-  font-family:'Bebas Neue',cursive;
-  font-size:14px;letter-spacing:4px;
-  padding:0 22px;white-space:nowrap;
-  color:var(--cream);
-}
-.ticker-item.dot { color:var(--gold-light); }
 @keyframes tick { to { transform:translateX(-50%); } }
 /* ===== Section / cat-label ===== */
 .cat-label { text-align:center; margin:24px auto 14px; max-width:640px; padding:0 16px; }
@@ -382,20 +367,6 @@
     JRAの実績データから、アフロ馬が独自に算出した種牡馬ランキング。芝・ダート別、距離別にどの種牡馬の産駒が活躍しているかを分析。馬券予想・血統研究に。
   </p>
 </section>
-
-<!-- TICKER -->
-<div class="ticker-outer">
-  <div class="ticker-track">
-    <span class="ticker-item">★ SIRE RANKING</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">種牡馬ランキング</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">DATA-DRIVEN</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">JRA STATS</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">★ SIRE RANKING</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">種牡馬ランキング</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">DATA-DRIVEN</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">JRA STATS</span><span class="ticker-item dot">◆</span>
-  </div>
-</div>
 
 <!-- CAT LABEL -->
 <div class="cat-label">

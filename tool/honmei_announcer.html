@@ -44,12 +44,11 @@
   --text-soft:#5a4f3d;
   --gray:#7a6e5a;
 }
-* {margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-.hero, .section, .gen-wrap, .ticker-outer {position:relative;z-index:2;}
+* {margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}.hero, .section, .gen-wrap {position:relative;z-index:2;}
 /* ===== HERO ===== */
 .hero {
   min-height:280px;
-  padding:80px 20px 36px;
+  padding:30px 20px 30px;
   display:flex;flex-direction:column;
   justify-content:center;align-items:center;
   text-align:center;overflow:hidden;
@@ -70,13 +69,6 @@
   animation:twinkle 4s ease-in-out infinite;
 }
 @keyframes twinkle{0%,100%{opacity:0.5;}50%{opacity:0.95;}}
-.hero-eye {
-  font-family:'Bebas Neue',cursive;
-  font-size:12px;letter-spacing:6px;
-  color:var(--gold-light);margin-bottom:10px;
-  position:relative;z-index:1;
-  text-shadow:0 0 12px rgba(255,216,109,0.5);
-}
 .hero-title {
   font-family:'Dela Gothic One',cursive;
   font-size:clamp(38px,11vw,58px);
@@ -226,25 +218,6 @@
   box-shadow:0 1px 0 var(--turf-deep),0 3px 6px rgba(139,27,27,0.30);
 }
 /* ===== TICKER ===== */
-.ticker-outer {
-  overflow:hidden;
-  background:var(--turf-deep);
-  padding:12px 0;margin-top:24px;
-  border-top:4px solid var(--gold);
-  border-bottom:4px solid var(--gold);
-}
-.ticker-track {
-  display:flex;
-  animation:tick 22s linear infinite;
-  width:max-content;
-}
-.ticker-item {
-  font-family:'Bebas Neue',cursive;
-  font-size:14px;letter-spacing:4px;
-  padding:0 22px;white-space:nowrap;
-  color:var(--cream);
-}
-.ticker-item.dot {color:var(--gold-light);}
 @keyframes tick{to{transform:translateX(-50%);}}
 /* ============================================
    STAGE (フルスクリーン発表 — 深緑ベース版)
@@ -473,7 +446,6 @@
 <!-- HERO -->
 <section class="hero">
   <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">本命発表ツール｜AFRO Horseキャラが競馬の本命馬をアナウンス（無料）</h1>
-  <div class="hero-eye">★ PICK ANNOUNCER</div>
   <p class="hero-lead">
     アフロ馬の6キャラがあなたの本命馬を発表してくれる無料ツール。レース名・馬番・馬名を入れて発表ボタンを押すだけで、推しキャラからの発表画像をシェア用に保存できる。
   </p>
@@ -525,20 +497,6 @@
 <!-- GENERATE -->
 <div class="gen-wrap">
   <button class="gen-btn" onclick="announce()">🏇 発表する</button>
-</div>
-
-<!-- TICKER -->
-<div class="ticker-outer">
-  <div class="ticker-track">
-    <span class="ticker-item">★ HONMEI ANNOUNCE</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">本命発表</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">PICK YOUR HORSE</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">WIN WITH STYLE 🏇</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">★ HONMEI ANNOUNCE</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">本命発表</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">PICK YOUR HORSE</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">WIN WITH STYLE 🏇</span><span class="ticker-item dot">◆</span>
-  </div>
 </div>
 
 <!-- FOOTER -->

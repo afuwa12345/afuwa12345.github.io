@@ -56,7 +56,7 @@
 .container { width:100%; max-width:600px; margin:0 auto; padding:0 16px; }
 /* ===== HERO (only in list view) ===== */
 .hero {
-  margin-top:56px;
+  
   padding:20px 20px 24px;
   display:flex;flex-direction:column;
   justify-content:center;align-items:center;
@@ -79,14 +79,6 @@
   animation:twinkle 4s ease-in-out infinite;
 }
 @keyframes twinkle { 0%,100% { opacity:0.5; } 50% { opacity:0.95; } }
-.hero-eye {
-  font-family:'Bebas Neue',cursive;
-  font-size:12px;letter-spacing:6px;
-  color:var(--gold-light);
-  margin-bottom:10px;
-  position:relative;z-index:1;
-  text-shadow:0 0 12px rgba(255,216,109,0.5);
-}
 .hero-lead {
   font-family:'Noto Sans JP',sans-serif;
   font-size:13px;line-height:1.8;
@@ -752,23 +744,6 @@
   font-family:'Bebas Neue',cursive;letter-spacing:2px;font-weight:700;
 }
 /* ===== TICKER ===== */
-.ticker-outer {
-  overflow:hidden;
-  background:var(--turf-deep);
-  padding:12px 0;
-  margin-top:30px;
-  border-top:4px solid var(--gold);
-  border-bottom:4px solid var(--gold);
-  position:relative;z-index:2;
-}
-.ticker-track { display:flex; animation:tick 22s linear infinite; width:max-content; }
-.ticker-item {
-  font-family:'Bebas Neue',cursive;
-  font-size:14px;letter-spacing:4px;
-  padding:0 22px;white-space:nowrap;
-  color:var(--cream);
-}
-.ticker-item.dot { color:var(--gold-light); }
 @keyframes tick { to { transform:translateX(-50%); } }
 </style>
 </head>
@@ -964,20 +939,6 @@
     <button class="btn-search" onclick="doVerify()">検索</button>
   </div>
   <div class="verify-result" id="verify-result"></div>
-</div>
-
-<!-- TICKER -->
-<div class="ticker-outer">
-  <div class="ticker-track">
-    <span class="ticker-item">★ YOSO CERTIFICATE</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">予想証明システム</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">CERTIFIED ON CHAIN</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">AFRO HORSE OFFICIAL</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">★ YOSO CERTIFICATE</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">予想証明システム</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">CERTIFIED ON CHAIN</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">AFRO HORSE OFFICIAL</span><span class="ticker-item dot">◆</span>
-  </div>
 </div>
 
 <!-- FOOTER -->

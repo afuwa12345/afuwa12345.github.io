@@ -43,12 +43,11 @@
   --text-soft: #5a4f3d;
   --gray: #7a6e5a;
 }
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-.hero, .section, .ticker-outer, .modal-overlay, .gen-wrap { position: relative; z-index: 2; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }.hero, .section, .modal-overlay, .gen-wrap { position: relative; z-index: 2; }
 /* ===== HERO ===== */
 .hero {
   min-height: 280px;
-  padding: 80px 20px 36px;
+  padding: 30px 20px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -73,14 +72,6 @@
   animation: twinkle 4s ease-in-out infinite;
 }
 @keyframes twinkle { 0%,100% { opacity: 0.5; } 50% { opacity: 0.95; } }
-.hero-eye {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 12px; letter-spacing: 6px;
-  color: var(--gold-light);
-  margin-bottom: 12px;
-  position: relative; z-index: 1;
-  text-shadow: 0 0 12px rgba(255,216,109,0.5);
-}
 .hero-lead {
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 13px;
@@ -330,28 +321,6 @@
   box-shadow: 0 1px 0 var(--turf-deep), 0 3px 6px rgba(139,27,27,0.30);
 }
 /* ===== TICKER ===== */
-.ticker-outer {
-  overflow: hidden;
-  background: var(--turf-deep);
-  padding: 12px 0;
-  margin-top: 30px;
-  border-top: 4px solid var(--gold);
-  border-bottom: 4px solid var(--gold);
-}
-.ticker-track {
-  display: flex;
-  animation: tick 22s linear infinite;
-  width: max-content;
-}
-.ticker-item {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 14px;
-  letter-spacing: 4px;
-  padding: 0 22px;
-  white-space: nowrap;
-  color: var(--cream);
-}
-.ticker-item.dot { color: var(--gold-light); }
 @keyframes tick { to { transform: translateX(-50%); } }
 /* ===== MODAL ===== */
 .modal-overlay {
@@ -472,7 +441,6 @@
 <!-- HERO -->
 <section class="hero">
   <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">AFRO Horse 馬券シミュレーター｜オリジナル馬券画像メーカー無料ツール</h1>
-  <div class="hero-eye">★ AFRO HORSE ORIGINAL</div>
   <p class="hero-lead">
     自分だけのオリジナル馬券画像をつくれる無料ツール。3種類の背景テンプレート（ロゴ版・アフワ版・やんちゃアフワ版）から選んで、レース情報・買い目を入力するだけ。SNSの投稿や保存、推し馬の記念に。
   </p>
@@ -599,22 +567,6 @@
 
 <!-- hidden canvas -->
 <canvas id="cv" style="display:none;"></canvas>
-
-<!-- TICKER -->
-<div class="ticker-outer">
-  <div class="ticker-track">
-    <span class="ticker-item">🎫 BAKEN SIM</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">ロゴ版</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">アフワ版</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">やんちゃアフワ版</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">WIN WITH STYLE 🏇</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">🎫 BAKEN SIM</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">ロゴ版</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">アフワ版</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">やんちゃアフワ版</span><span class="ticker-item dot">◆</span>
-    <span class="ticker-item">WIN WITH STYLE 🏇</span><span class="ticker-item dot">◆</span>
-  </div>
-</div>
 
 <!-- FOOTER -->
 <section>
