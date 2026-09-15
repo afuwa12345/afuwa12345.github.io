@@ -28,26 +28,44 @@
 /* ===== ページごとの基調色 =====
    body に theme-xxx を付けると、帯・ナビ・フッター・見出しの色が変わる。
    既定（クラス無し）は KEIBA と同じ緑。 */
+body.theme-keiba {
+  --paper:     #F2F6EC;
+  --paper-2:   #E6EEDD;
+  --rule:      #D2DCC5;
+  --rule-soft: #E3EADA;
+}
 body.theme-comic {
-  --turf:    #A82823;
-  --turf-2:  #C9302B;
-  --turf-dk: #781915;
-  --gold:    #B0362F;
-  --gold-lt: #F0C07A;
+  --turf:      #A82823;
+  --turf-2:    #C9302B;
+  --turf-dk:   #781915;
+  --gold:      #B0362F;
+  --gold-lt:   #F0C07A;
+  --paper:     #FBF1EE;
+  --paper-2:   #F4E1DB;
+  --rule:      #E6CEC6;
+  --rule-soft: #F1DFD9;
 }
 body.theme-world {
-  --turf:    #8A6410;
-  --turf-2:  #B5871A;
-  --turf-dk: #5C4309;
-  --gold:    #97701A;
-  --gold-lt: #FFF0C2;
+  --turf:      #8A6410;
+  --turf-2:    #B5871A;
+  --turf-dk:   #5C4309;
+  --gold:      #97701A;
+  --gold-lt:   #FFF0C2;
+  --paper:     #FBF5E2;
+  --paper-2:   #F3E8C9;
+  --rule:      #E2D4A9;
+  --rule-soft: #EFE4C6;
 }
 body.theme-sns {
-  --turf:    #1D4E82;
-  --turf-2:  #2A6BAE;
-  --turf-dk: #143A62;
-  --gold:    #24609E;
-  --gold-lt: #EFC978;
+  --turf:      #1D4E82;
+  --turf-2:    #2A6BAE;
+  --turf-dk:   #143A62;
+  --gold:      #24609E;
+  --gold-lt:   #EFC978;
+  --paper:     #EFF4FA;
+  --paper-2:   #E0E9F4;
+  --rule:      #CBD9E8;
+  --rule-soft: #E2EAF3;
 }
 
 * { box-sizing: border-box; }
