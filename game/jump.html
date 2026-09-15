@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
-<link rel="stylesheet" href="../css/afro-arcade.css">
+<link rel="stylesheet" href="../css/afro-arcade.css?v=20260915c">
 
 <style>
   /* タイトル画面の背景。絵の明るさ 111/255 なので薄膜は .52 */
@@ -39,7 +39,29 @@
   #scPlay { padding-bottom: 6px; }
   #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
-  #stage { cursor: pointer; }
+  /* 空はCSSで描く。下端の色を、流れる帯の最上の色（#7460BA）に合わせてつなぐ */
+  #stage {
+    cursor: pointer;
+    --sveil: 0;
+    background-color: #1a1230;
+    background-image: linear-gradient(180deg,
+      #140f2a 0%, #241a44 32%, #3d2a63 58%, #5a4290 80%, #7460BA 100%);
+  }
+  /* 絵に景色が入ったので、CSSで描いていた丘は消す */
+  .j-hills { display: none; }
+
+  /* 流れる遠景。900x302 の帯（左右がつながっている絵）を横に繰り返す。
+     上のCSSの空へなじませるため、上端だけぼかして消す */
+  .j-far {
+    position: absolute; left: 0; right: 0; bottom: 56px; height: 46%;
+    background-image: url(../images/bg/jump.webp);
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    background-position: 0 bottom;
+    filter: brightness(.86) saturate(.95);
+    mask-image: linear-gradient(transparent 0%, #000 22%);
+    -webkit-mask-image: linear-gradient(transparent 0%, #000 22%);
+  }
 
   /* 遠景 */
   .j-sky {
@@ -58,17 +80,21 @@
   }
 
   /* 地面 */
+  /* 絵の芝から地面へ、上をぼかしてつなぐ。継ぎ目を出さない */
   .j-ground {
     position: absolute; left: 0; right: 0; bottom: 0; height: 74px;
-    background: linear-gradient(#0f4530, #072418);
-    border-top: 2px solid rgba(0, 240, 255, .3);
-    box-shadow: 0 -8px 20px rgba(0, 240, 255, .08);
+    background: linear-gradient(rgba(10, 48, 33, 0) 0%, rgba(9, 44, 30, .55) 28%,
+                                rgba(7, 36, 24, .88) 60%, rgba(5, 26, 17, .96) 100%);
+    border-top: 1px solid rgba(0, 240, 255, .16);
   }
+  /* 走っている感じを出すための流れる線。芝の上なので薄く */
   .j-lines {
-    position: absolute; left: 0; right: 0; bottom: 0; height: 74px;
+    position: absolute; left: 0; right: 0; bottom: 0; height: 52px;
     background-image: repeating-linear-gradient(90deg,
-      rgba(255, 255, 255, .16) 0 26px, transparent 26px 92px);
+      rgba(255, 255, 255, .09) 0 26px, transparent 26px 92px);
     background-size: 92px 100%;
+    mask-image: linear-gradient(transparent, #000 60%);
+    -webkit-mask-image: linear-gradient(transparent, #000 60%);
   }
 
   /* 馬 */
@@ -137,6 +163,7 @@
     <div class="astage" id="stage">
       <div class="j-sky"></div>
       <div class="j-hills"></div>
+      <div class="j-far" id="far"></div>
       <div class="j-ground"></div>
       <div class="j-lines" id="lines"></div>
       <img class="j-horse" id="horse" src="../images/game/run_afuwa.webp" alt="">
@@ -149,9 +176,9 @@
 
 <div id="gResult"></div>
 
-<script src="../js/afro-rank-config.js"></script>
-<script src="../js/afro-sfx.js"></script>
-<script src="../js/afro-score.js"></script>
+<script src="../js/afro-rank-config.js?v=20260915c"></script>
+<script src="../js/afro-sfx.js?v=20260915c"></script>
+<script src="../js/afro-score.js?v=20260915c"></script>
 <script>
 (function () {
   var GROUND   = 74;      /* 地面の高さ(px) */
@@ -166,6 +193,7 @@
   var stage  = document.getElementById('stage');
   var horse  = document.getElementById('horse');
   var lines  = document.getElementById('lines');
+  var far    = document.getElementById('far');
   var distEl = document.getElementById('dist');
   var cue    = document.getElementById('cue');
   var cueBig = document.getElementById('cueBig');
@@ -202,6 +230,7 @@
   var playing = false, y = 0, vy = 0, onGround = true;
   var speed = SPD0, px = 0, jumps = 0, shift = 0;
   var obs = [], nextGap = 0, raf = null, last = 0;
+  var farShift = 0, farTile = 626;   /* 帯1枚の表示幅。go() で測り直す */
 
   function screen(id) {
     var all = document.querySelectorAll('.ascreen');
@@ -316,6 +345,10 @@
     shift = (shift + speed * dt) % 92;
     lines.style.backgroundPosition = (-shift) + 'px 0';
 
+    /* 遠景はゆっくり流す（奥のものは遅く動いて見える） */
+    farShift = (farShift + speed * 0.38 * dt) % farTile;
+    far.style.backgroundPositionX = (-farShift) + 'px';
+
     /* 跳ぶ */
     if (!onGround) {
       vy -= GRAV * dt;
@@ -349,6 +382,12 @@
   function go() {
     screen('scPlay');
     clearObs();
+
+    /* 帯1枚の表示幅 = 表示している高さ × (900/302) */
+    var bh = far.clientHeight || 210;
+    farTile = 900 * (bh / 302);
+    farShift = 0;
+    far.style.backgroundPositionX = '0px';
     y = 0; vy = 0; onGround = true;
     speed = SPD0; px = 0; jumps = 0; shift = 0;
     distEl.textContent = '0';

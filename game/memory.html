@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
-<link rel="stylesheet" href="../css/afro-arcade.css">
+<link rel="stylesheet" href="../css/afro-arcade.css?v=20260915c">
 
 <style>
   /* タイトル画面の背景。絵の明るさ 50/255 なので薄膜は .32 */
@@ -39,7 +39,12 @@
   #scPlay { padding-bottom: 6px; }
   #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
-  #stage { display: flex; flex-direction: column; justify-content: center; padding: 14px 10px; }
+  #stage {
+    display: flex; flex-direction: column; justify-content: center; padding: 14px 10px;
+    --bgs: url(../images/bgt/memory.webp);
+    --bgs-pos: center;
+    --sveil: .34;
+  }
 
   .m-state {
     text-align: center; font-family: 'Dela Gothic One', sans-serif;
@@ -173,9 +178,9 @@
 
 <div id="gResult"></div>
 
-<script src="../js/afro-rank-config.js"></script>
-<script src="../js/afro-sfx.js"></script>
-<script src="../js/afro-score.js"></script>
+<script src="../js/afro-rank-config.js?v=20260915c"></script>
+<script src="../js/afro-sfx.js?v=20260915c"></script>
+<script src="../js/afro-score.js?v=20260915c"></script>
 <script>
 (function () {
   /* キーごとの音（高さを変えて、音でも覚えられるように） */

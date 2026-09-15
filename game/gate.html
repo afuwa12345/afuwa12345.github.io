@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
-<link rel="stylesheet" href="../css/afro-arcade.css">
+<link rel="stylesheet" href="../css/afro-arcade.css?v=20260915c">
 
 <style>
   /* タイトル画面の背景。絵の明るさ 161/255 なので薄膜は .65 */
@@ -39,12 +39,13 @@
   #scPlay { padding-bottom: 6px; }
   #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
-  #stage { cursor: pointer; }
-  #stage::after {                      /* 芝 */
-    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
-    background: linear-gradient(#0d3b27, #06231a);
-    border-top: 2px solid rgba(0, 240, 255, .25);
+  #stage {
+    cursor: pointer;
+    --bgs: url(../images/bg/gate.webp);
+    --bgs-pos: center 58%;
+    --sveil: .5;
   }
+  /* 絵にコースが写っているので、CSSで描いていた芝はやめた */
 
   /* 合図の帯 */
   .g-signal {
@@ -171,9 +172,9 @@
 
 <div id="gResult"></div>
 
-<script src="../js/afro-rank-config.js"></script>
-<script src="../js/afro-sfx.js"></script>
-<script src="../js/afro-score.js"></script>
+<script src="../js/afro-rank-config.js?v=20260915c"></script>
+<script src="../js/afro-sfx.js?v=20260915c"></script>
+<script src="../js/afro-score.js?v=20260915c"></script>
 <script>
 (function () {
   var TRIES = 5, MAX_FLY = 3;

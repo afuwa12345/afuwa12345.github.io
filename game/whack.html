@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
-<link rel="stylesheet" href="../css/afro-arcade.css">
+<link rel="stylesheet" href="../css/afro-arcade.css?v=20260915c">
 
 <style>
   /* タイトル画面の背景。絵の明るさ 116/255 なので薄膜は .54 */
@@ -38,6 +38,12 @@
   /* ---- アフロたたき ---- */
   #scPlay { padding-bottom: 6px; }
   #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  #stage {
+    --bgs: url(../images/bg/whack.webp);
+    --bgs-pos: center;
+    --sveil: .5;
+  }
 
   .w-grid {
     position: absolute; inset: 8px;
@@ -136,9 +142,9 @@
 
 <div id="gResult"></div>
 
-<script src="../js/afro-rank-config.js"></script>
-<script src="../js/afro-sfx.js"></script>
-<script src="../js/afro-score.js"></script>
+<script src="../js/afro-rank-config.js?v=20260915c"></script>
+<script src="../js/afro-sfx.js?v=20260915c"></script>
+<script src="../js/afro-score.js?v=20260915c"></script>
 <script>
 (function () {
   var GOOD = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma'];
