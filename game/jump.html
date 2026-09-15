@@ -413,6 +413,7 @@
         if (artReady >= ART.length || waited >= 1500) {
           cue.hidden = true;
           playing = true;
+          Sfx.bgm('jump');
           nextGap = 320;
           last = performance.now();
           raf = requestAnimationFrame(step);

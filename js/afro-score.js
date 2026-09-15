@@ -104,7 +104,10 @@
     card.appendChild(el('p', 'gr-best',
       '自己ベスト <b>' + esc(fmt(getBest())) + '</b>' + (newRec ? '　更新！' : '')));
 
-    if (window.Sfx) { if (newRec) Sfx.record(); else Sfx.over(); }
+    if (window.Sfx) {
+      Sfx.bgmStop();                  /* 結果の音をはっきり聞かせるため曲は止める */
+      if (newRec) Sfx.record(); else Sfx.over();
+    }
 
     var acts = el('div', 'gr-acts');
 

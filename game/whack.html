@@ -291,6 +291,7 @@
       setTimeout(function () {
         cue.hidden = true;
         playing = true;
+        Sfx.bgm('whack');
         tick = setTimeout(countdown, 1000);
         pop();
       }, 480);

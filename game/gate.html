@@ -304,7 +304,7 @@
     paintLaps();
   }
 
-  function go() { reset(); screen('scPlay'); }
+  function go() { reset(); screen('scPlay'); Sfx.bgm('gate'); }
 
   var viaPointer = false;
   stage.addEventListener('pointerdown', function (e) { e.preventDefault(); viaPointer = true; tap(); });
