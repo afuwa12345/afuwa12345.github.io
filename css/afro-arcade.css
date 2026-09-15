@@ -17,7 +17,7 @@
   --white: #fafafa;
   --grey: #2a2024;
   --grey2: #3a2f33;
-  --nav: #4A3607;          /* アフワワールドの金茶系 */
+  --nav: #8A6410;          /* アフワワールドと同じ金茶 */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -53,15 +53,15 @@ body {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: 52px; padding: 0 14px;
   display: flex; align-items: center; justify-content: space-between;
-  background: rgba(74, 54, 7, .96);
-  border-bottom: 2px solid var(--gold-d);
+  background: #8A6410;
+  border-bottom: 1px solid #5C4309;
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }
 .anav-logo {
   font-family: 'Dela Gothic One', sans-serif; font-size: 18px;
   letter-spacing: 1px; color: #f8f1de; text-decoration: none;
 }
-.anav-logo em { font-style: normal; color: var(--gold); }
+.anav-logo em { font-style: normal; color: #FFF0C2; }
 .anav-r { display: flex; align-items: center; gap: 7px; }
 .anav-btn {
   font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 1.5px;
