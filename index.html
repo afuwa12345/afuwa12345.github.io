@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://afro-horse.com/">
 <meta property="og:site_name" content="AFRO Horse">
 <meta property="og:title" content="AFRO Horse｜無料の競馬ツールサイト">
-<meta property="og:description" content="6頭のアフロ馬が案内する、完全無料の競馬ツールサイト。買い目の点数計算から馬券メーカーまで。">
+<meta property="og:description" content="5頭のアフロ馬が案内する、完全無料・登録不要の競馬ツール。買い目の点数計算から馬券メーカーまで。">
 <meta property="og:image" content="https://afro-horse.com/images/logo.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@AFUWA12345">
@@ -46,322 +46,176 @@
   --ink-faint:  #8C9183;
   --rule:       #D8D2BE;
   --turf:       #17442E;
-  --turf-2:     #235C3F;
   --gold:       #B2841F;
   --gold-soft:  #F0E4C2;
-
-  /* 枠番カラー */
-  --w1: #FFFFFF;  --w1-ink: #181C17;
-  --w2: #1A1A1A;  --w2-ink: #FFFFFF;
-  --w3: #C8322C;  --w3-ink: #FFFFFF;
-  --w4: #2461A8;  --w4-ink: #FFFFFF;
-  --w5: #E3B21C;  --w5-ink: #181C17;
-  --w6: #2E7D46;  --w6-ink: #FFFFFF;
+  /* キャラクターの色（競馬の枠番カラー） */
+  --c-afuwa:  #FFFFFF;  --c-afuwa-ink:  #181C17;  /* 白 */
+  --c-yancha: #C8322C;  --c-yancha-ink: #FFFFFF;  /* 赤 — アフワの裏 */
+  --c-buruma: #2461A8;  --c-buruma-ink: #FFFFFF;  /* 青 */
+  --c-chafuwa:#E3B21C;  --c-chafuwa-ink:#181C17;  /* 黄 */
+  --c-kuro:   #1A1A1A;  --c-kuro-ink:   #FFFFFF;  /* 黒 */
+  --c-ginma:  #2E7D46;  --c-ginma-ink:  #FFFFFF;  /* 緑 */
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper:     #0E1511;
-    --paper-2:   #141C17;
-    --card:      #18211C;
-    --ink:       #ECE7D6;
-    --ink-soft:  #9CA695;
-    --ink-faint: #6D7669;
-    --rule:      #2A352D;
-    --turf:      #5FB184;
-    --turf-2:    #3F8C62;
-    --gold:      #D9AC46;
-    --gold-soft: #2E2716;
-    --w1: #E8E8E8;  --w1-ink: #181C17;
-    --w2: #0A0A0A;  --w2-ink: #F0F0F0;
-    --w3: #D6453F;  --w3-ink: #FFFFFF;
-    --w4: #3B7BC4;  --w4-ink: #FFFFFF;
-    --w5: #E8BC33;  --w5-ink: #181C17;
-    --w6: #3E9659;  --w6-ink: #FFFFFF;
+    --paper: #0E1511; --paper-2: #141C17; --card: #18211C;
+    --ink: #ECE7D6; --ink-soft: #9CA695; --ink-faint: #6D7669;
+    --rule: #2A352D; --turf: #5FB184; --gold: #D9AC46; --gold-soft: #2E2716;
+    --c-afuwa: #E8E8E8; --c-yancha: #D6453F; --c-buruma: #3B7BC4;
+    --c-chafuwa: #E8BC33; --c-kuro: #0A0A0A; --c-kuro-ink: #F0F0F0;
+    --c-ginma: #3E9659;
   }
 }
 :root[data-theme="dark"] {
-  --paper:     #0E1511;
-  --paper-2:   #141C17;
-  --card:      #18211C;
-  --ink:       #ECE7D6;
-  --ink-soft:  #9CA695;
-  --ink-faint: #6D7669;
-  --rule:      #2A352D;
-  --turf:      #5FB184;
-  --turf-2:    #3F8C62;
-  --gold:      #D9AC46;
-  --gold-soft: #2E2716;
-  --w1: #E8E8E8;  --w1-ink: #181C17;
-  --w2: #0A0A0A;  --w2-ink: #F0F0F0;
-  --w3: #D6453F;  --w3-ink: #FFFFFF;
-  --w4: #3B7BC4;  --w4-ink: #FFFFFF;
-  --w5: #E8BC33;  --w5-ink: #181C17;
-  --w6: #3E9659;  --w6-ink: #FFFFFF;
+  --paper: #0E1511; --paper-2: #141C17; --card: #18211C;
+  --ink: #ECE7D6; --ink-soft: #9CA695; --ink-faint: #6D7669;
+  --rule: #2A352D; --turf: #5FB184; --gold: #D9AC46; --gold-soft: #2E2716;
+  --c-afuwa: #E8E8E8; --c-yancha: #D6453F; --c-buruma: #3B7BC4;
+  --c-chafuwa: #E8BC33; --c-kuro: #0A0A0A; --c-kuro-ink: #F0F0F0;
+  --c-ginma: #3E9659;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-
 body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
+  margin: 0; background: var(--paper); color: var(--ink);
   font-family: 'Zen Kaku Gothic New', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
-  font-size: 15px;
-  line-height: 1.8;
-  -webkit-font-smoothing: antialiased;
+  font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 14px; }
 
-.wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
-
-/* ===== NAV ===== */
-.nav {
-  position: sticky; top: 0; z-index: 50;
-  background: var(--turf);
-  border-bottom: 3px solid var(--gold);
-}
-:root[data-theme="dark"] .nav,
-.nav { }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .nav { background: #0A1410; }
-}
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 50; background: #17442E; border-bottom: 3px solid var(--gold); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .nav { background: #0A1410; } }
 :root[data-theme="dark"] .nav { background: #0A1410; }
-.nav-in {
-  max-width: 1040px; margin: 0 auto; padding: 0 16px;
-  height: 54px; display: flex; align-items: center; justify-content: space-between;
-}
-.nav-logo {
-  font-family: 'Dela Gothic One', sans-serif;
-  font-size: 19px; letter-spacing: 0.02em;
-  color: #F6F1E2; text-decoration: none;
-}
+.nav-in { max-width: 880px; margin: 0 auto; padding: 0 14px; height: 48px;
+  display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'Dela Gothic One', sans-serif; font-size: 17px; color: #F6F1E2; text-decoration: none; }
 .nav-logo em { font-style: normal; color: #E8BC33; }
-.nav-links { display: flex; gap: 18px; }
-.nav-links a {
-  font-family: 'Anton', sans-serif;
-  font-size: 12px; letter-spacing: 0.1em;
-  color: #DCD6C2; text-decoration: none;
-}
+.nav-links { display: flex; gap: 15px; }
+.nav-links a { font-family: 'Anton', sans-serif; font-size: 11.5px; letter-spacing: .1em;
+  color: #DCD6C2; text-decoration: none; }
 .nav-links a:hover { color: #E8BC33; }
-@media (max-width: 560px) { .nav-links { gap: 12px; } .nav-links a { font-size: 11px; } }
 
-/* ===== HERO ===== */
-.hero {
-  background:
-    radial-gradient(ellipse 120% 80% at 50% 0%, var(--paper-2), var(--paper) 70%);
-  padding: 44px 0 34px;
-  border-bottom: 1px solid var(--rule);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.hero::after {
-  content: '';
-  position: absolute; left: 0; right: 0; bottom: 0; height: 5px;
-  background: linear-gradient(90deg,
-    var(--w1) 0 16.66%, var(--w2) 16.66% 33.33%, var(--w3) 33.33% 50%,
-    var(--w4) 50% 66.66%, var(--w5) 66.66% 83.33%, var(--w6) 83.33% 100%);
-}
-.hero-logo { width: 116px; height: auto; margin: 0 auto 12px; display: block; }
-.hero-eye {
-  font-family: 'Anton', sans-serif;
-  font-size: 11px; letter-spacing: 0.3em; color: var(--gold);
-  margin-bottom: 8px;
-}
+/* HERO */
+.hero { padding: 22px 0 0; text-align: center; background: var(--paper-2); }
 .hero h1 {
   font-family: 'Dela Gothic One', sans-serif;
-  font-size: clamp(30px, 8.5vw, 58px);
-  line-height: 1.08; margin: 0 0 14px; color: var(--turf);
-  text-wrap: balance;
+  font-size: clamp(21px, 5.6vw, 34px); line-height: 1.25;
+  margin: 0 0 5px; color: var(--turf); text-wrap: balance;
 }
 .hero h1 em { font-style: normal; color: var(--gold); }
-.hero-sub {
-  font-size: 14.5px; color: var(--ink-soft); max-width: 30ch;
-  margin: 0 auto; text-wrap: balance;
-}
-.hero-cta {
-  display: inline-flex; align-items: center; gap: 8px;
-  margin-top: 20px; padding: 12px 26px;
-  background: var(--turf); color: var(--paper);
-  font-family: 'Dela Gothic One', sans-serif; font-size: 14px;
-  text-decoration: none; border-radius: 2px;
-  border: 2px solid var(--turf);
-  transition: background .18s, color .18s;
-}
-.hero-cta:hover { background: transparent; color: var(--turf); }
-.hero-cta span { font-family: 'Anton', sans-serif; font-size: 11px; letter-spacing: .12em; opacity: .75; }
+.hero-sub { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 12px; }
 
-/* ===== SECTION ===== */
-section { padding: 52px 0; }
-.sec-head { text-align: center; margin-bottom: 26px; }
-.sec-en {
-  font-family: 'Anton', sans-serif;
-  font-size: 12px; letter-spacing: 0.26em; color: var(--gold);
-  display: flex; align-items: center; justify-content: center; gap: 14px;
+/* ゲート：5頭（アフワ枠は表裏ふたつの顔） */
+.gate { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; align-items: end; }
+.gate-cell { min-width: 0; }
+.gate-imgs { display: flex; align-items: flex-end; justify-content: center; }
+.gate-imgs img { width: 100%; height: auto; display: block; min-width: 0; }
+/* アフワ：タップで表裏が入れ替わる */
+.flip {
+  appearance: none; background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: inherit; cursor: pointer; text-align: inherit;
+  display: block; width: 100%; position: relative;
 }
-.sec-en::before, .sec-en::after {
-  content: ''; height: 1px; width: 38px; background: var(--rule);
+.flip-stack { position: relative; }
+.flip-stack img { transition: opacity .28s ease; }
+.flip-stack .face-b { position: absolute; inset: 0; opacity: 0; }
+.flip.on .flip-stack .face-a { opacity: 0; }
+.flip.on .flip-stack .face-b { opacity: 1; }
+.gb-flip { background: var(--c-afuwa); transition: background .28s ease; }
+.flip.on .gb-flip { background: var(--c-yancha); }
+.flip-hint {
+  position: absolute; top: 2px; right: 2px; z-index: 3;
+  background: var(--c-yancha); color: var(--c-yancha-ink);
+  font-size: 8.5px; font-weight: 700; line-height: 1;
+  padding: 3px 5px; border-radius: 100px; letter-spacing: .04em;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  transition: opacity .2s;
 }
-.sec-ja {
-  font-family: 'Dela Gothic One', sans-serif;
-  font-size: 23px; color: var(--ink); margin-top: 5px;
-}
-.sec-note { font-size: 13px; color: var(--ink-soft); margin-top: 6px; }
-
-/* ===== 出走表 ===== */
-.lineup { display: grid; gap: 12px; }
-@media (min-width: 720px) { .lineup { grid-template-columns: 1fr 1fr; } }
-
-.horse {
-  display: grid;
-  grid-template-columns: 34px 92px 1fr;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: 3px;
-  overflow: hidden;
-  transition: transform .18s, box-shadow .18s;
-}
-.horse:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(23,68,46,.13); }
-
-.waku {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 3px;
-  border-right: 1px solid var(--rule);
-}
-.waku-no { font-family: 'Anton', sans-serif; font-size: 21px; line-height: 1; }
-.waku-lb { font-size: 8.5px; letter-spacing: .08em; opacity: .8; font-weight: 700; }
-.w-1 { background: var(--w1); color: var(--w1-ink); }
-.w-2 { background: var(--w2); color: var(--w2-ink); }
-.w-3 { background: var(--w3); color: var(--w3-ink); }
-.w-4 { background: var(--w4); color: var(--w4-ink); }
-.w-5 { background: var(--w5); color: var(--w5-ink); }
-.w-6 { background: var(--w6); color: var(--w6-ink); }
-
-.horse-img {
-  display: flex; align-items: flex-end; justify-content: center;
-  background: var(--paper-2);
-  padding: 6px 4px 0;
-}
-.horse-img img { width: 100%; height: auto; display: block; }
-
-.horse-body { padding: 12px 14px 13px; min-width: 0; }
-.horse-name {
-  font-family: 'Dela Gothic One', sans-serif;
-  font-size: 17px; line-height: 1.3; color: var(--ink);
-}
-.horse-en {
-  font-family: 'Anton', sans-serif;
-  font-size: 10px; letter-spacing: .16em; color: var(--ink-faint);
-  margin-bottom: 7px;
-}
-.horse-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 7px; }
-.tag {
-  font-size: 10.5px; font-weight: 700;
-  border: 1px solid var(--rule); border-radius: 2px;
-  padding: 1px 6px; color: var(--ink-soft);
-}
-.tag-role { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); }
-.horse-desc { font-size: 12.5px; line-height: 1.65; color: var(--ink-soft); }
-
-/* ===== TOOLS ===== */
-.tools { display: grid; gap: 12px; }
-@media (min-width: 640px) { .tools { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 900px) { .tools { grid-template-columns: repeat(3, 1fr); } }
-
-.tool {
-  display: block; text-decoration: none; color: inherit;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-top: 4px solid var(--tcol, var(--turf));
-  border-radius: 3px;
-  padding: 16px 16px 15px;
-  position: relative;
-  transition: transform .18s, box-shadow .18s;
-}
-.tool:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(23,68,46,.14); }
-.tool-top { display: flex; align-items: center; gap: 11px; margin-bottom: 9px; }
-.tool-face {
-  width: 46px; height: 46px; flex-shrink: 0;
-  border-radius: 50%; overflow: hidden;
-  background: var(--paper-2);
-  border: 2px solid var(--tcol, var(--turf));
-  display: flex; align-items: flex-start; justify-content: center;
-}
-.tool-face img { width: 165%; max-width: none; margin-top: -4px; }
-.tool-by {
-  font-size: 10.5px; color: var(--ink-faint); line-height: 1.4;
-}
-.tool-by b { display: block; font-size: 12px; color: var(--ink); }
-.tool-name {
-  font-family: 'Dela Gothic One', sans-serif;
-  font-size: 16px; line-height: 1.35; margin-bottom: 5px;
-}
-.tool-desc { font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; }
-.tool-go {
-  font-family: 'Anton', sans-serif; font-size: 10.5px; letter-spacing: .14em;
-  color: var(--tcol, var(--turf)); margin-top: 10px; display: block;
+.flip.on .flip-hint { opacity: 0; }
+.flip:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 3px; }
+.gate-bar { height: 7px; }
+.gb-buruma  { background: var(--c-buruma); }
+.gb-chafuwa { background: var(--c-chafuwa); }
+.gb-kuro    { background: var(--c-kuro); }
+.gb-ginma   { background: var(--c-ginma); }
+.gate-name {
+  font-size: 9px; color: var(--ink-faint); text-align: center;
+  padding-top: 3px; letter-spacing: .02em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-/* ===== PLAY ===== */
-.play { display: grid; gap: 12px; }
-@media (min-width: 640px) { .play { grid-template-columns: 1fr 1fr; } }
-.play-card {
-  display: flex; align-items: center; gap: 14px;
-  text-decoration: none; color: inherit;
-  background: var(--turf);
-  border-radius: 3px; padding: 16px 18px;
-  transition: transform .18s;
-}
-.play-card:hover { transform: translateY(-3px); }
-.play-card .pc-img {
-  width: 60px; height: 60px; flex-shrink: 0; border-radius: 50%;
-  background: rgba(255,255,255,.1); overflow: hidden;
-  display: flex; align-items: flex-start; justify-content: center;
-}
-.play-card .pc-img img { width: 165%; max-width: none; margin-top: -5px; }
-.pc-en { font-family: 'Anton', sans-serif; font-size: 10px; letter-spacing: .2em; color: #E8BC33; }
-.pc-name { font-family: 'Dela Gothic One', sans-serif; font-size: 16px; color: #F6F1E2; line-height: 1.35; }
-.pc-desc { font-size: 12px; color: rgba(246,241,226,.72); line-height: 1.55; }
+/* SECTION */
+section { padding: 24px 0 4px; }
+.sec-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 9px; }
+.sec-ja { font-family: 'Dela Gothic One', sans-serif; font-size: 17px; }
+.sec-en { font-family: 'Anton', sans-serif; font-size: 10.5px; letter-spacing: .2em; color: var(--gold); }
+.sec-more { margin-left: auto; font-size: 11.5px; color: var(--ink-soft); text-decoration: none; white-space: nowrap; }
+.sec-more:hover { color: var(--gold); }
 
-/* ===== MORE ===== */
-.more { display: grid; gap: 10px; }
-@media (min-width: 640px) { .more { grid-template-columns: repeat(3, 1fr); } }
-.more-card {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--card); border: 1px solid var(--rule); border-radius: 3px;
-  padding: 14px 16px; text-decoration: none; color: inherit;
-  transition: border-color .18s, transform .18s;
+/* 一覧：1行にキャラ＋担当ツール */
+.card { background: var(--card); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.row {
+  display: grid; grid-template-columns: 8px 46px 1fr 16px;
+  align-items: center; gap: 0 10px;
+  padding: 0 10px 0 0; text-decoration: none; color: inherit;
+  border-bottom: 1px solid var(--rule);
+  transition: background .15s;
 }
-.more-card:hover { border-color: var(--gold); transform: translateY(-2px); }
-.more-ico { font-size: 22px; }
-.more-en { font-family: 'Anton', sans-serif; font-size: 10px; letter-spacing: .18em; color: var(--gold); }
-.more-ja { font-size: 13.5px; font-weight: 700; }
+.row:last-child { border-bottom: 0; }
+.row:hover { background: var(--paper-2); }
+.row-col { align-self: stretch; background: var(--rc, var(--turf)); }
+.row-face { width: 46px; height: 52px; overflow: hidden;
+  display: flex; align-items: flex-start; justify-content: center; }
+.row-face img { width: 145%; max-width: none; margin-top: -2px; }
+.row-body { min-width: 0; padding: 8px 0; }
+.row-chara {
+  font-size: 11px; color: var(--ink-faint); line-height: 1.4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.row-chara b { color: var(--ink-soft); font-size: 11.5px; }
+.ura {
+  display: inline-block; background: var(--c-yancha); color: var(--c-yancha-ink);
+  font-size: 9px; font-weight: 700; border-radius: 2px;
+  padding: 0 4px; margin-left: 3px; vertical-align: 1px;
+}
+.row-tool {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 14.5px; line-height: 1.4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.row-arrow { font-family: 'Anton', sans-serif; color: var(--ink-faint); font-size: 14px; }
 
-/* ===== FOOTER ===== */
-footer {
-  background: var(--turf); color: #DCD6C2;
-  padding: 34px 0 26px; margin-top: 20px;
-  border-top: 4px solid var(--gold);
+@media (min-width: 640px) {
+  .card.split { display: grid; grid-template-columns: 1fr 1fr; }
+  .card.split .row:nth-child(odd) { border-right: 1px solid var(--rule); }
+  .card.split .row:nth-last-child(2) { border-bottom: 0; }
+  .row-tool { font-size: 15.5px; }
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) footer { background: #0A1410; }
+
+/* chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--card); border: 1px solid var(--rule); border-radius: 100px;
+  padding: 7px 14px 7px 11px; text-decoration: none; color: var(--ink); font-size: 13px;
+  transition: border-color .15s;
 }
+.chip:hover { border-color: var(--gold); }
+
+footer { background: #17442E; color: #DCD6C2; padding: 24px 0 20px; margin-top: 26px; border-top: 4px solid var(--gold); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) footer { background: #0A1410; } }
 :root[data-theme="dark"] footer { background: #0A1410; }
-.f-logo { font-family: 'Dela Gothic One', sans-serif; font-size: 20px; color: #F6F1E2; }
+.f-logo { font-family: 'Dela Gothic One', sans-serif; font-size: 17px; color: #F6F1E2; }
 .f-logo em { font-style: normal; color: #E8BC33; }
-.f-tag { font-family: 'Anton', sans-serif; font-size: 10px; letter-spacing: .28em; color: #E8BC33; margin-bottom: 14px; }
-.f-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 16px; }
-.f-links a { color: #DCD6C2; text-decoration: none; font-size: 12.5px; }
+.f-links { display: flex; flex-wrap: wrap; gap: 6px 15px; margin: 10px 0 12px; }
+.f-links a { color: #DCD6C2; text-decoration: none; font-size: 12px; }
 .f-links a:hover { color: #E8BC33; text-decoration: underline; }
-.f-copy { font-size: 11px; color: rgba(220,214,194,.6); }
+.f-copy { font-size: 10.5px; color: rgba(220,214,194,.6); line-height: 1.6; }
 
-a:focus-visible, .tool:focus-visible, .horse:focus-visible {
-  outline: 3px solid var(--gold); outline-offset: 2px;
-}
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; scroll-behavior: auto !important; }
-}
+a:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
 <body>
@@ -370,186 +224,119 @@ a:focus-visible, .tool:focus-visible, .horse:focus-visible {
   <div class="nav-in">
     <a href="#" class="nav-logo">AFRO<em>Horse</em></a>
     <div class="nav-links">
-      <a href="#lineup">CHARA</a>
-      <a href="#tools">TOOLS</a>
+      <a href="#lineup">TOOLS</a>
+      <a href="afrohorse_characters.html">CHARA</a>
       <a href="#play">PLAY</a>
-      <a href="#more">MORE</a>
     </div>
   </div>
 </nav>
 
 <header class="hero">
   <div class="wrap">
-    <img class="hero-logo" src="images/logo.png" alt="AFRO Horse">
-    <div class="hero-eye">EST. 2025 ・ 完全無料</div>
-    <h1>6頭の<em>アフロ馬</em>が<br>競馬を面白くする</h1>
-    <p class="hero-sub">買い目の計算から馬券メーカーまで。個性派6頭がそれぞれの道具を持って待っています。</p>
-    <a class="hero-cta" href="#lineup">出走表を見る <span>LINEUP</span></a>
+    <h1>5頭の<em>アフロ馬</em>が<br>競馬を面白くする</h1>
+    <p class="hero-sub">完全無料・登録不要の競馬ツール</p>
+  </div>
+  <div class="gate">
+    <button type="button" class="gate-cell flip" id="flip" aria-pressed="false" aria-label="アフワの裏の姿に切り替える">
+      <span class="flip-hint">裏</span>
+      <div class="gate-imgs flip-stack">
+        <img class="face-a" src="images/afuwa.png" alt="アフワ">
+        <img class="face-b" src="images/yanchaahuwa.png" alt="やんちゃアフワ">
+      </div>
+      <div class="gate-bar gb-flip"></div>
+      <div class="gate-name" id="flipName">アフワ</div>
+    </button>
+    <div class="gate-cell">
+      <div class="gate-imgs"><img src="images/buruma.png" alt="ブルマ"></div>
+      <div class="gate-bar gb-buruma"></div>
+      <div class="gate-name">ブルマ</div>
+    </div>
+    <div class="gate-cell">
+      <div class="gate-imgs"><img src="images/chahuwa.png" alt="チャフワ"></div>
+      <div class="gate-bar gb-chafuwa"></div>
+      <div class="gate-name">チャフワ</div>
+    </div>
+    <div class="gate-cell">
+      <div class="gate-imgs"><img src="images/kurohuwa.png" alt="クロフワ"></div>
+      <div class="gate-bar gb-kuro"></div>
+      <div class="gate-name">クロフワ</div>
+    </div>
+    <div class="gate-cell">
+      <div class="gate-imgs"><img src="images/ginma.png" alt="ギンマ"></div>
+      <div class="gate-bar gb-ginma"></div>
+      <div class="gate-name">ギンマ</div>
+    </div>
   </div>
 </header>
 
 <section id="lineup">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-en">TODAY'S LINEUP</div>
-      <div class="sec-ja">出走表</div>
-      <div class="sec-note">枠番はそのままキャラクターの色。全6頭、それぞれに担当の道具があります。</div>
-    </div>
-
-    <div class="lineup">
-
-      <a class="horse" href="afrohorse_characters.html">
-        <div class="waku w-1"><div class="waku-no">1</div><div class="waku-lb">枠</div></div>
-        <div class="horse-img"><img src="images/afuwa.png" alt="アフワ"></div>
-        <div class="horse-body">
-          <div class="horse-name">アフワ</div>
-          <div class="horse-en">AFUWA</div>
-          <div class="horse-tags">
-            <span class="tag tag-role">主人公</span><span class="tag">♂</span><span class="tag">昼寝と競馬</span>
-          </div>
-          <p class="horse-desc">ちょいビビりで優しい。でも競馬への情熱は誰にも負けない。心の奥にやんちゃな一面を秘めている。</p>
-        </div>
-      </a>
-
-      <a class="horse" href="afrohorse_characters.html">
-        <div class="waku w-2"><div class="waku-no">2</div><div class="waku-lb">枠</div></div>
-        <div class="horse-img"><img src="images/kurohuwa.png" alt="クロフワ"></div>
-        <div class="horse-body">
-          <div class="horse-name">クロフワ</div>
-          <div class="horse-en">KUROFUWA</div>
-          <div class="horse-tags">
-            <span class="tag tag-role">FIGHTER</span><span class="tag">♂</span><span class="tag">筋トレ</span>
-          </div>
-          <p class="horse-desc">クールで負けず嫌い。強い血統を探すことにかけては、右に出る者がいない。</p>
-        </div>
-      </a>
-
-      <a class="horse" href="afrohorse_characters.html">
-        <div class="waku w-3"><div class="waku-no">3</div><div class="waku-lb">枠</div></div>
-        <div class="horse-img"><img src="images/yanchaahuwa.png" alt="やんちゃアフワ"></div>
-        <div class="horse-body">
-          <div class="horse-name">やんちゃアフワ</div>
-          <div class="horse-en">YANCHA AFUWA</div>
-          <div class="horse-tags">
-            <span class="tag tag-role">裏の顔</span><span class="tag">反骨精神MAX</span><span class="tag">刺激と自由</span>
-          </div>
-          <p class="horse-desc">アフワが限界を超えたとき現れる、もう一人の自分。ワルな見た目とは裏腹に、いつも本音を体現している。</p>
-        </div>
-      </a>
-
-      <a class="horse" href="afrohorse_characters.html">
-        <div class="waku w-4"><div class="waku-no">4</div><div class="waku-lb">枠</div></div>
-        <div class="horse-img"><img src="images/buruma.png" alt="ブルマ"></div>
-        <div class="horse-body">
-          <div class="horse-name">ブルマ</div>
-          <div class="horse-en">BURUMA</div>
-          <div class="horse-tags">
-            <span class="tag tag-role">POSITIVE</span><span class="tag">♀</span><span class="tag">おしゃれと友情</span>
-          </div>
-          <p class="horse-desc">元気ポジティブ担当。仲間との約束を何より大事にする、チームのムードメーカー。</p>
-        </div>
-      </a>
-
-      <a class="horse" href="afrohorse_characters.html">
-        <div class="waku w-5"><div class="waku-no">5</div><div class="waku-lb">枠</div></div>
-        <div class="horse-img"><img src="images/chahuwa.png" alt="チャフワ"></div>
-        <div class="horse-body">
-          <div class="horse-name">チャフワ</div>
-          <div class="horse-en">CHAFUWA</div>
-          <div class="horse-tags">
-            <span class="tag tag-role">HAPPY</span><span class="tag">♂</span><span class="tag">みんなで遊ぶこと</span>
-          </div>
-          <p class="horse-desc">天真爛漫でいつも楽しそう。遊びを見つける天才で、気づけばみんなを巻き込んでいる。</p>
-        </div>
-      </a>
-
-      <a class="horse" href="afrohorse_characters.html">
-        <div class="waku w-6"><div class="waku-no">6</div><div class="waku-lb">枠</div></div>
-        <div class="horse-img"><img src="images/ginma.png" alt="ギンマ"></div>
-        <div class="horse-body">
-          <div class="horse-name">ギンマ</div>
-          <div class="horse-en">GINMA</div>
-          <div class="horse-tags">
-            <span class="tag tag-role">SLY</span><span class="tag">？</span><span class="tag">ひらめきと観察</span>
-          </div>
-          <p class="horse-desc">ニヤリ系の策士。数字とひらめきで勝負する、このチームの頭脳担当。</p>
-        </div>
-      </a>
-
-    </div>
-  </div>
-</section>
-
-<section id="tools" style="background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="sec-en">TOOLS</div>
       <div class="sec-ja">それぞれの道具</div>
-      <div class="sec-note">全部無料。登録もいりません。ブラウザですぐ使えます。</div>
+      <div class="sec-en">TOOLS</div>
+      <a class="sec-more" href="afrohorse_characters.html">キャラ紹介 →</a>
     </div>
 
-    <div class="tools">
-
-      <a class="tool" href="tool/honmei_announcer.html" style="--tcol: var(--w1-ink);">
-        <div class="tool-top">
-          <div class="tool-face"><img src="images/afuwa.png" alt=""></div>
-          <div class="tool-by">1枠<b>アフワ</b>の道具</div>
+    <div class="card split">
+      <a class="row" href="tool/honmei_announcer.html" style="--rc: var(--c-afuwa);">
+        <div class="row-col"></div>
+        <div class="row-face"><img src="images/afuwa.png" alt=""></div>
+        <div class="row-body">
+          <div class="row-chara"><b>アフワ</b>・主人公</div>
+          <div class="row-tool">本命発表ツール</div>
         </div>
-        <div class="tool-name">本命発表ツール</div>
-        <p class="tool-desc">今週の本命をキャラが発表。SNSにそのまま貼れる画像が作れます。</p>
-        <span class="tool-go">USE →</span>
+        <div class="row-arrow">›</div>
       </a>
 
-      <a class="tool" href="tool/sire.html" style="--tcol: var(--w2);">
-        <div class="tool-top">
-          <div class="tool-face"><img src="images/kurohuwa.png" alt=""></div>
-          <div class="tool-by">2枠<b>クロフワ</b>の道具</div>
+      <a class="row" href="tool/baken_sim.html" style="--rc: var(--c-yancha);">
+        <div class="row-col"></div>
+        <div class="row-face"><img src="images/yanchaahuwa.png" alt=""></div>
+        <div class="row-body">
+          <div class="row-chara"><b>アフワ</b><span class="ura">裏</span> やんちゃアフワ</div>
+          <div class="row-tool">馬券メーカー</div>
         </div>
-        <div class="tool-name">種牡馬ランキング</div>
-        <p class="tool-desc">コース・距離・馬場状態ごとに、どの種牡馬が強いかを一覧で。</p>
-        <span class="tool-go">USE →</span>
+        <div class="row-arrow">›</div>
       </a>
 
-      <a class="tool" href="tool/baken_sim.html" style="--tcol: var(--w3);">
-        <div class="tool-top">
-          <div class="tool-face"><img src="images/yanchaahuwa.png" alt=""></div>
-          <div class="tool-by">3枠<b>やんちゃアフワ</b>の道具</div>
+      <a class="row" href="tool/yoso-cert.html" style="--rc: var(--c-buruma);">
+        <div class="row-col"></div>
+        <div class="row-face"><img src="images/buruma.png" alt=""></div>
+        <div class="row-body">
+          <div class="row-chara"><b>ブルマ</b>・ポジティブ</div>
+          <div class="row-tool">予想証明システム</div>
         </div>
-        <div class="tool-name">馬券メーカー</div>
-        <p class="tool-desc">本物そっくりの馬券画像を生成。夢の万馬券も作り放題です。</p>
-        <span class="tool-go">USE →</span>
+        <div class="row-arrow">›</div>
       </a>
 
-      <a class="tool" href="tool/yoso-cert.html" style="--tcol: var(--w4);">
-        <div class="tool-top">
-          <div class="tool-face"><img src="images/buruma.png" alt=""></div>
-          <div class="tool-by">4枠<b>ブルマ</b>の道具</div>
+      <a class="row" href="afuwa_quiz.html" style="--rc: var(--c-chafuwa);">
+        <div class="row-col"></div>
+        <div class="row-face"><img src="images/chahuwa.png" alt=""></div>
+        <div class="row-body">
+          <div class="row-chara"><b>チャフワ</b>・天真爛漫</div>
+          <div class="row-tool">アフワの馬Quiz</div>
         </div>
-        <div class="tool-name">予想証明システム</div>
-        <p class="tool-desc">レース前に予想を登録して証明書を発行。的中を後から証明できます。</p>
-        <span class="tool-go">USE →</span>
+        <div class="row-arrow">›</div>
       </a>
 
-      <a class="tool" href="tool/calc.html" style="--tcol: var(--w6);">
-        <div class="tool-top">
-          <div class="tool-face"><img src="images/ginma.png" alt=""></div>
-          <div class="tool-by">6枠<b>ギンマ</b>の道具</div>
+      <a class="row" href="tool/sire.html" style="--rc: var(--c-kuro);">
+        <div class="row-col"></div>
+        <div class="row-face"><img src="images/kurohuwa.png" alt=""></div>
+        <div class="row-body">
+          <div class="row-chara"><b>クロフワ</b>・負けず嫌い</div>
+          <div class="row-tool">種牡馬ランキング</div>
         </div>
-        <div class="tool-name">買い目点数ツール</div>
-        <p class="tool-desc">三連単も三連複もワイドも、点数と金額を一瞬で計算します。</p>
-        <span class="tool-go">USE →</span>
+        <div class="row-arrow">›</div>
       </a>
 
-      <a class="tool" href="tools.html" style="--tcol: var(--gold);">
-        <div class="tool-top">
-          <div class="tool-face" style="background: var(--gold-soft); align-items: center; font-size: 22px;">🏇</div>
-          <div class="tool-by">ぜんぶ見る<b>TOOL LIST</b></div>
+      <a class="row" href="tool/calc.html" style="--rc: var(--c-ginma);">
+        <div class="row-col"></div>
+        <div class="row-face"><img src="images/ginma.png" alt=""></div>
+        <div class="row-body">
+          <div class="row-chara"><b>ギンマ</b>・策士</div>
+          <div class="row-tool">買い目点数ツール</div>
         </div>
-        <div class="tool-name">ツール一覧</div>
-        <p class="tool-desc">使い方の説明つき。どれから触ればいいか迷ったらこちらへ。</p>
-        <span class="tool-go">VIEW →</span>
+        <div class="row-arrow">›</div>
       </a>
-
     </div>
   </div>
 </section>
@@ -557,49 +344,34 @@ a:focus-visible, .tool:focus-visible, .horse:focus-visible {
 <section id="play">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-en">PLAY</div>
       <div class="sec-ja">あそぶ</div>
+      <div class="sec-en">PLAY</div>
+      <a class="sec-more" href="tools.html">ツール一覧 →</a>
     </div>
-    <div class="play">
-      <a class="play-card" href="afuwa_quiz.html">
-        <div class="pc-img"><img src="images/chahuwa.png" alt=""></div>
-        <div>
-          <div class="pc-en">QUIZ</div>
-          <div class="pc-name">アフワの馬Quiz</div>
-          <div class="pc-desc">1995年以降のGI勝ち馬439頭。何頭わかる？</div>
+    <div class="card">
+      <a class="row" href="radio.html" style="--rc: var(--gold);">
+        <div class="row-col"></div>
+        <div class="row-face"><img src="images/afuwa.png" alt=""></div>
+        <div class="row-body">
+          <div class="row-chara"><b>DJアフワ</b>・24時間ノンストップ</div>
+          <div class="row-tool">アフロホースラジオ</div>
         </div>
-      </a>
-      <a class="play-card" href="radio.html">
-        <div class="pc-img"><img src="images/afuwa.png" alt=""></div>
-        <div>
-          <div class="pc-en">RADIO 24H</div>
-          <div class="pc-name">アフロホースラジオ</div>
-          <div class="pc-desc">DJアフワがお届け。24時間ノンストップ。</div>
-        </div>
+        <div class="row-arrow">›</div>
       </a>
     </div>
   </div>
 </section>
 
-<section id="more" style="padding-top: 0;">
+<section id="more">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-en">MORE</div>
       <div class="sec-ja">その他</div>
+      <div class="sec-en">MORE</div>
     </div>
-    <div class="more">
-      <a class="more-card" href="https://store.line.me/stickershop/author/5824338/ja" target="_blank" rel="noopener">
-        <span class="more-ico">💬</span>
-        <span><span class="more-en">LINE STAMP</span><br><span class="more-ja">LINEスタンプ</span></span>
-      </a>
-      <a class="more-card" href="https://suzuri.jp/AFUWA" target="_blank" rel="noopener">
-        <span class="more-ico">🛒</span>
-        <span><span class="more-en">GOODS</span><br><span class="more-ja">グッズ</span></span>
-      </a>
-      <a class="more-card" href="https://x.com/AFUWA12345" target="_blank" rel="noopener">
-        <span class="more-ico">📱</span>
-        <span><span class="more-en">FOLLOW</span><br><span class="more-ja">X（旧Twitter）</span></span>
-      </a>
+    <div class="chips">
+      <a class="chip" href="https://store.line.me/stickershop/author/5824338/ja" target="_blank" rel="noopener">💬 LINEスタンプ</a>
+      <a class="chip" href="https://suzuri.jp/AFUWA" target="_blank" rel="noopener">🛒 グッズ</a>
+      <a class="chip" href="https://x.com/AFUWA12345" target="_blank" rel="noopener">📱 X</a>
     </div>
   </div>
 </section>
@@ -607,7 +379,6 @@ a:focus-visible, .tool:focus-visible, .horse:focus-visible {
 <footer>
   <div class="wrap">
     <div class="f-logo">AFRO<em>Horse</em></div>
-    <div class="f-tag">WIN WITH STYLE</div>
     <div class="f-links">
       <a href="afrohorse_characters.html">キャラクター</a>
       <a href="tools.html">ツール</a>
@@ -615,13 +386,26 @@ a:focus-visible, .tool:focus-visible, .horse:focus-visible {
       <a href="radio.html">ラジオ</a>
       <a href="about.html">運営者情報</a>
       <a href="contact.html">お問い合わせ</a>
-      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="privacy.html">プライバシー</a>
       <a href="terms.html">利用規約</a>
       <a href="disclaimer.html">免責事項</a>
     </div>
-    <div class="f-copy">© 2026 AFRO Horse. All rights reserved.　※当サイトはエンタメ目的です。馬券の購入は自己責任でお願いします。</div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
   </div>
 </footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('flip');
+  var name = document.getElementById('flipName');
+  if (!btn || !name) return;
+  btn.addEventListener('click', function () {
+    var on = btn.classList.toggle('on');
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    name.textContent = on ? 'やんちゃアフワ' : 'アフワ';
+  });
+})();
+</script>
 
 </body>
 </html>
