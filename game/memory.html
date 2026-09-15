@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>アフロ記憶｜AFRO Horse</title>
-<meta name="description" content="光った順にアフロ馬をタップするだけの記憶ゲーム。何段階まで覚えられる？登録不要で遊べる無料ミニゲームです。">
+<meta name="description" content="光った順にアフロ馬をタップするだけの記憶ゲーム。何段階まで覚えられる？登録不要で遊べる無料ゲームです。">
 <link rel="canonical" href="https://afro-horse.com/game/memory.html">
 <link rel="icon" href="../favicon.ico">
 <meta name="theme-color" content="#08060a">
@@ -67,6 +67,24 @@
   }
   .m-seq.count b { color: var(--white); text-shadow: none; }
 
+  /* 持ち時間。5秒さわらないとタイムオーバー */
+  .m-clock {
+    max-width: 220px; height: 4px; margin: 0 auto 11px;
+    background: var(--grey2); border-radius: 2px; overflow: hidden;
+    opacity: 0; transition: opacity .15s;
+  }
+  .m-clock.on { opacity: 1; }
+  .m-clock i {
+    display: block; height: 100%; width: 100%;
+    background: var(--green); transform-origin: left center;
+  }
+  .m-clock.run i { animation: mClock 5s linear forwards; }
+  @keyframes mClock {
+    0%   { transform: scaleX(1); background: var(--green); }
+    60%  { background: var(--gold); }
+    100% { transform: scaleX(0); background: var(--red); }
+  }
+
   .m-pad { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
   .m-key {
     width: 96px; padding: 7px 5px 6px; cursor: pointer;
@@ -120,6 +138,7 @@
     <li>アフロ馬が順番に光ります</li>
     <li>「どうぞ」が出たら同じ順にタップ</li>
     <li>正解すると1つ増えます</li>
+    <li>5秒さわらないとタイムオーバー</li>
     <li>間違えたら終わり。クリアした段数が記録</li>
   </ul>
 </section>
@@ -137,6 +156,7 @@
     <div class="astage" id="stage">
       <div class="m-state" id="state">おぼえて</div>
       <div class="m-seq" id="seq"></div>
+      <div class="m-clock" id="clock"><i></i></div>
       <div class="m-pad" id="pad">
         <button class="m-key" type="button"><img src="../images/face/afuwa.webp" alt="アフワ"><span>アフワ</span></button>
         <button class="m-key" type="button"><img src="../images/face/buruma.webp" alt="ブルマ"><span>ブルマ</span></button>
@@ -166,8 +186,12 @@
   var lvEl    = document.getElementById('hLv');
   var clEl    = document.getElementById('hClear');
   var bestEl  = document.getElementById('hBest');
+  var clockEl = document.getElementById('clock');
+
+  var LIMIT_MS = 5000;     /* これだけさわらないとタイムオーバー */
 
   var seq = [], input = 0, level = 1, playing = false, showing = false, dead = false;
+  var clock = null;
 
   function screen(id) {
     var all = document.querySelectorAll('.ascreen');
@@ -192,6 +216,35 @@
   });
 
   bestEl.textContent = document.getElementById('gBest').textContent;
+
+  /* 持ち時間を数えはじめる（押すたびに呼んで振り出しに戻す） */
+  function startClock() {
+    stopClock();
+    clockEl.classList.add('on');
+    clockEl.classList.remove('run');
+    void clockEl.offsetWidth;            /* アニメーションを頭から流し直す */
+    clockEl.classList.add('run');
+    clock = setTimeout(timeOver, LIMIT_MS);
+  }
+
+  function stopClock() {
+    clearTimeout(clock);
+    clock = null;
+    clockEl.classList.remove('on', 'run');
+  }
+
+  function timeOver() {
+    if (!playing || showing || dead) return;
+    var cleared = seq.length - 1;
+    playing = false; dead = true;
+    stopClock();
+    say('タイムオーバー', 'ng');
+    Sfx.bad();
+    setTimeout(function () {
+      AfroScore.finish(cleared);
+      bestEl.textContent = document.getElementById('gBest').textContent;
+    }, 800);
+  }
 
   function say(txt, cls) {
     stateEl.textContent = txt;
@@ -238,6 +291,7 @@
 
   function show() {
     showing = true;
+    stopClock();
     say('おぼえて', 'watch');
     var i = 0, on = onMs(), gap = gapMs();
     paintSeq(-1);
@@ -247,6 +301,7 @@
           showing = false;
           say('どうぞ', 'go');
           paintSeq(-1);
+          startClock();
         }, 280);
         return;
       }
@@ -267,6 +322,7 @@
   function fail(i) {
     var cleared = seq.length - 1;
     playing = false; dead = true;
+    stopClock();
     keys[i].classList.add('bad');
     say('ちがう！', 'ng');
     Sfx.bad();
@@ -285,10 +341,12 @@
 
     input++;
     paintSeq(input - 1);
+    startClock();                        /* 1つ押すごとに持ち時間は振り出しへ */
 
     if (input >= seq.length) {
       clEl.textContent = seq.length;
       input = 0;
+      stopClock();
       say('せいかい！', 'ok');
       Sfx.up();
       setTimeout(nextLevel, 650);
@@ -297,6 +355,7 @@
 
   function go() {
     screen('scPlay');
+    stopClock();
     seq = []; input = 0; level = 0;
     playing = true; showing = false; dead = false;
     clEl.textContent = '0';
