@@ -661,6 +661,23 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 .phead-sub { position: relative; z-index: 1; margin: 0; font-size: 12.5px; color: rgba(247,242,227,.86); }
 
 /* 見出し帯に置くキャラクター（高さ基準にして切れないようにする） */
+/* 自分でタイトルの絵を持っているページ用の細い帯。
+   大きな見出し帯を重ねると、タイトルが二重になって見える */
+.phead.slim {
+  display: flex; align-items: center; gap: 10px;
+  text-align: left; padding: 11px 16px;
+  border-bottom-width: 3px;
+}
+.phead.slim::after { display: none; }
+.phead.slim .phead-en {
+  font-size: 9.5px; letter-spacing: .22em; padding: 0;
+  border-right: 1px solid rgba(232,196,104,.4); padding-right: 10px;
+}
+.phead.slim .phead-ja {
+  font-size: 16px; margin: 0; text-shadow: none;
+}
+.phead.slim .phead-sub { display: none; }
+
 .phead.has-chara {
   padding-right: 40%; text-align: left;
   min-height: 152px; justify-content: center;
