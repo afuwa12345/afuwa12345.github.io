@@ -56,6 +56,17 @@ body.theme-world {
   --rule:      #E2D4A9;
   --rule-soft: #EFE4C6;
 }
+body.theme-game {
+  --turf:      #5A3A86;
+  --turf-2:    #74499F;
+  --turf-dk:   #422A63;
+  --gold:      #6B4197;
+  --gold-lt:   #E9C9F5;
+  --paper:     #F6F2FA;
+  --paper-2:   #EBE2F3;
+  --rule:      #D9CBE6;
+  --rule-soft: #EBE3F2;
+}
 body.theme-sns {
   --turf:      #1D4E82;
   --turf-2:    #2A6BAE;
@@ -95,8 +106,20 @@ body {
 .nav-logo em { font-style: normal; color: var(--gold-lt); }
 .nav-links { display: flex; gap: 17px; }
 .nav-links a { font-family: 'Anton', sans-serif; font-size: 11.5px; letter-spacing: .14em;
-  color: rgba(247,242,227,.82); text-decoration: none; transition: color .16s; }
+  color: rgba(247,242,227,.82); text-decoration: none; transition: color .16s; white-space: nowrap; }
 .nav-links a:hover { color: var(--gold-lt); }
+/* 軸が5つになったので狭い画面では詰める */
+@media (max-width: 480px) {
+  .nav-in { padding: 0 12px; gap: 8px; }
+  .nav-logo { font-size: 15px; }
+  .nav-links { gap: 10px; }
+  .nav-links a { font-size: 10px; letter-spacing: .08em; }
+}
+@media (max-width: 360px) {
+  .nav-logo { font-size: 13.5px; }
+  .nav-links { gap: 8px; }
+  .nav-links a { font-size: 9.5px; letter-spacing: .04em; }
+}
 
 /* ===== HERO ===== */
 .hero {
@@ -178,6 +201,9 @@ body {
 
 /* ===== 4軸タイル ===== */
 .axes { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 16px; }
+/* 5枚のときは先頭を横長にする */
+.axes:has(> :nth-child(5)) > .axis:first-child { grid-column: 1 / -1; min-height: 62px; }
+.axes:has(> :nth-child(5)) > .axis:first-child::after { font-size: 68px; bottom: -20px; }
 .axis {
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end;
@@ -197,8 +223,34 @@ body {
 .axis-ja { font-size: 11px; opacity: .88; margin-top: 2px; }
 .ax-keiba { --ax: linear-gradient(135deg, #1C7A4F, #14583A); }
 .ax-comic { --ax: linear-gradient(135deg, #D6453F, #A82B26); }
+.ax-game  { --ax: linear-gradient(135deg, #74499F, #4E2F78); }
 .ax-world { --ax: linear-gradient(135deg, #C79A2A, #97701A); }
 .ax-sns   { --ax: linear-gradient(135deg, #3579C4, #24609E); }
+
+/* ゲーム一覧 */
+.games { display: grid; gap: 10px; }
+@media (min-width: 620px) { .games { grid-template-columns: 1fr 1fr; } }
+.game-card {
+  display: block; position: relative; overflow: hidden;
+  background: var(--white); border: 1px solid var(--rule); border-radius: 8px;
+  box-shadow: var(--sh-sm); text-decoration: none; color: inherit;
+  transition: transform .16s, box-shadow .16s;
+}
+.game-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
+.game-shot { display: block; aspect-ratio: 16 / 9; background: var(--paper-2); overflow: hidden; }
+.game-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.game-body { padding: 12px 14px 14px; }
+.game-name { font-family: 'Dela Gothic One', sans-serif; font-size: 15.5px; line-height: 1.4; }
+.game-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.7; margin: 3px 0 0; }
+.game-badge {
+  position: absolute; top: 8px; left: 8px; z-index: 2;
+  background: var(--turf); color: var(--paper);
+  font-size: 9.5px; font-weight: 700; padding: 3px 9px; border-radius: 100px;
+}
+.game-card.is-soon { border-style: dashed; box-shadow: none; cursor: default; }
+.game-card.is-soon:hover { transform: none; box-shadow: none; }
+.game-card.is-soon .game-shot img { filter: grayscale(.3) opacity(.55); }
+.game-card.is-soon .game-badge { background: var(--gold); }
 
 /* ===== COMIC ===== */
 .comic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; max-width: 380px; }
