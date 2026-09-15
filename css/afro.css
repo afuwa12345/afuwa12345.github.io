@@ -81,9 +81,9 @@ body {
 /* ===== NAV ===== */
 .nav {
   position: sticky; top: 0; z-index: 60;
-  background: rgba(20,88,58,.97); backdrop-filter: blur(12px);
+  background: var(--turf); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--turf-dk);
-  box-shadow: 0 1px 12px rgba(13,62,40,.22);
+  box-shadow: 0 1px 12px rgba(0,0,0,.18);
 }
 .nav-in { max-width: 760px; margin: 0 auto; padding: 0 16px; height: 52px;
   display: flex; align-items: center; justify-content: space-between; }
@@ -321,10 +321,10 @@ section { padding: 22px 0 0; }
   display: flex; flex-direction: column; justify-content: flex-end;
   transition: flex-grow .34s cubic-bezier(.34,.01,.2,1), background .22s, box-shadow .22s;
 }
-.stall + .stall { box-shadow: inset 1px 0 0 rgba(13,62,40,.22); }
+.stall + .stall { box-shadow: inset 1px 0 0 rgba(0,0,0,.18); }
 .stall:first-child { border-radius: 4px 0 0 0; }
 .stall:last-child  { border-radius: 0 4px 0 0; }
-.stall.on { flex-grow: 2.8; background: var(--white); box-shadow: 0 0 0 1px rgba(13,62,40,.3), 0 -2px 18px rgba(232,196,104,.4); z-index: 2; }
+.stall.on { flex-grow: 2.8; background: var(--white); box-shadow: 0 0 0 1px rgba(0,0,0,.22), 0 -2px 18px rgba(232,196,104,.4); z-index: 2; }
 .stall:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: -3px; z-index: 5; }
 
 /* ゲートの柵 */
@@ -332,7 +332,7 @@ section { padding: 22px 0 0; }
   content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
   background:
     repeating-linear-gradient(180deg, rgba(20,40,28,.13) 0 2px, transparent 2px 17px),
-    linear-gradient(180deg, rgba(13,62,40,.10), transparent 30%);
+    linear-gradient(180deg, rgba(0,0,0,.09), transparent 30%);
   transition: opacity .3s ease;
 }
 .stall.on::before { opacity: 0; }
