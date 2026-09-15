@@ -486,6 +486,15 @@ section { padding: 22px 0 0; }
   border: 1px solid var(--rule); border-radius: 100px; padding: 1.5px 9px; background: var(--paper);
 }
 .pane-desc { font-size: 12.5px; line-height: 1.85; color: var(--ink-soft); margin: 0; }
+
+/* 幅のある画面では出馬表を大きく。
+   高さも一緒に上げないと、馬の横に空白ができる */
+#board .wrap { max-width: 1120px; }
+@media (min-width: 900px) {
+  #board .gate { height: clamp(284px, 26vw, 360px); }
+  #board .stall.on { flex-grow: 1.9; }
+  #board .stall.on .stall-name { font-size: 14px; }
+}
 .flip-btn {
   appearance: none; margin-top: 14px; width: 100%;
   background: var(--white); color: var(--c-yancha);
