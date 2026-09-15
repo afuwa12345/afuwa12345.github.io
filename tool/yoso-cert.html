@@ -21,6 +21,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="../css/afro.css">
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+</script>
 <style>
 :root {
   --turf:#1a4731;
@@ -41,60 +49,11 @@
   /* legacy aliases used by JS-set inline colors */
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html { scroll-behavior:smooth; }
-body {
-  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
-  background-attachment: fixed;
-  color: var(--text);
-  font-family: 'Noto Sans JP', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-body::before {
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:1;opacity:0.5;
-}
-.nav, .view, .footer { position:relative; z-index:2; }
-
-/* ===== NAV ===== */
-.nav {
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  height:56px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;
-  background:rgba(14,46,31,0.96);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border-bottom:2px solid var(--gold);
-  box-shadow:0 2px 12px rgba(14,46,31,0.2);
-}
-.nav-logo {
-  font-family:'Dela Gothic One',cursive;
-  font-size:22px;letter-spacing:2px;
-  color:var(--cream);text-decoration:none;
-  background:none;border:none;cursor:pointer;
-}
-.nav-logo em { font-style:normal; color:var(--gold-light); }
-.nav-back {
-  color:var(--cream);font-size:0.7rem;
-  text-decoration:none;
-  letter-spacing:2px;
-  border:1px solid var(--gold);
-  padding:5px 11px;border-radius:4px;
-  font-family:'Bebas Neue',cursive;
-  background:rgba(200,148,29,0.10);
-  cursor:pointer;
-  transition:all 0.2s;
-}
-.nav-back:hover, .nav-back:active { background:var(--gold); color:var(--turf-deep); }
-
+.view { position:relative; z-index:2; }
 /* ===== VIEWS ===== */
 .view { display:none; padding:0 0 40px; min-height:100vh; }
 .view.active { display:block; }
 .container { width:100%; max-width:600px; margin:0 auto; padding:0 16px; }
-
 /* ===== HERO (only in list view) ===== */
 .hero {
   margin-top:56px;
@@ -151,10 +110,8 @@ body::before {
   opacity:0.92;
   text-shadow:0 1px 3px rgba(0,0,0,0.4);
 }
-
 /* offset for register/verify views (no hero) */
 .view#register-view, .view#verify-view { padding-top:72px; }
-
 /* ===== Section / cat-label ===== */
 .section { max-width:600px; margin:0 auto; padding:24px 16px 6px; }
 .cat-label { text-align:center; margin-bottom:18px; }
@@ -173,7 +130,6 @@ body::before {
   content:'';width:30px;height:2px;
   background:var(--turf);border-radius:1px;
 }
-
 /* ===== Panel (form card) ===== */
 .panel {
   background:var(--cream-soft);
@@ -190,7 +146,6 @@ body::before {
   border-top-left-radius:12px;border-top-right-radius:12px;
   background:linear-gradient(90deg, var(--turf-deep), var(--turf-light));
 }
-
 /* ===== ACTION ROW (list view top buttons) ===== */
 .action-row {
   display:flex;gap:10px;
@@ -239,7 +194,6 @@ body::before {
   border-top-left-radius:12px;border-top-right-radius:12px;
 }
 .btn-verify:active { transform:translateY(4px); box-shadow:0 1px 0 var(--turf-deep); }
-
 /* ===== EMPTY STATE ===== */
 .empty-state {
   text-align:center;
@@ -251,7 +205,6 @@ body::before {
   margin:0 0 14px;
 }
 .empty-icon { font-size:42px; margin-bottom:10px; }
-
 /* ===== PRED CARD (list) ===== */
 #pred-list { padding-bottom:16px; }
 .pred-card {
@@ -289,7 +242,6 @@ body::before {
   margin-top:3px;font-family:monospace;
 }
 .pred-arrow { color:var(--turf); font-size:22px; flex-shrink:0; }
-
 /* ===== PROGRESS ===== */
 .progress-bar { display:flex; gap:6px; margin-bottom:24px; }
 .progress-step {
@@ -302,7 +254,6 @@ body::before {
   background:var(--gold);
   border-color:var(--gold);
 }
-
 /* ===== STEPS ===== */
 .step { display:none; }
 .step.active { display:block; }
@@ -317,7 +268,6 @@ body::before {
   color:var(--text-soft);
   margin-bottom:18px;font-weight:700;
 }
-
 /* ===== FORM ===== */
 .form-group { margin-bottom:16px; }
 .f-label {
@@ -358,7 +308,6 @@ body::before {
   margin-top:6px;display:none;
   font-family:'Bebas Neue',cursive;letter-spacing:2px;font-weight:700;
 }
-
 /* ===== CHIP GRID ===== */
 .grid-5 { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
 .grid-6 { display:grid; grid-template-columns:repeat(6,1fr); gap:5px; }
@@ -383,7 +332,6 @@ body::before {
   box-shadow:0 2px 0 #8a6411;
 }
 .chip-btn:active { transform:translateY(1px); box-shadow:0 1px 0 var(--turf-deep); }
-
 /* ===== TOGGLE INPUT ===== */
 .toggle-input-row {
   display:flex;align-items:center;gap:8px;
@@ -408,7 +356,6 @@ body::before {
 }
 .toggle-field { flex:1; min-width:200px; display:none; }
 .toggle-field.visible { display:block; }
-
 /* ===== BET ROW ===== */
 .bet-row-wrap {
   background:#fff;
@@ -513,11 +460,11 @@ body::before {
   transition:all 0.12s;
 }
 .num-btn.sel-normal { background:var(--gold); color:var(--turf-deep); border-color:var(--gold); }
-.num-btn.sel-jiku   { background:var(--red); color:#fff; border-color:var(--red); }
-.num-btn.sel-aite   { background:#3a7ad9; color:#fff; border-color:#3a7ad9; }
-.num-btn.sel-leg0   { background:var(--red); color:#fff; border-color:var(--red); }
-.num-btn.sel-leg1   { background:#3a7ad9; color:#fff; border-color:#3a7ad9; }
-.num-btn.sel-leg2   { background:#3a9b6e; color:#fff; border-color:#3a9b6e; }
+.num-btn.sel-jiku { background:var(--red); color:#fff; border-color:var(--red); }
+.num-btn.sel-aite { background:#3a7ad9; color:#fff; border-color:#3a7ad9; }
+.num-btn.sel-leg0 { background:var(--red); color:#fff; border-color:var(--red); }
+.num-btn.sel-leg1 { background:#3a7ad9; color:#fff; border-color:#3a7ad9; }
+.num-btn.sel-leg2 { background:#3a9b6e; color:#fff; border-color:#3a9b6e; }
 .num-btn:disabled { opacity:0.3; cursor:not-allowed; }
 .selected-display {
   font-size:12px;color:var(--text-soft);
@@ -548,7 +495,6 @@ body::before {
   transition:all 0.2s;
 }
 .btn-add-bet:hover { border-color:var(--gold); color:var(--gold); }
-
 /* ===== STEP BUTTONS ===== */
 .btn-row { display:flex; gap:10px; margin-top:8px; }
 .btn-next {
@@ -608,7 +554,6 @@ body::before {
   border-top-left-radius:12px;border-top-right-radius:12px;
 }
 .btn-submit:active { transform:translateY(4px); box-shadow:0 1px 0 var(--turf-deep); }
-
 /* ===== CONFIRM ===== */
 .confirm-box {
   background:#fff;
@@ -654,7 +599,6 @@ body::before {
   font-size:11px;color:var(--text-soft);
   margin-top:4px;display:block;font-weight:700;
 }
-
 /* ===== VERIFY ===== */
 #verify-view .section { padding-top:12px; }
 .verify-row {
@@ -730,7 +674,6 @@ body::before {
   font-size:14px;color:var(--turf-deep);
   font-weight:700;word-break:break-all;line-height:1.6;
 }
-
 /* ===== CERT VIEW (preserved formal certificate design) ===== */
 #cert-view { padding-top:72px; }
 .cert-wrap { width:100%; max-width:400px; margin:0 auto; padding:0 16px; }
@@ -783,7 +726,6 @@ body::before {
 .cert-id-label { font-family:"Bebas Neue",cursive; font-size:9px; letter-spacing:4px; color:#8B6914; margin-bottom:4px; }
 .cert-id-val { font-family:monospace; font-size:16px; font-weight:900; letter-spacing:3px; }
 .cert-id-note { font-size:9px; color:#666; margin-top:4px; }
-
 /* CERT ACTIONS (master spec wrapping the formal cert) */
 .cert-actions {
   display:flex;gap:10px;
@@ -822,7 +764,6 @@ body::before {
   margin:10px auto 0;text-align:center;
   font-family:'Bebas Neue',cursive;letter-spacing:2px;font-weight:700;
 }
-
 /* ===== TICKER ===== */
 .ticker-outer {
   overflow:hidden;
@@ -842,43 +783,29 @@ body::before {
 }
 .ticker-item.dot { color:var(--gold-light); }
 @keyframes tick { to { transform:translateX(-50%); } }
-
-/* ===== FOOTER ===== */
-.footer {
-  text-align:center;
-  padding:40px 20px 30px;
-  background:var(--turf-deep);
-  color:rgba(248,241,222,0.7);
-  font-size:0.7rem;
-  border-top:6px solid var(--gold);
-}
-.footer-logo {
-  font-family:'Dela Gothic One',cursive;
-  font-size:22px;letter-spacing:2px;
-  color:var(--cream);margin-bottom:6px;
-}
-.footer-logo em { font-style:normal; color:var(--gold-light); }
-.footer-tag {
-  font-family:'Bebas Neue',cursive;
-  font-size:0.75rem;letter-spacing:4px;
-  color:var(--gold-light);margin-bottom:14px;
-}
-.footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:14px; }
-.footer-links a { color:rgba(248,241,222,0.7); text-decoration:none; font-size:0.7rem; letter-spacing:1px; }
-.footer-links a:hover { color:var(--gold-light); }
 </style>
 </head>
-<body>
+<body class="theme-keiba">
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
-  <div style="display:flex;gap:8px;align-items:center;">
-    <button class="nav-back" id="nav-back" onclick="handleBack()" style="display:none">← BACK</button>
-    <a href="../index.html" class="nav-back">← HOME</a>
+  <div class="nav-in">
+    <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="../keiba.html">KEIBA</a>
+      <a href="../comic.html">COMIC</a>
+      <a href="../game.html">GAME</a>
+      <a href="../world.html">WORLD</a>
+      <a href="../sns.html">SNS</a>
+    </div>
   </div>
 </nav>
 
+<header class="phead" data-bg="TOOL">
+  <div class="phead-en">CERTIFICATE</div>
+  <div class="phead-ja">予想証明システム</div>
+  <p class="phead-sub">予想を証明として残す</p>
+</header>
 <!-- LIST VIEW -->
 <div id="list-view" class="view active">
   <section class="hero">
@@ -1067,20 +994,59 @@ body::before {
 </div>
 
 <!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-logo">AFRO<em>Horse</em></div>
-  <div class="footer-tag">WIN WITH STYLE</div>
-  <div class="footer-links">
-    <a href="../index.html">ホーム</a>
-    <a href="../afrohorse_characters.html">キャラクター</a>
-    <a href="../tools.html">ツール</a>
-    <a href="../index.html#games">GAMES</a>
-    <a href="../contact.html">お問い合わせ</a>
-    <a href="../privacy.html">プライバシーポリシー</a>
+<section>
+<div class="wrap">
+  <div class="sec-head">
+    <h2 class="sec-ja">ほかのツール</h2>
+    <span class="sec-en">MORE TOOLS</span>
+    <a class="sec-more" href="../tools.html">一覧 &rarr;</a>
   </div>
-  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
-</footer>
+  <div class="tools split">
+    <a class="trow" href="calc.html">
+      <span class="t-ico">&#129518;</span>
+      <span class="t-body"><span class="t-name">買い目点数ツール</span><span class="t-desc">点数と金額を一瞬で計算</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="baken_sim.html">
+      <span class="t-ico">&#127915;</span>
+      <span class="t-body"><span class="t-name">馬券メーカー</span><span class="t-desc">本物そっくりの馬券画像</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="sire.html">
+      <span class="t-ico">&#127942;</span>
+      <span class="t-body"><span class="t-name">種牡馬ランキング</span><span class="t-desc">コース・距離・馬場別の成績</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="honmei_announcer.html">
+      <span class="t-ico">&#127908;</span>
+      <span class="t-body"><span class="t-name">本命発表ツール</span><span class="t-desc">キャラが本命を発表</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
 
+  </div>
+  <a class="backlink" href="../keiba.html">&larr; 競馬ツールにもどる</a>
+</div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="../keiba.html">競馬ツール</a>
+      <a href="../comic.html">マンガ</a>
+      <a href="../game.html">あそぶ</a>
+      <a href="../world.html">アフワワールド</a>
+      <a href="../sns.html">スタンプ・グッズ</a>
+      <a href="../about.html">運営者情報</a>
+      <a href="../contact.html">お問い合わせ</a>
+      <a href="../privacy.html">プライバシー</a>
+      <a href="../terms.html">利用規約</a>
+      <a href="../disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
 <script>
 // Firebase初期化
 const firebaseConfig = {

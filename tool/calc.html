@@ -17,16 +17,24 @@
 <meta name="theme-color" content="#0e2e1f">
 <link rel="icon" href="../favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="../css/afro.css">
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+</script>
 <style>
 :root {
-  --turf: #1a4731;
+  --turf: #14583A;
   --turf-deep: #0e2e1f;
   --turf-light: #2d6b4a;
   --turf-bright: #4ca57a;
   --cream: #f8f1de;
   --cream-deep: #ede0bd;
   --cream-soft: #fcf7e8;
-  --gold: #c8941d;
+  --gold: #B5871A;
   --gold-light: #e8b952;
   --gold-glow: #ffd86d;
   --red: #c5292a;
@@ -40,54 +48,7 @@
   --accent2: #8a6411;
   --glow: #ffd86d;
 }
-
-*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html { scroll-behavior:smooth; }
-body {
-  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
-  background-attachment: fixed;
-  color: var(--text);
-  font-family: 'Noto Sans JP', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 56px;
-  position: relative;
-}
-body::before {
-  content:'';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 1; opacity: 0.5;
-}
-
-/* ===== NAV ===== */
-.nav {
-  position: fixed; top:0; left:0; right:0;
-  z-index: 200;
-  padding: 0 20px; height: 56px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(14,46,31,0.96);
-  backdrop-filter: blur(16px);
-  border-bottom: 2px solid var(--gold);
-  box-shadow: 0 2px 12px rgba(14,46,31,0.2);
-}
-.nav-logo {
-  font-family: 'Dela Gothic One', cursive;
-  font-size: 22px; letter-spacing: 2px;
-  color: var(--cream); text-decoration: none;
-}
-.nav-logo em { font-style: normal; color: var(--gold-light); }
-.nav-back {
-  color: var(--cream); font-size: 0.7rem; text-decoration: none;
-  letter-spacing: 2px; border: 1px solid var(--gold);
-  padding: 5px 11px; border-radius: 4px;
-  font-family: 'Bebas Neue', cursive; transition: all 0.2s;
-}
-.nav-back:hover, .nav-back:active { background: var(--gold); color: var(--turf-deep); }
-
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 /* ===== APP CONTAINER ===== */
 .page-wrap {
   width: 100%;
@@ -107,7 +68,6 @@ body::before {
     0 4px 0 var(--turf-deep),
     0 8px 20px rgba(14,46,31,0.18);
 }
-
 /* ===== HERO ===== */
 .hero {
   position: relative;
@@ -146,7 +106,6 @@ body::before {
   letter-spacing: 1px;
   box-shadow: 0 0 14px var(--glow)55;
 }
-
 /* ===== TAB BAR ===== */
 .tab-scroll {
   overflow-x: auto;
@@ -188,14 +147,12 @@ body::before {
   color: var(--gray); letter-spacing: .04em;
 }
 .tab.active .tab-lbl { color: var(--accent); }
-
 /* ===== PANEL ===== */
 .panel {
   background: var(--cream-soft);
   padding: 14px;
   border-top: 1px solid var(--turf-light);
 }
-
 /* mode buttons */
 .mode-row {
   display: flex; gap: 5px;
@@ -219,7 +176,6 @@ body::before {
   font-weight: 900;
   box-shadow: 0 2px 0 var(--accent2), 0 0 10px var(--glow)55;
 }
-
 /* slot selector (formation A/B/C, WIN5 R1-R5) */
 .slot-sel {
   display: flex; gap: 5px; margin-bottom: 9px;
@@ -242,14 +198,12 @@ body::before {
   transition: all .2s;
 }
 .slot-btn:hover { border-color: var(--turf); color: var(--turf-deep); }
-
 /* slot active states (s1-s5 = 5 distinct colors for formation/WIN5 legs) */
 .slot-btn.active.s1 { border-color:#3580d6; color:#1a4d8c; background:rgba(74,158,255,0.16); box-shadow:0 2px 0 #1a4d8c; }
 .slot-btn.active.s2 { border-color:#2d8a4f; color:#1e6b3a; background:rgba(78,203,113,0.18); box-shadow:0 2px 0 #1e6b3a; }
 .slot-btn.active.s3 { border-color:var(--gold); color:#7d5910; background:rgba(245,166,35,0.20); box-shadow:0 2px 0 #7d5910; }
 .slot-btn.active.s4 { border-color:#d63d8a; color:#a01b66; background:rgba(255,105,180,0.16); box-shadow:0 2px 0 #a01b66; }
 .slot-btn.active.s5 { border-color:#8b5cd9; color:#5e3b9c; background:rgba(192,132,252,0.18); box-shadow:0 2px 0 #5e3b9c; }
-
 /* row inputs */
 .row {
   display: flex; align-items: center; gap: 10px;
@@ -273,7 +227,6 @@ body::before {
 }
 .num-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent)22; }
 .row span { font-size: 12px; color: var(--text-soft); font-weight: 700; }
-
 /* legend */
 .leg-row {
   display: flex; gap: 6px; margin-bottom: 8px;
@@ -297,7 +250,6 @@ body::before {
 .lc3 { background: var(--gold); }
 .lc4 { background: #d63d8a; }
 .lc5 { background: #8b5cd9; }
-
 /* horses grid */
 .horses-grid {
   display: grid; grid-template-columns: repeat(9, 1fr);
@@ -326,14 +278,12 @@ body::before {
 .horse-btn.s1 { background:rgba(74,158,255,0.18); border-color:#3580d6; color:#1a4d8c; box-shadow:0 2px 0 #1a4d8c, 0 0 8px rgba(74,158,255,0.35); }
 .horse-btn.s2 { background:rgba(78,203,113,0.20); border-color:#2d8a4f; color:#1e6b3a; box-shadow:0 2px 0 #1e6b3a, 0 0 8px rgba(78,203,113,0.35); }
 .horse-btn.s3 { background:rgba(245,166,35,0.22); border-color:var(--gold); color:#7d5910; box-shadow:0 2px 0 #7d5910, 0 0 8px rgba(245,166,35,0.35); }
-
 /* WIN5 horse states (sw1-sw5) */
 .horse-btn.sw1 { background:rgba(74,158,255,0.18); border-color:#3580d6; color:#1a4d8c; box-shadow:0 2px 0 #1a4d8c, 0 0 8px rgba(74,158,255,0.35); }
 .horse-btn.sw2 { background:rgba(78,203,113,0.20); border-color:#2d8a4f; color:#1e6b3a; box-shadow:0 2px 0 #1e6b3a, 0 0 8px rgba(78,203,113,0.35); }
 .horse-btn.sw3 { background:rgba(245,166,35,0.22); border-color:var(--gold); color:#7d5910; box-shadow:0 2px 0 #7d5910, 0 0 8px rgba(245,166,35,0.35); }
 .horse-btn.sw4 { background:rgba(255,105,180,0.18); border-color:#d63d8a; color:#a01b66; box-shadow:0 2px 0 #a01b66, 0 0 8px rgba(255,105,180,0.35); }
 .horse-btn.sw5 { background:rgba(192,132,252,0.20); border-color:#8b5cd9; color:#5e3b9c; box-shadow:0 2px 0 #5e3b9c, 0 0 8px rgba(192,132,252,0.35); }
-
 .win5-leg-label {
   font-family: 'Bebas Neue', cursive;
   font-size: 11px; letter-spacing: 0.08em;
@@ -342,7 +292,6 @@ body::before {
   padding: 3px 0;
   font-weight: 700;
 }
-
 .hint {
   font-size: 11px;
   color: var(--gray);
@@ -350,7 +299,6 @@ body::before {
   min-height: 16px;
   font-weight: 600;
 }
-
 /* preview button (CTA) */
 .preview-trigger {
   width: 100%;
@@ -396,7 +344,6 @@ body::before {
   letter-spacing: 1px;
   position: relative; z-index: 1;
 }
-
 /* action buttons */
 .btns { display: flex; gap: 8px; }
 .btn {
@@ -415,7 +362,6 @@ body::before {
 }
 .btn-clear:hover { border-color: var(--turf); color: var(--turf-deep); }
 .btn-clear:active { transform: translateY(2px); box-shadow: none; }
-
 /* ═══════════════════════════════
    FULLSCREEN POPUP (overlays app-wrap)
 ═══════════════════════════════ */
@@ -435,7 +381,6 @@ body::before {
   background-image: radial-gradient(ellipse at 50% 0%, var(--turf) 0%, var(--turf-deep) 70%);
 }
 .popup-glow-bot, .popup-glow-top, .popup-char-bg { display: none; }
-
 .popup-header {
   position: relative; z-index: 2;
   flex-shrink: 0;
@@ -455,7 +400,6 @@ body::before {
   font-family: 'Bebas Neue', cursive;
 }
 .popup-close-btn:hover, .popup-close-btn:active { background: rgba(248,241,222,0.2); }
-
 /* popup hero strip */
 .popup-hero {
   position: relative; z-index: 2;
@@ -513,14 +457,12 @@ body::before {
   letter-spacing: 0.08em;
   margin-top: 2px;
 }
-
 .popup-divider {
   position: relative; z-index: 2;
   flex-shrink: 0; height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
   margin: 0 20px;
 }
-
 /* popup body (netkeiba-style display) */
 .popup-body {
   position: relative; z-index: 2;
@@ -529,7 +471,6 @@ body::before {
   scrollbar-width: thin;
   scrollbar-color: var(--gold) transparent;
 }
-
 /* summary cards */
 .nk-summary {
   display: flex; align-items: stretch; gap: 10px;
@@ -561,7 +502,6 @@ body::before {
   margin-left: 2px;
   font-weight: 600;
 }
-
 /* format box */
 .nk-format-box {
   background: rgba(248,241,222,0.04);
@@ -584,7 +524,6 @@ body::before {
   flex: 1; height: 1px;
   background: rgba(255,216,109,0.2);
 }
-
 .nk-formula {
   display: flex; align-items: center; flex-wrap: wrap;
   gap: 6px; margin-bottom: 12px;
@@ -599,7 +538,6 @@ body::before {
   color: var(--gold-light);
   padding: 0 2px;
 }
-
 /* horse badge in formula (c1=blue, c2=green, c3=gold, cbox=purple) */
 .nk-horse-badge {
   width: 34px; height: 34px;
@@ -619,7 +557,6 @@ body::before {
 .nk-horse-badge.cw3 { background:#3a2a0c; border-color:var(--gold); color:var(--gold-glow); }
 .nk-horse-badge.cw4 { background:#280a1a; border-color:#FF69B4; color:#ff8fc4; }
 .nk-horse-badge.cw5 { background:#1a0a28; border-color:#c084fc; color:#d4a8ff; }
-
 /* expand toggle */
 .nk-expand-toggle {
   font-family: 'Bebas Neue', cursive;
@@ -636,7 +573,6 @@ body::before {
   transition: all .2s;
 }
 .nk-expand-toggle:hover { background: rgba(255,216,109,0.18); }
-
 .nk-tickets-wrap { margin-top: 10px; display: none; }
 .nk-tickets-wrap.open { display: block; }
 .nk-tickets-grid {
@@ -688,7 +624,6 @@ body::before {
   padding: 8px 0;
   font-weight: 600;
 }
-
 .empty-pop {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -699,58 +634,33 @@ body::before {
   color: rgba(248,241,222,0.7);
   font-weight: 700;
 }
-
 .popup-footer {
   position: relative; z-index: 2;
   flex-shrink: 0;
   padding: 10px 18px 18px;
 }
-
-/* ===== FOOTER ===== */
-.footer {
-  width: 100%;
-  text-align: center;
-  padding: 36px 20px 28px;
-  background: var(--turf-deep);
-  color: rgba(248,241,222,0.7);
-  font-size: 0.7rem;
-  border-top: 6px solid var(--gold);
-  position: relative; z-index: 2;
-}
-.footer-logo {
-  font-family: 'Dela Gothic One', cursive;
-  font-size: 22px; letter-spacing: 2px;
-  color: var(--cream); margin-bottom: 6px;
-}
-.footer-logo em { font-style: normal; color: var(--gold-light); }
-.footer-tag {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 0.75rem;
-  letter-spacing: 4px;
-  color: var(--gold-light);
-  margin-bottom: 14px;
-}
-.footer-links {
-  display: flex; flex-wrap: wrap;
-  justify-content: center; gap: 14px;
-  margin-bottom: 14px;
-}
-.footer-links a {
-  color: rgba(248,241,222,0.7);
-  text-decoration: none;
-  font-size: 0.7rem;
-  letter-spacing: 1px;
-}
-.footer-links a:hover { color: var(--gold-light); }
 </style>
 </head>
-<body>
+<body class="theme-keiba">
 
 <nav class="nav">
-  <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
-  <a href="../index.html" class="nav-back">← HOME</a>
+  <div class="nav-in">
+    <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="../keiba.html">KEIBA</a>
+      <a href="../comic.html">COMIC</a>
+      <a href="../game.html">GAME</a>
+      <a href="../world.html">WORLD</a>
+      <a href="../sns.html">SNS</a>
+    </div>
+  </div>
 </nav>
 
+<header class="phead" data-bg="TOOL">
+  <div class="phead-en">CALCULATOR</div>
+  <div class="phead-ja">買い目点数ツール</div>
+  <p class="phead-sub">点数と金額を一瞬で計算</p>
+</header>
 <main class="page-wrap">
 <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">競馬買目点数計算ツール｜馬連・3連複・3連単の買い目自動計算（AFRO Horse）</h1>
 <div class="app-wrap">
@@ -818,19 +728,59 @@ body::before {
 </div><!-- /app-wrap -->
 </main>
 
-<footer class="footer">
-  <div class="footer-logo">AFRO<em>Horse</em></div>
-  <div class="footer-tag">WIN WITH STYLE</div>
-  <div class="footer-links">
-    <a href="../index.html">ホーム</a>
-    <a href="../afrohorse_characters.html">キャラクター</a>
-    <a href="../tools.html">ツール</a>
-    <a href="../contact.html">お問い合わせ</a>
-    <a href="../privacy.html">プライバシーポリシー</a>
+<section>
+<div class="wrap">
+  <div class="sec-head">
+    <h2 class="sec-ja">ほかのツール</h2>
+    <span class="sec-en">MORE TOOLS</span>
+    <a class="sec-more" href="../tools.html">一覧 &rarr;</a>
   </div>
-  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
-</footer>
+  <div class="tools split">
+    <a class="trow" href="baken_sim.html">
+      <span class="t-ico">&#127915;</span>
+      <span class="t-body"><span class="t-name">馬券メーカー</span><span class="t-desc">本物そっくりの馬券画像</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="sire.html">
+      <span class="t-ico">&#127942;</span>
+      <span class="t-body"><span class="t-name">種牡馬ランキング</span><span class="t-desc">コース・距離・馬場別の成績</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="honmei_announcer.html">
+      <span class="t-ico">&#127908;</span>
+      <span class="t-body"><span class="t-name">本命発表ツール</span><span class="t-desc">キャラが本命を発表</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="yoso-cert.html">
+      <span class="t-ico">&#128220;</span>
+      <span class="t-body"><span class="t-name">予想証明システム</span><span class="t-desc">予想を証明として残す</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
 
+  </div>
+  <a class="backlink" href="../keiba.html">&larr; 競馬ツールにもどる</a>
+</div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="../keiba.html">競馬ツール</a>
+      <a href="../comic.html">マンガ</a>
+      <a href="../game.html">あそぶ</a>
+      <a href="../world.html">アフワワールド</a>
+      <a href="../sns.html">スタンプ・グッズ</a>
+      <a href="../about.html">運営者情報</a>
+      <a href="../contact.html">お問い合わせ</a>
+      <a href="../privacy.html">プライバシー</a>
+      <a href="../terms.html">利用規約</a>
+      <a href="../disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
 <script>
 const IMGS={
   'tan': '../images/calc/calc1.png',

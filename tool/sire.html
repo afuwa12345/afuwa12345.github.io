@@ -17,6 +17,14 @@
 <title>種牡馬ランキング｜AFRO Horse</title>
 <link rel="canonical" href="https://afro-horse.com/sire.html">
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="../css/afro.css">
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+</script>
 <style>
 :root {
   --turf:#1a4731;
@@ -36,53 +44,7 @@
   --gray:#7a6e5a;
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html { scroll-behavior:smooth; }
-body {
-  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
-  background-attachment: fixed;
-  color: var(--text);
-  font-family: 'Noto Sans JP', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-body::before {
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:1;opacity:0.5;
-}
-.nav, .hero, .selector-wrap, .search-wrap, #resultArea, .ticker-outer, footer { position:relative; z-index:2; }
-
-/* ===== NAV ===== */
-.nav {
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  height:56px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;
-  background:rgba(14,46,31,0.96);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border-bottom:2px solid var(--gold);
-  box-shadow:0 2px 12px rgba(14,46,31,0.2);
-}
-.nav-logo {
-  font-family:'Dela Gothic One',cursive;
-  font-size:22px;letter-spacing:2px;
-  color:var(--cream);text-decoration:none;
-}
-.nav-logo em { font-style:normal; color:var(--gold-light); }
-.nav-back {
-  color:var(--cream);font-size:0.7rem;
-  text-decoration:none;
-  letter-spacing:2px;
-  border:1px solid var(--gold);
-  padding:5px 11px;border-radius:4px;
-  font-family:'Bebas Neue',cursive;
-  background:rgba(200,148,29,0.10);
-  transition:all 0.2s;
-}
-.nav-back:hover, .nav-back:active { background:var(--gold); color:var(--turf-deep); }
-
+.hero, .selector-wrap, .search-wrap, #resultArea, .ticker-outer { position:relative; z-index:2; }
 /* ===== HERO ===== */
 .hero {
   margin-top:56px;
@@ -131,7 +93,6 @@ body::before {
   opacity:0.92;
   text-shadow:0 1px 3px rgba(0,0,0,0.4);
 }
-
 /* ===== TICKER ===== */
 .ticker-outer {
   overflow:hidden;
@@ -148,7 +109,6 @@ body::before {
 }
 .ticker-item.dot { color:var(--gold-light); }
 @keyframes tick { to { transform:translateX(-50%); } }
-
 /* ===== Section / cat-label ===== */
 .cat-label { text-align:center; margin:24px auto 14px; max-width:640px; padding:0 16px; }
 .cat-label-en {
@@ -166,7 +126,6 @@ body::before {
   content:'';width:30px;height:2px;
   background:var(--turf);border-radius:1px;
 }
-
 /* ===== SELECTORS ===== */
 .selector-wrap { padding:0 16px 14px; max-width:640px; margin:0 auto; }
 .sel-section {
@@ -195,12 +154,10 @@ body::before {
   content:'';flex:1;height:1px;
   background:rgba(200,148,29,0.4);
 }
-
 .chip-grid-5 { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; }
 .chip-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
 .dist-grid { display:flex; flex-wrap:wrap; gap:7px; }
 .chip-grid-baba { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; }
-
 .chip {
   background:#fff;
   border:2px solid var(--turf);
@@ -225,7 +182,6 @@ body::before {
 }
 .chip.surface { padding:14px; font-size:15px; font-weight:900; }
 .chip.dist-chip { padding:10px 16px; font-size:13px; min-width:74px; flex-shrink:0; }
-
 .course-char {
   border-left:3px solid var(--gold);
   border-radius:0 8px 8px 0;
@@ -241,7 +197,6 @@ body::before {
 #surfaceSection { display:none; }
 #distSection { display:none; margin-top:10px; }
 #babaSection { display:none; margin-top:10px; }
-
 /* ===== SEARCH BUTTON ===== */
 .search-wrap { padding:0 16px 24px; max-width:640px; margin:0 auto; }
 .search-btn {
@@ -274,7 +229,6 @@ body::before {
   box-shadow:0 3px 0 rgba(14,46,31,0.18);
 }
 .search-btn:disabled::before { background:var(--turf-light); opacity:0.5; }
-
 /* ===== RESULTS ===== */
 .result-wrap {
   padding:0 16px 40px;
@@ -295,7 +249,6 @@ body::before {
   background:linear-gradient(90deg, var(--gold), transparent);
   border-radius:1px;
 }
-
 .sire-card {
   background:var(--cream-soft);
   border:2px solid var(--turf);
@@ -373,7 +326,6 @@ body::before {
   margin-top:8px;
   font-weight:700;
 }
-
 .spinner {
   width:32px;height:32px;
   border:3px solid var(--cream-deep);
@@ -412,42 +364,29 @@ body::before {
   padding:0 8px;
   font-weight:700;
 }
-
-/* ===== FOOTER ===== */
-footer {
-  text-align:center;
-  padding:40px 20px 30px;
-  background:var(--turf-deep);
-  color:rgba(248,241,222,0.7);
-  font-size:0.7rem;
-  border-top:6px solid var(--gold);
-  margin-top:40px;
-}
-.footer-logo {
-  font-family:'Dela Gothic One',cursive;
-  font-size:22px;letter-spacing:2px;
-  color:var(--cream);margin-bottom:6px;
-}
-.footer-logo em { font-style:normal; color:var(--gold-light); }
-.footer-tag {
-  font-family:'Bebas Neue',cursive;
-  font-size:0.75rem;letter-spacing:4px;
-  color:var(--gold-light);margin-bottom:14px;
-}
-.footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:14px; }
-.footer-links a { color:rgba(248,241,222,0.7); text-decoration:none; font-size:0.7rem; letter-spacing:1px; }
-.footer-links a:hover { color:var(--gold-light); }
-.footer-copy { color:rgba(248,241,222,0.45); margin-top:10px; }
 </style>
 </head>
-<body>
+<body class="theme-keiba">
 
 <!-- NAV -->
-<nav class="nav" id="nav">
-  <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
-  <a href="../index.html" class="nav-back">← HOME</a>
+<nav class="nav">
+  <div class="nav-in">
+    <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="../keiba.html">KEIBA</a>
+      <a href="../comic.html">COMIC</a>
+      <a href="../game.html">GAME</a>
+      <a href="../world.html">WORLD</a>
+      <a href="../sns.html">SNS</a>
+    </div>
+  </div>
 </nav>
 
+<header class="phead" data-bg="TOOL">
+  <div class="phead-en">SIRE RANKING</div>
+  <div class="phead-ja">種牡馬ランキング</div>
+  <p class="phead-sub">コース・距離・馬場別の成績</p>
+</header>
 <!-- HERO -->
 <section class="hero">
   <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">種牡馬ランキング｜JRAデータで競馬の種牡馬を芝・ダート・距離別に分析（AFRO Horse）</h1>
@@ -509,19 +448,59 @@ footer {
 <div id="resultArea"></div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-logo">AFRO<em>Horse</em></div>
-  <div class="footer-tag">WIN WITH STYLE</div>
-  <div class="footer-links">
-    <a href="../index.html">ホーム</a>
-    <a href="../afrohorse_characters.html">キャラクター</a>
-    <a href="../tools.html">ツール</a>
-    <a href="../contact.html">お問い合わせ</a>
-    <a href="../privacy.html">プライバシーポリシー</a>
+<section>
+<div class="wrap">
+  <div class="sec-head">
+    <h2 class="sec-ja">ほかのツール</h2>
+    <span class="sec-en">MORE TOOLS</span>
+    <a class="sec-more" href="../tools.html">一覧 &rarr;</a>
   </div>
-  <p class="footer-copy">© 2025 AFRO Horse. All rights reserved.</p>
-</footer>
+  <div class="tools split">
+    <a class="trow" href="calc.html">
+      <span class="t-ico">&#129518;</span>
+      <span class="t-body"><span class="t-name">買い目点数ツール</span><span class="t-desc">点数と金額を一瞬で計算</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="baken_sim.html">
+      <span class="t-ico">&#127915;</span>
+      <span class="t-body"><span class="t-name">馬券メーカー</span><span class="t-desc">本物そっくりの馬券画像</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="honmei_announcer.html">
+      <span class="t-ico">&#127908;</span>
+      <span class="t-body"><span class="t-name">本命発表ツール</span><span class="t-desc">キャラが本命を発表</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="yoso-cert.html">
+      <span class="t-ico">&#128220;</span>
+      <span class="t-body"><span class="t-name">予想証明システム</span><span class="t-desc">予想を証明として残す</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
 
+  </div>
+  <a class="backlink" href="../keiba.html">&larr; 競馬ツールにもどる</a>
+</div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="../keiba.html">競馬ツール</a>
+      <a href="../comic.html">マンガ</a>
+      <a href="../game.html">あそぶ</a>
+      <a href="../world.html">アフワワールド</a>
+      <a href="../sns.html">スタンプ・グッズ</a>
+      <a href="../about.html">運営者情報</a>
+      <a href="../contact.html">お問い合わせ</a>
+      <a href="../privacy.html">プライバシー</a>
+      <a href="../terms.html">利用規約</a>
+      <a href="../disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
 <script>
 const COURSES = ["東京","中山","阪神","京都","中京","小倉","函館","札幌","福島","新潟"];
 const COURSE_CHARS = {
