@@ -180,6 +180,23 @@
     { src: '../images/game/hurdle_high.webp', w: 132, h: Math.round(132 * 112 / 360) }
   ];
 
+  /* 使う絵を先に読ませる。走り出してから読むと、生垣が途中から急に現れる */
+  var ART = [
+    '../images/game/run_afuwa.webp',
+    '../images/game/jump_afuwa.webp',
+    '../images/game/crash_afuwa.webp',
+    '../images/game/hurdle_low.webp',
+    '../images/game/hurdle_high.webp'
+  ];
+  var artReady = 0;
+  (function preload() {
+    for (var i = 0; i < ART.length; i++) {
+      var im = new Image();
+      im.onload = im.onerror = function () { artReady++; };
+      im.src = ART[i];
+    }
+  })();
+
   var playing = false, y = 0, vy = 0, onGround = true;
   var speed = SPD0, px = 0, jumps = 0, shift = 0;
   var obs = [], nextGap = 0, raf = null, last = 0;
@@ -218,8 +235,15 @@
     var el = document.createElement('img');
     el.className = 'j-obs';
     el.src = kind.src;
-    el.style.width = kind.w + 'px';
+    /* 高さも指定する。画像が届く前から箱があるので途中で急に現れない。
+       当たり判定の h と描画がぴったり一致する */
+    el.style.width  = kind.w + 'px';
+    el.style.height = kind.h + 'px';
     el.style.left = x + 'px';
+    /* 絵が届くまでは緑の板を敷いておく。届いたら外す */
+    el.style.background = 'linear-gradient(#2f7a36, #1b4a22)';
+    el.style.borderRadius = '4px';
+    el.onload = function () { el.style.background = 'none'; };
     stage.appendChild(el);
     obs.push({ el: el, x: x, w: kind.w, h: kind.h });
   }
@@ -342,13 +366,20 @@
       clearInterval(iv);
       cueBig.textContent = 'GO！';
       Sfx.start();
-      setTimeout(function () {
-        cue.hidden = true;
-        playing = true;
-        nextGap = 320;
-        last = performance.now();
-        raf = requestAnimationFrame(step);
-      }, 460);
+      /* 絵がそろうのを待ってから走り出す（長くても1.5秒で見切る） */
+      var waited = 0;
+      (function ready() {
+        if (artReady >= ART.length || waited >= 1500) {
+          cue.hidden = true;
+          playing = true;
+          nextGap = 320;
+          last = performance.now();
+          raf = requestAnimationFrame(step);
+          return;
+        }
+        waited += 100;
+        setTimeout(ready, 100);
+      })();
     }, 620);
   }
 
