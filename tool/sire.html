@@ -70,19 +70,6 @@
   animation:twinkle 4s ease-in-out infinite;
 }
 @keyframes twinkle { 0%,100% { opacity:0.5; } 50% { opacity:0.95; } }
-.hero-title-img {
-  display:block;
-  width:100%;
-  max-width:560px;
-  height:auto;
-  margin:0 auto;
-  position:relative;z-index:1;
-  border-radius:12px;
-  filter:
-    drop-shadow(0 0 32px rgba(232,185,82,0.45))
-    drop-shadow(0 0 8px rgba(255,216,109,0.35))
-    drop-shadow(0 10px 22px rgba(0,0,0,0.55));
-}
 .hero-lead {
   font-family:'Noto Sans JP',sans-serif;
   font-size:13px;line-height:1.8;
@@ -382,15 +369,15 @@
   </div>
 </nav>
 
-<header class="phead slim" data-bg="TOOL">
+<header class="phead has-chara" data-bg="TOOL">
   <div class="phead-en">SIRE RANKING</div>
   <div class="phead-ja">種牡馬ランキング</div>
   <p class="phead-sub">コース・距離・馬場別の成績</p>
+  <img class="phead-chara" src="../images/tool_hero.webp" alt="" aria-hidden="true">
 </header>
 <!-- HERO -->
 <section class="hero">
   <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">種牡馬ランキング｜JRAデータで競馬の種牡馬を芝・ダート・距離別に分析（AFRO Horse）</h1>
-  <img class="hero-title-img" src="../images/sire_title.png" alt="AFRO HORSE 種牡馬ランキング">
   <p class="hero-lead">
     JRAの実績データから、アフロ馬が独自に算出した種牡馬ランキング。芝・ダート別、距離別にどの種牡馬の産駒が活躍しているかを分析。馬券予想・血統研究に。
   </p>
