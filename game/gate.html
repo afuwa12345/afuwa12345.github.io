@@ -57,14 +57,17 @@
   }
   #stage.is-flying .g-signal { background: var(--gold-d); color: #1a0e16; }
 
-  /* 馬 */
+  /* 馬。構え／飛び出す／フライング の3枚を入れ替える。
+     縦横比が違うので箱を決めて、下端を合わせて収める */
   .g-horse {
-    position: absolute; left: 50%; bottom: 30%; width: 50%; max-width: 186px; z-index: 2;
-    transform: translateX(-50%); transition: transform .26s ease-out;
+    position: absolute; left: 50%; bottom: 30%; z-index: 2;
+    width: 56%; max-width: 200px; height: 30%;
+    object-fit: contain; object-position: bottom center;
+    transform: translateX(-50%); transition: transform .24s ease-out;
     filter: drop-shadow(0 0 14px rgba(0, 0, 0, .8));
   }
-  #stage.is-go .g-horse { transform: translateX(-50%) scale(1.2) translateY(-8px); }
-  #stage.is-flying .g-horse { transform: translateX(-50%) rotate(-16deg) translateY(12px); }
+  #stage.is-go .g-horse { transform: translateX(-50%) scale(1.26); height: 34%; }
+  #stage.is-flying .g-horse { transform: translateX(-50%) translateY(14%); }
 
   /* ゲート */
   .g-frame {
@@ -128,7 +131,7 @@
   <div class="at-eye">REACTION</div>
   <h1 class="at-ttl">ゲート発走</h1>
   <p class="at-sub">開いた瞬間に、タップ</p>
-  <img class="at-hero" src="../images/face/ginma.webp" alt="">
+  <img class="at-hero" src="../images/gate/dash_afuwa.webp" alt="" style="width:170px">
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
   <ul class="at-how">
@@ -151,7 +154,7 @@
     <div class="astage" id="stage">
       <div class="g-signal" id="signal">タップで構え</div>
       <div class="g-time" id="time">0</div>
-      <img class="g-horse" src="../images/afuwa.png" alt="">
+      <img class="g-horse" id="horse" src="../images/gate/wait_afuwa.webp" alt="">
       <div class="g-frame">
         <div class="g-post l"></div>
         <div class="g-post r"></div>
@@ -180,6 +183,17 @@
   var lastEl = document.getElementById('hLast');
   var bestEl = document.getElementById('hBest');
   var lapsEl = document.getElementById('laps');
+  var horse  = document.getElementById('horse');
+
+  var POSE = {
+    wait:   '../images/gate/wait_afuwa.webp',
+    dash:   '../images/gate/dash_afuwa.webp',
+    flying: '../images/gate/flying_afuwa.webp'
+  };
+  /* 差し替えた瞬間に一拍おかないよう先に読ませておく */
+  (function () {
+    for (var k in POSE) { var i = new Image(); i.src = POSE[k]; }
+  })();
 
   var laps = [], flies = 0, state = 'idle', openAt = 0, timer = null;
 
@@ -195,11 +209,11 @@
     unit: 'ms',
     lower: true,
     grades: [
-      { v: 220, name: 'G1級の出脚' },
-      { v: 260, name: 'オープン級' },
-      { v: 300, name: '3勝クラス' },
-      { v: 350, name: '2勝クラス' },
-      { v: 420, name: '1勝クラス' },
+      { v: 250, name: 'G1級の出脚' },
+      { v: 290, name: 'オープン級' },
+      { v: 330, name: '3勝クラス' },
+      { v: 380, name: '2勝クラス' },
+      { v: 450, name: '1勝クラス' },
       { v: Infinity, name: '新馬' }
     ],
     onRetry: go
@@ -223,9 +237,11 @@
 
   function arm() {
     setState('ready');
+    horse.src = POSE.wait;
     signal.textContent = '構え';
     timer = setTimeout(function () {
       openAt = performance.now();
+      horse.src = POSE.dash;
       setState('go');
       signal.textContent = 'GO！';
       Sfx.start();
@@ -238,6 +254,7 @@
     if (state === 'ready') {                 /* 開く前に押した */
       clearTimeout(timer);
       flies++;
+      horse.src = POSE.flying;
       setState('flying');
       signal.textContent = 'フライング';
       timeEl.textContent = 'フライング ' + flies + '/' + MAX_FLY;
@@ -277,6 +294,7 @@
     laps = []; flies = 0;
     clearTimeout(timer);
     lastEl.textContent = '—';
+    horse.src = POSE.wait;
     setState('idle');
     signal.textContent = 'タップで構え';
     timeEl.textContent = '';

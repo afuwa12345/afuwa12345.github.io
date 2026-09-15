@@ -219,7 +219,7 @@
   }
 
   /* 落下にかかる時間（だんだん短く） */
-  function fallMs() { return Math.max(1000, 3200 - score * 70); }
+  function fallMs() { return Math.max(900, 2800 - score * 62); }
 
   function drop() {
     if (!playing) return;
@@ -356,11 +356,11 @@
     unit: '個',
     lower: false,
     grades: [
-      { v: 40, name: 'G1級の目' },
-      { v: 30, name: 'オープン級' },
-      { v: 22, name: '3勝クラス' },
-      { v: 15, name: '2勝クラス' },
-      { v: 8,  name: '1勝クラス' },
+      { v: 35, name: 'G1級の目' },
+      { v: 26, name: 'オープン級' },
+      { v: 19, name: '3勝クラス' },
+      { v: 13, name: '2勝クラス' },
+      { v: 7,  name: '1勝クラス' },
       { v: 0,  name: '新馬' }
     ],
     onRetry: go

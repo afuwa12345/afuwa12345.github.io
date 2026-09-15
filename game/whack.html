@@ -197,8 +197,8 @@
 
   /* 経過とともに、出てる時間が短く・間隔もつまる */
   function prog()  { return 1 - left / LIMIT; }
-  function upMs()  { return Math.round(1150 - 620 * prog()); }
-  function gapMs() { return Math.round(800 - 460 * prog()); }
+  function upMs()  { return Math.round(1000 - 520 * prog()); }
+  function gapMs() { return Math.round(720 - 420 * prog()); }
 
   function hide(h, missed) {
     clearTimeout(h.timer);
@@ -296,11 +296,11 @@
     unit: '点',
     lower: false,
     grades: [
-      { v: 5000, name: 'G1級の反応' },
-      { v: 4000, name: 'オープン級' },
-      { v: 3000, name: '3勝クラス' },
-      { v: 2200, name: '2勝クラス' },
-      { v: 1400, name: '1勝クラス' },
+      { v: 3800, name: 'G1級の反応' },
+      { v: 3000, name: 'オープン級' },
+      { v: 2300, name: '3勝クラス' },
+      { v: 1600, name: '2勝クラス' },
+      { v: 1000, name: '1勝クラス' },
       { v: 0,    name: '新馬' }
     ],
     onRetry: go

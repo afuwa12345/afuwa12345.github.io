@@ -156,8 +156,8 @@
   var GRAV     = 2400;    /* 重力(px/s^2) */
   var JUMP_V   = 1020;    /* 跳ぶ勢い(px/s)。頂点217px・滞空0.85秒 */
   var SPD0     = 340;     /* 初速(px/s) */
-  var SPD_MAX  = 520;
-  var SPD_UP   = 6;       /* 1秒あたりの加速 */
+  var SPD_MAX  = 620;
+  var SPD_UP   = 8;       /* 1秒あたりの加速 */
   var PX_PER_M = 26;      /* 何pxで1m扱いにするか */
 
   var stage  = document.getElementById('stage');
@@ -223,8 +223,8 @@
     stage.appendChild(el);
     obs.push({ el: el, x: stage.clientWidth, w: kind.w, h: kind.h });
     /* 次の間隔。速いほど距離を空ける */
-    /* 着地してから次が来るように、速度に比例して間隔を空ける */
-    nextGap = 165 + Math.random() * 150 + speed * 0.75;
+    /* 着地してから次が来る最低限だけ空ける。速いほどギリギリになる */
+    nextGap = 165 + Math.random() * 140 + speed * 0.62;
   }
 
   function jump() {
