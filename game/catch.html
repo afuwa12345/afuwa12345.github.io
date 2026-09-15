@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アフロキャッチ｜AFRO Horse</title>
+<meta name="description" content="落ちてくるアフロの持ち主をタップして当てるだけ。だんだん速くなる無料ミニゲーム。何個そろえられるか競えます。">
+<link rel="canonical" href="https://afro-horse.com/game/catch.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/catch.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロキャッチ｜AFRO Horse">
+<meta property="og:description" content="落ちてくるアフロの持ち主をタップして当てるだけ。何個そろえられる？">
+<meta property="og:image" content="https://afro-horse.com/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  /* ---- アフロキャッチ ---- */
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  #stage { overflow: hidden; }
+  #stage::before {                        /* 受け取りライン */
+    content: ''; position: absolute; left: 0; right: 0; bottom: 8px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: .5; z-index: 1;
+  }
+
+  /* 落ちてくるアフロ（画像が来るまではCSSで描く） */
+  .c-afro {
+    position: absolute; left: 50%; top: 0; width: 96px; height: 78px;
+    transform: translate(-50%, -110%); z-index: 2; will-change: transform;
+  }
+  .c-afro i {
+    position: absolute; border-radius: 50%; background: var(--c);
+    box-shadow: inset -4px -5px 0 rgba(0, 0, 0, .14);
+  }
+  .c-afro i:nth-child(1) { left: 12%; top: 26%; width: 42%; height: 58%; }
+  .c-afro i:nth-child(2) { left: 44%; top: 24%; width: 44%; height: 60%; }
+  .c-afro i:nth-child(3) { left: 27%; top: 2%;  width: 46%; height: 54%; }
+  .c-afro i:nth-child(4) { left: 2%;  top: 44%; width: 34%; height: 44%; }
+  .c-afro i:nth-child(5) { left: 64%; top: 42%; width: 34%; height: 46%; }
+  .c-afro.img i { display: none; }
+  .c-afro img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+  .c-afro.caught { animation: cCaught .3s ease-out forwards; }
+  @keyframes cCaught {
+    to { transform: translate(-50%, var(--y, 0)) scale(.3); opacity: 0; }
+  }
+
+  /* 下に並ぶ6頭 */
+  .c-pad {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+    padding: 8px 0 2px;
+  }
+  .c-key {
+    position: relative; padding: 3px 1px 2px; cursor: pointer;
+    background: rgba(255, 255, 255, .05);
+    border: 2px solid var(--grey2); border-radius: 9px;
+    transition: transform .09s, border-color .12s, background .12s, box-shadow .12s;
+  }
+  .c-key img { display: block; width: 100%; height: auto; }
+  .c-key b {
+    position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+    border-radius: 2px; background: var(--c);
+  }
+  .c-key.ok  { border-color: var(--green); background: rgba(18, 209, 122, .2); box-shadow: 0 0 18px rgba(18, 209, 122, .5); }
+  .c-key.ng  { border-color: var(--red);   background: rgba(255, 8, 68, .2);   box-shadow: 0 0 18px rgba(255, 8, 68, .5); }
+  .c-key:active { transform: translateY(2px); }
+
+  /* ライフ */
+  .c-life { letter-spacing: 2px; }
+  .c-life .off { opacity: .22; }
+
+  #cue { z-index: 30; }
+  #cue .acue-big { font-size: 70px; color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">CATCH</div>
+  <h1 class="at-ttl">アフロキャッチ</h1>
+  <p class="at-sub">落ちてきたアフロは、誰のアフロ？</p>
+  <img class="at-hero" src="../images/face/buruma.webp" alt="">
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <ul class="at-how">
+    <li>上からアフロが落ちてきます</li>
+    <li>そのアフロの持ち主を下からタップ</li>
+    <li>間違い・取りこぼしでライフが1つ減る</li>
+    <li>ライフ3つ。だんだん速くなります</li>
+  </ul>
+</section>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">CATCH</span><span class="ahud-val gold" id="hScore">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">COMBO</span><span class="ahud-val" id="hCombo">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">LIFE</span><span class="ahud-val c-life" id="hLife">♥♥♥</span></div>
+    </div>
+  </div>
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div class="acue" id="cue" hidden><div class="acue-big" id="cueBig">3</div></div>
+    </div>
+    <div class="c-pad" id="pad"></div>
+    <p class="astage-note">アフロの色をよく見て</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script>
+(function () {
+  /* file … 顔アップ / afro … アフロ画像（無ければCSSで描く） / c … アフロの色 */
+  var CHARAS = [
+    { file: 'afuwa',    name: 'アフワ',        afro: 'afro_kuro', c: '#3b3128' },
+    { file: 'buruma',   name: 'ブルマ',        afro: 'afro_mizu', c: '#7ec8e8' },
+    { file: 'chafuwa',  name: 'チャフワ',      afro: 'afro_cha',  c: '#b5502a' },
+    { file: 'kurofuwa', name: 'クロフワ',      afro: 'afro_kon',  c: '#2b3a5c' },
+    { file: 'ginma',    name: 'ギンマ',        afro: 'afro_gin',  c: '#cfcfcf' },
+    { file: 'yancha',   name: 'やんちゃアフワ', afro: 'afro_kin',  c: '#f0c33c' }
+  ];
+  var LIVES = 3;
+
+  var stage  = document.getElementById('stage');
+  var pad    = document.getElementById('pad');
+  var cue    = document.getElementById('cue');
+  var cueBig = document.getElementById('cueBig');
+  var hScore = document.getElementById('hScore');
+  var hCombo = document.getElementById('hCombo');
+  var hLife  = document.getElementById('hLife');
+
+  var keys = [], score = 0, combo = 0, lives = LIVES, playing = false;
+  var cur = null;          /* { el, idx, y, speed } */
+  var raf = null, last = 0;
+
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
+  }
+
+  /* ---- 下の6頭 ---- */
+  (function build() {
+    pad.innerHTML = CHARAS.map(function (c) {
+      return '<button class="c-key" type="button" style="--c:' + c.c + '">' +
+               '<img src="../images/face/' + c.file + '.webp" alt="' + c.name + '">' +
+               '<b></b></button>';
+    }).join('');
+    keys = Array.prototype.slice.call(pad.querySelectorAll('.c-key'));
+    keys.forEach(function (k, i) {
+      var viaPointer = false;
+      k.addEventListener('pointerdown', function (e) { e.preventDefault(); viaPointer = true; pick(i); });
+      k.addEventListener('click', function () {
+        if (viaPointer) { viaPointer = false; return; }
+        pick(i);
+      });
+    });
+  })();
+
+  function setScore(v) { score = v; hScore.textContent = score; }
+  function setCombo(v) { combo = v; hCombo.textContent = combo; }
+  function setLife(v) {
+    lives = v;
+    var h = '';
+    for (var i = 0; i < LIVES; i++) h += '<span class="' + (i < lives ? '' : 'off') + '">&#9829;</span>';
+    hLife.innerHTML = h;
+  }
+
+  function flash(i, cls) {
+    keys[i].classList.add(cls);
+    setTimeout(function () { keys[i].classList.remove(cls); }, 260);
+  }
+
+  function float(text, cls) {
+    var f = document.createElement('span');
+    f.className = 'afloat ' + cls;
+    f.textContent = text;
+    f.style.left = '50%';
+    f.style.top = '58%';
+    stage.appendChild(f);
+    setTimeout(function () { f.remove(); }, 700);
+  }
+
+  /* 落下にかかる時間（だんだん短く） */
+  function fallMs() { return Math.max(1000, 3200 - score * 70); }
+
+  function drop() {
+    if (!playing) return;
+    var idx = Math.floor(Math.random() * CHARAS.length);
+    var c = CHARAS[idx];
+
+    var el = document.createElement('div');
+    el.className = 'c-afro';
+    el.style.setProperty('--c', c.c);
+    el.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
+    /* 専用のアフロ画像があればそれを使う（無ければCSSのまま） */
+    var probe = new Image();
+    probe.onload = function () {
+      el.classList.add('img');
+      el.appendChild(probe);
+    };
+    probe.src = '../images/afro/' + c.afro + '.webp';
+    probe.alt = '';
+
+    /* 横位置はランダム（端に寄りすぎないように） */
+    var lx = 18 + Math.random() * 64;
+    el.style.left = lx + '%';
+    stage.appendChild(el);
+
+    cur = { el: el, idx: idx, y: -0.12, speed: 1 / (fallMs() / 1000), done: false };
+    last = performance.now();
+    raf = requestAnimationFrame(step);
+  }
+
+  function step(t) {
+    if (!playing || !cur || cur.done) return;
+    var dt = Math.min(0.05, (t - last) / 1000);
+    last = t;
+    cur.y += cur.speed * dt;
+    cur.el.style.transform = 'translate(-50%, ' + (cur.y * 100) + '%)';
+    /* ステージの高さぶん進んだら取りこぼし */
+    if (cur.y * stage.clientHeight >= stage.clientHeight - 74) { missed(); return; }
+    raf = requestAnimationFrame(step);
+  }
+
+  function clearCur(caught) {
+    if (!cur) return;
+    cancelAnimationFrame(raf);
+    var el = cur.el;
+    cur.done = true;
+    if (caught) {
+      el.style.setProperty('--y', (cur.y * 100) + '%');
+      el.classList.add('caught');
+      setTimeout(function () { el.remove(); }, 320);
+    } else {
+      el.remove();
+    }
+    cur = null;
+  }
+
+  function missed() {
+    Sfx.bad();
+    setCombo(0);
+    clearCur(false);
+    stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+    hit();
+  }
+
+  function hit() {                     /* ライフを1つ減らす */
+    setLife(lives - 1);
+    if (lives <= 0) { stop(); return; }
+    setTimeout(drop, 520);
+  }
+
+  function pick(i) {
+    if (!playing || !cur || cur.done) return;
+    if (i === cur.idx) {
+      flash(i, 'ok');
+      setCombo(combo + 1);
+      setScore(score + 1);
+      float('+1', 'plus');
+      Sfx.good();
+      clearCur(true);
+      setTimeout(drop, 300);
+    } else {
+      flash(i, 'ng');
+      setCombo(0);
+      Sfx.bad();
+      stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+      clearCur(false);
+      hit();
+    }
+  }
+
+  function stop() {
+    playing = false;
+    cancelAnimationFrame(raf);
+    clearCur(false);
+    AfroScore.finish(score);
+  }
+
+  function go() {
+    screen('scPlay');
+    setScore(0); setCombo(0); setLife(LIVES);
+    var olds = stage.querySelectorAll('.c-afro');
+    for (var i = 0; i < olds.length; i++) olds[i].remove();
+
+    var n = 3;
+    cue.hidden = false;
+    cueBig.textContent = n;
+    Sfx.count();
+    var iv = setInterval(function () {
+      n--;
+      if (n > 0) { cueBig.textContent = n; Sfx.count(); return; }
+      clearInterval(iv);
+      cueBig.textContent = 'GO！';
+      Sfx.start();
+      setTimeout(function () {
+        cue.hidden = true;
+        playing = true;
+        drop();
+      }, 460);
+    }, 620);
+  }
+
+  AfroScore.setup({
+    game: 'catch',
+    title: 'アフロキャッチ',
+    hash: 'アフロキャッチ',
+    unit: '個',
+    lower: false,
+    grades: [
+      { v: 40, name: 'G1級の目' },
+      { v: 30, name: 'オープン級' },
+      { v: 22, name: '3勝クラス' },
+      { v: 15, name: '2勝クラス' },
+      { v: 8,  name: '1勝クラス' },
+      { v: 0,  name: '新馬' }
+    ],
+    onRetry: go
+  });
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+  setLife(LIVES);
+})();
+</script>
+</body>
+</html>

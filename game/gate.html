@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>ゲート発走｜AFRO Horse</title>
+<meta name="description" content="ゲートが開いた瞬間にタップ。アフロ馬と反射神経を競う無料ミニゲーム。5回の平均タイムでランキングに挑戦できます。">
+<link rel="canonical" href="https://afro-horse.com/game/gate.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/gate.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="ゲート発走｜AFRO Horse">
+<meta property="og:description" content="ゲートが開いた瞬間にタップ。5回の平均タイムで反射神経を競う無料ミニゲーム。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  /* ---- ゲート発走 ---- */
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  #stage { cursor: pointer; }
+  #stage::after {                      /* 芝 */
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
+    background: linear-gradient(#0d3b27, #06231a);
+    border-top: 2px solid rgba(0, 240, 255, .25);
+  }
+
+  /* 合図の帯 */
+  .g-signal {
+    position: absolute; left: 0; right: 0; top: 0; z-index: 5; padding: 10px 0;
+    text-align: center; font-family: 'Dela Gothic One', sans-serif; font-size: 16px;
+    background: rgba(42, 32, 36, .9); color: #cfc3c9;
+    border-bottom: 1px solid var(--grey2); transition: background .08s, color .08s;
+  }
+  #stage.is-ready .g-signal { background: var(--red-d); color: #fff; }
+  #stage.is-go .g-signal {
+    background: var(--green); color: #052; font-size: 24px;
+    box-shadow: 0 0 34px rgba(18, 209, 122, .8);
+  }
+  #stage.is-flying .g-signal { background: var(--gold-d); color: #1a0e16; }
+
+  /* 馬 */
+  .g-horse {
+    position: absolute; left: 50%; bottom: 30%; width: 50%; max-width: 186px; z-index: 2;
+    transform: translateX(-50%); transition: transform .26s ease-out;
+    filter: drop-shadow(0 0 14px rgba(0, 0, 0, .8));
+  }
+  #stage.is-go .g-horse { transform: translateX(-50%) scale(1.2) translateY(-8px); }
+  #stage.is-flying .g-horse { transform: translateX(-50%) rotate(-16deg) translateY(12px); }
+
+  /* ゲート */
+  .g-frame {
+    position: absolute; left: 50%; bottom: 25%; width: 70%; max-width: 250px; height: 42%;
+    transform: translateX(-50%); z-index: 3; pointer-events: none;
+  }
+  .g-post {
+    position: absolute; top: 0; bottom: -8%; width: 8px; border-radius: 3px;
+    background: linear-gradient(#fff, #9d93a8);
+    box-shadow: 0 0 10px rgba(255, 255, 255, .5);
+  }
+  .g-post.l { left: 0; } .g-post.r { right: 0; }
+  .g-door { position: absolute; top: 8%; bottom: 0; width: 50%; transition: transform .18s ease-out; }
+  .g-door.l { left: 6px; transform-origin: left center; }
+  .g-door.r { right: 6px; transform-origin: right center; }
+  .g-door i {
+    position: absolute; left: 0; right: 0; height: 6px; border-radius: 3px;
+    background: #efe9f2; box-shadow: 0 0 8px rgba(255, 255, 255, .45);
+  }
+  .g-door i:nth-child(1) { top: 2%; }
+  .g-door i:nth-child(2) { top: 30%; }
+  .g-door i:nth-child(3) { top: 58%; }
+  .g-door i:nth-child(4) { top: 86%; }
+  #stage.is-go .g-door.l, #stage.is-result .g-door.l { transform: perspective(320px) rotateY(-80deg); }
+  #stage.is-go .g-door.r, #stage.is-result .g-door.r { transform: perspective(320px) rotateY(80deg); }
+
+  /* 計測結果 */
+  .g-time {
+    position: absolute; left: 0; right: 0; top: 16%; z-index: 6; text-align: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 54px; line-height: 1;
+    color: var(--gold); text-shadow: 0 0 22px var(--gold);
+    opacity: 0; transition: opacity .1s;
+  }
+  #stage.is-result .g-time, #stage.is-flying .g-time { opacity: 1; }
+  #stage.is-flying .g-time { color: var(--red); text-shadow: 0 0 22px var(--red); font-size: 30px; }
+
+  /* 5走の記録 */
+  .g-laps { display: flex; gap: 5px; padding: 8px 0 4px; }
+  .g-lap {
+    flex: 1; text-align: center; padding: 5px 0;
+    border: 1px solid var(--grey2); border-radius: 6px; background: rgba(0, 0, 0, .35);
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: #6f646a;
+  }
+  .g-lap.done { color: var(--cyan); border-color: rgba(0, 240, 255, .45); text-shadow: 0 0 8px var(--cyan); }
+</style>
+</head>
+<body>
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">REACTION</div>
+  <h1 class="at-ttl">ゲート発走</h1>
+  <p class="at-sub">開いた瞬間に、タップ</p>
+  <img class="at-hero" src="../images/face/ginma.webp" alt="">
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <ul class="at-how">
+    <li>ゲートが開いて緑になった瞬間にタップ</li>
+    <li>開く前に押すとフライング。3回で発走中止</li>
+    <li>5回走って、その平均タイムが記録</li>
+  </ul>
+</section>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">TRY</span><span class="ahud-val" id="hTry">1/5</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">LAST</span><span class="ahud-val" id="hLast">—</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">BEST</span><span class="ahud-val gold" id="hBest">—</span></div>
+    </div>
+  </div>
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div class="g-signal" id="signal">タップで構え</div>
+      <div class="g-time" id="time">0</div>
+      <img class="g-horse" src="../images/afuwa.png" alt="">
+      <div class="g-frame">
+        <div class="g-post l"></div>
+        <div class="g-post r"></div>
+        <div class="g-door l"><i></i><i></i><i></i><i></i></div>
+        <div class="g-door r"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div class="g-laps" id="laps"></div>
+    <p class="astage-note">画面のどこでもタップできます</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script>
+(function () {
+  var TRIES = 5, MAX_FLY = 3;
+
+  var stage  = document.getElementById('stage');
+  var signal = document.getElementById('signal');
+  var timeEl = document.getElementById('time');
+  var tryEl  = document.getElementById('hTry');
+  var lastEl = document.getElementById('hLast');
+  var bestEl = document.getElementById('hBest');
+  var lapsEl = document.getElementById('laps');
+
+  var laps = [], flies = 0, state = 'idle', openAt = 0, timer = null;
+
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
+  }
+
+  AfroScore.setup({
+    game: 'gate',
+    title: 'ゲート発走',
+    hash: 'ゲート発走',
+    unit: 'ms',
+    lower: true,
+    grades: [
+      { v: 220, name: 'G1級の出脚' },
+      { v: 260, name: 'オープン級' },
+      { v: 300, name: '3勝クラス' },
+      { v: 350, name: '2勝クラス' },
+      { v: 420, name: '1勝クラス' },
+      { v: Infinity, name: '新馬' }
+    ],
+    onRetry: go
+  });
+
+  bestEl.textContent = document.getElementById('gBest').textContent;
+
+  function paintLaps() {
+    var h = '';
+    for (var i = 0; i < TRIES; i++) {
+      h += '<div class="g-lap' + (laps[i] ? ' done' : '') + '">' + (laps[i] || '—') + '</div>';
+    }
+    lapsEl.innerHTML = h;
+    tryEl.textContent = Math.min(laps.length + 1, TRIES) + '/' + TRIES;
+  }
+
+  function setState(s) {
+    state = s;
+    stage.className = 'astage' + (s === 'idle' ? '' : ' is-' + s);
+  }
+
+  function arm() {
+    setState('ready');
+    signal.textContent = '構え';
+    timer = setTimeout(function () {
+      openAt = performance.now();
+      setState('go');
+      signal.textContent = 'GO！';
+      Sfx.start();
+    }, 1200 + Math.random() * 2300);
+  }
+
+  function tap() {
+    if (state === 'idle') { Sfx.tap(); arm(); return; }
+
+    if (state === 'ready') {                 /* 開く前に押した */
+      clearTimeout(timer);
+      flies++;
+      setState('flying');
+      signal.textContent = 'フライング';
+      timeEl.textContent = 'フライング ' + flies + '/' + MAX_FLY;
+      Sfx.bad();
+      stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+      setTimeout(function () {
+        if (flies >= MAX_FLY) {
+          signal.textContent = '発走中止';
+          timeEl.textContent = '記録なし';
+          state = 'over';
+          setTimeout(function () { screen('scTitle'); reset(); }, 1400);
+        } else { arm(); }
+      }, 950);
+      return;
+    }
+
+    if (state === 'go') {
+      var ms = Math.round(performance.now() - openAt);
+      laps.push(ms);
+      lastEl.textContent = ms;
+      timeEl.textContent = ms + 'ms';
+      setState('result');
+      signal.textContent = laps.length + '走目';
+      paintLaps();
+      Sfx.good();
+      setTimeout(function () {
+        if (laps.length >= TRIES) {
+          var sum = laps.reduce(function (a, b) { return a + b; }, 0);
+          AfroScore.finish(Math.round(sum / laps.length));
+          bestEl.textContent = document.getElementById('gBest').textContent;
+        } else { arm(); }
+      }, 900);
+    }
+  }
+
+  function reset() {
+    laps = []; flies = 0;
+    clearTimeout(timer);
+    lastEl.textContent = '—';
+    setState('idle');
+    signal.textContent = 'タップで構え';
+    timeEl.textContent = '';
+    paintLaps();
+  }
+
+  function go() { reset(); screen('scPlay'); }
+
+  var viaPointer = false;
+  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); viaPointer = true; tap(); });
+  stage.addEventListener('click', function () {
+    if (viaPointer) { viaPointer = false; return; }
+    tap();
+  });
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+  reset();
+})();
+</script>
+</body>
+</html>

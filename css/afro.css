@@ -230,7 +230,15 @@ body {
 /* ゲーム一覧 */
 .games { display: grid; gap: 10px; }
 @media (min-width: 620px) { .games { grid-template-columns: 1fr 1fr; } }
-.games:not(:has(> :nth-child(2))) { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+.games:not(.mini):not(:has(> :nth-child(2))) { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+/* ミニゲームは小さいカードで並べる */
+.games.mini { grid-template-columns: 1fr 1fr; gap: 9px; }
+.games.mini .game-shot { aspect-ratio: 1 / 1; }
+.games.mini .game-body { padding: 9px 10px 11px; }
+.games.mini .game-name { font-size: 13px; }
+.games.mini .game-desc { font-size: 10.5px; line-height: 1.6; margin-top: 2px; }
+.games.mini .game-badge { font-size: 9px; padding: 2px 7px; }
+@media (min-width: 620px) { .games.mini { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .game-card {
   display: block; position: relative; overflow: hidden;
   background: var(--white); border: 1px solid var(--rule); border-radius: 8px;
@@ -240,6 +248,15 @@ body {
 .game-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
 .game-shot { display: block; aspect-ratio: 16 / 9; background: var(--paper-2); overflow: hidden; }
 .game-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 専用イラストが入るまでの色地サムネ。キャラは切らずに収める */
+.game-shot.art { background: var(--ax, linear-gradient(135deg, var(--turf-2), var(--turf-dk))); }
+.game-shot.art img { object-fit: contain; padding: 8px; box-sizing: border-box; }
+.gs-gate  { --ax: linear-gradient(135deg, #74499F, #422A63); }
+.gs-catch { --ax: linear-gradient(135deg, #3579C4, #24609E); }
+.gs-memo  { --ax: linear-gradient(135deg, #C79A2A, #97701A); }
+.gs-whack { --ax: linear-gradient(135deg, #D6453F, #A82B26); }
+.gs-jump  { --ax: linear-gradient(135deg, #1C7A4F, #0D3E28); }
+.gs-quiz  { --ax: linear-gradient(135deg, #E0AC1C, #97701A); }
 .game-body { padding: 12px 14px 14px; }
 .game-name { font-family: 'Dela Gothic One', sans-serif; font-size: 15.5px; line-height: 1.4; }
 .game-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.7; margin: 3px 0 0; }

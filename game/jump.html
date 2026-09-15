@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アフロジャンプ｜AFRO Horse</title>
+<meta name="description" content="タップでジャンプして生垣を飛び越えるだけ。どこまで走れるか距離を競う無料ミニゲーム。登録不要で遊べます。">
+<link rel="canonical" href="https://afro-horse.com/game/jump.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/jump.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロジャンプ｜AFRO Horse">
+<meta property="og:description" content="タップでジャンプして生垣を飛び越えるだけ。どこまで走れる？">
+<meta property="og:image" content="https://afro-horse.com/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  /* ---- アフロジャンプ ---- */
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  #stage { cursor: pointer; }
+
+  /* 遠景 */
+  .j-sky {
+    position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+    background:
+      radial-gradient(60% 40% at 78% 24%, rgba(255, 43, 214, .16) 0, transparent 70%),
+      radial-gradient(50% 36% at 22% 18%, rgba(0, 240, 255, .12) 0, transparent 70%);
+  }
+  .j-hills {
+    position: absolute; left: 0; right: 0; bottom: 74px; height: 62px;
+    background:
+      radial-gradient(52px 30px at 14% 100%, #16362a 0 99%, transparent 100%),
+      radial-gradient(74px 40px at 44% 100%, #123024 0 99%, transparent 100%),
+      radial-gradient(60px 32px at 78% 100%, #16362a 0 99%, transparent 100%);
+    opacity: .9;
+  }
+
+  /* 地面 */
+  .j-ground {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 74px;
+    background: linear-gradient(#0f4530, #072418);
+    border-top: 2px solid rgba(0, 240, 255, .3);
+    box-shadow: 0 -8px 20px rgba(0, 240, 255, .08);
+  }
+  .j-lines {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 74px;
+    background-image: repeating-linear-gradient(90deg,
+      rgba(255, 255, 255, .16) 0 26px, transparent 26px 92px);
+    background-size: 92px 100%;
+  }
+
+  /* 馬 */
+  .j-horse {
+    position: absolute; left: 34px; bottom: 74px; height: 92px; width: auto;
+    z-index: 3; transform-origin: 50% 100%;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .6));
+  }
+  .j-horse.crash { height: 84px; }
+
+  /* 生垣 */
+  .j-obs {
+    position: absolute; bottom: 74px; z-index: 2; height: auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .55));
+  }
+
+  /* 距離 */
+  .j-dist {
+    position: absolute; right: 10px; top: 8px; z-index: 6;
+    font-family: 'Bebas Neue', sans-serif; font-size: 34px; line-height: 1;
+    color: var(--gold); text-shadow: 0 0 14px var(--gold);
+  }
+  .j-dist small { font-size: 15px; margin-left: 2px; }
+
+  #cue { z-index: 30; }
+  #cue .acue-big { font-size: 70px; color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">JUMP</div>
+  <h1 class="at-ttl">アフロジャンプ</h1>
+  <p class="at-sub">タップで跳んで、生垣を越えろ</p>
+  <img class="at-hero" src="../images/game/jump_afuwa.webp" alt="" style="width:170px">
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <ul class="at-how">
+    <li>画面をタップするとジャンプ</li>
+    <li>生垣にぶつかったら終わり</li>
+    <li>走るほど速くなります</li>
+    <li>走った距離が記録になります</li>
+  </ul>
+</section>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">SPEED</span><span class="ahud-val" id="hSpeed">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">JUMP</span><span class="ahud-val" id="hJump">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">BEST</span><span class="ahud-val gold" id="hBest">—</span></div>
+    </div>
+  </div>
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div class="j-sky"></div>
+      <div class="j-hills"></div>
+      <div class="j-ground"></div>
+      <div class="j-lines" id="lines"></div>
+      <img class="j-horse" id="horse" src="../images/game/run_afuwa.webp" alt="">
+      <div class="j-dist"><span id="dist">0</span><small>m</small></div>
+      <div class="acue" id="cue" hidden><div class="acue-big" id="cueBig">3</div></div>
+    </div>
+    <p class="astage-note">画面のどこでもタップできます</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script>
+(function () {
+  var GROUND   = 74;      /* 地面の高さ(px) */
+  var GRAV     = 2400;    /* 重力(px/s^2) */
+  var JUMP_V   = 1020;    /* 跳ぶ勢い(px/s)。頂点217px・滞空0.85秒 */
+  var SPD0     = 340;     /* 初速(px/s) */
+  var SPD_MAX  = 520;
+  var SPD_UP   = 6;       /* 1秒あたりの加速 */
+  var PX_PER_M = 26;      /* 何pxで1m扱いにするか */
+
+  var stage  = document.getElementById('stage');
+  var horse  = document.getElementById('horse');
+  var lines  = document.getElementById('lines');
+  var distEl = document.getElementById('dist');
+  var cue    = document.getElementById('cue');
+  var cueBig = document.getElementById('cueBig');
+  var hSpeed = document.getElementById('hSpeed');
+  var hJump  = document.getElementById('hJump');
+  var hBest  = document.getElementById('hBest');
+
+  var HORSE_W = 78, HORSE_H = 92;   /* 見た目の当たり判定 */
+  /* h は画像の縦横比から出した実際の高さ。当たり判定と絵をずらさない
+     hurdle_low  360x104 → 104/360 = 0.289
+     hurdle_high 360x112 → 112/360 = 0.311 */
+  var OBS = [
+    { src: '../images/game/hurdle_low.webp',  w: 104, h: Math.round(104 * 104 / 360) },
+    { src: '../images/game/hurdle_high.webp', w: 132, h: Math.round(132 * 112 / 360) }
+  ];
+
+  var playing = false, y = 0, vy = 0, onGround = true;
+  var speed = SPD0, px = 0, jumps = 0, shift = 0;
+  var obs = [], nextGap = 0, raf = null, last = 0;
+
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
+  }
+
+  AfroScore.setup({
+    game: 'jump',
+    title: 'アフロジャンプ',
+    hash: 'アフロジャンプ',
+    unit: 'm',
+    lower: false,
+    grades: [
+      { v: 1200, name: 'G1級の飛び' },
+      { v: 800,  name: 'オープン級' },
+      { v: 550,  name: '3勝クラス' },
+      { v: 350,  name: '2勝クラス' },
+      { v: 180,  name: '1勝クラス' },
+      { v: 0,    name: '新馬' }
+    ],
+    onRetry: go
+  });
+  hBest.textContent = document.getElementById('gBest').textContent;
+
+  function meters() { return Math.floor(px / PX_PER_M); }
+
+  function clearObs() {
+    for (var i = 0; i < obs.length; i++) obs[i].el.remove();
+    obs = [];
+  }
+
+  function addObs() {
+    var kind = OBS[Math.random() < 0.34 ? 1 : 0];
+    var el = document.createElement('img');
+    el.className = 'j-obs';
+    el.src = kind.src;
+    el.style.width = kind.w + 'px';
+    el.style.left = stage.clientWidth + 'px';
+    stage.appendChild(el);
+    obs.push({ el: el, x: stage.clientWidth, w: kind.w, h: kind.h });
+    /* 次の間隔。速いほど距離を空ける */
+    /* 着地してから次が来るように、速度に比例して間隔を空ける */
+    nextGap = 165 + Math.random() * 150 + speed * 0.75;
+  }
+
+  function jump() {
+    if (!playing || !onGround) return;
+    vy = JUMP_V;
+    onGround = false;
+    jumps++;
+    hJump.textContent = jumps;
+    horse.src = '../images/game/jump_afuwa.webp';
+    Sfx.tap();
+  }
+
+  function crash() {
+    playing = false;
+    cancelAnimationFrame(raf);
+    horse.src = '../images/game/crash_afuwa.webp';
+    horse.classList.add('crash');
+    horse.style.transform = 'translateY(6px)';
+    lines.style.animation = 'none';
+    stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+    Sfx.bad();
+    setTimeout(function () {
+      AfroScore.finish(meters());
+      hBest.textContent = document.getElementById('gBest').textContent;
+    }, 700);
+  }
+
+  function step(t) {
+    if (!playing) return;
+    var dt = Math.min(0.045, (t - last) / 1000);
+    last = t;
+
+    /* 走る */
+    speed = Math.min(SPD_MAX, speed + SPD_UP * dt);
+    px += speed * dt;
+    distEl.textContent = meters();
+    hSpeed.textContent = Math.round(speed / 10);
+
+    /* 地面のスクロール */
+    shift = (shift + speed * dt) % 92;
+    lines.style.backgroundPosition = (-shift) + 'px 0';
+
+    /* 跳ぶ */
+    if (!onGround) {
+      vy -= GRAV * dt;
+      y += vy * dt;
+      if (y <= 0) {
+        y = 0; vy = 0; onGround = true;
+        horse.src = '../images/game/run_afuwa.webp';
+      }
+      horse.style.transform = 'translateY(' + (-y) + 'px)';
+    }
+
+    /* 生垣を流す */
+    nextGap -= speed * dt;
+    if (nextGap <= 0) addObs();
+
+    for (var i = obs.length - 1; i >= 0; i--) {
+      var o = obs[i];
+      o.x -= speed * dt;
+      o.el.style.left = o.x + 'px';
+
+      /* あたり判定（左34px・幅HORSE_W の箱と重なるか） */
+      var hx0 = 34 + 10, hx1 = 34 + HORSE_W - 10;
+      if (o.x < hx1 && o.x + o.w > hx0 && y < o.h) { crash(); return; }
+
+      if (o.x + o.w < -20) { o.el.remove(); obs.splice(i, 1); }
+    }
+
+    raf = requestAnimationFrame(step);
+  }
+
+  function go() {
+    screen('scPlay');
+    clearObs();
+    y = 0; vy = 0; onGround = true;
+    speed = SPD0; px = 0; jumps = 0; shift = 0;
+    distEl.textContent = '0';
+    hJump.textContent = '0';
+    hSpeed.textContent = Math.round(SPD0 / 10);
+    horse.src = '../images/game/run_afuwa.webp';
+    horse.classList.remove('crash');
+    horse.style.transform = 'translateY(0)';
+
+    var n = 3;
+    cue.hidden = false;
+    cueBig.textContent = n;
+    Sfx.count();
+    var iv = setInterval(function () {
+      n--;
+      if (n > 0) { cueBig.textContent = n; Sfx.count(); return; }
+      clearInterval(iv);
+      cueBig.textContent = 'GO！';
+      Sfx.start();
+      setTimeout(function () {
+        cue.hidden = true;
+        playing = true;
+        nextGap = 320;
+        last = performance.now();
+        raf = requestAnimationFrame(step);
+      }, 460);
+    }, 620);
+  }
+
+  var viaPointer = false;
+  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); viaPointer = true; jump(); });
+  stage.addEventListener('click', function () {
+    if (viaPointer) { viaPointer = false; return; }
+    jump();
+  });
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  addEventListener('keydown', function (e) {
+    if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); jump(); }
+  });
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+})();
+</script>
+</body>
+</html>

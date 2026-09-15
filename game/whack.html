@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アフロたたき｜AFRO Horse</title>
+<meta name="description" content="穴から出てくるアフロ馬をタップするだけ。やんちゃアフワは叩くと減点。60秒で何点とれるか競う無料ミニゲームです。">
+<link rel="canonical" href="https://afro-horse.com/game/whack.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/whack.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロたたき｜AFRO Horse">
+<meta property="og:description" content="穴から出てくるアフロ馬をタップ。やんちゃアフワは減点。60秒で何点とれる？">
+<meta property="og:image" content="https://afro-horse.com/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  /* ---- アフロたたき ---- */
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  .w-grid {
+    position: absolute; inset: 8px;
+    display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr);
+    gap: 7px;
+  }
+  .w-hole { position: relative; overflow: hidden; cursor: pointer; }
+
+  /* 穴 */
+  .w-hole::after {
+    content: ''; position: absolute; left: 4%; right: 4%; bottom: 2%; height: 34%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 30%, #000 0 52%, #1d1226 52% 100%);
+    box-shadow: 0 0 0 2px rgba(255, 214, 10, .18), inset 0 6px 10px rgba(0, 0, 0, .9);
+  }
+  .w-hole::before {                        /* 穴の下の光 */
+    content: ''; position: absolute; left: 14%; right: 14%; bottom: 8%; height: 18%;
+    border-radius: 50%; background: rgba(0, 240, 255, .16); filter: blur(5px);
+  }
+
+  .w-mole {
+    position: absolute; left: 6%; width: 88%; bottom: 8%; z-index: 1;
+    transform: translateY(118%); transition: transform .12s ease-out;
+  }
+  .w-hole.up .w-mole { transform: translateY(2%); }
+  .w-hole.hit .w-mole { transform: translateY(52%) scale(.88); }
+  .w-mole img {
+    display: block; width: 100%; height: auto;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, .8));
+  }
+  .w-hole.bad .w-mole img { filter: drop-shadow(0 0 12px rgba(255, 8, 68, .8)); }
+
+  .w-star {
+    position: absolute; inset: 0; z-index: 2; display: none;
+    align-items: center; justify-content: center; font-size: 34px;
+    pointer-events: none;
+  }
+  .w-hole.hit .w-star { display: flex; animation: wPop .32s ease-out; }
+  @keyframes wPop {
+    from { transform: scale(.3) rotate(-25deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(8deg); opacity: 1; }
+  }
+
+  /* コンボの表示 */
+  .ahud-val.combo.hot { color: var(--magenta); text-shadow: 0 0 12px var(--magenta); }
+
+  /* 秒読み */
+  #cue { z-index: 30; }
+  #cue .acue-big { font-size: 74px; color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">WHACK</div>
+  <h1 class="at-ttl">アフロたたき</h1>
+  <p class="at-sub">出てきたアフロ馬を、片っ端から</p>
+  <img class="at-hero" src="../images/face/yancha.webp" alt="">
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <ul class="at-how">
+    <li>穴から出た馬をタップ　+100点</li>
+    <li>連続で当てるとコンボで加点</li>
+    <li>やんちゃアフワ（金アフロ）は &minus;200点</li>
+    <li>60秒。だんだん速くなります</li>
+  </ul>
+</section>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">TIME</span><span class="ahud-val" id="hTime">60</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">SCORE</span><span class="ahud-val gold" id="hScore">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">COMBO</span><span class="ahud-val combo" id="hCombo">0</span></div>
+    </div>
+  </div>
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div class="w-grid" id="grid"></div>
+      <div class="acue" id="cue" hidden><div class="acue-big" id="cueBig">3</div></div>
+    </div>
+    <p class="astage-note">金色のアフロ＝やんちゃアフワは叩かない</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script>
+(function () {
+  var GOOD = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma'];
+  var BAD  = 'yancha';
+  var HOLES = 9, LIMIT = 60, BASE = 100, PENALTY = -200;
+
+  var stage  = document.getElementById('stage');
+  var grid   = document.getElementById('grid');
+  var cue    = document.getElementById('cue');
+  var cueBig = document.getElementById('cueBig');
+  var hTime  = document.getElementById('hTime');
+  var hScore = document.getElementById('hScore');
+  var hCombo = document.getElementById('hCombo');
+
+  var holes = [], score = 0, combo = 0, left = LIMIT, playing = false;
+  var tick = null, spawn = null;
+
+  /* ---- 画面きりかえ ---- */
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
+  }
+
+  /* ---- 穴を組む ---- */
+  (function build() {
+    var h = '';
+    for (var i = 0; i < HOLES; i++) {
+      h += '<div class="w-hole">' +
+             '<span class="w-mole"><img alt=""></span>' +
+             '<span class="w-star">&#128165;</span>' +
+           '</div>';
+    }
+    grid.innerHTML = h;
+    holes = Array.prototype.slice.call(grid.querySelectorAll('.w-hole')).map(function (el) {
+      return { el: el, img: el.querySelector('img'), busy: false, bad: false, timer: null };
+    });
+  })();
+
+  function setScore(v) { score = Math.max(0, v); hScore.textContent = score; }
+
+  function setCombo(v) {
+    combo = v;
+    hCombo.textContent = combo;
+    hCombo.classList.toggle('hot', combo >= 5);
+  }
+
+  function float(el, text, cls) {
+    var r = el.getBoundingClientRect();
+    var s = stage.getBoundingClientRect();
+    var f = document.createElement('span');
+    f.className = 'afloat ' + cls;
+    f.textContent = text;
+    f.style.left = (r.left - s.left + r.width / 2) + 'px';
+    f.style.top  = (r.top - s.top + r.height * 0.3) + 'px';
+    stage.appendChild(f);
+    setTimeout(function () { f.remove(); }, 700);
+  }
+
+  /* 経過とともに、出てる時間が短く・間隔もつまる */
+  function prog()  { return 1 - left / LIMIT; }
+  function upMs()  { return Math.round(1150 - 620 * prog()); }
+  function gapMs() { return Math.round(800 - 460 * prog()); }
+
+  function hide(h, missed) {
+    clearTimeout(h.timer);
+    h.el.classList.remove('up', 'hit', 'bad');
+    h.busy = false;
+    if (missed && !h.bad && playing) setCombo(0);   /* 良い馬を見逃すとコンボ切れ */
+  }
+
+  function pop() {
+    if (!playing) return;
+    var free = holes.filter(function (h) { return !h.busy; });
+    if (free.length) {
+      var h = free[Math.floor(Math.random() * free.length)];
+      h.bad = Math.random() < 0.22;
+      h.img.src = '../images/face/' + (h.bad ? BAD : GOOD[Math.floor(Math.random() * GOOD.length)]) + '.webp';
+      h.busy = true;
+      h.el.classList.remove('hit');
+      h.el.classList.toggle('bad', h.bad);
+      h.el.classList.add('up');
+      h.timer = setTimeout(function () { hide(h, true); }, upMs());
+    }
+    spawn = setTimeout(pop, gapMs() * (0.7 + Math.random() * 0.6));
+  }
+
+  function whack(h) {
+    if (!playing || !h.busy || h.el.classList.contains('hit')) return;
+    h.el.classList.add('hit');
+    clearTimeout(h.timer);
+
+    if (h.bad) {
+      setCombo(0);
+      setScore(score + PENALTY);
+      float(h.el, PENALTY, 'minus');
+      Sfx.bad();
+      stage.classList.remove('ashake');
+      void stage.offsetWidth;
+      stage.classList.add('ashake');
+    } else {
+      setCombo(combo + 1);
+      var pts = BASE + Math.min(combo - 1, 9) * 20;
+      setScore(score + pts);
+      float(h.el, '+' + pts, 'plus');
+      Sfx.hit();
+    }
+    h.timer = setTimeout(function () { hide(h); }, 300);
+  }
+
+  function countdown() {
+    left--;
+    hTime.textContent = left;
+    hTime.classList.toggle('warn', left <= 10);
+    if (left <= 5 && left > 0) Sfx.count();
+    if (left <= 0) { stop(); return; }
+    tick = setTimeout(countdown, 1000);
+  }
+
+  function stop() {
+    playing = false;
+    clearTimeout(tick); clearTimeout(spawn);
+    holes.forEach(function (h) { hide(h); });
+    AfroScore.finish(score);
+  }
+
+  function go() {
+    setScore(0); setCombo(0);
+    left = LIMIT;
+    hTime.textContent = left;
+    hTime.classList.remove('warn');
+    screen('scPlay');
+
+    /* 3・2・1 */
+    var n = 3;
+    cue.hidden = false;
+    cueBig.textContent = n;
+    Sfx.count();
+    var iv = setInterval(function () {
+      n--;
+      if (n > 0) { cueBig.textContent = n; Sfx.count(); return; }
+      clearInterval(iv);
+      cueBig.textContent = 'GO！';
+      Sfx.start();
+      setTimeout(function () {
+        cue.hidden = true;
+        playing = true;
+        tick = setTimeout(countdown, 1000);
+        pop();
+      }, 480);
+    }, 620);
+  }
+
+  AfroScore.setup({
+    game: 'whack',
+    title: 'アフロたたき',
+    hash: 'アフロたたき',
+    unit: '点',
+    lower: false,
+    grades: [
+      { v: 5000, name: 'G1級の反応' },
+      { v: 4000, name: 'オープン級' },
+      { v: 3000, name: '3勝クラス' },
+      { v: 2200, name: '2勝クラス' },
+      { v: 1400, name: '1勝クラス' },
+      { v: 0,    name: '新馬' }
+    ],
+    onRetry: go
+  });
+
+  /* ---- 入力 ---- */
+  holes.forEach(function (h) {
+    var viaPointer = false;
+    h.el.addEventListener('pointerdown', function (e) { e.preventDefault(); viaPointer = true; whack(h); });
+    h.el.addEventListener('click', function () {
+      if (viaPointer) { viaPointer = false; return; }
+      whack(h);
+    });
+  });
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+  document.getElementById('startBtn').addEventListener('click', function () {
+    Sfx.unlock();
+    go();
+  });
+
+  /* ---- 音のON/OFF ---- */
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+})();
+</script>
+</body>
+</html>
