@@ -45,9 +45,10 @@
 
   /* 落ちてくるアフロ（画像が来るまではCSSで描く） */
   .c-afro {
-    position: absolute; left: 50%; top: 0; width: 96px; height: 78px;
-    transform: translate(-50%, -110%); z-index: 2; will-change: transform;
+    position: absolute; left: 50%; top: 0; width: 104px; height: 84px;
+    transform: translate(-50%, -140px); z-index: 2; will-change: transform;
   }
+  .c-afro.img { height: auto; }
   .c-afro i {
     position: absolute; border-radius: 50%; background: var(--c);
     box-shadow: inset -4px -5px 0 rgba(0, 0, 0, .14);
@@ -58,11 +59,11 @@
   .c-afro i:nth-child(4) { left: 2%;  top: 44%; width: 34%; height: 44%; }
   .c-afro i:nth-child(5) { left: 64%; top: 42%; width: 34%; height: 46%; }
   .c-afro.img i { display: none; }
-  .c-afro img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .c-afro img { display: block; width: 100%; height: auto; }
 
   .c-afro.caught { animation: cCaught .3s ease-out forwards; }
   @keyframes cCaught {
-    to { transform: translate(-50%, var(--y, 0)) scale(.3); opacity: 0; }
+    to { transform: translate(-50%, var(--y, 0px)) scale(.3); opacity: 0; }
   }
 
   /* 下に並ぶ6頭 */
@@ -156,6 +157,7 @@
     { file: 'yancha',   name: 'やんちゃアフワ', afro: 'afro_kin',  c: '#f0c33c' }
   ];
   var LIVES = 3;
+  var CATCH_LINE = 70;      /* 下から何pxで取りこぼしにするか */
 
   var stage  = document.getElementById('stage');
   var pad    = document.getElementById('pad');
@@ -238,11 +240,20 @@
     probe.alt = '';
 
     /* 横位置はランダム（端に寄りすぎないように） */
-    var lx = 18 + Math.random() * 64;
-    el.style.left = lx + '%';
+    el.style.left = (18 + Math.random() * 64) + '%';
     stage.appendChild(el);
 
-    cur = { el: el, idx: idx, y: -0.12, speed: 1 / (fallMs() / 1000), done: false };
+    /* 上の見えない位置から、受け取りラインまでを fallMs() で落とす。
+       translateY は % だと「要素自身の高さ」基準になるので px で動かす */
+    var elH  = el.offsetHeight || 84;
+    var goal = stage.clientHeight - CATCH_LINE;
+    var from = -(elH + 10);
+    el.style.transform = 'translate(-50%,' + from + 'px)';
+
+    cur = {
+      el: el, idx: idx, y: from, goal: goal,
+      speed: (goal - from) / (fallMs() / 1000), done: false
+    };
     last = performance.now();
     raf = requestAnimationFrame(step);
   }
@@ -252,9 +263,9 @@
     var dt = Math.min(0.05, (t - last) / 1000);
     last = t;
     cur.y += cur.speed * dt;
-    cur.el.style.transform = 'translate(-50%, ' + (cur.y * 100) + '%)';
-    /* ステージの高さぶん進んだら取りこぼし */
-    if (cur.y * stage.clientHeight >= stage.clientHeight - 74) { missed(); return; }
+    cur.el.style.transform = 'translate(-50%,' + cur.y + 'px)';
+    /* 受け取りラインまで落ちたら取りこぼし */
+    if (cur.y >= cur.goal) { missed(); return; }
     raf = requestAnimationFrame(step);
   }
 
@@ -264,7 +275,7 @@
     var el = cur.el;
     cur.done = true;
     if (caught) {
-      el.style.setProperty('--y', (cur.y * 100) + '%');
+      el.style.setProperty('--y', cur.y + 'px');
       el.classList.add('caught');
       setTimeout(function () { el.remove(); }, 320);
     } else {
