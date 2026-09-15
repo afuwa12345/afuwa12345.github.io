@@ -43,12 +43,15 @@
     opacity: .5; z-index: 1;
   }
 
-  /* 落ちてくるアフロ（画像が来るまではCSSで描く） */
+  /* 落ちてくるアフロ。何個も同時に降る */
   .c-afro {
-    position: absolute; left: 50%; top: 0; width: 104px; height: 84px;
-    transform: translate(-50%, -140px); z-index: 2; will-change: transform;
+    position: absolute; left: 50%; top: 0; width: 74px; height: 60px;
+    transform: translate(-50%, -100px); z-index: 2; will-change: transform;
+    opacity: .72; transition: opacity .16s;
   }
   .c-afro.img { height: auto; }
+  /* いちばん下＝次に落ちるやつだけはっきり見せる */
+  .c-afro.lead { opacity: 1; filter: drop-shadow(0 0 12px rgba(0, 240, 255, .55)); }
   .c-afro i {
     position: absolute; border-radius: 50%; background: var(--c);
     box-shadow: inset -4px -5px 0 rgba(0, 0, 0, .14);
@@ -66,20 +69,20 @@
     to { transform: translate(-50%, var(--y, 0px)) scale(.3); opacity: 0; }
   }
 
-  /* 下に並ぶ6頭 */
+  /* 下に並ぶ6頭。3列×2段で大きく */
   .c-pad {
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
-    padding: 8px 0 2px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px;
+    padding: 9px 0 2px;
   }
   .c-key {
-    position: relative; padding: 3px 1px 2px; cursor: pointer;
+    position: relative; padding: 5px 3px 4px; cursor: pointer;
     background: rgba(255, 255, 255, .05);
-    border: 2px solid var(--grey2); border-radius: 9px;
+    border: 2px solid var(--grey2); border-radius: 12px;
     transition: transform .09s, border-color .12s, background .12s, box-shadow .12s;
   }
-  .c-key img { display: block; width: 100%; height: auto; }
+  .c-key img { display: block; width: 100%; height: auto; max-height: 76px; object-fit: contain; }
   .c-key b {
-    position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+    position: absolute; left: 6px; right: 6px; bottom: -1px; height: 3px;
     border-radius: 2px; background: var(--c);
   }
   .c-key.ok  { border-color: var(--green); background: rgba(18, 209, 122, .2); box-shadow: 0 0 18px rgba(18, 209, 122, .5); }
@@ -115,8 +118,8 @@
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
   <ul class="at-how">
-    <li>上からアフロが落ちてきます</li>
-    <li>そのアフロの持ち主を下からタップ</li>
+    <li>上からアフロが次々に落ちてきます</li>
+    <li>そのアフロの持ち主を下からタップ（下にあるものから）</li>
     <li>間違い・取りこぼしでライフが1つ減る</li>
     <li>ライフ3つ。だんだん速くなります</li>
   </ul>
@@ -136,7 +139,7 @@
       <div class="acue" id="cue" hidden><div class="acue-big" id="cueBig">3</div></div>
     </div>
     <div class="c-pad" id="pad"></div>
-    <p class="astage-note">アフロの色をよく見て</p>
+    <p class="astage-note">光っているのが、いちばん下のアフロ</p>
   </div>
 </section>
 
@@ -147,7 +150,7 @@
 <script src="../js/afro-score.js"></script>
 <script>
 (function () {
-  /* file … 顔アップ / afro … アフロ画像（無ければCSSで描く） / c … アフロの色 */
+  /* file … 顔アップ / afro … アフロ画像 / c … アフロの色 */
   var CHARAS = [
     { file: 'afuwa',    name: 'アフワ',        afro: 'afro_kuro', c: '#3b3128' },
     { file: 'buruma',   name: 'ブルマ',        afro: 'afro_mizu', c: '#7ec8e8' },
@@ -156,8 +159,9 @@
     { file: 'ginma',    name: 'ギンマ',        afro: 'afro_gin',  c: '#cfcfcf' },
     { file: 'yancha',   name: 'やんちゃアフワ', afro: 'afro_kin',  c: '#f0c33c' }
   ];
-  var LIVES = 3;
-  var CATCH_LINE = 70;      /* 下から何pxで取りこぼしにするか */
+  var LIVES      = 3;
+  var CATCH_LINE = 56;   /* 下から何pxで取りこぼしにするか */
+  var MAX_DROPS  = 5;    /* 同時に降る上限。これ以上は見て分からなくなる */
 
   var stage  = document.getElementById('stage');
   var pad    = document.getElementById('pad');
@@ -168,15 +172,22 @@
   var hLife  = document.getElementById('hLife');
 
   var keys = [], score = 0, combo = 0, lives = LIVES, playing = false;
-  var cur = null;          /* { el, idx, y, speed } */
-  var raf = null, last = 0;
+  var drops = [], raf = null, last = 0, spawnTimer = null;
 
   function screen(id) {
     var all = document.querySelectorAll('.ascreen');
     for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
   }
 
-  /* ---- 下の6頭 ---- */
+  /* アフロ画像を先に読ませておく（降り始めてから読むとちらつく） */
+  (function preload() {
+    for (var i = 0; i < CHARAS.length; i++) {
+      var im = new Image();
+      im.src = '../images/afro/' + CHARAS[i].afro + '.webp';
+    }
+  })();
+
+  /* ---- 下の6頭（3列×2段） ---- */
   (function build() {
     pad.innerHTML = CHARAS.map(function (c) {
       return '<button class="c-key" type="button" style="--c:' + c.c + '">' +
@@ -195,7 +206,13 @@
   })();
 
   function setScore(v) { score = v; hScore.textContent = score; }
-  function setCombo(v) { combo = v; hCombo.textContent = combo; }
+
+  function setCombo(v) {
+    combo = v;
+    hCombo.textContent = combo;
+    hCombo.classList.toggle('gold', combo >= 5);
+  }
+
   function setLife(v) {
     lives = v;
     var h = '';
@@ -208,128 +225,178 @@
     setTimeout(function () { keys[i].classList.remove(cls); }, 260);
   }
 
-  function float(text, cls) {
+  function float(text, cls, leftPct, topPx) {
     var f = document.createElement('span');
     f.className = 'afloat ' + cls;
     f.textContent = text;
-    f.style.left = '50%';
-    f.style.top = '58%';
+    f.style.left = (leftPct == null ? 50 : leftPct) + '%';
+    f.style.top  = (topPx == null ? stage.clientHeight * 0.5 : topPx) + 'px';
     stage.appendChild(f);
     setTimeout(function () { f.remove(); }, 700);
   }
 
-  /* 落下にかかる時間（だんだん短く） */
-  function fallMs() { return Math.max(900, 2800 - score * 62); }
+  function shake() {
+    stage.classList.remove('ashake');
+    void stage.offsetWidth;
+    stage.classList.add('ashake');
+  }
 
-  function drop() {
+  /* 落ちる速さと、次が降ってくる間隔。取るほどきつくなる */
+  function fallMs()  { return Math.max(1700, 3400 - score * 45); }
+  function spawnMs() { return Math.max(520,  1500 - score * 35); }
+
+  function spawn() {
     if (!playing) return;
-    var idx = Math.floor(Math.random() * CHARAS.length);
-    var c = CHARAS[idx];
 
-    var el = document.createElement('div');
-    el.className = 'c-afro';
-    el.style.setProperty('--c', c.c);
-    el.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
-    /* 専用のアフロ画像があればそれを使う（無ければCSSのまま） */
-    var probe = new Image();
-    probe.onload = function () {
-      el.classList.add('img');
-      el.appendChild(probe);
-    };
-    probe.src = '../images/afro/' + c.afro + '.webp';
-    probe.alt = '';
+    if (drops.length < MAX_DROPS) {
+      var idx = Math.floor(Math.random() * CHARAS.length);
+      var c = CHARAS[idx];
 
-    /* 横位置はランダム（端に寄りすぎないように） */
-    el.style.left = (18 + Math.random() * 64) + '%';
-    stage.appendChild(el);
+      var el = document.createElement('div');
+      el.className = 'c-afro';
+      el.style.setProperty('--c', c.c);
+      el.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
+      var im = new Image();
+      im.alt = '';
+      im.onload = function () { el.classList.add('img'); el.appendChild(im); };
+      im.src = '../images/afro/' + c.afro + '.webp';
 
-    /* 上の見えない位置から、受け取りラインまでを fallMs() で落とす。
-       translateY は % だと「要素自身の高さ」基準になるので px で動かす */
-    var elH  = el.offsetHeight || 84;
-    var goal = stage.clientHeight - CATCH_LINE;
-    var from = -(elH + 10);
-    el.style.transform = 'translate(-50%,' + from + 'px)';
+      /* すでに降っているものと横位置が重ならないようにする */
+      var lx, tries = 0;
+      do {
+        lx = 16 + Math.random() * 68;
+        tries++;
+      } while (tries < 8 && tooClose(lx));
+      el.style.left = lx + '%';
+      stage.appendChild(el);
 
-    cur = {
-      el: el, idx: idx, y: from, goal: goal,
-      speed: (goal - from) / (fallMs() / 1000), done: false
-    };
-    last = performance.now();
-    raf = requestAnimationFrame(step);
+      var elH  = el.offsetHeight || 60;
+      var goal = stage.clientHeight - CATCH_LINE;
+      var from = -(elH + 10);
+      el.style.transform = 'translate(-50%,' + from + 'px)';
+
+      drops.push({
+        el: el, idx: idx, lx: lx, y: from, goal: goal,
+        speed: (goal - from) / (fallMs() / 1000), done: false
+      });
+    }
+
+    spawnTimer = setTimeout(spawn, spawnMs() * (0.8 + Math.random() * 0.4));
   }
 
-  function step(t) {
-    if (!playing || !cur || cur.done) return;
-    var dt = Math.min(0.05, (t - last) / 1000);
-    last = t;
-    cur.y += cur.speed * dt;
-    cur.el.style.transform = 'translate(-50%,' + cur.y + 'px)';
-    /* 受け取りラインまで落ちたら取りこぼし */
-    if (cur.y >= cur.goal) { missed(); return; }
-    raf = requestAnimationFrame(step);
+  function tooClose(lx) {
+    for (var i = 0; i < drops.length; i++) {
+      if (Math.abs(drops[i].lx - lx) < 20) return true;
+    }
+    return false;
   }
 
-  function clearCur(caught) {
-    if (!cur) return;
-    cancelAnimationFrame(raf);
-    var el = cur.el;
-    cur.done = true;
+  /* いちばん下のものを目立たせる */
+  function markLead() {
+    var lead = null;
+    for (var i = 0; i < drops.length; i++) {
+      if (drops[i].done) continue;
+      if (!lead || drops[i].y > lead.y) lead = drops[i];
+    }
+    for (var j = 0; j < drops.length; j++) {
+      drops[j].el.classList.toggle('lead', drops[j] === lead);
+    }
+  }
+
+  function remove(d, caught) {
+    d.done = true;
+    var el = d.el;
     if (caught) {
-      el.style.setProperty('--y', cur.y + 'px');
+      el.style.setProperty('--y', d.y + 'px');
       el.classList.add('caught');
       setTimeout(function () { el.remove(); }, 320);
     } else {
       el.remove();
     }
-    cur = null;
+    var k = drops.indexOf(d);
+    if (k >= 0) drops.splice(k, 1);
   }
 
-  function missed() {
-    Sfx.bad();
-    setCombo(0);
-    clearCur(false);
-    stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
-    hit();
-  }
-
-  function hit() {                     /* ライフを1つ減らす */
+  /* ライフを1つ減らす。0になったら終了して false を返す */
+  function damage() {
     setLife(lives - 1);
-    if (lives <= 0) { stop(); return; }
-    setTimeout(drop, 520);
+    if (lives <= 0) { stop(); return false; }
+    return true;
+  }
+
+  function step(t) {
+    if (!playing) return;
+    var dt = Math.min(0.05, (t - last) / 1000);
+    last = t;
+
+    for (var i = drops.length - 1; i >= 0; i--) {
+      var d = drops[i];
+      if (d.done) continue;
+      d.y += d.speed * dt;
+      d.el.style.transform = 'translate(-50%,' + d.y + 'px)';
+      if (d.y >= d.goal) {                 /* 取りこぼし */
+        float('MISS', 'minus', d.lx, d.goal - 30);
+        remove(d, false);
+        Sfx.bad();
+        setCombo(0);
+        shake();
+        if (!damage()) return;
+      }
+    }
+    markLead();
+
+    raf = requestAnimationFrame(step);
   }
 
   function pick(i) {
-    if (!playing || !cur || cur.done) return;
-    if (i === cur.idx) {
+    if (!playing) return;
+
+    /* 降っているうち、いちばん下にある「合っているもの」を取る */
+    var hit = null;
+    for (var k = 0; k < drops.length; k++) {
+      var d = drops[k];
+      if (d.done || d.idx !== i) continue;
+      if (!hit || d.y > hit.y) hit = d;
+    }
+
+    if (hit) {
       flash(i, 'ok');
       setCombo(combo + 1);
       setScore(score + 1);
-      float('+1', 'plus');
+      float('+1', 'plus', hit.lx, hit.y);
       Sfx.good();
-      clearCur(true);
-      setTimeout(drop, 300);
+      remove(hit, true);
+      markLead();
     } else {
       flash(i, 'ng');
       setCombo(0);
       Sfx.bad();
-      stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
-      clearCur(false);
-      hit();
+      shake();
+      damage();
     }
+  }
+
+  function clearAll() {
+    for (var i = 0; i < drops.length; i++) drops[i].el.remove();
+    drops = [];
+    var olds = stage.querySelectorAll('.c-afro');
+    for (var j = 0; j < olds.length; j++) olds[j].remove();
   }
 
   function stop() {
     playing = false;
     cancelAnimationFrame(raf);
-    clearCur(false);
+    clearTimeout(spawnTimer);
+    clearAll();
     AfroScore.finish(score);
   }
 
   function go() {
     screen('scPlay');
+    clearTimeout(spawnTimer);
+    cancelAnimationFrame(raf);
+    clearAll();
     setScore(0); setCombo(0); setLife(LIVES);
-    var olds = stage.querySelectorAll('.c-afro');
-    for (var i = 0; i < olds.length; i++) olds[i].remove();
 
     var n = 3;
     cue.hidden = false;
@@ -344,7 +411,9 @@
       setTimeout(function () {
         cue.hidden = true;
         playing = true;
-        drop();
+        last = performance.now();
+        raf = requestAnimationFrame(step);
+        spawn();
       }, 460);
     }, 620);
   }
@@ -356,11 +425,11 @@
     unit: '個',
     lower: false,
     grades: [
-      { v: 35, name: 'G1級の目' },
-      { v: 26, name: 'オープン級' },
-      { v: 19, name: '3勝クラス' },
-      { v: 13, name: '2勝クラス' },
-      { v: 7,  name: '1勝クラス' },
+      { v: 45, name: 'G1級の目' },
+      { v: 34, name: 'オープン級' },
+      { v: 25, name: '3勝クラス' },
+      { v: 17, name: '2勝クラス' },
+      { v: 9,  name: '1勝クラス' },
       { v: 0,  name: '新馬' }
     ],
     onRetry: go
