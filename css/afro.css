@@ -80,6 +80,8 @@ body.theme-sns {
 }
 
 * { box-sizing: border-box; }
+/* hidden 属性が display の指定に負けないようにする */
+[hidden] { display: none !important; }
 h1, h2 { margin: 0; font-weight: 400; }
 html {
   scroll-behavior: smooth;
@@ -694,6 +696,55 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 }
 
 /* パンくず／戻る */
+/* ---------- 見出し帯の「説明」ボタン ---------- */
+.phead-help {
+  position: relative; z-index: 1; margin: 10px 0 0;
+  display: inline-block; cursor: pointer;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 700; font-size: 12px;
+  letter-spacing: .06em; color: var(--paper);
+  background: rgba(0, 0, 0, .28); border: 1px solid rgba(232, 196, 104, .55);
+  padding: 7px 20px; border-radius: 999px;
+  transition: background .16s, transform .12s;
+}
+.phead-help:hover { background: rgba(0, 0, 0, .42); }
+.phead-help:active { transform: translateY(1px); }
+.phead-help::before { content: '?'; margin-right: 7px; color: var(--gold-lt); font-weight: 900; }
+
+/* ---------- 説明のポップアップ ---------- */
+.hpop {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(26, 30, 24, .62);
+  display: flex; align-items: center; justify-content: center; padding: 18px;
+}
+.hpop-card {
+  width: 100%; max-width: 360px; background: var(--white);
+  border-radius: 12px; padding: 20px 20px 16px;
+  box-shadow: 0 20px 50px rgba(26, 30, 24, .35);
+  animation: hpopIn .2s ease-out;
+}
+@keyframes hpopIn { from { opacity: 0; transform: translateY(12px); } }
+.hpop-t {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 16px;
+  color: var(--turf-dk); text-align: center; margin: 0 0 14px;
+}
+.hpop-list { margin: 0; padding: 0; }
+.hpop-list li {
+  list-style: none; position: relative; padding-left: 22px;
+  font-size: 13.5px; line-height: 1.8; color: var(--ink-soft); margin: 0 0 10px;
+}
+.hpop-list li::before {
+  content: ''; position: absolute; left: 4px; top: .65em;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
+}
+.hpop-list li b { color: var(--ink); font-weight: 700; }
+.hpop-close {
+  display: block; width: 100%; margin: 6px 0 0; cursor: pointer;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 700; font-size: 13.5px;
+  color: #fff; background: var(--turf); border: 0; border-radius: 8px; padding: 12px;
+  transition: background .16s;
+}
+.hpop-close:hover { background: var(--turf-2); }
+
 /* ---------- ツール一覧の見出しバッジ ---------- */
 /* .trow は 3列のグリッドなので、バッジは列を増やさず名前の中に入れる */
 .t-tag {

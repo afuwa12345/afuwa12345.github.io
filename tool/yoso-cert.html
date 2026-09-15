@@ -750,6 +750,8 @@
 <body class="theme-keiba">
 
 <!-- NAV -->
+<h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">予想証明システム｜競馬予想を改ざん不可で記録・証明（AFRO Horse）</h1>
+
 <nav class="nav">
   <div class="nav-in">
     <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
@@ -767,17 +769,24 @@
   <div class="phead-en">CERTIFICATE</div>
   <div class="phead-ja">予想証明システム</div>
   <p class="phead-sub">予想を証明として残す</p>
+  <button class="phead-help" type="button" id="howBtn">説明</button>
   <img class="phead-chara" src="../images/tool_hero.webp" alt="" aria-hidden="true">
 </header>
+
+<div class="hpop" id="howPop" hidden>
+  <div class="hpop-card">
+    <p class="hpop-t">つかいかた</p>
+    <ul class="hpop-list">
+      <li>レース前に予想を登録します</li>
+      <li><b>改ざんできない証明書</b>が発行されます</li>
+      <li>「後出し」と疑われずに、本物の予想実績を残せます</li>
+      <li>予想の公開や、予想家としての活動に</li>
+    </ul>
+    <button class="hpop-close" type="button" id="howClose">とじる</button>
+  </div>
+</div>
 <!-- LIST VIEW -->
 <div id="list-view" class="view active">
-  <section class="hero">
-    <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">予想証明システム｜競馬予想を改ざん不可で記録・証明（AFRO Horse）</h1>
-    <p class="hero-lead">
-      レース前に予想を登録すると、改ざん不可能な証明書を発行できる無料システム。「後出し」と疑われない、本物の予想実績を残せる。SNSでの予想公開や予想家活動に。
-    </p>
-  </section>
-
   <div class="action-row">
     <button class="btn-primary" onclick="showRegister()">＋ 予想を登録</button>
     <button class="btn-verify" onclick="showVerify()">🔍 検証</button>
@@ -1482,5 +1491,6 @@ function selectPred(id) {
   renderList();
 })();
 </script>
+<script src="../js/afro-ui.js"></script>
 </body>
 </html>

@@ -419,6 +419,8 @@
 </head>
 <body class="theme-keiba">
 
+<h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">AFRO Horse 馬券シミュレーター｜オリジナル馬券画像メーカー無料ツール</h1>
+
 <nav class="nav">
   <div class="nav-in">
     <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
@@ -436,16 +438,24 @@
   <div class="phead-en">TICKET MAKER</div>
   <div class="phead-ja">馬券メーカー</div>
   <p class="phead-sub">本物そっくりの馬券画像をつくる</p>
+  <button class="phead-help" type="button" id="howBtn">説明</button>
   <img class="phead-chara" src="../images/tool_hero.webp" alt="" aria-hidden="true">
 </header>
-<!-- HERO -->
-<section class="hero">
-  <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">AFRO Horse 馬券シミュレーター｜オリジナル馬券画像メーカー無料ツール</h1>
-  <p class="hero-lead">
-    自分だけのオリジナル馬券画像をつくれる無料ツール。3種類の背景テンプレート（ロゴ版・アフワ版・やんちゃアフワ版）から選んで、レース情報・買い目を入力するだけ。SNSの投稿や保存、推し馬の記念に。
-  </p>
-</section>
 
+<div class="hpop" id="howPop" hidden>
+  <div class="hpop-card">
+    <p class="hpop-t">つかいかた</p>
+    <ul class="hpop-list">
+      <li>背景を<b>3種類</b>から選びます（ロゴ版・アフワ版・やんちゃアフワ版）</li>
+      <li>レース情報と買い目を入力するだけ</li>
+      <li><b>本物そっくりの馬券画像</b>ができます</li>
+      <li>保存してSNSに投稿できます。推し馬の記念にも</li>
+      <li>※ 実際の馬券ではありません。遊び用の画像です</li>
+    </ul>
+    <button class="hpop-close" type="button" id="howClose">とじる</button>
+  </div>
+</div>
+<!-- HERO -->
 <!-- STEP 1: 背景テンプレート -->
 <section class="section">
   <div class="cat-label">
@@ -861,5 +871,6 @@ BG_SRCS.forEach(function(src,i){
   img.src=src;
 });
 </script>
+<script src="../js/afro-ui.js"></script>
 </body>
 </html>

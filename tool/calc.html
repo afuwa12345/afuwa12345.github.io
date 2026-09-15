@@ -660,8 +660,23 @@
   <div class="phead-en">CALCULATOR</div>
   <div class="phead-ja">買い目点数ツール</div>
   <p class="phead-sub">点数と金額を一瞬で計算</p>
+  <button class="phead-help" type="button" id="howBtn">説明</button>
   <img class="phead-chara" src="../images/tool_hero.webp" alt="" aria-hidden="true">
 </header>
+
+<div class="hpop" id="howPop" hidden>
+  <div class="hpop-card">
+    <p class="hpop-t">つかいかた</p>
+    <ul class="hpop-list">
+      <li><b>馬券の種類</b>を選んで、買う馬をタップするだけ</li>
+      <li><b>点数と合計金額</b>をその場で計算します</li>
+      <li>単勝・複勝・ワイド・馬連・馬単・3連複・3連単・WIN5に対応</li>
+      <li><b>ボックス</b>・<b>軸1頭流し</b>・<b>フォーメーション</b>も選べます</li>
+      <li>「買目プレビュー」で、買い目を1点ずつ確認できます</li>
+    </ul>
+    <button class="hpop-close" type="button" id="howClose">とじる</button>
+  </div>
+</div>
 <main class="page-wrap">
 <h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">競馬買目点数計算ツール｜馬連・3連複・3連単の買い目自動計算（AFRO Horse）</h1>
 <div class="app-wrap">
@@ -1257,5 +1272,6 @@ window.addEventListener('load', () => {
 });
 // --- ここまで追加 ---
 </script>
+<script src="../js/afro-ui.js"></script>
 </body>
 </html>
