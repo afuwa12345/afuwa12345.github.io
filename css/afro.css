@@ -545,6 +545,19 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 }
 .phead-sub { position: relative; z-index: 1; margin: 0; font-size: 12.5px; color: rgba(247,242,227,.86); }
 
+/* 見出し帯に置くキャラクター */
+.phead.has-chara { padding-right: 34%; text-align: left; }
+.phead-chara {
+  position: absolute; right: -8px; bottom: -6px; z-index: 1;
+  width: 40%; max-width: 210px; height: auto;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,.28));
+  pointer-events: none;
+}
+@media (max-width: 420px) {
+  .phead.has-chara { padding-right: 30%; }
+  .phead-chara { width: 44%; right: -14px; }
+}
+
 /* パンくず／戻る */
 .backlink {
   display: inline-flex; align-items: center; gap: 6px;
