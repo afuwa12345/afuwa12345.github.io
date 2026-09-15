@@ -41,7 +41,7 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 main { position:relative; z-index:1; }
 main {
-  padding:90px 20px 40px;
+  padding:24px 20px 40px;
   max-width:900px;margin:0 auto;
 }
 .page-head { text-align:center; margin-bottom:30px; }
@@ -547,7 +547,7 @@ main {
 @media (max-width:600px) {
   .nav { padding:0 14px; }
   .nav-logo { font-size:20px; }
-  main { padding:80px 14px 30px; }
+  main { padding:18px 14px 30px; }
   .page-head-ja { font-size:20px; }
   .month-num { font-size:30px; }
   .month-num em { font-size:20px; }
@@ -556,6 +556,15 @@ main {
   .race-date { font-size:13px; }
   .race-grade { font-size:10px; padding:3px 6px; }
 }
+
+/* ===== 月の切り替え ===== */
+.toc-list a.is-on {
+  background: var(--turf);
+  color: var(--cream);
+  border-color: var(--turf);
+  box-shadow: 0 2px 8px rgba(20, 88, 58, .3);
+}
+.toc-list a.toc-all { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 12px; }
 </style>
 </head>
 <body class="theme-keiba">
@@ -588,7 +597,7 @@ main {
   </div>
 
   <div class="toc">
-    <div class="toc-title">▼ 月から探す</div>
+    <div class="toc-title">▼ 月を選ぶ</div>
     <div class="toc-list">
       <a href="#m1">1月</a>
       <a href="#m2">2月</a>
@@ -602,6 +611,7 @@ main {
       <a href="#m10">10月</a>
       <a href="#m11">11月</a>
       <a href="#m12">12月</a>
+      <a href="#all" class="toc-all">全部</a>
     </div>
   </div>
 
@@ -933,6 +943,74 @@ for (let m = 1; m <= 12; m++) {
 
   // ページ読み込み時実行（カレンダー生成後）
   setTimeout(openRaceFromUrl, 200);
+})();
+</script>
+
+<!-- ===== 月ごとの表示きりかえ ===== -->
+<script>
+(function () {
+  var secs = document.querySelectorAll('.month-section');
+  var tabs = document.querySelectorAll('.toc-list a');
+  if (!secs.length || !tabs.length) return;
+
+  /* どの月があるか */
+  var have = {};
+  for (var i = 0; i < secs.length; i++) {
+    var n = parseInt(secs[i].id.replace('m', ''), 10);
+    if (n) have[n] = secs[i];
+  }
+
+  function show(key) {
+    var all = (key === 'all');
+    for (var i = 0; i < secs.length; i++) {
+      secs[i].hidden = !all && (secs[i].id !== 'm' + key);
+    }
+    for (var j = 0; j < tabs.length; j++) {
+      var href = tabs[j].getAttribute('href') || '';
+      var mine = all ? (href === '#all') : (href === '#m' + key);
+      tabs[j].classList.toggle('is-on', mine);
+    }
+  }
+
+  /* 目次を押したらその月だけ出す。アンカー飛びはさせない */
+  for (var k = 0; k < tabs.length; k++) {
+    tabs[k].addEventListener('click', function (e) {
+      e.preventDefault();
+      var href = this.getAttribute('href') || '';
+      var key = href === '#all' ? 'all' : href.replace('#m', '');
+      show(key);
+      /* 一覧の頭に戻す。ヘッダーの高さぶん少し上に余白 */
+      var top = document.querySelector('.toc');
+      if (top) {
+        var y = top.getBoundingClientRect().top + window.pageYOffset - 70;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  }
+
+  /* 最初に出す月を決める。
+     ?race= で来たときはそのレースの月。なければ今月。今月に重賞が無ければ最初の月 */
+  var start = null;
+  var raceName = new URLSearchParams(location.search).get('race');
+  if (raceName) {
+    var card = null;
+    var cards = document.querySelectorAll('.race-card[data-race-name]');
+    for (var c = 0; c < cards.length; c++) {
+      if (cards[c].dataset.raceName === raceName) { card = cards[c]; break; }
+    }
+    if (card) {
+      var sec = card.closest ? card.closest('.month-section') : null;
+      if (sec) start = sec.id.replace('m', '');
+    }
+  }
+  if (!start) {
+    var now = new Date().getMonth() + 1;
+    start = have[now] ? String(now) : null;
+  }
+  if (!start) {
+    for (var m = 1; m <= 12; m++) { if (have[m]) { start = String(m); break; } }
+  }
+  show(start || 'all');
 })();
 </script>
 
