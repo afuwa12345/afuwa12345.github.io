@@ -17,7 +17,7 @@
   --white: #fafafa;
   --grey: #2a2024;
   --grey2: #3a2f33;
-  --nav: #0e2e1f;
+  --nav: #4A3607;          /* アフワワールドの金茶系 */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -53,7 +53,7 @@ body {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: 52px; padding: 0 14px;
   display: flex; align-items: center; justify-content: space-between;
-  background: rgba(14, 46, 31, .96);
+  background: rgba(74, 54, 7, .96);
   border-bottom: 2px solid var(--gold-d);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }

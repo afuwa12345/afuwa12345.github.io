@@ -235,10 +235,10 @@ body {
 /* ゲームは正方形のタイルで並べる */
 .games.tile { grid-template-columns: 1fr 1fr; gap: 9px; }
 .games.tile .game-shot { aspect-ratio: 1 / 1; }
-.games.tile .game-body { padding: 9px 10px 11px; }
-.games.tile .game-name { font-size: 13px; }
-.games.tile .game-desc { font-size: 10.5px; line-height: 1.6; margin-top: 2px; }
-.games.tile .game-badge { font-size: 9px; padding: 2px 7px; }
+.games.tile .game-body { padding: 11px 12px 13px; }
+.games.tile .game-name { font-size: 14.5px; }
+.games.tile .game-desc { font-size: 12.5px; line-height: 1.7; margin-top: 4px; color: var(--ink-soft); }
+.games.tile .game-badge { font-size: 10px; padding: 3px 8px; }
 @media (min-width: 620px) { .games.tile { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .game-card {
   display: block; position: relative; overflow: hidden;
