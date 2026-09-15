@@ -491,6 +491,13 @@ section { padding: 22px 0 0; }
   font-size: 11.5px; color: var(--ink-dim); text-align: right; margin-top: 18px;
 }
 
+/* 横長バナー */
+.banner {
+  display: block; width: 100%; height: auto;
+  border-radius: 8px; border: 1px solid var(--rule);
+  box-shadow: var(--sh-sm); margin-bottom: 12px;
+}
+
 /* ===== ツール ===== */
 .tools { background: var(--white); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; box-shadow: var(--sh-sm); }
 .trow {
