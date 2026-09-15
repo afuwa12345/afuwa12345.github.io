@@ -25,6 +25,31 @@
   --c-ginma:  #2A7C4A; --c-ginma-ink:  #FFFFFF;
 }
 
+/* ===== ページごとの基調色 =====
+   body に theme-xxx を付けると、帯・ナビ・フッター・見出しの色が変わる。
+   既定（クラス無し）は KEIBA と同じ緑。 */
+body.theme-comic {
+  --turf:    #A82823;
+  --turf-2:  #C9302B;
+  --turf-dk: #781915;
+  --gold:    #B0362F;
+  --gold-lt: #F0C07A;
+}
+body.theme-world {
+  --turf:    #8A6410;
+  --turf-2:  #B5871A;
+  --turf-dk: #5C4309;
+  --gold:    #97701A;
+  --gold-lt: #FFF0C2;
+}
+body.theme-sns {
+  --turf:    #1D4E82;
+  --turf-2:  #2A6BAE;
+  --turf-dk: #143A62;
+  --gold:    #24609E;
+  --gold-lt: #EFC978;
+}
+
 * { box-sizing: border-box; }
 h1, h2 { margin: 0; font-weight: 400; }
 html { scroll-behavior: smooth; }
