@@ -36,6 +36,9 @@
 <script>
   /* ページを開いたら必ず一番上から表示する */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () {
+    if (!location.hash) window.scrollTo(0, 0);
+  });
 </script>
 
 </head>

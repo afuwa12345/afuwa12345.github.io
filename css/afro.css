@@ -70,11 +70,15 @@ body.theme-sns {
 
 * { box-sizing: border-box; }
 h1, h2 { margin: 0; font-weight: 400; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;   /* 古いブラウザ向け */
+  overflow-x: clip;     /* スクロール枠を作らずに横あふれだけ止める */
+}
 body {
   margin: 0; background: var(--paper); color: var(--ink);
   font-family: 'Zen Kaku Gothic New', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
-  font-size: 15px; line-height: 1.8; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  font-size: 15px; line-height: 1.8; -webkit-font-smoothing: antialiased;
 }
 .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 
