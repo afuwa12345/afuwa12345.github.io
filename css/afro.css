@@ -247,6 +247,16 @@ body {
 .game-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
 .game-shot { display: block; aspect-ratio: 16 / 9; background: var(--paper-2); overflow: hidden; }
 .game-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* ゲームのアイコン。丸バッジなので暗い地に置いて浮かせる */
+.game-shot.icon {
+  background: linear-gradient(160deg, #2b2340 0%, #171226 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.game-shot.icon img {
+  width: 88%; height: 88%; object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .45));
+}
+
 /* 専用イラストが入るまでの色地サムネ。キャラは切らずに収める */
 .game-shot.art { background: var(--ax, linear-gradient(135deg, var(--turf-2), var(--turf-dk))); }
 .game-shot.art img { object-fit: contain; padding: 8px; box-sizing: border-box; }

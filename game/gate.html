@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>ゲート発走｜AFRO Horse</title>
+<title>アフロ発走｜AFRO Horse</title>
 <meta name="description" content="ゲートが開いた瞬間にタップ。アフロ馬と反射神経を競う無料ゲーム。5回の平均タイムでランキングに挑戦できます。">
 <link rel="canonical" href="https://afro-horse.com/game/gate.html">
 <link rel="icon" href="../favicon.ico">
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afro-horse.com/game/gate.html">
 <meta property="og:site_name" content="AFRO Horse">
-<meta property="og:title" content="ゲート発走｜AFRO Horse">
+<meta property="og:title" content="アフロ発走｜AFRO Horse">
 <meta property="og:description" content="ゲートが開いた瞬間にタップ。5回の平均タイムで反射神経を競う無料ゲーム。">
 <meta property="og:image" content="https://afro-horse.com/images/logo.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="../css/afro-arcade.css">
 
 <style>
-  /* ---- ゲート発走 ---- */
+  /* ---- アフロ発走 ---- */
   #scPlay { padding-bottom: 6px; }
   #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
@@ -129,9 +129,8 @@
 <!-- ===== タイトル ===== -->
 <section class="ascreen active" id="scTitle">
   <div class="at-eye">REACTION</div>
-  <h1 class="at-ttl">ゲート発走</h1>
+  <h1 class="at-logo"><img src="../images/icon/gate.webp" alt="アフロ発走"></h1>
   <p class="at-sub">開いた瞬間に、タップ</p>
-  <img class="at-hero" src="../images/gate/dash_afuwa.webp" alt="" style="width:170px">
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
   <ul class="at-how">
@@ -204,8 +203,8 @@
 
   AfroScore.setup({
     game: 'gate',
-    title: 'ゲート発走',
-    hash: 'ゲート発走',
+    title: 'アフロ発走',
+    hash: 'アフロ発走',
     unit: 'ms',
     lower: true,
     grades: [

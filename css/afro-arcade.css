@@ -98,6 +98,14 @@ body {
 .at-sub { font-size: 12.5px; line-height: 1.85; color: #cfc3c9; }
 
 .at-hero { width: 148px; height: auto; margin: 6px 0 2px; animation: aBob 2.4s ease-in-out infinite; }
+
+/* アイコンがそのまま見出しになるページ用 */
+.at-logo { margin: 6px 0 10px; line-height: 0; }
+.at-logo img {
+  width: 200px; height: auto;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, .5));
+  animation: aBob 2.4s ease-in-out infinite;
+}
 @keyframes aBob {
   0%, 100% { transform: translateY(0) rotate(-2deg); }
   50% { transform: translateY(-9px) rotate(2deg); }
@@ -291,5 +299,6 @@ body {
 @media (max-height: 640px) {
   .at-ttl { font-size: 28px; }
   .at-hero { width: 112px; }
+  .at-logo img { width: 150px; }
   .at-how { display: none; }
 }
