@@ -696,6 +696,14 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 }
 
 /* パンくず／戻る */
+/* ---------- 丸アイコンを使う行（SNSなど） ---------- */
+.tools.icons .trow { grid-template-columns: 46px 1fr 14px; padding: 11px 14px; }
+.tools.icons .t-ico { padding: 0; }
+.tools.icons .t-ico img {
+  display: block; width: 100%; height: auto;
+  filter: drop-shadow(0 2px 5px rgba(26, 30, 24, .22));
+}
+
 /* ---------- 今週末の重賞 ---------- */
 .races { display: grid; gap: 8px; }
 .races-note {
