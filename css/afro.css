@@ -163,7 +163,7 @@ body {
   transition: transform .16s, box-shadow .16s;
 }
 .comic-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
-.comic-thumb { position: relative; aspect-ratio: 2 / 3; background: var(--paper-2); overflow: hidden; }
+.comic-thumb { display: block; position: relative; aspect-ratio: 2 / 3; background: var(--paper-2); overflow: hidden; }
 .comic-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .comic-ph {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
