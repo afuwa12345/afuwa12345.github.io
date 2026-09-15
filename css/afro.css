@@ -230,6 +230,7 @@ body {
 /* ゲーム一覧 */
 .games { display: grid; gap: 10px; }
 @media (min-width: 620px) { .games { grid-template-columns: 1fr 1fr; } }
+.games:not(:has(> :nth-child(2))) { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
 .game-card {
   display: block; position: relative; overflow: hidden;
   background: var(--white); border: 1px solid var(--rule); border-radius: 8px;
