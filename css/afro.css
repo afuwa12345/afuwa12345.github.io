@@ -154,8 +154,8 @@ body {
 .ax-sns   { --ax: linear-gradient(135deg, #3579C4, #24609E); }
 
 /* ===== COMIC ===== */
-.comic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media (min-width: 620px) { .comic-grid { grid-template-columns: repeat(4, 1fr); } }
+.comic-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+@media (min-width: 620px) { .comic-grid { gap: 12px; } }
 .comic-card {
   display: block; text-decoration: none; color: inherit;
   background: var(--white); border: 1px solid var(--rule); border-radius: 8px;
@@ -170,13 +170,24 @@ body {
   font-family: 'Anton', sans-serif; font-size: 26px; color: var(--rule);
 }
 .comic-ig {
-  position: absolute; top: 6px; right: 6px;
-  background: rgba(26,30,24,.7); color: #fff; font-size: 9px; font-weight: 700;
-  padding: 2px 7px; border-radius: 100px;
+  position: absolute; top: 4px; right: 4px;
+  background: rgba(26,30,24,.72); color: #fff; font-size: 7.5px; font-weight: 700;
+  padding: 2px 5px; border-radius: 100px;
+  display: none;
 }
-.comic-meta { padding: 8px 10px 10px; }
-.comic-no { font-family: 'Anton', sans-serif; font-size: 10px; letter-spacing: .14em; color: var(--gold); }
-.comic-title { font-size: 12.5px; font-weight: 700; line-height: 1.45; margin-top: 1px; }
+/* カードが小さい画面ではバッジを出さない（表紙を隠さないため） */
+@media (min-width: 620px) { .comic-ig { display: block; } }
+.comic-meta { display: block; padding: 5px 5px 7px; text-align: center; }
+.comic-no { display: block; font-family: 'Anton', sans-serif; font-size: 9px; letter-spacing: .1em; color: var(--gold); }
+.comic-title {
+  display: block; font-size: 10px; font-weight: 700; line-height: 1.35; margin-top: 1px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+@media (min-width: 620px) {
+  .comic-no { font-size: 10px; }
+  .comic-title { font-size: 12px; }
+  .comic-meta { padding: 7px 8px 9px; }
+}
 .comic-empty {
   grid-column: 1 / -1;
   background: var(--white); border: 1px dashed var(--rule); border-radius: 8px;
