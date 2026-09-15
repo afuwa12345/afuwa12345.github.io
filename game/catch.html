@@ -124,13 +124,22 @@
   <p class="at-sub">落ちてきたアフロは、誰のアフロ？</p>
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
-  <ul class="at-how">
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
     <li>上からアフロが次々に落ちてきます</li>
     <li>そのアフロの持ち主を下からタップ（下にあるものから）</li>
     <li>間違い・取りこぼしでライフが1つ減る</li>
     <li>ライフ3つ。だんだん速くなります</li>
-  </ul>
-</section>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
 
 <!-- ===== プレイ ===== -->
 <section class="ascreen" id="scPlay">
@@ -155,6 +164,7 @@
 <script src="../js/afro-rank-config.js"></script>
 <script src="../js/afro-sfx.js"></script>
 <script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
 <script>
 (function () {
   /* file … 顔アップ / afro … アフロ画像 / c … アフロの色 */

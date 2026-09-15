@@ -142,13 +142,22 @@
   <p class="at-sub">タップで跳んで、生垣を越えろ</p>
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
-  <ul class="at-how">
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
     <li>画面をタップするとジャンプ</li>
     <li>生垣にぶつかったら終わり</li>
     <li>2本続きは1回のジャンプでまとめて跳ぶ</li>
     <li>走るほど速くなる。走った距離が記録</li>
-  </ul>
-</section>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
 
 <!-- ===== プレイ ===== -->
 <section class="ascreen" id="scPlay">
@@ -179,6 +188,7 @@
 <script src="../js/afro-rank-config.js"></script>
 <script src="../js/afro-sfx.js"></script>
 <script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
 <script>
 (function () {
   var GROUND   = 74;      /* 地面の高さ(px) */

@@ -118,7 +118,10 @@ body {
   margin: 4px 0 8px; color: #fff;
   text-shadow: 0 0 14px rgba(255, 214, 10, .6), 3px 3px 0 var(--red-d);
 }
-.at-sub { font-size: 12.5px; line-height: 1.85; color: #e8dfe4; text-shadow: 0 1px 4px rgba(0, 0, 0, .8); }
+.at-sub {
+  font-size: 14px; line-height: 1.8; font-weight: 700; letter-spacing: .01em;
+  color: #f4eef1; text-shadow: 0 1px 5px rgba(0, 0, 0, .9);
+}
 
 .at-hero { width: 148px; height: auto; margin: 6px 0 2px; animation: aBob 2.4s ease-in-out infinite; }
 
@@ -135,38 +138,91 @@ body {
 }
 
 .at-best {
-  display: inline-block; margin: 14px 0 0; padding: 7px 18px;
-  border: 1px solid rgba(255, 255, 255, .22); border-radius: 999px;
-  background: rgba(8, 6, 10, .5);
-  font-size: 11.5px; color: #ddd3d8;
+  display: inline-block; margin: 16px 0 0; padding: 8px 20px;
+  border: 1px solid rgba(255, 255, 255, .26); border-radius: 999px;
+  background: rgba(8, 6, 10, .55);
+  font-size: 12.5px; font-weight: 700; color: #e6dde2;
 }
 .at-best b {
-  font-family: 'Bebas Neue', sans-serif; font-size: 19px;
-  color: var(--gold); text-shadow: 0 0 8px var(--gold); margin-left: 7px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  color: var(--gold); text-shadow: 0 0 10px var(--gold); margin-left: 8px;
 }
 
 .abtn {
+  position: relative; overflow: hidden;
   display: inline-block; border: 0; cursor: pointer; text-decoration: none;
-  font-family: 'Dela Gothic One', sans-serif; font-size: 17px; color: #1a0e16;
-  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-d) 100%);
-  padding: 15px 44px; border-radius: 999px; margin: 20px 0 0;
-  box-shadow: 0 0 22px rgba(255, 214, 10, .45), 0 6px 0 #8a7200;
-  transition: transform .12s, box-shadow .12s;
+  font-family: 'Dela Gothic One', sans-serif; font-size: 20px; color: #2b1a04;
+  letter-spacing: .05em;
+  background: linear-gradient(180deg, #fff0a8 0%, #ffd60a 34%, #f0b800 62%, #cf9600 100%);
+  padding: 17px 54px; border-radius: 999px; margin: 20px 0 0;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, .85),
+    inset 0 -2px 0 rgba(0, 0, 0, .18),
+    0 0 30px rgba(255, 214, 10, .5),
+    0 7px 0 #8a7200,
+    0 13px 24px rgba(0, 0, 0, .5);
+  transition: transform .1s, box-shadow .1s, filter .1s;
 }
-.abtn:active { transform: translateY(4px); box-shadow: 0 0 14px rgba(255, 214, 10, .35), 0 2px 0 #8a7200; }
-.abtn.ghost {
-  background: none; color: var(--white); border: 1px solid var(--grey2);
-  box-shadow: none; font-size: 13px; padding: 11px 24px;
+/* 表面を横切る光。飾りなので止まっても困らない */
+.abtn::after {
+  content: ''; position: absolute; top: -20%; bottom: -20%; left: -45%; width: 34%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .6), transparent);
+  transform: skewX(-18deg); pointer-events: none;
+  animation: aShine 3.2s ease-in-out infinite;
 }
-.abtn.ghost:active { transform: translateY(1px); }
+@keyframes aShine {
+  0%, 62% { left: -45%; }
+  100% { left: 115%; }
+}
+.abtn:hover { filter: brightness(1.05); }
+.abtn:active {
+  transform: translateY(6px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, .7),
+    0 0 16px rgba(255, 214, 10, .4),
+    0 1px 0 #8a7200,
+    0 4px 10px rgba(0, 0, 0, .45);
+}
 
-.at-how { margin: 20px auto 0; max-width: 320px; text-align: left; }
-.at-how li {
-  list-style: none; position: relative; padding-left: 16px;
-  font-size: 11.5px; line-height: 1.95; color: #ddd3d8;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, .85);
+/* 「説明」など、control 的な小さいボタン */
+.abtn.ghost {
+  background: rgba(8, 6, 10, .5); color: #efe7eb;
+  border: 1px solid rgba(255, 255, 255, .3);
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 700;
+  font-size: 13.5px; letter-spacing: .06em;
+  padding: 11px 30px; margin: 11px 0 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .4);
 }
-.at-how li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); }
+.abtn.ghost::after { display: none; }
+.abtn.ghost:active { transform: translateY(2px); box-shadow: none; }
+
+/* ---------- 説明ポップアップ ---------- */
+.ahow {
+  position: fixed; inset: 0; z-index: 280;
+  background: rgba(4, 3, 6, .82);
+  display: flex; align-items: center; justify-content: center; padding: 18px;
+}
+.ahow-card {
+  width: 100%; max-width: 340px; text-align: left;
+  background: linear-gradient(180deg, #1c1020 0%, #0c0a10 100%);
+  border: 1px solid var(--grey2); border-radius: 14px; padding: 20px 20px 16px;
+  box-shadow: 0 0 40px rgba(255, 214, 10, .14), 0 20px 50px rgba(0, 0, 0, .6);
+}
+.ahow-t {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 17px; color: #fff;
+  text-align: center; margin: 0 0 14px;
+  text-shadow: 0 0 14px rgba(255, 214, 10, .5);
+}
+.at-how { margin: 0; }
+.at-how li {
+  list-style: none; position: relative; padding-left: 20px;
+  font-size: 14px; line-height: 1.85; color: #f0e9ed; margin: 0 0 9px;
+}
+.at-how li::before {
+  content: '▸'; position: absolute; left: 0; top: 0;
+  color: var(--gold); font-size: 13px;
+}
+.ahow .gr-btn { margin-top: 6px; }
 
 /* ---------- HUD ---------- */
 .ahud { display: flex; gap: 7px; padding: 10px 0 8px; }
@@ -175,7 +231,7 @@ body {
   background: rgba(0, 0, 0, .4); border: 1px solid var(--grey2); border-radius: 7px;
 }
 .ahud-lbl {
-  display: block; font-family: 'Bebas Neue', sans-serif; font-size: 9.5px;
+  display: block; font-family: 'Bebas Neue', sans-serif; font-size: 11px;
   letter-spacing: .14em; color: var(--cyan); text-shadow: 0 0 6px var(--cyan);
 }
 .ahud-val {
@@ -201,7 +257,8 @@ body {
   background-repeat: no-repeat, no-repeat;
 }
 .astage-note {
-  text-align: center; font-size: 11px; color: #8d8288; padding: 8px 0 12px;
+  text-align: center; font-size: 12px; color: #a1959c; padding: 8px 0 12px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
 }
 
 /* ステージ内の合図 */
@@ -332,6 +389,6 @@ body {
 @media (max-height: 640px) {
   .at-ttl { font-size: 28px; }
   .at-hero { width: 112px; }
-  .at-logo img { width: 150px; }
-  .at-how { display: none; }
+  .at-logo img { width: 148px; }
+  .abtn { font-size: 18px; padding: 15px 46px; margin-top: 14px; }
 }

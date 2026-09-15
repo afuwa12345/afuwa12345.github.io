@@ -157,14 +157,23 @@
   <p class="at-sub">光った順に、タップ</p>
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
-  <ul class="at-how">
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
     <li>アフロ馬が順番に光ります</li>
     <li>「どうぞ」が出たら同じ順にタップ</li>
     <li>正解すると1つ増えます</li>
     <li>5秒さわらないとタイムオーバー（残り3秒から秒読み）</li>
     <li>間違えたら終わり。クリアした段数が記録</li>
-  </ul>
-</section>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
 
 <!-- ===== プレイ ===== -->
 <section class="ascreen" id="scPlay">
@@ -198,6 +207,7 @@
 <script src="../js/afro-rank-config.js"></script>
 <script src="../js/afro-sfx.js"></script>
 <script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
 <script>
 (function () {
   /* キーごとの音（高さを変えて、音でも覚えられるように） */

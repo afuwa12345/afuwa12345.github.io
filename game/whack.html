@@ -114,13 +114,22 @@
   <p class="at-sub">出てきたアフロ馬を、片っ端から</p>
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
-  <ul class="at-how">
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
     <li>穴から出た馬をタップ　+100点</li>
     <li>連続で当てるとコンボで加点</li>
     <li>やんちゃアフワ（金アフロ）は &minus;200点</li>
     <li>60秒。だんだん速くなります</li>
-  </ul>
-</section>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
 
 <!-- ===== プレイ ===== -->
 <section class="ascreen" id="scPlay">
@@ -145,6 +154,7 @@
 <script src="../js/afro-rank-config.js"></script>
 <script src="../js/afro-sfx.js"></script>
 <script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
 <script>
 (function () {
   var GOOD = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma'];
