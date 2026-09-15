@@ -208,6 +208,24 @@ body {
   padding: 2px 5px; border-radius: 100px; letter-spacing: .02em;
 }
 
+/* ページ送り */
+.pager {
+  display: flex; justify-content: center; align-items: center;
+  gap: 6px; flex-wrap: wrap; margin-top: 16px;
+}
+.pager a, .pager span {
+  min-width: 32px; height: 32px; padding: 0 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--rule); border-radius: 5px;
+  background: var(--white); color: var(--ink); text-decoration: none;
+  font-family: 'Anton', sans-serif; font-size: 13px; letter-spacing: .04em;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.pager a:hover { border-color: var(--gold); color: var(--gold); }
+.pager .on { background: var(--turf); color: var(--paper); border-color: var(--turf); }
+.pager .dis { opacity: .3; }
+.pager .nav { font-size: 16px; }
+
 /* ===== SECTION ===== */
 section { padding: 22px 0 0; }
 .sec-head {
