@@ -696,6 +696,42 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 }
 
 /* パンくず／戻る */
+/* ---------- 今週末の重賞 ---------- */
+.races { display: grid; gap: 8px; }
+.races-note {
+  font-size: 11.5px; color: var(--ink-dim); text-align: center;
+  margin: 0 0 2px; line-height: 1.7;
+}
+.race {
+  display: grid; grid-template-columns: 52px 46px 1fr auto;
+  align-items: center; gap: 10px;
+  background: var(--white); border: 1px solid var(--rule);
+  border-radius: 10px; padding: 10px 12px; box-shadow: var(--sh-sm);
+}
+.race-date {
+  font-family: 'Bebas Neue', sans-serif; font-size: 21px; line-height: 1;
+  color: var(--turf); text-align: center;
+}
+.race-date small {
+  display: block; font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 10px; color: var(--ink-dim); margin-top: 2px;
+}
+.race-jockey { display: block; width: 100%; height: auto; }
+.race-name { font-family: 'Dela Gothic One', sans-serif; font-size: 14px; line-height: 1.4; }
+.race-meta { font-size: 11px; color: var(--ink-dim); margin-top: 2px; }
+.race-grade {
+  font-family: 'Anton', sans-serif; font-size: 12px; letter-spacing: .04em;
+  color: #fff; border-radius: 5px; padding: 4px 9px; white-space: nowrap;
+}
+.race-grade.g1 { background: #C9302B; }
+.race-grade.g2 { background: #24609E; }
+.race-grade.g3 { background: var(--turf-2); }
+.race-grade.jg { background: var(--gold); }
+@media (max-width: 360px) {
+  .race { grid-template-columns: 44px 38px 1fr auto; gap: 8px; padding: 9px 10px; }
+  .race-name { font-size: 13px; }
+}
+
 /* ---------- 見出し帯の「説明」ボタン ---------- */
 .phead-help {
   position: relative; z-index: 1; margin: 10px 0 0;
