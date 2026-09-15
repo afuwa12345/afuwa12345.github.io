@@ -596,6 +596,13 @@ section { padding: 22px 0 0; }
 .t-name { display: block; font-family: 'Dela Gothic One', sans-serif; font-size: 14.5px; line-height: 1.45; }
 .t-desc { display: block; font-size: 11.5px; color: var(--ink-dim); line-height: 1.5;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* 説明を読ませたい一覧では2行まで折り返す */
+.tools.detail .t-desc {
+  white-space: normal; display: -webkit-box; -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; line-height: 1.6; margin-top: 2px;
+}
+.tools.detail .trow { align-items: start; padding: 14px 14px; }
+.tools.detail .t-ico, .tools.detail .t-arrow { padding-top: 2px; }
 .t-arrow { font-family: 'Anton', sans-serif; color: var(--rule); font-size: 15px; transition: color .16s, transform .16s; }
 @media (min-width: 620px) {
   .tools.split { display: grid; grid-template-columns: 1fr 1fr; }
@@ -670,6 +677,48 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 }
 
 /* パンくず／戻る */
+/* ---------- ツール一覧の見出しバッジ ---------- */
+/* .trow は 3列のグリッドなので、バッジは列を増やさず名前の中に入れる */
+.t-tag {
+  display: inline-block; vertical-align: 2px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 10px; letter-spacing: .1em;
+  line-height: 1.5; padding: 0 6px; border-radius: 4px; margin-left: 7px;
+}
+.t-tag.hot { background: #C9302B; color: #fff; }
+.t-tag.new { background: var(--gold); color: #fff; }
+
+/* ---------- キャラクター紹介 ---------- */
+.charas { display: grid; gap: 10px; }
+.chara {
+  display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: start;
+  background: var(--white); border: 1px solid var(--rule);
+  border-left: 4px solid var(--ac, var(--turf));
+  border-radius: 10px; padding: 12px; box-shadow: var(--sh-sm);
+}
+.chara-pic { background: var(--paper-2); border-radius: 8px; overflow: hidden; }
+.chara-pic img { display: block; width: 100%; height: auto; }
+.chara-head { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; }
+.chara-no {
+  font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: #fff;
+  background: var(--ac, var(--turf)); border-radius: 4px; padding: 1px 6px;
+}
+.chara-name { font-family: 'Dela Gothic One', sans-serif; font-size: 17px; line-height: 1.3; }
+.chara-en {
+  font-family: 'Bebas Neue', sans-serif; font-size: 11px;
+  letter-spacing: .14em; color: var(--gold);
+}
+.chara-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 0; }
+.chara-tags span {
+  font-size: 10.5px; color: var(--ink-soft);
+  background: var(--paper-2); border-radius: 999px; padding: 2px 9px;
+}
+.chara-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.8; margin: 7px 0 0; }
+.chara.is-alter { border-style: dashed; background: var(--paper); }
+.chara-alter-note {
+  font-size: 10.5px; color: var(--ink-dim); margin: 6px 0 0; line-height: 1.6;
+}
+@media (max-width: 360px) { .chara { grid-template-columns: 76px 1fr; gap: 10px; } }
+
 .backlink {
   display: inline-flex; align-items: center; gap: 6px;
   margin: 16px 0 0; font-size: 12.5px; color: var(--ink-soft); text-decoration: none;
