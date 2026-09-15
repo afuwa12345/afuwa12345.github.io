@@ -117,8 +117,8 @@
   <ul class="at-how">
     <li>画面をタップするとジャンプ</li>
     <li>生垣にぶつかったら終わり</li>
-    <li>走るほど速くなります</li>
-    <li>走った距離が記録になります</li>
+    <li>2本続きは1回のジャンプでまとめて跳ぶ</li>
+    <li>走るほど速くなる。走った距離が記録</li>
   </ul>
 </section>
 
@@ -156,8 +156,9 @@
   var GRAV     = 2400;    /* 重力(px/s^2) */
   var JUMP_V   = 1020;    /* 跳ぶ勢い(px/s)。頂点217px・滞空0.85秒 */
   var SPD0     = 340;     /* 初速(px/s) */
-  var SPD_MAX  = 620;
-  var SPD_UP   = 8;       /* 1秒あたりの加速 */
+  var SPD_MAX  = 720;
+  var SPD_UP   = 9;       /* 1秒あたりの加速 */
+  var PAIR_FROM = 470;    /* この速度から「2本続き」が出はじめる */
   var PX_PER_M = 26;      /* 何pxで1m扱いにするか */
 
   var stage  = document.getElementById('stage');
@@ -213,18 +214,40 @@
     obs = [];
   }
 
-  function addObs() {
-    var kind = OBS[Math.random() < 0.34 ? 1 : 0];
+  function place(kind, x) {
     var el = document.createElement('img');
     el.className = 'j-obs';
     el.src = kind.src;
     el.style.width = kind.w + 'px';
-    el.style.left = stage.clientWidth + 'px';
+    el.style.left = x + 'px';
     stage.appendChild(el);
-    obs.push({ el: el, x: stage.clientWidth, w: kind.w, h: kind.h });
-    /* 次の間隔。速いほど距離を空ける */
+    obs.push({ el: el, x: x, w: kind.w, h: kind.h });
+  }
+
+  /* 2本続きが出る確率。速くなるほど増える */
+  function pairChance() {
+    if (speed < PAIR_FROM) return 0;
+    return Math.min(0.45, (speed - PAIR_FROM) / 620);
+  }
+
+  function addObs() {
+    var x0 = stage.clientWidth;
+    var pair = Math.random() < pairChance();
+
+    /* 2本続きの1本目は必ず低い方。高い方が先だと跳びきれない */
+    var first = pair ? OBS[0] : OBS[Math.random() < 0.34 ? 1 : 0];
+    place(first, x0);
+
     /* 着地してから次が来る最低限だけ空ける。速いほどギリギリになる */
-    nextGap = 165 + Math.random() * 140 + speed * 0.62;
+    nextGap = 165 + Math.random() * 140 + speed * 0.56;
+
+    if (pair) {
+      /* 内側の隙間は着地できない狭さ。1回のジャンプで2本まとめて跳ぶしかない */
+      var inner  = 24 + Math.random() * 14;   /* 馬の幅78pxより狭い＝着地できない */
+      var second = (speed >= 600 && Math.random() < 0.35) ? OBS[1] : OBS[0];
+      place(second, x0 + first.w + inner);
+      nextGap += 80;          /* 2本続きのあとは少し余裕をあげる */
+    }
   }
 
   function jump() {
