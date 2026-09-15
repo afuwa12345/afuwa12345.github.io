@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#14583A">
+<link rel="icon" href="../favicon.ico">
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="種牡馬ごとの得意コース・苦手コースが分かる無料ツール。その種牡馬自身の平均との差で見るので、どこでも強い種牡馬が並ぶだけになりません。">
+<title>種牡馬コース適性｜AFRO Horse</title>
+<link rel="canonical" href="https://afro-horse.com/tool/sire_tekisei.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="../css/afro.css">
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+</script>
+<style>
+/* ===== このツールだけの見た目。サイトの色を使う ===== */
+.tk-lead { font-size: 12.5px; line-height: 1.85; color: var(--ink-soft); margin: 0 0 14px; }
+
+.searchbox {
+  width: 100%; padding: 13px 15px; font-size: 16px;
+  border-radius: 10px; border: 1.5px solid var(--rule);
+  background: var(--white); color: var(--ink); outline: none;
+  font-family: inherit; box-shadow: var(--sh-sm);
+}
+.searchbox:focus { border-color: var(--gold); }
+
+.cand { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+.cand button {
+  background: var(--white); border: 1px solid var(--rule); color: var(--ink);
+  padding: 7px 13px; border-radius: 100px; font-size: 13px; cursor: pointer;
+  font-family: inherit; box-shadow: var(--sh-sm); transition: border-color .16s, transform .16s;
+}
+.cand button:hover { border-color: var(--gold-lt); transform: translateY(-1px); }
+
+.card {
+  background: var(--white); border: 1px solid var(--rule); border-radius: 10px;
+  padding: 16px; margin-top: 14px; box-shadow: var(--sh-sm);
+}
+.sirename { font-family: 'Dela Gothic One', sans-serif; font-size: 19px; line-height: 1.35; }
+.base { font-size: 12px; color: var(--ink-dim); margin: 5px 0 12px; line-height: 1.7; }
+
+.sec {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 13px; color: var(--turf);
+  margin: 15px 0 5px; border-bottom: 1px solid var(--rule-soft); padding-bottom: 5px;
+}
+.row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 2px; font-size: 14px; border-bottom: 1px dashed var(--rule-soft);
+}
+.row:last-child { border-bottom: 0; }
+.row .diff { font-family: 'Bebas Neue', sans-serif; font-size: 17px; min-width: 76px; text-align: right; letter-spacing: .02em; }
+.good { color: #1E7A46; }
+.bad  { color: #B3372C; }
+.n { color: var(--ink-dim); font-size: 11.5px; margin-left: 7px; }
+.none { color: var(--ink-dim); font-size: 12.5px; padding: 7px 2px; line-height: 1.7; }
+
+.minitbl { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 5px; }
+.mini {
+  background: var(--paper-2); border-radius: 7px; padding: 8px 10px;
+  font-size: 12.5px; line-height: 1.6;
+}
+.mini b { font-weight: 700; }
+@media (max-width: 380px) { .minitbl { grid-template-columns: 1fr; } }
+
+.gate {
+  background: var(--paper-2); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 10px 12px; margin-top: 14px;
+  font-size: 11.5px; color: var(--ink-dim); line-height: 1.8;
+}
+.foot-note { margin-top: 12px; font-size: 11.5px; color: var(--ink-dim); line-height: 1.8; }
+.loading { color: var(--ink-dim); padding: 26px; text-align: center; font-size: 13px; }
+</style>
+</head>
+<body class="theme-keiba">
+
+<h1 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">種牡馬コース適性｜父ごとの得意コース・苦手コースを調べる（AFRO Horse）</h1>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="../index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="../keiba.html">KEIBA</a>
+      <a href="../comic.html">COMIC</a>
+      <a href="../game.html">GAME</a>
+      <a href="../world.html">WORLD</a>
+      <a href="../sns.html">SNS</a>
+    </div>
+  </div>
+</nav>
+
+<header class="phead has-chara" data-bg="TOOL">
+  <div class="phead-en">SIRE COURSE FIT</div>
+  <div class="phead-ja">種牡馬コース適性</div>
+  <p class="phead-sub">父ごとの得意・苦手なコース</p>
+  <button class="phead-help" type="button" id="howBtn">説明</button>
+  <img class="phead-chara" src="../images/tool_hero.webp" alt="" aria-hidden="true">
+</header>
+
+<div class="hpop" id="howPop" hidden>
+  <div class="hpop-card">
+    <p class="hpop-t">つかいかた</p>
+    <ul class="hpop-list">
+      <li>出馬表の<b>「父」の名前</b>を入れて、候補から選びます</li>
+      <li>数字は<b>その種牡馬自身の平均との差</b>。「どこでも強い父」が並ぶことはありません</li>
+      <li><b>50走未満や、差が誤差の範囲のコースは出しません</b>。「偏りなし」と出たら、コースで割り引く材料が無いという意味です</li>
+      <li>過去データの傾向です。<b>馬券は自己責任</b>でお願いします</li>
+    </ul>
+    <button class="hpop-close" type="button" id="howClose">とじる</button>
+  </div>
+</div>
+
+<section>
+<div class="wrap">
+  <p class="tk-lead">
+    出馬表の「父」を引くと、<b>その父が普段より走るコース／走らないコース</b>が分かります。
+    数字はすべて、その種牡馬自身の平均との差です。
+  </p>
+
+  <input id="q" class="searchbox" type="text" placeholder="種牡馬名を入力（例：キズナ・ロードカナロア）" autocomplete="off">
+  <div id="cand" class="cand"></div>
+  <div id="result"></div>
+  <div class="gate" id="meta"></div>
+  <p class="foot-note">あくまで過去データの傾向です。馬券は自己責任で。</p>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <div class="sec-head">
+    <h2 class="sec-ja">ほかのツール</h2>
+    <span class="sec-en">TOOLS</span>
+  </div>
+  <div class="tools split">
+    <a class="trow" href="calc.html">
+      <span class="t-ico">&#129518;</span>
+      <span class="t-body"><span class="t-name">買い目点数ツール</span><span class="t-desc">点数と金額を一瞬で計算</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="baken_sim.html">
+      <span class="t-ico">&#127915;</span>
+      <span class="t-body"><span class="t-name">馬券メーカー</span><span class="t-desc">本物そっくりの馬券画像</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="honmei_announcer.html">
+      <span class="t-ico">&#127908;</span>
+      <span class="t-body"><span class="t-name">本命発表ツール</span><span class="t-desc">キャラが本命を発表</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+    <a class="trow" href="yoso-cert.html">
+      <span class="t-ico">&#128220;</span>
+      <span class="t-body"><span class="t-name">予想証明システム</span><span class="t-desc">予想を証明として残す</span></span>
+      <span class="t-arrow">&rsaquo;</span>
+    </a>
+  </div>
+  <a class="backlink" href="../keiba.html">&larr; 競馬にもどる</a>
+</div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="../keiba.html">競馬</a>
+      <a href="../comic.html">マンガ</a>
+      <a href="../game.html">あそぶ</a>
+      <a href="../world.html">アフワワールド</a>
+      <a href="../sns.html">スタンプ・グッズ</a>
+      <a href="../about.html">運営者情報</a>
+      <a href="../contact.html">お問い合わせ</a>
+      <a href="../privacy.html">プライバシー</a>
+      <a href="../terms.html">利用規約</a>
+      <a href="../disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
+
+<script src="../js/afro-ui.js"></script>
+<script>
+let DATA = null, META = null;
+fetch("sire_tekisei.json").then(r=>r.json()).then(d=>{
+  META = d._meta; delete d._meta; DATA = d;
+  document.getElementById("meta").textContent =
+    "門番: " + META["門番"] + "　／　" + META["期間"] + "・" + META["対象走数"].toLocaleString() + "走・" +
+    META["掲載種牡馬"] + "頭（産駒200走以上）　更新: " + META["生成日"];
+  document.getElementById("result").innerHTML = "";
+}).catch(()=>{
+  document.getElementById("result").innerHTML = '<div class="loading">sire_tekisei.json が読み込めません（同じフォルダに置いてください）</div>';
+});
+
+const q = document.getElementById("q"), cand = document.getElementById("cand"), result = document.getElementById("result");
+q.addEventListener("input", () => {
+  if (!DATA) return;
+  const v = q.value.trim();
+  cand.innerHTML = "";
+  if (!v) return;
+  const hits = Object.keys(DATA).filter(n => n.includes(v)).slice(0, 8);
+  hits.forEach(n => {
+    const b = document.createElement("button");
+    b.textContent = n;
+    b.onclick = () => { q.value = n; cand.innerHTML = ""; show(n); };
+    cand.appendChild(b);
+  });
+  if (hits.length === 1) show(hits[0]);
+});
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+function rows(list, cls, sign){
+  if (!list || !list.length) return '<div class="none">有意な偏りなし（コースで割り引く材料はない）</div>';
+  return list.map(r =>
+    `<div class="row"><span>${esc(r["コース"])}<span class="n">${r["走"]}走・複勝率${r["複勝率"]}%</span></span>` +
+    `<span class="diff ${cls}">${sign}${Math.abs(r["差"]).toFixed(1)}pt</span></div>`).join("");
+}
+
+function show(name){
+  const e = DATA[name];
+  if (!e) return;
+  let mini = "";
+  const grp = Object.assign({}, e["芝ダ"], e["距離帯"]);
+  for (const k in grp){
+    const g = grp[k];
+    const d = ("差" in g) ? `<span class="${g["差"]>0?'good':'bad'}"> (${g["差"]>0?"+":""}${g["差"]}pt)</span>` : "";
+    mini += `<div class="mini">${esc(k)}：<b>${g["複勝率"]}%</b>${d}<span class="n">${g["走"]}走</span></div>`;
+  }
+  result.innerHTML =
+    `<div class="card">
+       <div class="sirename">${esc(name)}</div>
+       <div class="base">産駒 ${e["産駒走数"].toLocaleString()}走　／　全体複勝率 ${e["全体複勝率"]}%（これが基準線）</div>
+       <div class="sec">✅ 得意コース（基準より上・門番通過のみ）</div>${rows(e["得意"],"good","+")}
+       <div class="sec">⛔ 苦手コース（基準より下・門番通過のみ）</div>${rows(e["苦手"],"bad","−")}
+       <div class="sec">距離帯・芝ダの姿</div><div class="minitbl">${mini}</div>
+     </div>`;
+}
+</script>
+</body>
+</html>
