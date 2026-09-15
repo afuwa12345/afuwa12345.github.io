@@ -1,0 +1,12 @@
+{
+  // Cloudflare に「このリポジトリの中身をそのまま静的サイトとして配る」と伝える設定。
+  // ビルドは無い。リポジトリの直下がサイトの直下。
+  "name": "afrohorse",
+  "compatibility_date": "2026-09-11",
+  "assets": {
+    "directory": "."
+  },
+  "observability": {
+    "enabled": true
+  }
+}
