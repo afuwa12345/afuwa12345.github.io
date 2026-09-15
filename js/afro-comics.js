@@ -17,7 +17,7 @@
 var IG_ACCOUNT = 'https://www.instagram.com/ahuroma9/';
 
 var COMICS = [
-  { no: 1, title: 'アフワ', img: 'images/afuwa.png', url: 'https://www.instagram.com/p/DdNyPsslM-y/' }
+  { no: 1, title: 'アフワ', img: 'images/comic/01.webp', url: 'https://www.instagram.com/p/DdNyPsslM-y/' }
 ];
 
 (function () {
