@@ -369,6 +369,85 @@ section { padding: 22px 0 0; }
 .flip-btn:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 .flip-btn[hidden] { display: none; }
 
+/* ===== 文書ページ（運営者情報・規約・プライバシーなど） ===== */
+.doc { max-width: 640px; }
+.doc .intro {
+  font-size: 13.5px; line-height: 1.95; color: var(--ink-soft);
+  background: var(--paper-2); border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0; padding: 14px 16px; margin: 0 0 20px;
+}
+
+/* 見出しつきの節（規約・免責） */
+.doc .article { margin-bottom: 22px; }
+.doc .article-title, .doc .section-title {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.5;
+  color: var(--turf); margin-bottom: 7px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--rule);
+}
+.doc .article-text, .doc .section-text, .doc .panel-text, .doc p {
+  font-size: 13.5px; line-height: 1.95; color: var(--ink-soft); margin: 0 0 12px;
+}
+.doc .article-text:last-child, .doc p:last-child { margin-bottom: 0; }
+
+/* プライバシーの h2（英字ラベルつき） */
+.doc h2 {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.5;
+  color: var(--turf); margin: 26px 0 8px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--rule);
+}
+.doc h2 .section-en {
+  display: block; font-family: 'Anton', sans-serif; font-size: 9.5px;
+  letter-spacing: .22em; color: var(--gold); margin-bottom: 2px;
+}
+
+/* 白いカード */
+.doc .panel {
+  background: var(--white); border: 1px solid var(--rule); border-radius: 8px;
+  padding: 16px 18px; margin-bottom: 14px; box-shadow: var(--sh-sm);
+}
+
+/* 項目の一覧（サイト名・運営者など） */
+.doc .info-row {
+  display: grid; grid-template-columns: 100px 1fr; gap: 4px 12px;
+  padding: 9px 0; border-bottom: 1px solid var(--rule-soft); align-items: baseline;
+}
+.doc .info-row:last-child { border-bottom: 0; }
+.doc .info-label { font-size: 11.5px; font-weight: 700; color: var(--ink-dim); }
+.doc .info-value { font-size: 13.5px; color: var(--ink); word-break: break-word; }
+.doc .info-value a { color: var(--turf); }
+@media (max-width: 420px) {
+  .doc .info-row { grid-template-columns: 1fr; gap: 1px; }
+}
+
+/* 注意書きの囲み */
+.doc .alert {
+  background: #FDF3E7; border: 1px solid #E8C79A; border-left: 4px solid var(--gold);
+  border-radius: 0 6px 6px 0; padding: 14px 16px; margin: 0 0 20px;
+}
+.doc .alert-title {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 13.5px;
+  color: #8A5A10; margin-bottom: 5px;
+}
+.doc .alert-text { font-size: 13px; line-height: 1.9; color: #6B4A12; margin: 0; }
+
+/* 箇条書き */
+.doc ul, .doc ol { margin: 0 0 14px; padding-left: 1.3em; }
+.doc li { font-size: 13.5px; line-height: 1.9; color: var(--ink-soft); margin-bottom: 4px; }
+
+/* ボタン */
+.doc .cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--turf); color: var(--paper); text-decoration: none;
+  padding: 12px 26px; border-radius: 100px; font-weight: 700; font-size: 14px;
+  box-shadow: var(--sh-sm); transition: transform .15s, box-shadow .15s;
+}
+.doc .cta-btn:hover { transform: translateY(-2px); box-shadow: var(--sh-md); }
+
+/* 更新日 */
+.doc .last-updated, .doc .last-rev {
+  font-size: 11.5px; color: var(--ink-dim); text-align: right; margin-top: 18px;
+}
+
 /* ===== ツール ===== */
 .tools { background: var(--white); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; box-shadow: var(--sh-sm); }
 .trow {
