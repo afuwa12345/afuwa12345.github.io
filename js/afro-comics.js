@@ -2,7 +2,7 @@
    マンガ『アフロホース』の話数リスト
 
    ▼ 新しい話を足すとき
-     COMICS に1行足すだけ。順番は気にしなくてOK（no の大きい順に自動で並びます）
+     COMICS に1行足すだけ。順番は気にしなくてOK（並べ替えは自動です）
 
        no    … 話数
        title … サブタイトル（9文字以内なら1行に収まります）
@@ -12,8 +12,9 @@
 
    ▼ 表示する場所
      ページに <div class="comic-grid" id="comicGrid"></div> を置くだけ。
-     21話ごとに自動でページが分かれます（?p=2 で2ページ目）
-     data-limit="3" を付けるとページ送りなしで新しい方から3件だけ表示
+       ・21話ごとに自動でページ分割（?p=2 で2ページ目）
+       ・「最新順 / 古い順」の切り替えボタンが自動で付く（?sort=old で古い順）
+       ・data-limit="3" を付けると、ページ送りも並べ替えもなしで新しい3件だけ
    ============================================================ */
 
 var IG_ACCOUNT = 'https://www.instagram.com/ahuroma9/';
@@ -45,13 +46,19 @@ var COMICS = [
     return;
   }
 
+  function esc(t) {
+    return String(t).replace(/[&<>"]/g, function (m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m];
+    });
+  }
+
   function card(c) {
     var thumb = c.img
-      ? '<img src="' + c.img + '" alt="" loading="lazy">'
+      ? '<img src="' + esc(c.img) + '" alt="" loading="lazy">'
       : '<span class="comic-ph">' + c.no + '</span>';
     var meta = '<span class="comic-meta">' +
                  '<span class="comic-no">EP.' + c.no + '</span>' +
-                 '<span class="comic-title">' + (c.title || '近日公開') + '</span>' +
+                 '<span class="comic-title">' + esc(c.title || '近日公開') + '</span>' +
                '</span>';
     // まだ投稿していない回はリンクにしない
     if (!c.url) {
@@ -60,34 +67,58 @@ var COMICS = [
                meta +
              '</div>';
     }
-    return '<a class="comic-card" href="' + c.url + '" target="_blank" rel="noopener">' +
+    return '<a class="comic-card" href="' + esc(c.url) + '" target="_blank" rel="noopener">' +
              '<span class="comic-thumb">' + thumb + '<span class="comic-ig">Instagram</span></span>' +
              meta +
            '</a>';
   }
 
-  var all = COMICS.slice().sort(function (a, b) { return b.no - a.no; });
-
-  // data-limit があるときはページ送りなしで先頭から数件だけ
+  // data-limit があるときは、新しい方から数件だけ（並べ替え・ページ送りなし）
   var limit = parseInt(grid.getAttribute('data-limit'), 10);
   if (limit > 0) {
-    grid.innerHTML = all.slice(0, limit).map(card).join('');
+    var newest = COMICS.slice().sort(function (a, b) { return b.no - a.no; });
+    grid.innerHTML = newest.slice(0, limit).map(card).join('');
     return;
   }
 
-  var pages = Math.max(1, Math.ceil(all.length / PER_PAGE));
-  var q = (location.search.match(/[?&]p=(\d+)/) || [])[1];
-  var page = Math.min(Math.max(parseInt(q, 10) || 1, 1), pages);
+  var qs   = location.search;
+  var sort = /[?&]sort=old\b/.test(qs) ? 'old' : 'new';
+  var page = parseInt((qs.match(/[?&]p=(\d+)/) || [])[1], 10) || 1;
 
+  var all = COMICS.slice().sort(function (a, b) {
+    return sort === 'old' ? a.no - b.no : b.no - a.no;
+  });
+
+  var pages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+  page = Math.min(Math.max(page, 1), pages);
+
+  function url(p, s) {
+    var q = [];
+    if (p > 1) q.push('p=' + p);
+    if (s === 'old') q.push('sort=old');
+    return q.length ? '?' + q.join('&') : './' + location.pathname.split('/').pop();
+  }
+
+  // ── 並べ替えの切り替え ──
+  var old = document.querySelector('.sortbar');
+  if (old) old.remove();
+  var bar = document.createElement('div');
+  bar.className = 'sortbar';
+  bar.innerHTML =
+    '<a class="' + (sort === 'new' ? 'on' : '') + '" href="' + url(1, 'new') + '">最新順</a>' +
+    '<a class="' + (sort === 'old' ? 'on' : '') + '" href="' + url(1, 'old') + '">古い順</a>';
+  grid.parentNode.insertBefore(bar, grid);
+
+  // ── 一覧 ──
   grid.innerHTML = all.slice((page - 1) * PER_PAGE, page * PER_PAGE).map(card).join('');
 
-  // 1ページに収まるならページ送りは出さない
+  // ── ページ送り（1ページに収まるなら出さない）──
   if (pages < 2) return;
 
   function link(p, label, cls) {
     if (p < 1 || p > pages) return '<span class="' + cls + ' dis">' + label + '</span>';
     if (p === page) return '<span class="on">' + label + '</span>';
-    return '<a class="' + (cls || '') + '" href="?p=' + p + '">' + label + '</a>';
+    return '<a class="' + (cls || '') + '" href="' + url(p, sort) + '">' + label + '</a>';
   }
 
   var html = link(page - 1, '‹', 'nav');

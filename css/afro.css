@@ -208,6 +208,20 @@ body {
   padding: 2px 5px; border-radius: 100px; letter-spacing: .02em;
 }
 
+/* 並べ替えの切り替え */
+.sortbar { display: flex; gap: 6px; margin-bottom: 10px; }
+.sortbar a {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .02em;
+  padding: 4px 13px; border-radius: 100px;
+  border: 1px solid var(--rule); background: var(--white);
+  color: var(--ink-soft); text-decoration: none;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.sortbar a:hover { border-color: var(--gold); color: var(--gold); }
+.sortbar a.on {
+  background: var(--turf); border-color: var(--turf); color: var(--paper);
+}
+
 /* ページ送り */
 .pager {
   display: flex; justify-content: center; align-items: center;
