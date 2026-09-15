@@ -154,8 +154,8 @@ body {
 .ax-sns   { --ax: linear-gradient(135deg, #3579C4, #24609E); }
 
 /* ===== COMIC ===== */
-.comic-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-@media (min-width: 620px) { .comic-grid { gap: 12px; } }
+.comic-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; max-width: 420px; }
+@media (min-width: 620px) { .comic-grid { gap: 10px; } }
 .comic-card {
   display: block; text-decoration: none; color: inherit;
   background: var(--white); border: 1px solid var(--rule); border-radius: 8px;
