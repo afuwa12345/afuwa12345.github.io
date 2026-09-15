@@ -17,6 +17,8 @@
 var IG_ACCOUNT = 'https://www.instagram.com/ahuroma9/';
 
 var COMICS = [
+  // url を空にしておくと「近日公開」として並びます（投稿したらURLを入れる）
+  { no: 2, title: 'ギンマ、家を建てる。', img: 'images/comic/02.webp', url: '' },
   { no: 1, title: 'アフワ', img: 'images/comic/01.webp', url: 'https://www.instagram.com/p/DdNyPsslM-y/' }
 ];
 
@@ -47,12 +49,21 @@ var COMICS = [
     var thumb = c.img
       ? '<img src="' + c.img + '" alt="" loading="lazy">'
       : '<span class="comic-ph">' + c.no + '</span>';
+    var meta = '<span class="comic-meta">' +
+                 '<span class="comic-no">EP.' + c.no + '</span>' +
+                 '<span class="comic-title">' + (c.title || '近日公開') + '</span>' +
+               '</span>';
+
+    // まだ投稿していない回はリンクにしない
+    if (!c.url) {
+      return '<div class="comic-card is-soon">' +
+               '<span class="comic-thumb">' + thumb + '<span class="comic-next">近日公開</span></span>' +
+               meta +
+             '</div>';
+    }
     return '<a class="comic-card" href="' + c.url + '" target="_blank" rel="noopener">' +
              '<span class="comic-thumb">' + thumb + '<span class="comic-ig">Instagram</span></span>' +
-             '<span class="comic-meta">' +
-               '<span class="comic-no">EP.' + c.no + '</span>' +
-               '<span class="comic-title">' + c.title + '</span>' +
-             '</span>' +
+             meta +
            '</a>';
   }).join('');
 })();
