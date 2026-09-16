@@ -412,11 +412,22 @@ section { padding: 22px 0 0; }
     url(../images/gate_rail.webp) repeat-x left top / auto 26px,
     linear-gradient(180deg, var(--turf-2), var(--turf));
   padding: 27px 6px 0;
+  position: relative;
   border-radius: 8px 8px 0 0;
   box-shadow: var(--sh-md);
   overflow: hidden;
   transition: border-radius .22s;
 }
+/* 外の柱。柱まるごとを、ゲートの枠のライン上に中心を合わせて立てる */
+.gate::before,
+.gate::after {
+  content: ''; position: absolute; z-index: 5; pointer-events: none;
+  top: 27px; bottom: 23px; width: 12px;
+  background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
+}
+.gate::before { left: 0px; }
+.gate::after  { right: 0px; }
+
 .board.open .gate { box-shadow: 0 2px 4px rgba(26,30,24,.07); }
 .board:not(.open) .gate { border-radius: 8px; padding-bottom: 6px; }
 .board:not(.open) .stall-pic img { filter: none; }
@@ -426,7 +437,9 @@ section { padding: 22px 0 0; }
 .stall {
   appearance: none; margin: 0; padding: 0; font: inherit; color: inherit; border: 0;
   flex: 1 1 0; min-width: 0; position: relative; cursor: pointer;
-  background: linear-gradient(180deg, #efe9dc 0%, #ddd5c6 100%);
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%),
+    linear-gradient(180deg, #efe9dc 0%, #ddd5c6 100%);
   display: flex; flex-direction: column; justify-content: flex-end;
   transition: flex-grow .34s cubic-bezier(.34,.01,.2,1), background .22s, box-shadow .22s;
 }
@@ -434,32 +447,19 @@ section { padding: 22px 0 0; }
 
 /* 仕切りの柱 */
 /* 仕切りの柱。キャラより手前に立つ */
-.stall::before {
-  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  background: linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
-}
-
-/* 仕切りの柱。境目のど真ん中にまたがせる。
+/* 中の柱。1本を縦半分に割って、境目をはさんだ両側の馬房に置く。
+   左半分は左の馬房の右端へ、右半分は右の馬房の左端へ。境目でつながって1本になる。
    番号と名札(z7)より後ろ、扉(z4)より手前。 */
-.stall + .stall::after {
+.stall:not(:last-child)::after {
   content: ''; position: absolute; z-index: 5; pointer-events: none;
-  left: -4.5px; top: 0; bottom: 23px; width: 9px;
-  background: url(../images/gate_post.webp) no-repeat left top / 9px 100%;
+  right: 0; top: 0; bottom: 23px; width: 6px;
+  background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
 }
-/* いちばん外の左右にも1本ずつ（こちらは内側に収める） */
-.stall:first-child::before {
-  background:
-    url(../images/gate_post.webp) no-repeat left 0 / 9px calc(100% - 23px),
-    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
-  z-index: 5;
+.stall:not(:first-child)::before {
+  content: ''; position: absolute; z-index: 5; pointer-events: none;
+  left: 0; top: 0; bottom: 23px; width: 6px;
+  background: url(../images/gate_post.webp) no-repeat right top / 12px 100%;
 }
-.stall:last-child::before {
-  background:
-    url(../images/gate_post.webp) no-repeat right 0 / 9px calc(100% - 23px),
-    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
-  z-index: 5;
-}
-
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
 .gdoor {
   position: absolute; left: 0; right: 0; top: 21%; height: 50%;
