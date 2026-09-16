@@ -435,22 +435,21 @@ section { padding: 22px 0 0; }
 /* 仕切りの柱 */
 /* 仕切りの柱。キャラより手前に立つ */
 .stall::before {
-  content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
   background: linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
-  transition: opacity .3s ease;
 }
 
-/* 仕切りの柱。馬房と馬房の境目に1本だけ立てる（5頭なので4本） */
-.stall + .stall::before {
-  background:
-    url(../images/gate_post.webp) no-repeat left top / 15px 100%,
-    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
-  margin-left: -7px;
+/* 仕切りの柱。境目にまたがって1本立てる（5頭なので4本） */
+.stall + .stall::after {
+  content: ''; position: absolute; z-index: 6; pointer-events: none;
+  left: -11px; top: 0; bottom: 0; width: 22px;
+  background: url(../images/gate_post.webp) no-repeat center top / 100% 100%;
+  filter: drop-shadow(0 0 3px rgba(0,0,0,.45));
 }
 
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
 .gdoor {
-  position: absolute; left: 0; right: 0; top: 33%; height: 38%;
+  position: absolute; left: 0; right: 0; top: 21%; height: 50%;
   z-index: 4; pointer-events: none;
 }
 .gdoor i {
