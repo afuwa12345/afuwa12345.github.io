@@ -436,11 +436,16 @@ section { padding: 22px 0 0; }
 /* 仕切りの柱。キャラより手前に立つ */
 .stall::before {
   content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
-  background:
-    url(../images/gate_post.webp) no-repeat left top / 8px 100%,
-    url(../images/gate_post.webp) no-repeat right top / 8px 100%,
-    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
+  background: linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
   transition: opacity .3s ease;
+}
+
+/* 仕切りの柱。馬房と馬房の境目に1本だけ立てる（5頭なので4本） */
+.stall + .stall::before {
+  background:
+    url(../images/gate_post.webp) no-repeat left top / 17px 100%,
+    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
+  margin-left: -8px;
 }
 
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
