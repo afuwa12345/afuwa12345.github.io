@@ -1,0 +1,9 @@
+# AFRO Horse
+
+User-agent: *
+Allow: /
+
+# 本人が使うためのページ。検索には出さない
+Disallow: /data_infographic_v4_web.html
+
+Sitemap: https://afro-horse.com/sitemap.xml
