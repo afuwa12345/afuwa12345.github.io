@@ -40,7 +40,24 @@
   var pTags = document.getElementById('pTags');
   var pDesc = document.getElementById('pDesc');
   var flip  = document.getElementById('flipBtn');
+  var pPic  = document.getElementById('pPic');
+  var pop   = document.getElementById('gPop');
+  var popX  = document.getElementById('gPopX');
   var cur = -1;
+
+  /* ポップアップの開け閉め */
+  function openPop() {
+    if (!pop) return;
+    pop.hidden = false;
+    pop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePop() {
+    if (!pop) return;
+    pop.classList.remove('show');
+    pop.hidden = true;
+    document.body.style.overflow = '';
+  }
 
   function paint() {
     if (cur < 0) return;
@@ -51,7 +68,20 @@
     pEn.textContent   = d.en;
     pTags.innerHTML   = d.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('');
     pDesc.textContent = d.desc;
-    if (flip) {
+    if (pPic) {
+      var img = stalls[cur].querySelector(ura && cur === 0 ? '.back' : '.front')
+             || stalls[cur].querySelector('img');
+      if (img) { pPic.src = img.getAttribute('src'); pPic.alt = d.name; }
+    }
+    if (popX) { popX.addEventListener('click', closeAll); }
+  if (pop) {
+    pop.addEventListener('click', function (e) { if (e.target === pop) closeAll(); });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && pop && !pop.hidden) closeAll();
+  });
+
+  if (flip) {
       flip.hidden = (cur !== 0);
       flip.textContent = ura ? '↩ 表の顔にもどす' : '⚡ 裏の顔に切り替える';
       flip.setAttribute('aria-pressed', ura ? 'true' : 'false');
@@ -62,6 +92,7 @@
     stalls.forEach(function (o) { o.classList.remove('on'); o.setAttribute('aria-pressed', 'false'); });
     board.classList.remove('open');
     cur = -1;
+    closePop();
   }
 
   function select(i) {
@@ -71,6 +102,7 @@
     board.classList.add('open');
     cur = i;
     paint();
+    openPop();
   }
 
   stalls.forEach(function (s, i) {
