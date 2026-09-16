@@ -49,7 +49,7 @@
      ① キャラがゲートから飛んで所定の位置へ（FLY_MS）
      ② そのあと枠全体が下から出てキャラを囲う（RISE_MS）
      ③ 出きったら、飛んでいた絵をカードの中の絵に入れ替える */
-  var FLY_MS = 520, RISE_MS = 440;
+  var FLY_MS = 760, RISE_MS = 440;
   var pFly = document.getElementById('pFly');
 
   function openPop(fromImg) {
