@@ -231,7 +231,8 @@ body {
   pointer-events: none; z-index: 0;
 }
 .axis:has(> .axis-pic)::after { display: none; }
-.axes > .axis:first-child > .axis-pic { height: 72px; }
+/* 先頭の横長タイルは絵も横長（3:1）。幅の上限を上げて大きく見せる */
+.axes > .axis:first-child > .axis-pic { height: 88px; max-width: 78%; opacity: .42; }
 .axis-en, .axis-ja { position: relative; z-index: 1; }
 .axis-en { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: .1em; line-height: 1.12; }
 .axis-ja { font-size: 11px; opacity: .88; margin-top: 2px; }
