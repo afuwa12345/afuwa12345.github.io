@@ -409,9 +409,9 @@ section { padding: 22px 0 0; }
   display: flex; align-items: stretch;
   height: clamp(184px, 51vw, 284px);
   background:
-    url(../images/gate_rail.webp) repeat-x left top / auto 46px,
+    url(../images/gate_rail.webp) repeat-x left top / auto 24px,
     linear-gradient(180deg, var(--turf-2), var(--turf));
-  padding: 46px 6px 0;
+  padding: 24px 6px 0;
   position: relative;
   border-radius: 8px 8px 0 0;
   box-shadow: var(--sh-md);
@@ -423,13 +423,13 @@ section { padding: 22px 0 0; }
 .gate::before,
 .gate::after {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  top: 46px; bottom: 0; width: 4.5px;
+  top: 24px; bottom: 0; width: 4.5px;
   background-image: url(../images/gate_post.webp);
   background-repeat: no-repeat;
   background-size: 12px 100%;
 }
-.gate::before { left: 0;  background-position: left top; }
-.gate::after  { right: 0; background-position: right top; }
+.gate::before { left: 1.5px;  background-position: left top; }
+.gate::after  { right: 1.5px; background-position: right top; }
 
 .board.open .gate { box-shadow: 0 2px 4px rgba(26,30,24,.07); }
 .board:not(.open) .gate { border-radius: 8px; }
@@ -487,7 +487,7 @@ section { padding: 22px 0 0; }
 .stall.on::before { opacity: 0; }
 
 .stall-no {
-  position: absolute; top: -33px; left: 50%; transform: translateX(-50%);
+  position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
   z-index: 20;
   font-family: 'Anton', sans-serif; font-size: 13px; line-height: 1;
   padding: 3px 9px 4px; background: var(--c); color: var(--ci);
