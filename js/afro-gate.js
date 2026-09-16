@@ -6,27 +6,32 @@
 (function () {
   var CHARAS = [
     { name: 'アフワ', en: 'AFUWA',
-      tags: ['主人公', '♂', 'ちょいビビりで優しい', '昼寝と競馬'],
-      desc: 'アフロホースの主人公。普段はビビりだけど、競馬への情熱は誰にも負けない。心の奥にやんちゃな一面を秘めている。' },
+      tags: ['主人公', '♂', 'ちょいビビり', '好奇心旺盛', '好き：昼寝・プリン・競馬'],
+      copy: 'ちょっとビビり。好奇心には勝てない。',
+      desc: '昼寝とプリンが好きな、ちょっと抜けてるアフロホースの主人公。怖がるくせに気になるものには手を出すし、「ダメ」と言いながらやっちゃうことも。本人はいつでも大まじめ。今日も仲間を巻き込んで、しょうもない大騒ぎを起こす。' },
     { name: 'ブルマ', en: 'BURUMA',
-      tags: ['♀', '元気ポジティブ', 'おしゃれと友情'],
-      desc: 'チームのムードメーカー。誰よりも明るくて、仲間との約束を何より大事にする。' },
+      tags: ['♀', '明るい', '勝負に目がない', '好き：みんなで騒ぐ・ギャンブル'],
+      copy: '勝負の気配に、つい乗っちゃう。',
+      desc: '明るく元気で、面白そうなことが大好き。仲間と騒いでいるうちに、いつの間にか自分も本気になっている。実はギャンブルに心が躍る一面も。勝負が始まると、見ているだけではいられない。' },
     { name: 'チャフワ', en: 'CHAFUWA',
-      tags: ['♂', '天真爛漫', 'みんなで遊ぶこと'],
-      desc: '遊びを見つける天才。悩みごととは無縁で、気づけばみんなを巻き込んでいる。' },
+      tags: ['♂', '天真爛漫', '遊び好き', '好き：楽しいこと・みんなで遊ぶ'],
+      copy: '楽しそう！ それだけで参加決定。',
+      desc: '遊ぶことが大好きな、天真爛漫なアフロ馬。気になることにはすぐ飛びついて、まわりも一緒に巻き込んでいく。笑ったり、むくれたり、驚いたり。小さな黒い目で、気持ちはしっかり顔に出る。' },
     { name: 'クロフワ', en: 'KUROFUWA',
-      tags: ['♂', 'クールで負けず嫌い', '筋トレ'],
-      desc: '口数は少ないが芯は熱い。強さにこだわり、鍛えることをやめない努力家。' },
+      tags: ['♂', 'クール', '負けず嫌い', '好き：筋トレ・勝負'],
+      copy: 'クールに決めたい、負けず嫌い。',
+      desc: '鋭い目つきでちょっと近寄りがたく見えるけど、仲間と一緒に騒動へ巻き込まれることも。筋トレが好きで、負けるのは嫌い。つい力が入るその真剣さが、思わぬ笑いにつながる。' },
     { name: 'ギンマ', en: 'GINMA',
-      tags: ['？', 'ニヤリ系策士', 'ひらめきと観察'],
-      desc: 'いつも一歩引いて全体を見ている。何を考えているのか、本人以外は誰も知らない。' }
+      tags: ['？', 'ひらめき上手', '悪ノリもする', '好き：観察・思いつきを試す'],
+      copy: 'ツッコミ担当。たまに騒動の張本人。',
+      desc: '半目でニヤリと笑う、ひらめき上手なアフロ馬。アフワのおかしな行動にはすかさずツッコむが、自分の思いつきにもなかなか自信がある。冷静そうに見えて、一緒になってアホなこともする。アフワとは遠慮なく言い合える、対等な仲間。' }
   ];
 
-  var YANCHA = {
-    name: 'やんちゃアフワ', en: 'YANCHA AFUWA',
-    tags: ['アフワのもう一つの姿', '反骨精神MAX', '刺激と自由'],
-    desc: 'アフワが限界を超えたときに現れる、もう一人の自分。ワルな見た目とは裏腹に、その行動はいつもアフワの本音を体現している。'
-  };
+  var YANCHA =
+    { name: 'やんちゃアフワ', en: 'YANCHA AFUWA',
+      tags: ['アフワのもう一つの姿', '自由奔放', '反骨精神', '好き：刺激と自由'],
+      copy: 'アフワの中にいる、遠慮しないほう。',
+      desc: '気だるい半目とワルそうな顔が目印の、アフワのもうひとつの姿。刺激と自由が好きで、止められると余計にやりたくなる。別の馬ではなく、いつものアフワに隠れたやんちゃな一面。' };
 
   var board = document.getElementById('gateBoard');
   if (!board) return;
@@ -39,6 +44,7 @@
   var pEn   = document.getElementById('pEn');
   var pTags = document.getElementById('pTags');
   var pDesc = document.getElementById('pDesc');
+  var pCopy = document.getElementById('pCopy');
   var flip  = document.getElementById('flipBtn');
   var pPic  = document.getElementById('pPic');
   var pop   = document.getElementById('gPop');
@@ -75,7 +81,13 @@
     b.style.right = '';
     b.style.width = '';
     b.style.overflow = '';
+    // scroll-behavior:smooth が効いているとスルスル動いて見えるので、
+    // 戻すあいだだけ切って、一瞬で元の位置にする
+    var root = document.documentElement;
+    var keep = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
     window.scrollTo(0, lockY);
+    root.style.scrollBehavior = keep;
   }
 
   var FLY_MS = 760, RISE_MS = 360;
@@ -158,6 +170,7 @@
     pName.textContent = d.name;
     pEn.textContent   = d.en;
     pTags.innerHTML   = d.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('');
+    if (pCopy) pCopy.textContent = d.copy || '';
     pDesc.textContent = d.desc;
     if (pPic) {
       var img = stalls[cur].querySelector(ura && cur === 0 ? '.back' : '.front')

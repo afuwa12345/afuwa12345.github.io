@@ -622,6 +622,10 @@ section { padding: 22px 0 0; }
 
 .gpop-body { padding: 15px 16px 17px; }
 
+.pane-copy {
+  font-size: 12.5px; font-weight: 700; line-height: 1.6;
+  color: var(--turf); margin: 0 0 7px;
+}
 .pane-desc { font-size: 12.5px; line-height: 1.85; color: var(--ink-soft); margin: 0; }
 
 /* 幅のある画面では出馬表を大きく。
@@ -985,6 +989,11 @@ a.race:active { transform: translateY(0); }
 .chara-tags span {
   font-size: 10.5px; color: var(--ink-soft);
   background: var(--paper-2); border-radius: 999px; padding: 2px 9px;
+}
+/* キャッチコピー。名前のすぐ下に1行 */
+.chara-copy {
+  font-size: 12px; font-weight: 700; line-height: 1.6;
+  color: var(--ac, var(--turf)); margin: 8px 0 0;
 }
 .chara-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.8; margin: 7px 0 0; }
 .chara.is-alter { border-style: dashed; background: var(--paper); }
