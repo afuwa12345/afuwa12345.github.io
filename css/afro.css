@@ -409,9 +409,10 @@ section { padding: 22px 0 0; }
   display: flex; align-items: stretch;
   height: clamp(184px, 51vw, 284px);
   background:
-    url(../images/gate_rail.webp) repeat-x left top / auto 26px,
+    url(../images/gate_rail.webp) repeat-x left top / auto 14px,
+    url(../images/gate_rail.webp) repeat-x left 36px / auto 26px,
     linear-gradient(180deg, var(--turf-2), var(--turf));
-  padding: 27px 6px 0;
+  padding: 62px 6px 0;
   position: relative;
   border-radius: 8px 8px 0 0;
   box-shadow: var(--sh-md);
@@ -442,12 +443,12 @@ section { padding: 22px 0 0; }
    番号と名札(z7)より後ろ、扉(z4)より手前。 */
 .stall::after {
   content: ''; position: absolute; z-index: 5; pointer-events: none;
-  right: 0; top: 0; bottom: 23px; width: 6px;
+  right: 0; top: -26px; bottom: -6px; width: 6px;
   background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
 }
 .stall::before {
   content: ''; position: absolute; z-index: 5; pointer-events: none;
-  left: 0; top: 0; bottom: 23px; width: 6px;
+  left: 0; top: -26px; bottom: -6px; width: 6px;
   background: url(../images/gate_post.webp) no-repeat right top / 12px 100%;
 }
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
@@ -474,10 +475,11 @@ section { padding: 22px 0 0; }
 .stall.on::before { opacity: 0; }
 
 .stall-no {
-  position: absolute; top: 0; left: 0; z-index: 7;
-  font-family: 'Anton', sans-serif; font-size: 14px; line-height: 1;
-  padding: 5px 8px 6px; background: var(--c); color: var(--ci);
-  border-bottom-right-radius: 5px;
+  position: absolute; top: -46px; left: 50%; transform: translateX(-50%);
+  z-index: 7;
+  font-family: 'Anton', sans-serif; font-size: 13px; line-height: 1;
+  padding: 3px 9px 4px; background: var(--c); color: var(--ci);
+  border-radius: 3px;
   box-shadow: 0 1px 4px rgba(26,30,24,.28);
   transition: background .3s ease, color .3s ease;
 }
