@@ -664,14 +664,14 @@ section { padding: 22px 0 0; }
 .chip:hover { border-color: var(--gold-lt); transform: translateY(-2px); box-shadow: var(--sh-md); }
 
 /* ===== FOOTER ===== */
-footer { background: var(--turf); color: rgba(247,242,227,.86); padding: 30px 0 26px; margin-top: 40px; border-top: 3px solid var(--gold); }
-.f-logo { font-family: 'Dela Gothic One', sans-serif; font-size: 19px; color: var(--paper); }
+footer { background: var(--turf); color: rgba(247,242,227,.86); padding: 20px 0 16px; margin-top: 28px; border-top: 3px solid var(--gold); }
+.f-logo { font-family: 'Dela Gothic One', sans-serif; font-size: 16px; line-height: 1.2; color: var(--paper); }
 .f-logo em { font-style: normal; color: var(--gold-lt); }
-.f-tag { font-family: 'Anton', sans-serif; font-size: 10px; letter-spacing: .3em; color: var(--gold-lt); margin-bottom: 15px; }
-.f-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 15px; }
-.f-links a { color: rgba(247,242,227,.86); text-decoration: none; font-size: 12.5px; }
+.f-tag { font-family: 'Anton', sans-serif; font-size: 9px; letter-spacing: .26em; color: var(--gold-lt); margin-bottom: 10px; }
+.f-links { display: flex; flex-wrap: wrap; gap: 5px 14px; margin-bottom: 10px; }
+.f-links a { color: rgba(247,242,227,.86); text-decoration: none; font-size: 11.5px; line-height: 1.5; }
 .f-links a:hover { color: var(--gold-lt); text-decoration: underline; text-underline-offset: 3px; }
-.f-copy { font-size: 10.5px; color: rgba(247,242,227,.52); line-height: 1.75; }
+.f-copy { font-size: 10px; color: rgba(247,242,227,.52); line-height: 1.6; }
 
 a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
