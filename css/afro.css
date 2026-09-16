@@ -412,12 +412,12 @@ section { padding: 22px 0 0; }
     url(../images/gate_rail.webp) repeat-x left top / auto 20px,
     url(../images/gate_rail.webp) repeat-x left 42px / auto 20px,
     /* 上下の横梁を繋ぐ縦梁。柱と同じ6本 */
-    url(../images/gate_post.webp) no-repeat left 0    top 20px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat left 20%  top 20px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat left 40%  top 20px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat left 60%  top 20px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat left 80%  top 20px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat right 0   top 20px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 0    top 20px / 9px 22px,
+    url(../images/gate_post.webp) no-repeat left 20%  top 20px / 9px 22px,
+    url(../images/gate_post.webp) no-repeat left 40%  top 20px / 9px 22px,
+    url(../images/gate_post.webp) no-repeat left 60%  top 20px / 9px 22px,
+    url(../images/gate_post.webp) no-repeat left 80%  top 20px / 9px 22px,
+    url(../images/gate_post.webp) no-repeat right 0   top 20px / 9px 22px,
     linear-gradient(180deg, var(--turf-2), var(--turf));
   padding: 62px 6px 0;
   position: relative;
@@ -431,7 +431,7 @@ section { padding: 22px 0 0; }
 .gate::before,
 .gate::after {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  top: 62px; bottom: 0; width: 6px;
+  top: 62px; bottom: 0; width: 4.5px;
   background-image: url(../images/gate_post.webp);
   background-repeat: no-repeat;
   background-size: 12px 100%;
@@ -463,13 +463,13 @@ section { padding: 22px 0 0; }
    番号と名札(z7)より後ろ、扉(z4)より手前。 */
 .stall::after {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  right: 0; top: 0; bottom: 0; width: 6px;
-  background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
+  right: 0; top: 0; bottom: 0; width: 4.5px;
+  background: url(../images/gate_post.webp) no-repeat left top / 9px 100%;
 }
 .stall::before {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  left: 0; top: 0; bottom: 0; width: 6px;
-  background: url(../images/gate_post.webp) no-repeat right top / 12px 100%;
+  left: 0; top: 0; bottom: 0; width: 4.5px;
+  background: url(../images/gate_post.webp) no-repeat right top / 9px 100%;
 }
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
 .gdoor {
