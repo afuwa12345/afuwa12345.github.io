@@ -442,12 +442,12 @@ section { padding: 22px 0 0; }
    境目では2つが合わさって1本になり、いちばん外は半分だけが出る。
    番号と名札(z7)より後ろ、扉(z4)より手前。 */
 .stall::after {
-  content: ''; position: absolute; z-index: 5; pointer-events: none;
+  content: ''; position: absolute; z-index: 9; pointer-events: none;
   right: 0; top: -26px; bottom: -6px; width: 6px;
   background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
 }
 .stall::before {
-  content: ''; position: absolute; z-index: 5; pointer-events: none;
+  content: ''; position: absolute; z-index: 9; pointer-events: none;
   left: 0; top: -26px; bottom: -6px; width: 6px;
   background: url(../images/gate_post.webp) no-repeat right top / 12px 100%;
 }
