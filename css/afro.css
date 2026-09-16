@@ -418,16 +418,6 @@ section { padding: 22px 0 0; }
   overflow: hidden;
   transition: border-radius .22s;
 }
-/* 外の柱。柱まるごとを、ゲートの枠のライン上に中心を合わせて立てる */
-.gate::before,
-.gate::after {
-  content: ''; position: absolute; z-index: 5; pointer-events: none;
-  top: 27px; bottom: 23px; width: 12px;
-  background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
-}
-.gate::before { left: 0px; }
-.gate::after  { right: 0px; }
-
 .board.open .gate { box-shadow: 0 2px 4px rgba(26,30,24,.07); }
 .board:not(.open) .gate { border-radius: 8px; padding-bottom: 6px; }
 .board:not(.open) .stall-pic img { filter: none; }
@@ -447,15 +437,15 @@ section { padding: 22px 0 0; }
 
 /* 仕切りの柱 */
 /* 仕切りの柱。キャラより手前に立つ */
-/* 中の柱。1本を縦半分に割って、境目をはさんだ両側の馬房に置く。
-   左半分は左の馬房の右端へ、右半分は右の馬房の左端へ。境目でつながって1本になる。
+/* 柱。1本を縦半分に割って、全部の馬房が左右に半分ずつ持つ。
+   境目では2つが合わさって1本になり、いちばん外は半分だけが出る。
    番号と名札(z7)より後ろ、扉(z4)より手前。 */
-.stall:not(:last-child)::after {
+.stall::after {
   content: ''; position: absolute; z-index: 5; pointer-events: none;
   right: 0; top: 0; bottom: 23px; width: 6px;
   background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
 }
-.stall:not(:first-child)::before {
+.stall::before {
   content: ''; position: absolute; z-index: 5; pointer-events: none;
   left: 0; top: 0; bottom: 23px; width: 6px;
   background: url(../images/gate_post.webp) no-repeat right top / 12px 100%;
