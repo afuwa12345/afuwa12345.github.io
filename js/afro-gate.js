@@ -45,66 +45,79 @@
   var popX  = document.getElementById('gPopX');
   var cur = -1;
 
-  /* ポップアップの開け閉め。
-     開くとき  … 馬房にいるキャラの位置と大きさから、本来の位置へ大きくなりながら出る
-     閉じるとき … 逆に、馬房へ向かって小さくなりながら戻る
-     位置は開くたびに測り直して覚えておく。 */
-  var popFrom = null;      // 馬房のキャラの位置
-
-  function popFly(back, done) {
-    if (!pPic || !popFrom) { if (done) done(); return; }
-    var to = pPic.getBoundingClientRect();
-    if (!to.width) { if (done) done(); return; }
-    var dx = (popFrom.left + popFrom.width / 2) - (to.left + to.width / 2);
-    var dy = (popFrom.top + popFrom.height / 2) - (to.top + to.height / 2);
-    var sc = popFrom.width / to.width;
-    var at = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
-
-    var frames = back ? [{ transform: 'none', opacity: 1 }, { transform: at, opacity: .25 }]
-                      : [{ transform: at, opacity: .25 }, { transform: 'none', opacity: 1 }];
-    if (!pPic.animate) { if (done) done(); return; }
-    var a = pPic.animate(frames, {
-      duration: back ? 380 : 520,
-      easing: back ? 'cubic-bezier(.5,0,.75,.2)' : 'cubic-bezier(.2,.9,.28,1)',
-      fill: 'both'
-    });
-    a.onfinish = function () { if (!back) a.cancel(); if (done) done(); };
-  }
+  /* ポップアップ。
+     ① キャラがゲートから飛んで所定の位置へ（FLY_MS）
+     ② そのあと枠全体が下から出てキャラを囲う（RISE_MS）
+     ③ 出きったら、飛んでいた絵をカードの中の絵に入れ替える */
+  var FLY_MS = 520, RISE_MS = 440;
+  var pFly = document.getElementById('pFly');
 
   function openPop(fromImg) {
     if (!pop) return;
-    popFrom = fromImg ? fromImg.getBoundingClientRect() : null;
+    clearTimeout(openPop._a); clearTimeout(openPop._b); clearTimeout(closePop._t);
+    pop.classList.remove('closing', 'rising');
     pop.hidden = false;
-    pop.classList.remove('ready');
     pop.classList.add('show');
     document.body.style.overflow = 'hidden';
 
-    // キャラが所定の位置に着いたら、カードの地と説明を出す
-    var arrive = function () {
-      clearTimeout(openPop._t);
-      openPop._t = setTimeout(function () { pop.classList.add('ready'); }, 600);
+    var from = fromImg ? fromImg.getBoundingClientRect() : null;
+    if (!pFly || !pPic || !from || !from.width) { pop.classList.add('rising'); return; }
+
+    pFly.src = pPic.getAttribute('src') || '';
+    pFly.alt = '';
+    pop.classList.add('flying');
+
+    var go = function () {
+      var to = pPic.getBoundingClientRect();
+      if (!to.width) { pop.classList.remove('flying'); pop.classList.add('rising'); return; }
+      // 飛ぶ絵を、まずゲートの位置に置く
+      pFly.style.left = from.left + 'px';
+      pFly.style.top = from.top + 'px';
+      pFly.style.width = from.width + 'px';
+      pFly.style.height = 'auto';
+      var dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+      var dy = (to.top + to.height / 2) - (from.top + from.height / 2);
+      var sc = to.width / from.width;
+      if (pFly.animate) {
+        pFly.animate(
+          [{ transform: 'none' },
+           { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')' }],
+          { duration: FLY_MS, easing: 'cubic-bezier(.2,.9,.28,1)', fill: 'forwards' }
+        );
+      } else {
+        pFly.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+      }
+
+      // ② 着いたら枠が下から出る
+      openPop._a = setTimeout(function () {
+        pop.classList.remove('flying');
+        pop.classList.add('rising');
+      }, FLY_MS);
+      // ③ 出きったら中の絵に入れ替える
+      openPop._b = setTimeout(function () {
+        pop.classList.remove('rising');
+        if (pFly.getAnimations) pFly.getAnimations().forEach(function (x) { x.cancel(); });
+        pFly.style.transform = '';
+      }, FLY_MS + RISE_MS);
     };
-    if (pPic && !(pPic.complete && pPic.naturalWidth)) {
-      pPic.onload = function () { popFly(false); arrive(); };
-    } else {
-      popFly(false); arrive();
-    }
+
+    if (pFly.complete && pFly.naturalWidth) { go(); } else { pFly.onload = go; }
   }
 
   function closePop() {
     if (!pop || pop.hidden) return;
-    pop.classList.remove('ready');      // 先に地と説明を消す
-    popFly(true);                       // 動きは飾り。閉じる処理は待たない
-    clearTimeout(openPop._t);
-    clearTimeout(closePop._t);
+    clearTimeout(openPop._a); clearTimeout(openPop._b); clearTimeout(closePop._t);
+    pop.classList.remove('flying', 'rising');
+    pop.classList.add('closing');
     closePop._t = setTimeout(function () {
-      pop.classList.remove('show');
+      pop.classList.remove('show', 'closing');
       pop.hidden = true;
       document.body.style.overflow = '';
-      if (pPic && pPic.getAnimations) {
-        pPic.getAnimations().forEach(function (x) { x.cancel(); });
+      if (pFly) {
+        if (pFly.getAnimations) pFly.getAnimations().forEach(function (x) { x.cancel(); });
+        pFly.style.transform = '';
       }
-    }, 340);
+    }, 320);
   }
 
   function paint() {
