@@ -23,7 +23,7 @@ var PER_PAGE = 21;   // 1ページあたりの話数（3列 × 7行）
 
 var COMICS = [
   // url を空にしておくと「近日公開」として並びます（投稿したらURLを入れる）
-  { no: 2, title: 'ギンマ、家を建てる。', img: 'images/comic/02.webp', url: '' },
+  { no: 2, title: 'ギンマ、家を建てる。', img: 'images/comic/02.webp', url: 'https://www.instagram.com/p/DdV-BQ7FHIb/' },
   { no: 1, title: 'アフワ', img: 'images/comic/01.webp', url: 'https://www.instagram.com/p/DdNyPsslM-y/' }
 ];
 
