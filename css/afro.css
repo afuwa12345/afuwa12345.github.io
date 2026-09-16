@@ -408,8 +408,10 @@ section { padding: 22px 0 0; }
 .gate {
   display: flex; align-items: stretch;
   height: clamp(184px, 51vw, 284px);
-  background: linear-gradient(180deg, var(--turf-2), var(--turf));
-  padding: 6px 6px 0;
+  background:
+    url(../images/gate_rail.webp) repeat-x left top / auto 14px,
+    linear-gradient(180deg, var(--turf-2), var(--turf));
+  padding: 15px 6px 0;
   border-radius: 8px 8px 0 0;
   box-shadow: var(--sh-md);
   overflow: hidden;
@@ -424,24 +426,36 @@ section { padding: 22px 0 0; }
 .stall {
   appearance: none; margin: 0; padding: 0; font: inherit; color: inherit; border: 0;
   flex: 1 1 0; min-width: 0; position: relative; overflow: hidden; cursor: pointer;
-  background: linear-gradient(180deg, var(--white), var(--paper-2));
+  background: linear-gradient(180deg, #efe9dc 0%, #ddd5c6 100%);
   display: flex; flex-direction: column; justify-content: flex-end;
   transition: flex-grow .34s cubic-bezier(.34,.01,.2,1), background .22s, box-shadow .22s;
 }
-.stall + .stall { box-shadow: inset 1px 0 0 rgba(0,0,0,.18); }
-.stall:first-child { border-radius: 4px 0 0 0; }
-.stall:last-child  { border-radius: 0 4px 0 0; }
-.stall.on { flex-grow: 2.8; background: var(--white); box-shadow: 0 0 0 1px rgba(0,0,0,.22), 0 -2px 18px rgba(232,196,104,.4); z-index: 2; }
-.stall:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: -3px; z-index: 5; }
+/* ゲートの扉。閉じているあいだは立っていて、アフロだけが上に出る */
+.stall::after {
+  content: ''; position: absolute; left: 0; right: 0;
+  top: 33%; height: 38%; z-index: 4; pointer-events: none;
+  background: url(../images/gate_wall.webp) repeat-x left center / auto 100%;
+  box-shadow:
+    0 -2px 5px rgba(0,0,0,.22), 0 3px 6px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.28);
+}
 
-/* ゲートの柵 */
+/* 仕切りの柱 */
+/* 仕切りの柱。キャラより手前に立つ */
 .stall::before {
-  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
   background:
-    repeating-linear-gradient(180deg, rgba(20,40,28,.13) 0 2px, transparent 2px 17px),
-    linear-gradient(180deg, rgba(0,0,0,.09), transparent 30%);
+    url(../images/gate_post.webp) no-repeat left top / 8px 100%,
+    url(../images/gate_post.webp) no-repeat right top / 8px 100%,
+    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
   transition: opacity .3s ease;
 }
+
+/* 開けたら扉が下がって全身が見える */
+.stall::after { transition: transform .4s cubic-bezier(.34,.01,.2,1), opacity .3s; }
+.board.open .stall::after { transform: translateY(210%); opacity: 0; }
+
+.stall + .stall { box-shadow: inset 1px 0 0 rgba(0,0,0,.18); }
 .stall.on::before { opacity: 0; }
 
 .stall-no {
