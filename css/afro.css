@@ -487,12 +487,13 @@ section { padding: 22px 0 0; }
 .stall.on::before { opacity: 0; }
 
 .stall-no {
-  position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+  position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
   z-index: 20;
-  font-family: 'Anton', sans-serif; font-size: 13px; line-height: 1;
-  padding: 3px 9px 4px; background: var(--c); color: var(--ci);
+  font-family: 'Anton', sans-serif; font-size: 11px; line-height: 1;
+  padding: 2px 7px 3px; background: var(--c); color: var(--ci);
+  border: 1.5px solid rgba(255,255,255,.9);
   border-radius: 3px;
-  box-shadow: 0 1px 4px rgba(26,30,24,.28);
+  box-shadow: 0 1px 4px rgba(26,30,24,.45);
   transition: background .3s ease, color .3s ease;
 }
 .stall[data-c="afuwa"]   { --c: var(--c-afuwa);   --ci: var(--c-afuwa-ink); }
