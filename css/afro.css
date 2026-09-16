@@ -431,14 +431,6 @@ section { padding: 22px 0 0; }
   transition: flex-grow .34s cubic-bezier(.34,.01,.2,1), background .22s, box-shadow .22s;
 }
 /* ゲートの扉。閉じているあいだは立っていて、アフロだけが上に出る */
-.stall::after {
-  content: ''; position: absolute; left: 0; right: 0;
-  top: 33%; height: 38%; z-index: 4; pointer-events: none;
-  background: url(../images/gate_wall.webp) repeat-x left center / auto 100%;
-  box-shadow:
-    0 -2px 5px rgba(0,0,0,.22), 0 3px 6px rgba(0,0,0,.22),
-    inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.28);
-}
 
 /* 仕切りの柱 */
 /* 仕切りの柱。キャラより手前に立つ */
@@ -451,9 +443,25 @@ section { padding: 22px 0 0; }
   transition: opacity .3s ease;
 }
 
-/* 開けたら扉が下がって全身が見える */
-.stall::after { transition: transform .4s cubic-bezier(.34,.01,.2,1), opacity .3s; }
-.board.open .stall::after { transform: translateY(210%); opacity: 0; }
+/* ゲートの扉。左右2枚。押した馬房だけが開く */
+.gdoor {
+  position: absolute; left: 0; right: 0; top: 33%; height: 38%;
+  z-index: 4; pointer-events: none;
+}
+.gdoor i {
+  position: absolute; top: 0; bottom: 0; width: 50.5%;
+  background: url(../images/gate_wall.webp) repeat-x left center / auto 100%;
+  box-shadow:
+    0 -2px 5px rgba(0,0,0,.22), 0 3px 6px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.28);
+  transition: transform .42s cubic-bezier(.36,.05,.2,1);
+}
+.gdoor i:first-child { left: 0; border-right: 1px solid rgba(0,0,0,.3); }
+.gdoor i:last-child  { right: 0; border-left: 1px solid rgba(255,255,255,.22); }
+
+/* 開いた馬房だけ、扉が左右にどく */
+.stall.on .gdoor i:first-child { transform: translateX(-104%); }
+.stall.on .gdoor i:last-child  { transform: translateX(104%); }
 
 .stall + .stall { box-shadow: inset 1px 0 0 rgba(0,0,0,.18); }
 .stall.on::before { opacity: 0; }
