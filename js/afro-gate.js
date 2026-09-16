@@ -49,7 +49,8 @@
      ① キャラがゲートから飛んで所定の位置へ（FLY_MS）
      ② そのあと枠全体が下から出てキャラを囲う（RISE_MS）
      ③ 出きったら、飛んでいた絵をカードの中の絵に入れ替える */
-  var FLY_MS = 760, RISE_MS = 440;
+  var FLY_MS = 760, RISE_MS = 360;
+  var LEAD_MS = 120;   // キャラが着ききる少し前から枠を出しはじめる
   var pFly = document.getElementById('pFly');
 
   function openPop(fromImg) {
@@ -92,13 +93,13 @@
       openPop._a = setTimeout(function () {
         pop.classList.remove('flying');
         pop.classList.add('rising');
-      }, FLY_MS);
+      }, FLY_MS - LEAD_MS);
       // ③ 出きったら中の絵に入れ替える
       openPop._b = setTimeout(function () {
         pop.classList.remove('rising');
         if (pFly.getAnimations) pFly.getAnimations().forEach(function (x) { x.cancel(); });
         pFly.style.transform = '';
-      }, FLY_MS + RISE_MS);
+      }, FLY_MS - LEAD_MS + RISE_MS);
     };
 
     if (pFly.complete && pFly.naturalWidth) { go(); } else { pFly.onload = go; }
