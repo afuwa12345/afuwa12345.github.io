@@ -409,18 +409,17 @@ section { padding: 22px 0 0; }
   display: flex; align-items: stretch;
   height: clamp(184px, 51vw, 284px);
   background:
-    url(../images/gate_rail.webp) repeat-x left top / auto 26px,
-    url(../images/gate_rail.webp) repeat-x left 48px / auto 26px,
-    url(../images/gate_rail.webp) repeat-x left bottom / auto 18px,
+    url(../images/gate_rail.webp) repeat-x left top / auto 13px,
+    url(../images/gate_rail.webp) repeat-x left 35px / auto 13px,
     /* 上下の横梁を繋ぐ縦梁。柱と同じ6本 */
-    url(../images/gate_post.webp) no-repeat left 0    top 26px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat left 20%  top 26px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat left 40%  top 26px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat left 60%  top 26px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat left 80%  top 26px / 12px 22px,
-    url(../images/gate_post.webp) no-repeat right 0   top 26px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 0    top 13px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 20%  top 13px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 40%  top 13px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 60%  top 13px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 80%  top 13px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat right 0   top 13px / 12px 22px,
     linear-gradient(180deg, var(--turf-2), var(--turf));
-  padding: 74px 6px 18px;
+  padding: 48px 6px 0;
   position: relative;
   border-radius: 8px 8px 0 0;
   box-shadow: var(--sh-md);
@@ -432,7 +431,7 @@ section { padding: 22px 0 0; }
 .gate::before,
 .gate::after {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  top: 74px; bottom: 18px; width: 6px;
+  top: 48px; bottom: 0; width: 6px;
   background-image: url(../images/gate_post.webp);
   background-repeat: no-repeat;
   background-size: 12px 100%;
