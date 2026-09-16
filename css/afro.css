@@ -409,9 +409,9 @@ section { padding: 22px 0 0; }
   display: flex; align-items: stretch;
   height: clamp(184px, 51vw, 284px);
   background:
-    url(../images/gate_rail.webp) repeat-x left top / auto 14px,
+    url(../images/gate_rail.webp) repeat-x left top / auto 26px,
     linear-gradient(180deg, var(--turf-2), var(--turf));
-  padding: 15px 6px 0;
+  padding: 27px 6px 0;
   border-radius: 8px 8px 0 0;
   box-shadow: var(--sh-md);
   overflow: hidden;
@@ -443,9 +443,9 @@ section { padding: 22px 0 0; }
 /* 仕切りの柱。馬房と馬房の境目に1本だけ立てる（5頭なので4本） */
 .stall + .stall::before {
   background:
-    url(../images/gate_post.webp) no-repeat left top / 17px 100%,
+    url(../images/gate_post.webp) no-repeat left top / 15px 100%,
     linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
-  margin-left: -8px;
+  margin-left: -7px;
 }
 
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
