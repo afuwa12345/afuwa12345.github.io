@@ -439,31 +439,26 @@ section { padding: 22px 0 0; }
   background: linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
 }
 
-/* 仕切りの柱。境目の中心に立てる。
-   馬房は overflow:hidden なので、柱を左右半分に分けて隣どうしの馬房に描き、
-   境目でつなぎ合わせる。番号と名札より後ろ、扉より手前の層。 */
-.stall::after {
+/* 仕切りの柱。境目ごとに1本だけ。
+   馬房は overflow:hidden なので、はみ出さないよう右側の馬房の内側に立てる。
+   番号と名札(z7)より後ろ、扉(z4)より手前。 */
+.stall + .stall::after {
   content: ''; position: absolute; z-index: 5; pointer-events: none;
-  right: 0; top: 0; bottom: 23px; width: 6.5px;
-  background: url(../images/gate_post.webp) no-repeat left top / 13px 100%;
+  left: 0; top: 0; bottom: 23px; width: 9px;
+  background: url(../images/gate_post.webp) no-repeat left top / 9px 100%;
 }
-.stall + .stall::before {
-  background:
-    url(../images/gate_post.webp) no-repeat right 0 / 13px calc(100% - 23px),
-    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
-  z-index: 5;
-}
-
-/* いちばん外の左右は、半分ではなく1本まるごと内側に立てる */
+/* いちばん外の左右にも1本ずつ */
 .stall:first-child::before {
   background:
-    url(../images/gate_post.webp) no-repeat left 0 / 13px calc(100% - 23px),
+    url(../images/gate_post.webp) no-repeat left 0 / 9px calc(100% - 23px),
     linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
   z-index: 5;
 }
-.stall:last-child::after {
-  right: 0; width: 13px;
-  background: url(../images/gate_post.webp) no-repeat right top / 13px 100%;
+.stall:last-child::before {
+  background:
+    url(../images/gate_post.webp) no-repeat right 0 / 9px calc(100% - 23px),
+    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
+  z-index: 5;
 }
 
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
