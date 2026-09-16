@@ -204,12 +204,12 @@ body {
 /* ===== 4軸タイル ===== */
 .axes { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 16px; }
 /* 5枚のときは先頭を横長にする */
-.axes:has(> :nth-child(5)) > .axis:first-child { grid-column: 1 / -1; min-height: 62px; }
+.axes:has(> :nth-child(5)) > .axis:first-child { grid-column: 1 / -1; min-height: 96px; }
 .axes:has(> :nth-child(5)) > .axis:first-child::after { font-size: 68px; bottom: -20px; }
 .axis {
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end;
-  min-height: 78px; padding: 11px 13px;
+  min-height: 96px; padding: 11px 13px;
   border-radius: 8px; text-decoration: none;
   background: var(--ax); color: #fff;
   box-shadow: var(--sh-sm);
@@ -226,12 +226,12 @@ body {
 .axis-pic {
   position: absolute; right: 8px; top: 50%;
   transform: translateY(-50%);
-  height: 54px; width: auto; max-width: 44%;
-  object-fit: contain; opacity: .45;
+  height: 72px; width: auto; max-width: 50%;
+  object-fit: contain; opacity: .5;
   pointer-events: none; z-index: 0;
 }
 .axis:has(> .axis-pic)::after { display: none; }
-.axes > .axis:first-child > .axis-pic { height: 46px; }
+.axes > .axis:first-child > .axis-pic { height: 72px; }
 .axis-en, .axis-ja { position: relative; z-index: 1; }
 .axis-en { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: .1em; line-height: 1.12; }
 .axis-ja { font-size: 11px; opacity: .88; margin-top: 2px; }
