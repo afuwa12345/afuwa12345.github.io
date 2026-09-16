@@ -98,6 +98,39 @@
   }
   #stage.hit .d-flash { opacity: 1; }
 
+  /* 下の操作帯。指でキャラが隠れないよう、動かすところを別にした */
+  .d-pad {
+    position: relative; height: 66px; margin: 9px 0 2px;
+    border: 1px solid var(--grey2); border-radius: 12px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.4)),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 22px);
+    touch-action: none; cursor: pointer; overflow: hidden;
+    -webkit-user-select: none; user-select: none;
+  }
+  /* つまみが真ん中にいるので、案内は下寄せにして重ねない */
+  .d-pad-hint {
+    position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 5px;
+    font-size: 11px; letter-spacing: .1em; color: #8d8189; pointer-events: none;
+  }
+  .d-pad.used .d-pad-hint { opacity: 0; transition: opacity .3s; }
+  .d-pad::before, .d-pad::after {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: #5f5459; pointer-events: none;
+  }
+  .d-pad::before { content: '◀'; left: 9px; }
+  .d-pad::after  { content: '▶'; right: 9px; }
+  .d-knob {
+    position: absolute; top: 50%; width: 48px; height: 48px;
+    margin: -24px 0 0 -24px; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle at 50% 32%, #fff2b0, #f0b800 62%, #b98a00);
+    border: 2px solid #7d6700;
+    box-shadow: 0 0 18px rgba(255, 214, 10, .55), inset 0 2px 0 rgba(255, 255, 255, .8);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .d-knob img { width: 76%; height: 76%; object-fit: contain; }
+
   /* 秒読み */
   .d-cue {
     position: absolute; inset: 0; z-index: 9; display: flex;
@@ -135,7 +168,8 @@
   <div class="ahow-card">
     <div class="ahow-t">あそびかた</div>
     <ul class="at-how">
-    <li>画面を指でなぞると、アフワがついてくる</li>
+    <li>画面の下の帯を指でなぞると、アフワが左右に動く</li>
+    <li>画面を直接なぞっても動かせる</li>
     <li>降ってくるバケツ・コーン・水たまりをよける</li>
     <li>1回でもぶつかったら終わり</li>
     <li>カラーアフロを拾うと2秒おまけ。生き残った秒数が記録</li>
@@ -160,7 +194,10 @@
       <img id="me" src="../images/dodge/afuwa.webp" alt="">
       <div class="d-cue" id="cue"></div>
     </div>
-    <p class="astage-note">指でなぞって左右に動かします</p>
+    <div class="d-pad" id="pad">
+      <div class="d-pad-hint">ここを指でなぞる</div>
+      <div class="d-knob" id="knob"><img src="../images/face/afuwa.webp" alt=""></div>
+    </div>
   </div>
 </section>
 
@@ -183,6 +220,8 @@
   var MOVE = 780;              /* 指へ寄っていく速さ px/秒 */
 
   var stage  = document.getElementById('stage');
+  var pad    = document.getElementById('pad');
+  var knob   = document.getElementById('knob');
   var me     = document.getElementById('me');
   var cueEl  = document.getElementById('cue');
   var road   = document.getElementById('road');
@@ -317,6 +356,8 @@
     myX += Math.abs(d) <= mv ? d : (d > 0 ? mv : -mv);
     myX = Math.max(ME_W / 2, Math.min(W - ME_W / 2, myX));
     me.style.left = myX + 'px';
+    /* つまみはキャラの位置にあわせて動く。指の位置ではない */
+    knob.style.left = ((myX / W) * pad.clientWidth) + 'px';
 
     /* 出す */
     nextIn -= dt;
@@ -375,14 +416,36 @@
     raf = requestAnimationFrame(step);
   }
 
-  /* 指でなぞる。押していなくても、なぞった位置についてくる */
-  function aim(e) {
-    var r = stage.getBoundingClientRect();
-    wantX = Math.max(ME_W / 2, Math.min(W - ME_W / 2, e.clientX - r.left));
+  /* 動かす。下の帯をなぞるのが基本。画面を直接なぞっても動く */
+  function aimAt(x) {
+    wantX = Math.max(ME_W / 2, Math.min(W - ME_W / 2, x));
   }
-  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); aim(e); });
+  function aimStage(e) {
+    aimAt(e.clientX - stage.getBoundingClientRect().left);
+  }
+  function aimPad(e) {
+    var r = pad.getBoundingClientRect();
+    var f = (e.clientX - r.left) / (r.width || 1);
+    f = Math.max(0, Math.min(1, f));
+    aimAt(ME_W / 2 + f * (W - ME_W));
+  }
+
+  pad.addEventListener('pointerdown', function (e) {
+    e.preventDefault();
+    pad.classList.add('used');
+    if (pad.setPointerCapture) { try { pad.setPointerCapture(e.pointerId); } catch (err) {} }
+    aimPad(e);
+  });
+  pad.addEventListener('pointermove', function (e) {
+    if (!e.buttons && e.pointerType !== 'touch') return;
+    e.preventDefault();
+    aimPad(e);
+  });
+  pad.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); aimStage(e); });
   stage.addEventListener('pointermove', function (e) {
-    if (e.buttons || e.pointerType === 'touch') { e.preventDefault(); aim(e); }
+    if (e.buttons || e.pointerType === 'touch') { e.preventDefault(); aimStage(e); }
   });
   stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
 

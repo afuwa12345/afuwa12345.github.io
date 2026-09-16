@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>アフロペア｜AFRO Horse</title>
-<meta name="description" content="裏返した12枚から同じアフロ馬の2枚をそろえる神経衰弱。クリアまでの速さを競う無料ゲーム。登録不要でブラウザからすぐ遊べます。">
+<meta name="description" content="裏返した30枚から同じ絵の2枚をそろえる神経衰弱。クリアまでの速さを競う無料ゲーム。登録不要でブラウザからすぐ遊べます。">
 <link rel="canonical" href="https://afro-horse.com/game/pair.html">
 <link rel="icon" href="../favicon.ico">
 <meta name="theme-color" content="#08060a">
@@ -46,13 +46,13 @@
       repeating-linear-gradient(90deg,
         rgba(0,0,0,.10) 0 2px, transparent 2px 5px,
         rgba(255,255,255,.03) 5px 6px, transparent 6px 11px);
-    padding: 10px;
-    display: grid; gap: 8px;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    padding: 7px;
+    display: grid; gap: 5px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
   }
   @media (min-width: 560px) {
-    #stage { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); }
+    #stage { grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(5, 1fr); }
   }
 
   /* 1枚のカード。表と裏を背中合わせにして回す */
@@ -63,7 +63,7 @@
   }
   .pc.on .pc-in, .pc.done .pc-in { transform: rotateY(180deg); }
   .pc-f, .pc-b {
-    position: absolute; inset: 0; border-radius: 8px; overflow: hidden;
+    position: absolute; inset: 0; border-radius: 6px; overflow: hidden;
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
     display: flex; align-items: center; justify-content: center;
   }
@@ -103,10 +103,36 @@
   @keyframes pcPop { 40% { transform: scale(1.08); } }
   .pc.miss .pc-f { border-color: var(--red); }
 
+  /* ふたりで遊ぶとき */
+  .abtn.duo {
+    background: linear-gradient(180deg, #bff6ff 0%, #4fe3f5 34%, #12b6d6 62%, #0a8ba6 100%);
+    color: #06323c;
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.85), inset 0 -2px 0 rgba(0,0,0,.18),
+      0 0 26px rgba(0,240,255,.45), 0 7px 0 #066c82, 0 13px 24px rgba(0,0,0,.5);
+    font-size: 18px; padding: 14px 44px; margin-top: 12px;
+  }
+  .abtn.duo:active { box-shadow: inset 0 2px 0 rgba(255,255,255,.7), 0 1px 0 #066c82; }
+
+  /* いま手番のほうを光らせる */
+  #hudDuo .ahud-cell { transition: border-color .15s, background .15s; }
+  #hudDuo .ahud-cell.now { background: rgba(255,214,10,.14); border-color: var(--gold); }
+  #hudDuo .p1 .ahud-lbl { color: var(--gold); text-shadow: 0 0 6px var(--gold); }
+  #hudDuo .p2 .ahud-lbl { color: var(--magenta); text-shadow: 0 0 6px var(--magenta); }
+  #hudDuo .p1 .ahud-val { color: var(--gold); }
+  #hudDuo .p2 .ahud-val { color: var(--magenta); }
+  .turn-tag { font-family: 'Dela Gothic One', sans-serif; font-size: 17px; }
+
+  /* だれが取った札か */
+  .pc.won1 .pc-f { border-color: var(--gold);    box-shadow: 0 0 14px rgba(255,214,10,.65); }
+  .pc.won2 .pc-f { border-color: var(--magenta); box-shadow: 0 0 14px rgba(255,43,214,.6); }
+  .p-left i.w1 { background: var(--gold);    box-shadow: 0 0 8px var(--gold); }
+  .p-left i.w2 { background: var(--magenta); box-shadow: 0 0 8px var(--magenta); }
+
   /* そろった組のしるし */
-  .p-left { display: flex; gap: 5px; justify-content: center; padding: 8px 0 4px; }
+  .p-left { display: flex; gap: 3px; justify-content: center; padding: 8px 0 4px; }
   .p-left i {
-    width: 22px; height: 6px; border-radius: 3px;
+    flex: 0 1 16px; height: 6px; border-radius: 3px;
     background: rgba(255,255,255,.16); transition: background .2s;
   }
   .p-left i.done { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
@@ -129,8 +155,9 @@
   <div class="at-eye">MEMORY PAIR</div>
   <h1 class="at-logo" data-name="アフロペア"><img src="../images/icon/pair.webp" alt="アフロペア"></h1>
   <p class="at-sub">同じ顔の2枚を、そろえる</p>
-  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
-  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <div class="at-best" id="bestLine">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">ひとりで</button>
+  <button class="abtn duo" type="button" id="duoBtn">ふたりで</button>
   <button class="abtn ghost" type="button" id="howBtn">説明</button>
 </section>
 
@@ -139,10 +166,17 @@
   <div class="ahow-card">
     <div class="ahow-t">あそびかた</div>
     <ul class="at-how">
-    <li>はじめの2秒だけ、12枚ぜんぶが見える</li>
+    <li>はじめの少しのあいだ、30枚ぜんぶが見える</li>
     <li>カードをめくって、同じアフロ馬の2枚をそろえる</li>
     <li>ちがう2枚をめくると裏にもどる</li>
-    <li>6組そろうまでの速さが記録。そろわなかった1回につき2秒つく</li>
+    <li>15組そろうまでの速さが記録。そろわなかった1回につき1秒つく</li>
+    </ul>
+    <div class="ahow-t" style="margin-top:16px">ふたりで</div>
+    <ul class="at-how">
+    <li>1P と 2P が交代でめくる</li>
+    <li>そろえたら、その人がもう一回めくれる</li>
+    <li>そろわなかったら相手のばん</li>
+    <li>15組ぜんぶ取って、多いほうが勝ち</li>
     </ul>
     <button class="gr-btn primary" type="button" id="howClose">とじる</button>
   </div>
@@ -151,16 +185,21 @@
 <!-- ===== プレイ ===== -->
 <section class="ascreen" id="scPlay">
   <div class="ain">
-    <div class="ahud">
+    <div class="ahud" id="hudSolo">
       <div class="ahud-cell"><span class="ahud-lbl">TIME</span><span class="ahud-val" id="hTime">0.0</span></div>
       <div class="ahud-cell"><span class="ahud-lbl">MISS</span><span class="ahud-val" id="hMiss">0</span></div>
       <div class="ahud-cell"><span class="ahud-lbl">BEST</span><span class="ahud-val gold" id="hBest">—</span></div>
+    </div>
+    <div class="ahud" id="hudDuo" hidden>
+      <div class="ahud-cell p1" id="cell1"><span class="ahud-lbl">1P</span><span class="ahud-val" id="s1">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">TURN</span><span class="ahud-val turn-tag" id="sTurn">1P</span></div>
+      <div class="ahud-cell p2" id="cell2"><span class="ahud-lbl">2P</span><span class="ahud-val" id="s2">0</span></div>
     </div>
   </div>
   <div class="ain grow">
     <div class="astage" id="stage"></div>
     <div class="p-left" id="left"></div>
-    <p class="astage-note">カードをタップしてめくります</p>
+    <p class="astage-note" id="note">カードをタップしてめくります</p>
   </div>
 </section>
 
@@ -172,14 +211,40 @@
 <script src="../js/afro-ui.js"></script>
 <script>
 (function () {
-  var FACES = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma', 'yancha'];
-  var PAIRS = FACES.length;
-  var MISS_PENALTY = 20;          /* 0.1秒きざみで数えるので 20 = 2.0秒 */
-  var PEEK_MS = 2000;             /* はじめに見せる時間 */
+  /* 15組ぶんの絵。顔は6種しかないので、カラーアフロ7種と、
+     色を回して作った2種を足して15にしている */
+  var DESIGNS = [
+    { src: '../images/face/afuwa.webp'    },
+    { src: '../images/face/buruma.webp'   },
+    { src: '../images/face/chafuwa.webp'  },
+    { src: '../images/face/kurofuwa.webp' },
+    { src: '../images/face/ginma.webp'    },
+    { src: '../images/face/yancha.webp'   },
+    { src: '../images/afro/afro_cha.webp'    },
+    { src: '../images/afro/afro_gin.webp'    },
+    { src: '../images/afro/afro_hazure.webp' },
+    { src: '../images/afro/afro_kin.webp'    },
+    { src: '../images/afro/afro_kon.webp'    },
+    { src: '../images/afro/afro_kuro.webp'   },
+    { src: '../images/afro/afro_mizu.webp'   },
+    { src: '../images/afro/afro_mizu.webp', hue: 125 },   /* もも色 */
+    { src: '../images/afro/afro_kin.webp',  hue: 95  }    /* みどり */
+  ];
+  var PAIRS = DESIGNS.length;     /* 15組 = 30枚 */
+  var MISS_PENALTY = 10;          /* 0.1秒きざみ。10 = 1.0秒。枚数が多いので軽めに */
+  var PEEK_MS = 2400;             /* はじめに見せる時間 */
   var BACK = '../images/pair/back.webp';
 
   var stage  = document.getElementById('stage');
   var leftEl = document.getElementById('left');
+  var hudSolo = document.getElementById('hudSolo');
+  var hudDuo  = document.getElementById('hudDuo');
+  var s1El = document.getElementById('s1');
+  var s2El = document.getElementById('s2');
+  var turnEl = document.getElementById('sTurn');
+  var cell1 = document.getElementById('cell1');
+  var cell2 = document.getElementById('cell2');
+  var noteEl = document.getElementById('note');
   var timeEl = document.getElementById('hTime');
   var missEl = document.getElementById('hMiss');
   var bestEl = document.getElementById('hBest');
@@ -188,10 +253,15 @@
   var cards = [], open = [], done = 0, miss = 0;
   var startAt = 0, tick = null, busy = false, playing = false;
 
+  /* 'solo' か 'duo'。ふたりのときは時間もランキングも使わない */
+  var mode = 'solo';
+  var turn = 1, got = [0, 0, 0];   /* got[1] が1P、got[2] が2P */
+  var owner = [];                  /* そろった組を取ったのがだれか */
+
   /* 先に読ませておく。めくった瞬間に一拍おかないように */
   (function () {
-    for (var i = 0; i < FACES.length; i++) {
-      var im = new Image(); im.src = '../images/face/' + FACES[i] + '.webp';
+    for (var i = 0; i < DESIGNS.length; i++) {
+      var im = new Image(); im.src = DESIGNS[i].src;
     }
   })();
 
@@ -227,14 +297,14 @@
     lower: true,
     format: function (v) { return (v / 10).toFixed(1) + '秒'; },
     grades: [
-      { v: 220, name: '神がかりの記憶' },
-      { v: 300, name: 'G1級の記憶' },
-      { v: 400, name: 'オープン級' },
-      { v: 550, name: '3勝クラス' },
-      { v: 750, name: '1勝クラス' },
+      { v: 800,  name: '神がかりの記憶' },
+      { v: 1050, name: 'G1級の記憶' },
+      { v: 1350, name: 'オープン級' },
+      { v: 1750, name: '3勝クラス' },
+      { v: 2300, name: '1勝クラス' },
       { v: Infinity, name: '新馬' }
     ],
-    onRetry: go
+    onRetry: function () { go('solo'); }
   });
 
   function shuffle(a) {
@@ -247,8 +317,19 @@
 
   function paintLeft() {
     var h = '';
-    for (var i = 0; i < PAIRS; i++) h += '<i class="' + (i < done ? 'done' : '') + '"></i>';
+    for (var i = 0; i < PAIRS; i++) {
+      var cls = '';
+      if (i < done) cls = (mode === 'duo') ? ('w' + owner[i]) : 'done';
+      h += '<i class="' + cls + '"></i>';
+    }
     leftEl.innerHTML = h;
+  }
+
+  function paintTurn() {
+    turnEl.textContent = turn + 'P';
+    cell1.classList.toggle('now', turn === 1);
+    cell2.classList.toggle('now', turn === 2);
+    noteEl.textContent = turn + 'P のばん。カードをタップ';
   }
 
   /* 経過は時刻の引き算で出す。裏に回って表示が止まっても記録はずれない */
@@ -256,17 +337,21 @@
   function paintTime() { timeEl.textContent = (elapsed() / 10).toFixed(1); }
 
   function build() {
-    var deck = shuffle(FACES.concat(FACES));
+    var deck = shuffle(DESIGNS.concat(DESIGNS));
     stage.innerHTML = '';
     cards = [];
     for (var i = 0; i < deck.length; i++) {
+      var d = deck[i];
       var c = document.createElement('div');
       c.className = 'pc';
-      c.setAttribute('data-face', deck[i]);
+      /* 同じ絵でも色ちがいは別の組。src と色をあわせて見わける */
+      c.setAttribute('data-face', d.src + '|' + (d.hue || 0));
       c.innerHTML =
         '<div class="pc-in">' +
           '<div class="pc-b"></div>' +
-          '<div class="pc-f"><img src="../images/face/' + deck[i] + '.webp" alt=""></div>' +
+          '<div class="pc-f"><img src="' + d.src + '" alt=""' +
+            (d.hue ? ' style="filter:hue-rotate(' + d.hue + 'deg) saturate(1.3)"' : '') +
+          '></div>' +
         '</div>';
       stage.appendChild(c);
       cards.push(c);
@@ -291,6 +376,12 @@
       setTimeout(function () {
         a.classList.add('done'); b.classList.add('done');
         a.classList.remove('on'); b.classList.remove('on');
+        if (mode === 'duo') {
+          a.classList.add('won' + turn); b.classList.add('won' + turn);
+          owner[done] = turn;
+          got[turn]++;
+          (turn === 1 ? s1El : s2El).textContent = got[turn];
+        }
         done++;
         paintLeft();
         Sfx.good();
@@ -306,6 +397,11 @@
         a.classList.remove('on', 'miss');
         b.classList.remove('on', 'miss');
         busy = false;
+        if (mode === 'duo') {            /* ちがったら相手のばん */
+          turn = (turn === 1) ? 2 : 1;
+          paintTurn();
+          Sfx.tap();
+        }
       }, 760);
     }
   }
@@ -313,6 +409,10 @@
   function clear() {
     playing = false;
     clearInterval(tick);
+    if (mode === 'duo') {
+      setTimeout(duoResult, 480);
+      return;
+    }
     var score = elapsed() + miss * MISS_PENALTY;
     paintTime();
     setTimeout(function () {
@@ -321,12 +421,69 @@
     }, 480);
   }
 
-  function go() {
+  /* ふたりのときの結果。記録は残さず、勝ち負けだけ出す */
+  function duoResult() {
+    var box = document.getElementById('gResult');
+    var win = (got[1] > got[2]) ? 1 : (got[2] > got[1] ? 2 : 0);
+    box.innerHTML = '';
+
+    var card = document.createElement('div');
+    card.className = 'gr-card rec';
+    card.innerHTML =
+      '<div class="gr-eyebrow">RESULT</div>' +
+      '<div class="gr-score">' + got[1] + ' &ndash; ' + got[2] + '</div>' +
+      '<div class="gr-grade">' + (win ? win + 'P のかち！' : 'ひきわけ') + '</div>' +
+      '<p class="gr-best">1P <b>' + got[1] + '組</b>　　2P <b>' + got[2] + '組</b></p>';
+
+    var acts = document.createElement('div');
+    acts.className = 'gr-acts';
+
+    var again = document.createElement('button');
+    again.type = 'button';
+    again.className = 'gr-btn primary';
+    again.textContent = 'もう一回';
+    again.onclick = function () { box.classList.remove('on'); go('duo'); };
+    acts.appendChild(again);
+
+    var solo = document.createElement('button');
+    solo.type = 'button';
+    solo.className = 'gr-btn';
+    solo.textContent = 'ひとりで遊ぶ';
+    solo.onclick = function () { box.classList.remove('on'); go('solo'); };
+    acts.appendChild(solo);
+
+    card.appendChild(acts);
+
+    var back = document.createElement('a');
+    back.className = 'gr-back';
+    back.href = '../game.html';
+    back.innerHTML = '&larr; ゲーム一覧にもどる';
+    card.appendChild(back);
+
+    box.appendChild(card);
+    box.classList.add('on');
+
+    Sfx.bgmStop();
+    if (win) Sfx.record(); else Sfx.over();
+  }
+
+  function go(m) {
+    if (m) mode = m;
     clearTimeout(go._t); clearInterval(tick);
     done = 0; miss = 0; open = []; busy = false; playing = false;
+    turn = 1; got = [0, 0, 0]; owner = [];
     missEl.textContent = '0';
     timeEl.textContent = '0.0';
+    s1El.textContent = '0';
+    s2El.textContent = '0';
     bestEl.textContent = document.getElementById('gBest').textContent;
+
+    var duo = (mode === 'duo');
+    hudSolo.hidden = duo;
+    hudDuo.hidden = !duo;
+    if (duo) paintTurn();
+    else noteEl.textContent = 'カードをタップしてめくります';
+
     build();
     paintLeft();
     screen('scPlay');
@@ -349,7 +506,8 @@
     if (t && t !== stage) flip(t);
   });
 
-  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go('solo'); });
+  document.getElementById('duoBtn').addEventListener('click', function () { Sfx.unlock(); go('duo'); });
 
   var snd = document.getElementById('sndBtn');
   function paintSnd() {

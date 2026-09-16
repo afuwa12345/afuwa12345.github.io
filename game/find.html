@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>アフロさがし｜AFRO Horse</title>
-<meta name="description" content="ずらりと並んだアフロ馬から、1頭だけ色のちがう仲間はずれを探す無料ゲーム。60秒で何問こなせるか競えます。">
+<meta name="description" content="ずらりと並んだアフロ馬から、1頭だけ顔のちがう仲間はずれを探す無料ゲーム。60秒で何問こなせるか競えます。">
 <link rel="canonical" href="https://afro-horse.com/game/find.html">
 <link rel="icon" href="../favicon.ico">
 <meta name="theme-color" content="#08060a">
@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://afro-horse.com/game/find.html">
 <meta property="og:site_name" content="AFRO Horse">
 <meta property="og:title" content="アフロさがし｜AFRO Horse">
-<meta property="og:description" content="1頭だけ色のちがうアフロ馬を探す無料ゲーム。60秒で何問こなせるか競えます。">
+<meta property="og:description" content="1頭だけ顔のちがうアフロ馬を探す無料ゲーム。60秒で何問こなせるか競えます。">
 <meta property="og:image" content="https://afro-horse.com/images/logo.webp">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@AFUWA12345">
@@ -104,7 +104,7 @@
 <section class="ascreen active" id="scTitle">
   <div class="at-eye">ODD ONE OUT</div>
   <h1 class="at-logo" data-name="アフロさがし"><img src="../images/icon/find.webp" alt="アフロさがし"></h1>
-  <p class="at-sub">1頭だけ、色がちがう</p>
+  <p class="at-sub">1頭だけ、顔がちがう</p>
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
   <button class="abtn ghost" type="button" id="howBtn">説明</button>
@@ -115,8 +115,9 @@
   <div class="ahow-card">
     <div class="ahow-t">あそびかた</div>
     <ul class="at-how">
-    <li>並んだアフロ馬から、1頭だけ色のちがうものを探してタップ</li>
-    <li>当たるとつぎの問題。数が増えて、色の差も小さくなる</li>
+    <li>並んだアフロ馬から、1頭だけ顔のちがうものを探してタップ</li>
+    <li>当たるとつぎの問題。数が増えて、似た顔どうしになっていく</li>
+    <li>後半は盤面が1色に染まる。色では見わけられない</li>
     <li>まちがえると3秒ちぢむ</li>
     <li>60秒で何問こなせるかが記録</li>
     </ul>
@@ -138,7 +139,7 @@
       <div id="grid"></div>
       <div class="f-cue" id="cue"></div>
     </div>
-    <p class="astage-note">ちがう1頭をタップします</p>
+    <p class="astage-note">顔がちがう1頭をタップします</p>
   </div>
 </section>
 
@@ -150,7 +151,22 @@
 <script src="../js/afro-ui.js"></script>
 <script>
 (function () {
+  /* 仲間はずれは「別の顔」。組み合わせは、やさしい順に並べてある。
+     色の差が大きい組ほど見つけやすいので、先に出す。
+     （6頭の平均色を測って並べたもの） */
+  var EASY = [
+    ['kurofuwa', 'yancha'], ['buruma', 'chafuwa'], ['ginma', 'kurofuwa'],
+    ['chafuwa', 'ginma'],   ['afuwa', 'ginma'],    ['buruma', 'yancha']
+  ];
+  var MID = [
+    ['buruma', 'kurofuwa'], ['afuwa', 'yancha'], ['chafuwa', 'kurofuwa'],
+    ['ginma', 'yancha'],    ['chafuwa', 'yancha']
+  ];
+  var HARD = [
+    ['buruma', 'ginma'], ['afuwa', 'chafuwa'], ['afuwa', 'kurofuwa']
+  ];
   var FACES = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma', 'yancha'];
+
   var TOTAL = 60;              /* 持ち時間（秒） */
   var PENALTY = 3;             /* まちがえたときにちぢむ秒数 */
   var COLS_MAX = 6;
@@ -200,16 +216,30 @@
     cue._t = setTimeout(function () { cueEl.classList.remove('on'); }, 420);
   }
 
-  /* 何問目かで、並べる数と色の差を決める */
-  function cols(r)  { return Math.min(COLS_MAX, 3 + Math.floor(r / 3)); }
-  function delta(r) { return Math.max(14, 150 - r * 9); }
+  /* 何問目かで、並べる数・顔の組み合わせ・盤面の染め方を決める */
+  function cols(r) { return Math.min(COLS_MAX, 3 + Math.floor(r / 3)); }
+
+  function pickPair(r) {
+    var list = (r < 5) ? EASY : (r < 11 ? MID : HARD);
+    var p = list[Math.floor(Math.random() * list.length)];
+    return (Math.random() < 0.5) ? [p[0], p[1]] : [p[1], p[0]];
+  }
+
+  /* 盤面ぜんぶに同じ色をかける。仲間はずれだけ色を変えたりはしない。
+     終盤は1色に染めるので、顔のかたちだけで見わけることになる */
+  function boardFilter(r) {
+    var hue = Math.floor(Math.random() * 360);
+    if (r < 5)  return '';
+    if (r < 11) return 'hue-rotate(' + hue + 'deg) saturate(1.15)';
+    return 'grayscale(1) sepia(1) hue-rotate(' + hue + 'deg) saturate(3.4) brightness(1.02)';
+  }
 
   function build() {
     var n = cols(round);
     var count = n * n;
-    var face = FACES[Math.floor(Math.random() * FACES.length)];
-    var baseHue = Math.floor(Math.random() * 360);
-    var d = delta(round) * (Math.random() < 0.5 ? 1 : -1);
+    var pair = pickPair(round);
+    var face = pair[0], oddFace = pair[1];
+    var filt = boardFilter(round);
     var odd = Math.floor(Math.random() * count);
 
     grid.style.gridTemplateColumns = 'repeat(' + n + ', 1fr)';
@@ -222,11 +252,10 @@
     for (var i = 0; i < count; i++) {
       var c = document.createElement('div');
       c.className = 'fc';
-      var hue = baseHue + (i === odd ? d : 0);
       var img = document.createElement('img');
-      img.src = '../images/face/' + face + '.webp';
+      img.src = '../images/face/' + (i === odd ? oddFace : face) + '.webp';
       img.alt = '';
-      img.style.filter = 'hue-rotate(' + hue + 'deg) saturate(1.25)';
+      if (filt) img.style.filter = filt;
       c.appendChild(img);
       if (i === odd) { c.setAttribute('data-odd', '1'); oddEl = c; }
       grid.appendChild(c);

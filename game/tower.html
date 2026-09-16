@@ -54,6 +54,12 @@
       rgba(255,255,255,.055) 0 1px, transparent 1px 34px);
   }
 
+  /* 雲を置く層。塔より遅く下がるので、奥にあるように見える */
+  #sky {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;
+    transition: transform .22s ease-out;
+  }
+
   /* 積んだ塔ぜんぶを入れる器。伸びたぶんだけ下へずらす */
   #col {
     position: absolute; left: 0; right: 0; bottom: 0; top: 0; z-index: 2;
@@ -95,13 +101,76 @@
     100% { transform: translateY(240px) rotate(42deg); opacity: 0; }
   }
 
+  /* 流れる雲。高くなってきた感じを出すための飾り */
+  .t-cloud {
+    position: absolute; z-index: 1; pointer-events: none;
+    border-radius: 999px; background: rgba(255, 255, 255, .5);
+    filter: blur(1px);
+  }
+  .t-cloud::before, .t-cloud::after {
+    content: ''; position: absolute; border-radius: 999px; background: inherit;
+  }
+  .t-cloud::before { left: 16%; top: -52%; width: 42%; height: 150%; }
+  .t-cloud::after  { right: 14%; top: -34%; width: 34%; height: 128%; }
+
+  /* ぴったり置けたときの波紋 */
+  .t-ring {
+    position: absolute; z-index: 6; pointer-events: none;
+    border: 3px solid var(--gold); border-radius: 12px;
+    animation: tRing .5s ease-out forwards;
+  }
+  @keyframes tRing {
+    0%   { transform: scale(1); opacity: .95; }
+    100% { transform: scale(1.9); opacity: 0; }
+  }
+
+  /* 節目。10段ごとに光らせる */
+  .t-flash {
+    position: absolute; inset: 0; z-index: 7; pointer-events: none;
+    background: radial-gradient(circle at 50% 60%, rgba(255,214,10,.55), transparent 66%);
+    opacity: 0; transition: opacity .16s;
+  }
+  #stage.mile .t-flash { opacity: 1; }
+
+  /* 節目の帯 */
+  .t-mile {
+    position: absolute; left: 0; right: 0; top: 30%; z-index: 8; text-align: center;
+    pointer-events: none; opacity: 0;
+    font-family: 'Dela Gothic One', sans-serif; font-size: 30px; color: #fff;
+    text-shadow: 0 0 20px var(--gold), 3px 3px 0 var(--red-d);
+  }
+  .t-mile.on { animation: tMile 1.1s ease-out; }
+  @keyframes tMile {
+    0%   { opacity: 0; transform: scale(.6); }
+    18%  { opacity: 1; transform: scale(1.12); }
+    34%  { transform: scale(1); }
+    78%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-16px); }
+  }
+
+  /* 終わったときに塔が崩れる。飾りなので、途中で止まっても結果は出る */
+  .tb.fall { animation: tFall .9s cubic-bezier(.5,0,.85,.3) forwards; }
+  @keyframes tFall {
+    0%   { transform: translate(0, 0) rotate(0); opacity: 1; }
+    100% { transform: translate(var(--fx, 40px), 420px) rotate(var(--fr, 70deg)); opacity: .15; }
+  }
+
+  /* コンボ */
+  .ahud-val.combo { color: var(--magenta); text-shadow: 0 0 12px var(--magenta); }
+
   /* まんなかの合図 */
   .t-cue {
-    position: absolute; left: 0; right: 0; top: 14%; z-index: 6; text-align: center;
-    font-family: 'Dela Gothic One', sans-serif; font-size: 20px; color: var(--gold);
-    text-shadow: 0 0 16px var(--gold); opacity: 0; transition: opacity .12s;
+    position: absolute; left: 0; right: 0; top: 13%; z-index: 6; text-align: center;
+    font-family: 'Dela Gothic One', sans-serif; font-size: 23px; color: var(--gold);
+    text-shadow: 0 0 18px var(--gold), 2px 2px 0 rgba(0,0,0,.5);
+    opacity: 0; transition: opacity .12s;
   }
-  .t-cue.on { opacity: 1; }
+  .t-cue.on { opacity: 1; animation: tCue .42s ease-out; }
+  @keyframes tCue {
+    0%   { transform: scale(.7); }
+    40%  { transform: scale(1.14); }
+    100% { transform: scale(1); }
+  }
 </style>
 </head>
 <body class="nav-game">
@@ -133,7 +202,9 @@
     <ul class="at-how">
     <li>左右に流れるアフロを、画面タップで落とす</li>
     <li>下の段からはみ出したぶんは切り落とされる</li>
-    <li>ぴったり乗せると細くならない。3回続けると1段ぶん太くなる</li>
+    <li>ぴったり乗せると細くならない。続けるほど音が高くなる</li>
+    <li>3回続けて決めると、すこし太くなる</li>
+    <li>10段ごとに節目。どこまで上がれるか</li>
     <li>乗らなくなったら終わり。積めた段数が記録</li>
     </ul>
     <button class="gr-btn primary" type="button" id="howClose">とじる</button>
@@ -145,14 +216,17 @@
   <div class="ain">
     <div class="ahud">
       <div class="ahud-cell"><span class="ahud-lbl">FLOOR</span><span class="ahud-val" id="hFloor">0</span></div>
-      <div class="ahud-cell"><span class="ahud-lbl">PERFECT</span><span class="ahud-val" id="hPerf">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">COMBO</span><span class="ahud-val combo" id="hPerf">0</span></div>
       <div class="ahud-cell"><span class="ahud-lbl">BEST</span><span class="ahud-val gold" id="hBest">—</span></div>
     </div>
   </div>
   <div class="ain grow">
     <div class="astage" id="stage">
+      <div id="sky"></div>
       <div id="col"></div>
+      <div class="t-flash"></div>
       <div class="t-cue" id="cue"></div>
+      <div class="t-mile" id="mile"></div>
     </div>
     <p class="astage-note">画面のどこでもタップできます</p>
   </div>
@@ -176,7 +250,9 @@
 
   var stage  = document.getElementById('stage');
   var col    = document.getElementById('col');
+  var sky    = document.getElementById('sky');
   var cueEl  = document.getElementById('cue');
+  var mileEl = document.getElementById('mile');
   var floorEl = document.getElementById('hFloor');
   var perfEl  = document.getElementById('hPerf');
   var bestEl  = document.getElementById('hBest');
@@ -184,7 +260,8 @@
   var W = 0, H = 0, baseW = 0;
   var blocks = [];             /* 積んだ段 [{left, w}] 0番目は土台 */
   var live = null;             /* いま流れている段 {left, w, dir, el} */
-  var perfRun = 0, perfTotal = 0;
+  var perfRun = 0, perfBest = 0;
+  var MILE = 10;               /* 何段ごとに節目にするか */
   var playing = false, raf = 0, last = 0;
 
   (function () {
@@ -218,9 +295,57 @@
 
   function cue(text) {
     cueEl.textContent = text;
+    cueEl.classList.remove('on'); void cueEl.offsetWidth;
     cueEl.classList.add('on');
     clearTimeout(cue._t);
-    cue._t = setTimeout(function () { cueEl.classList.remove('on'); }, 520);
+    cue._t = setTimeout(function () { cueEl.classList.remove('on'); }, 640);
+  }
+
+  /* ぴったり置けたときの波紋。飾り */
+  function ring(el) {
+    var r = document.createElement('div');
+    r.className = 't-ring';
+    r.style.left = el.style.left;
+    r.style.width = el.style.width;
+    r.style.height = el.style.height;
+    r.style.bottom = el.style.bottom;
+    col.appendChild(r);
+    setTimeout(function () { r.remove(); }, 560);
+  }
+
+  /* 節目。10段ごとに光らせて帯を出す */
+  function milestone(n) {
+    mileEl.textContent = n + '段！';
+    mileEl.classList.remove('on'); void mileEl.offsetWidth;
+    mileEl.classList.add('on');
+    stage.classList.add('mile');
+    clearTimeout(milestone._t);
+    milestone._t = setTimeout(function () { stage.classList.remove('mile'); }, 260);
+    Sfx.record();
+  }
+
+  /* 連続ぴったりの音。1回ごとに1音ずつ上がっていく */
+  var SCALE = [0, 2, 4, 5, 7, 9, 11, 12];
+  function comboNote(run) {
+    var i = Math.min(run - 1, 15);
+    var semi = SCALE[i % SCALE.length] + 12 * Math.floor(i / SCALE.length);
+    Sfx.note(523.25 * Math.pow(2, semi / 12));
+  }
+
+  /* 空に雲を置く。奥行きが出て、高くなった実感につながる */
+  function makeSky() {
+    sky.innerHTML = '';
+    for (var i = 0; i < 7; i++) {
+      var c = document.createElement('div');
+      c.className = 't-cloud';
+      var w = 46 + Math.random() * 78;
+      c.style.width = w + 'px';
+      c.style.height = (w * 0.3) + 'px';
+      c.style.left = (Math.random() * 92) + '%';
+      c.style.bottom = (60 + Math.random() * 520) + 'px';
+      c.style.opacity = (0.16 + Math.random() * 0.24).toFixed(2);
+      sky.appendChild(c);
+    }
   }
 
   /* 積んだ段を1枚描く。i 段目は下から i*BH の位置 */
@@ -249,6 +374,8 @@
   function follow() {
     var over = Math.max(0, blocks.length - VIS);
     col.style.transform = 'translateY(' + (over * BH) + 'px)';
+    /* 雲は塔の半分だけ下げる。奥のものはゆっくり動いて見える */
+    sky.style.transform = 'translateY(' + (over * BH * 0.5) + 'px)';
     stage.style.setProperty('--sky', String(Math.min(30, blocks.length)));
   }
 
@@ -292,21 +419,26 @@
     var gap = Math.abs(live.left - prev.left);
     if (gap <= PERFECT) {                 /* ぴったり */
       l = prev.left; w = prev.w;
-      perfRun++; perfTotal++;
-      perfEl.textContent = perfTotal;
+      perfRun++;
+      if (perfRun > perfBest) perfBest = perfRun;
+      perfEl.textContent = perfRun;
       live.el.classList.add('perfect');
-      Sfx.up();
-      if (perfRun >= PERFECT_RUN) {       /* ごほうびに太くする。土台の幅までで打ち止め */
-        perfRun = 0;
+      ring(live.el);
+      comboNote(perfRun);
+      if (perfRun % PERFECT_RUN === 0) {  /* ごほうびに太くする。土台の幅までで打ち止め */
         var nw = Math.min(baseW, w + GROW);
         l = Math.max(0, Math.min(W - nw, l - GROW / 2));
         w = nw;
         cue('ふとくなった！');
+      } else if (perfRun >= 2) {
+        cue(perfRun + '連続！');
       } else {
         cue('ぴったり！');
       }
     } else {
+      if (perfRun >= 3) cue('とぎれた');
       perfRun = 0;
+      perfEl.textContent = '0';
       /* はみ出したかけらを落とす */
       if (live.left < l) chip(live.left, l - live.left, i * BH);
       else chip(r, (live.left + live.w) - r, i * BH);
@@ -318,7 +450,9 @@
     live.el.style.width = w + 'px';
     blocks.push({ left: l, w: w });
     live = null;
-    floorEl.textContent = blocks.length - 1;
+    var floors = blocks.length - 1;
+    floorEl.textContent = floors;
+    if (floors % MILE === 0) milestone(floors);
     spawn();
   }
 
@@ -329,11 +463,25 @@
     live = null;
     stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
     Sfx.bad();
+
+    /* 上から順に崩れ落ちる。飾りなので、途中で止まっても結果は出る */
+    var all = col.querySelectorAll('.tb:not(.base)');
+    for (var k = all.length - 1, d = 0; k >= 0 && d < 12; k--, d++) {
+      (function (el, delay) {
+        setTimeout(function () {
+          var sign = (Math.random() < 0.5) ? -1 : 1;
+          el.style.setProperty('--fx', (sign * (30 + Math.random() * 90)) + 'px');
+          el.style.setProperty('--fr', (sign * (40 + Math.random() * 80)) + 'deg');
+          el.classList.add('fall');
+        }, delay);
+      })(all[k], d * 55);
+    }
+
     var score = blocks.length - 1;
     setTimeout(function () {
       AfroScore.finish(score);
       bestEl.textContent = document.getElementById('gBest').textContent;
-    }, 620);
+    }, 900);
   }
 
   function step(t) {
@@ -355,7 +503,10 @@
     cancelAnimationFrame(raf);
     col.innerHTML = '';
     col.style.transform = 'translateY(0)';
-    blocks = []; live = null; perfRun = 0; perfTotal = 0;
+    blocks = []; live = null; perfRun = 0; perfBest = 0;
+    makeSky();
+    stage.classList.remove('mile');
+    mileEl.classList.remove('on');
     floorEl.textContent = '0';
     perfEl.textContent = '0';
     bestEl.textContent = document.getElementById('gBest').textContent;
