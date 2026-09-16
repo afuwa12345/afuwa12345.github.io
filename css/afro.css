@@ -439,7 +439,16 @@ section { padding: 22px 0 0; }
   background: linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
 }
 
-/* 仕切りの柱。境目にまたがって1本立てる（5頭なので4本） */
+/* 仕切りの柱。境目に1本ずつ＋いちばん外側の左右にも1本ずつ */
+.stall:first-child::before,
+.stall:last-child::before {
+  background:
+    url(../images/gate_post.webp) no-repeat left top / 22px 100%,
+    linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
+  z-index: 6;
+}
+.stall:last-child::before { background-position: right top, left top; }
+
 .stall + .stall::after {
   content: ''; position: absolute; z-index: 6; pointer-events: none;
   left: -11px; top: 0; bottom: 0; width: 22px;
