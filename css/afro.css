@@ -409,9 +409,9 @@ section { padding: 22px 0 0; }
   display: flex; align-items: stretch;
   height: clamp(184px, 51vw, 284px);
   background:
-    url(../images/gate_rail.webp) repeat-x left 26px / auto 46px,
+    url(../images/gate_rail.webp) repeat-x left top / auto 46px,
     linear-gradient(180deg, var(--turf-2), var(--turf));
-  padding: 72px 6px 0;
+  padding: 46px 6px 0;
   position: relative;
   border-radius: 8px 8px 0 0;
   box-shadow: var(--sh-md);
@@ -423,7 +423,7 @@ section { padding: 22px 0 0; }
 .gate::before,
 .gate::after {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  top: 72px; bottom: 0; width: 4.5px;
+  top: 46px; bottom: 0; width: 4.5px;
   background-image: url(../images/gate_post.webp);
   background-repeat: no-repeat;
   background-size: 12px 100%;
@@ -487,8 +487,8 @@ section { padding: 22px 0 0; }
 .stall.on::before { opacity: 0; }
 
 .stall-no {
-  position: absolute; top: -69px; left: 50%; transform: translateX(-50%);
-  z-index: 7;
+  position: absolute; top: -33px; left: 50%; transform: translateX(-50%);
+  z-index: 20;
   font-family: 'Anton', sans-serif; font-size: 13px; line-height: 1;
   padding: 3px 9px 4px; background: var(--c); color: var(--ci);
   border-radius: 3px;
