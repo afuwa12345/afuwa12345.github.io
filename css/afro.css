@@ -443,12 +443,12 @@ section { padding: 22px 0 0; }
    番号と名札(z7)より後ろ、扉(z4)より手前。 */
 .stall::after {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  right: 0; top: -26px; bottom: -6px; width: 6px;
+  right: 0; top: 0; bottom: -6px; width: 6px;
   background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
 }
 .stall::before {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  left: 0; top: -26px; bottom: -6px; width: 6px;
+  left: 0; top: 0; bottom: -6px; width: 6px;
   background: url(../images/gate_post.webp) no-repeat right top / 12px 100%;
 }
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
