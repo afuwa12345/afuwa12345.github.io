@@ -108,6 +108,38 @@
       bass: [0, null, null, null, 0, null, null, null, 0, null, null, null, 0, null, null, null],
       kick: [1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
       hat:  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    /* カードめくり。落ちついて、少しとぼけた感じ */
+    pair: {
+      bpm: 104, root: 233, scale: SCALE_MAJ, wave: 'triangle',
+      lead: [0, null, 2, null, 4, null, 2, null, 3, null, 2, null, 0, null, null, null],
+      bass: [0, null, null, null, 3, null, null, null, 4, null, null, null, 3, null, null, null],
+      kick: [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+      hat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0]
+    },
+    /* 積み上げる。一歩ずつ上へのぼっていく */
+    tower: {
+      bpm: 112, root: 196, scale: SCALE_MAJ, wave: 'square',
+      lead: [0, null, 1, null, 2, null, 3, null, 4, null, 5, null, 6, null, 5, null],
+      bass: [0, null, 0, null, 2, null, 2, null, 4, null, 4, null, 5, null, 3, null],
+      kick: [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+      hat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1]
+    },
+    /* よける。せわしなく、追われている感じ */
+    dodge: {
+      bpm: 162, root: 208, scale: SCALE_MIN, wave: 'sawtooth',
+      lead: [0, 1, 0, 2, 0, 3, 2, 1, 0, 1, 0, 2, 4, 3, 2, 1],
+      bass: [0, 0, null, 0, 3, null, 3, null, 4, 4, null, 4, 2, null, 2, null],
+      kick: [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+      hat:  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    },
+    /* 探しもの。こそこそ歩きまわる感じ */
+    find: {
+      bpm: 126, root: 175, scale: SCALE_MIN, wave: 'triangle',
+      lead: [0, null, null, 1, null, 0, null, null, 2, null, null, 1, null, 0, null, null],
+      bass: [0, null, 0, null, null, 0, null, 0, 3, null, 3, null, null, 3, null, null],
+      kick: [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+      hat:  [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]
     }
   };
 
@@ -190,7 +222,7 @@
   var Sfx = {
     unlock: function () { ready(); },
 
-    /* BGMを鳴らす。名前は SONGS のキー（jump / catch / whack / memory / gate） */
+    /* BGMを鳴らす。名前は SONGS のキー（jump / catch / whack / memory / gate / pair / tower / dodge / find） */
     bgm: function (name) {
       if (!SONGS[name]) return;
       this.bgmStop();

@@ -120,6 +120,38 @@
           <p class="game-desc">開いた瞬間にタップ</p>
         </span>
       </a>
+      <a class="game-card" href="game/pair.html">
+        <span class="game-badge">クリア秒数</span>
+        <span class="game-shot icon" data-emoji="🃏"><img src="images/icon/pair.webp" alt="" loading="lazy"></span>
+        <span class="game-body">
+          <span class="game-name">アフロペア</span>
+          <p class="game-desc">同じ顔の2枚をそろえる</p>
+        </span>
+      </a>
+      <a class="game-card" href="game/tower.html">
+        <span class="game-badge">段数</span>
+        <span class="game-shot icon" data-emoji="🧱"><img src="images/icon/tower.webp" alt="" loading="lazy"></span>
+        <span class="game-body">
+          <span class="game-name">アフロタワー</span>
+          <p class="game-desc">ずれたぶんだけ細くなる</p>
+        </span>
+      </a>
+      <a class="game-card" href="game/dodge.html">
+        <span class="game-badge">秒数</span>
+        <span class="game-shot icon" data-emoji="💦"><img src="images/icon/dodge.webp" alt="" loading="lazy"></span>
+        <span class="game-body">
+          <span class="game-name">アフロよけ</span>
+          <p class="game-desc">降ってくる物をよける</p>
+        </span>
+      </a>
+      <a class="game-card" href="game/find.html">
+        <span class="game-badge">問題数</span>
+        <span class="game-shot icon" data-emoji="🔍"><img src="images/icon/find.webp" alt="" loading="lazy"></span>
+        <span class="game-body">
+          <span class="game-name">アフロさがし</span>
+          <p class="game-desc">1頭だけちがう色を探す</p>
+        </span>
+      </a>
     </div>
     <p class="sec-hint">ぜんぶスコアで競えます</p>
   </div>
@@ -174,6 +206,20 @@
     <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
   </div>
 </footer>
+
+<script>
+  /* アイコンの絵がまだ無いタイルは、絵文字で代える */
+  (function () {
+    var all = document.querySelectorAll('.game-shot.icon[data-emoji] img');
+    for (var i = 0; i < all.length; i++) {
+      (function (img) {
+        function swap() { img.parentNode.classList.add('noimg'); img.remove(); }
+        if (img.complete && !img.naturalWidth) swap();
+        else img.addEventListener('error', swap);
+      })(all[i]);
+    }
+  })();
+</script>
 
 </body>
 </html>

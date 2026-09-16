@@ -34,3 +34,23 @@
     if (e.key === 'Escape' && !pop.hidden) shut();
   });
 })();
+
+/* ============================================================
+   タイトルのアイコン画像がまだ無いページは、文字の見出しに切り替える
+   <h1 class="at-logo" data-name="アフロペア"><img ...></h1>
+   ============================================================ */
+(function () {
+  var h = document.querySelector('.at-logo[data-name]');
+  if (!h) return;
+  var img = h.querySelector('img');
+  if (!img) return;
+  function swap() {
+    var t = document.createElement('h1');
+    t.className = 'at-ttl';
+    t.textContent = h.getAttribute('data-name');
+    if (h.parentNode) h.parentNode.replaceChild(t, h);
+  }
+  /* 読み込みに失敗したあとで登録される場合があるので、今の状態も見る */
+  if (img.complete && !img.naturalWidth) swap();
+  else img.addEventListener('error', swap);
+})();

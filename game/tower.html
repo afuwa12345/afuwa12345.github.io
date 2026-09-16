@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アフロタワー｜AFRO Horse</title>
+<meta name="description" content="左右に流れるアフロ馬をタップで積み上げる無料ゲーム。ずれたぶんだけ細くなる。何段まで積めるか競えます。">
+<link rel="canonical" href="https://afro-horse.com/game/tower.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/tower.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロタワー｜AFRO Horse">
+<meta property="og:description" content="左右に流れるアフロ馬をタップで積み上げる無料ゲーム。何段まで積めるか競えます。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  #scTitle { --bgt: url(../images/bgt/tower.webp); --veil: .58; }
+
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  /* 空。高く積むほど色が濃くなるので、段数で --sky を動かす */
+  #stage {
+    background-color: #0b1630;
+    background-image:
+      radial-gradient(120% 60% at 50% 100%, rgba(120, 200, 255, .22), transparent 60%),
+      linear-gradient(180deg,
+        hsl(218, 62%, calc(16% + var(--sky, 0) * 1%)) 0%,
+        hsl(205, 66%, calc(30% + var(--sky, 0) * 1.2%)) 100%);
+    overflow: hidden;
+  }
+  /* 高さのめやす。うっすらした横線 */
+  #stage::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: repeating-linear-gradient(180deg,
+      rgba(255,255,255,.055) 0 1px, transparent 1px 34px);
+  }
+
+  /* 積んだ塔ぜんぶを入れる器。伸びたぶんだけ下へずらす */
+  #col {
+    position: absolute; left: 0; right: 0; bottom: 0; top: 0; z-index: 2;
+    transition: transform .22s ease-out;
+  }
+
+  .tb {
+    position: absolute; overflow: hidden;
+    border-radius: 7px;
+    background: linear-gradient(180deg, #f3d98d 0%, #dcb757 46%, #b98f33 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7), inset 0 -2px 0 rgba(0,0,0,.18),
+                0 2px 5px rgba(0,0,0,.4);
+    border: 1.5px solid #6d4f17;
+  }
+  .tb img {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    height: 112%; width: auto; max-width: none; pointer-events: none;
+  }
+  .tb.base {
+    background: linear-gradient(180deg, #e0c477 0%, #c2a052 50%, #8e6d2a 100%);
+  }
+  .tb.base img { height: 100%; width: 100%; object-fit: cover; }
+  .tb.perfect { box-shadow: 0 0 16px 2px var(--gold), inset 0 1px 0 rgba(255,255,255,.8); }
+
+  /* いま動いている段 */
+  .tb.live { border-color: #fff4c2; }
+
+  /* 切り落とされたかけら。飾りなので落ちきらなくても困らない */
+  .tchip {
+    position: absolute; z-index: 3; border-radius: 6px;
+    background: linear-gradient(180deg, #e8cf84 0%, #b98f33 100%);
+    border: 1.5px solid #6d4f17; opacity: .95;
+    animation: tChip .62s ease-in forwards;
+  }
+  @keyframes tChip {
+    0%   { transform: translateY(0) rotate(0); opacity: .95; }
+    100% { transform: translateY(240px) rotate(42deg); opacity: 0; }
+  }
+
+  /* まんなかの合図 */
+  .t-cue {
+    position: absolute; left: 0; right: 0; top: 14%; z-index: 6; text-align: center;
+    font-family: 'Dela Gothic One', sans-serif; font-size: 20px; color: var(--gold);
+    text-shadow: 0 0 16px var(--gold); opacity: 0; transition: opacity .12s;
+  }
+  .t-cue.on { opacity: 1; }
+</style>
+</head>
+<body class="nav-game">
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">STACK</div>
+  <h1 class="at-logo" data-name="アフロタワー"><img src="../images/icon/tower.webp" alt="アフロタワー"></h1>
+  <p class="at-sub">ずれたぶんだけ、細くなる</p>
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
+    <li>左右に流れるアフロを、画面タップで落とす</li>
+    <li>下の段からはみ出したぶんは切り落とされる</li>
+    <li>ぴったり乗せると細くならない。3回続けると1段ぶん太くなる</li>
+    <li>乗らなくなったら終わり。積めた段数が記録</li>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">FLOOR</span><span class="ahud-val" id="hFloor">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">PERFECT</span><span class="ahud-val" id="hPerf">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">BEST</span><span class="ahud-val gold" id="hBest">—</span></div>
+    </div>
+  </div>
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div id="col"></div>
+      <div class="t-cue" id="cue"></div>
+    </div>
+    <p class="astage-note">画面のどこでもタップできます</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
+<script>
+(function () {
+  var FACES = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma', 'yancha'];
+  var BH = 30;                 /* 1段の高さ */
+  var VIS = 8;                 /* 画面に見せておく段数。これを超えたら下へずらす */
+  var SPD0 = 150, SPD_UP = 9, SPD_MAX = 480;   /* 横に流れる速さ px/秒 */
+  var PERFECT = 5;             /* この幅までのズレは「ぴったり」 */
+  var PERFECT_RUN = 3;         /* 続けてぴったりなら太くなる */
+  var GROW = 14;               /* 太くなる幅 */
+
+  var stage  = document.getElementById('stage');
+  var col    = document.getElementById('col');
+  var cueEl  = document.getElementById('cue');
+  var floorEl = document.getElementById('hFloor');
+  var perfEl  = document.getElementById('hPerf');
+  var bestEl  = document.getElementById('hBest');
+
+  var W = 0, H = 0, baseW = 0;
+  var blocks = [];             /* 積んだ段 [{left, w}] 0番目は土台 */
+  var live = null;             /* いま流れている段 {left, w, dir, el} */
+  var perfRun = 0, perfTotal = 0;
+  var playing = false, raf = 0, last = 0;
+
+  (function () {
+    for (var i = 0; i < FACES.length; i++) {
+      var im = new Image(); im.src = '../images/face/' + FACES[i] + '.webp';
+    }
+    var b = new Image(); b.src = '../images/tower/base.webp';
+  })();
+
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
+  }
+
+  AfroScore.setup({
+    game: 'tower',
+    title: 'アフロタワー',
+    hash: 'アフロタワー',
+    unit: '段',
+    lower: false,
+    grades: [
+      { v: 40, name: '雲の上' },
+      { v: 28, name: 'G1級の積み' },
+      { v: 20, name: 'オープン級' },
+      { v: 14, name: '3勝クラス' },
+      { v: 8,  name: '1勝クラス' },
+      { v: 0,  name: '新馬' }
+    ],
+    onRetry: go
+  });
+
+  function cue(text) {
+    cueEl.textContent = text;
+    cueEl.classList.add('on');
+    clearTimeout(cue._t);
+    cue._t = setTimeout(function () { cueEl.classList.remove('on'); }, 520);
+  }
+
+  /* 積んだ段を1枚描く。i 段目は下から i*BH の位置 */
+  function makeEl(i, left, w, cls) {
+    var e = document.createElement('div');
+    e.className = 'tb' + (cls ? ' ' + cls : '');
+    e.style.left = left + 'px';
+    e.style.width = w + 'px';
+    e.style.height = BH + 'px';
+    e.style.bottom = (i * BH) + 'px';
+    var src = (cls === 'base')
+      ? '../images/tower/base.webp'
+      : '../images/face/' + FACES[i % FACES.length] + '.webp';
+    var img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    /* 絵がまだ無ければ外す。下の色だけで積み木として成立する */
+    img.addEventListener('error', function () { this.remove(); });
+    e.appendChild(img);
+    col.appendChild(e);
+    return e;
+  }
+
+  /* 塔が伸びたぶん、器ごと下へずらして頭を画面内に保つ */
+  function follow() {
+    var over = Math.max(0, blocks.length - VIS);
+    col.style.transform = 'translateY(' + (over * BH) + 'px)';
+    stage.style.setProperty('--sky', String(Math.min(30, blocks.length)));
+  }
+
+  function spawn() {
+    var top = blocks[blocks.length - 1];
+    var i = blocks.length;
+    var fromLeft = (i % 2 === 0);
+    var e = makeEl(i, fromLeft ? 0 : (W - top.w), top.w, 'live');
+    live = {
+      left: fromLeft ? 0 : (W - top.w),
+      w: top.w,
+      dir: fromLeft ? 1 : -1,
+      spd: Math.min(SPD_MAX, SPD0 + i * SPD_UP),
+      el: e
+    };
+    follow();
+  }
+
+  function chip(left, w, bottom) {
+    var c = document.createElement('div');
+    c.className = 'tchip';
+    c.style.left = left + 'px';
+    c.style.width = w + 'px';
+    c.style.height = BH + 'px';
+    c.style.bottom = bottom + 'px';
+    col.appendChild(c);
+    setTimeout(function () { c.remove(); }, 700);
+  }
+
+  function drop() {
+    if (!playing || !live) return;
+    var prev = blocks[blocks.length - 1];
+    var i = blocks.length;
+
+    var l = Math.max(prev.left, live.left);
+    var r = Math.min(prev.left + prev.w, live.left + live.w);
+    var w = r - l;
+
+    if (w <= 2) { over(); return; }
+
+    var gap = Math.abs(live.left - prev.left);
+    if (gap <= PERFECT) {                 /* ぴったり */
+      l = prev.left; w = prev.w;
+      perfRun++; perfTotal++;
+      perfEl.textContent = perfTotal;
+      live.el.classList.add('perfect');
+      Sfx.up();
+      if (perfRun >= PERFECT_RUN) {       /* ごほうびに太くする。土台の幅までで打ち止め */
+        perfRun = 0;
+        var nw = Math.min(baseW, w + GROW);
+        l = Math.max(0, Math.min(W - nw, l - GROW / 2));
+        w = nw;
+        cue('ふとくなった！');
+      } else {
+        cue('ぴったり！');
+      }
+    } else {
+      perfRun = 0;
+      /* はみ出したかけらを落とす */
+      if (live.left < l) chip(live.left, l - live.left, i * BH);
+      else chip(r, (live.left + live.w) - r, i * BH);
+      Sfx.hit();
+    }
+
+    live.el.classList.remove('live');
+    live.el.style.left = l + 'px';
+    live.el.style.width = w + 'px';
+    blocks.push({ left: l, w: w });
+    live = null;
+    floorEl.textContent = blocks.length - 1;
+    spawn();
+  }
+
+  function over() {
+    playing = false;
+    cancelAnimationFrame(raf);
+    if (live && live.el) live.el.remove();
+    live = null;
+    stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+    Sfx.bad();
+    var score = blocks.length - 1;
+    setTimeout(function () {
+      AfroScore.finish(score);
+      bestEl.textContent = document.getElementById('gBest').textContent;
+    }, 620);
+  }
+
+  function step(t) {
+    if (!playing) return;
+    var dt = Math.min(0.045, (t - last) / 1000);
+    last = t;
+    if (live) {
+      live.left += live.dir * live.spd * dt;
+      if (live.left <= 0) { live.left = 0; live.dir = 1; }
+      var max = W - live.w;
+      if (live.left >= max) { live.left = max; live.dir = -1; }
+      live.el.style.left = live.left + 'px';
+    }
+    raf = requestAnimationFrame(step);
+  }
+
+  function go() {
+    screen('scPlay');
+    cancelAnimationFrame(raf);
+    col.innerHTML = '';
+    col.style.transform = 'translateY(0)';
+    blocks = []; live = null; perfRun = 0; perfTotal = 0;
+    floorEl.textContent = '0';
+    perfEl.textContent = '0';
+    bestEl.textContent = document.getElementById('gBest').textContent;
+
+    W = stage.clientWidth || 320;
+    H = stage.clientHeight || 360;
+    VIS = Math.max(5, Math.floor(H / BH) - 2);
+
+    baseW = Math.round(W * 0.56);
+    var base = { left: Math.round((W - baseW) / 2), w: baseW };
+    blocks.push(base);
+    makeEl(0, base.left, base.w, 'base');
+
+    playing = true;
+    spawn();
+    Sfx.bgm('tower');
+    Sfx.start();
+    last = performance.now();
+    raf = requestAnimationFrame(step);
+  }
+
+  var viaPointer = false;
+  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); viaPointer = true; drop(); });
+  stage.addEventListener('click', function () {
+    if (viaPointer) { viaPointer = false; return; }
+    drop();
+  });
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+  /* 画面の幅が変わったら、はみ出したままにならないよう入れ直す */
+  addEventListener('resize', function () {
+    if (!playing) return;
+    var nw = stage.clientWidth || W;
+    if (nw === W) return;
+    W = nw;
+    if (live && live.left + live.w > W) {
+      live.left = Math.max(0, W - live.w);
+      live.el.style.left = live.left + 'px';
+    }
+  });
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+})();
+</script>
+</body>
+</html>

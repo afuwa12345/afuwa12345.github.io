@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アフロさがし｜AFRO Horse</title>
+<meta name="description" content="ずらりと並んだアフロ馬から、1頭だけ色のちがう仲間はずれを探す無料ゲーム。60秒で何問こなせるか競えます。">
+<link rel="canonical" href="https://afro-horse.com/game/find.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/find.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロさがし｜AFRO Horse">
+<meta property="og:description" content="1頭だけ色のちがうアフロ馬を探す無料ゲーム。60秒で何問こなせるか競えます。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  #scTitle { --bgt: url(../images/bgt/find.webp); --veil: .58; }
+
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  #stage {
+    background-color: #1a2a20;
+    background-image:
+      radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,.06), transparent 60%),
+      repeating-linear-gradient(45deg, rgba(0,0,0,.05) 0 6px, transparent 6px 12px);
+    padding: 8px;
+    display: flex; align-items: center; justify-content: center;
+    container-type: size;        /* 下の 100cqh（ステージの高さ）を使うため */
+  }
+  /* 縦にも横にも収まる正方形にする。マスが縦長にならない */
+  #grid {
+    display: grid; gap: 4px;
+    width: 100%;
+    width: min(100%, 100cqh);
+    aspect-ratio: 1;
+  }
+
+  .fc {
+    position: relative; min-width: 0; min-height: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px; cursor: pointer;
+    transition: background .12s;
+  }
+  .fc img {
+    width: 92%; height: 92%; object-fit: contain; pointer-events: none;
+  }
+  .fc.ok  { background: rgba(255,214,10,.28); box-shadow: 0 0 14px rgba(255,214,10,.6); }
+  .fc.ng  { background: rgba(255,8,68,.3); }
+
+  /* 正解の位置を一瞬だけ丸で示す */
+  .f-mark {
+    position: absolute; z-index: 7; border: 3px solid var(--gold); border-radius: 50%;
+    box-shadow: 0 0 16px var(--gold); pointer-events: none;
+    animation: fMark .5s ease-out forwards;
+  }
+  @keyframes fMark {
+    0%   { transform: scale(1.5); opacity: 0; }
+    30%  { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+  }
+
+  .f-cue {
+    position: absolute; inset: 0; z-index: 9; display: flex;
+    align-items: center; justify-content: center; pointer-events: none;
+    font-family: 'Dela Gothic One', sans-serif; font-size: 30px; color: var(--gold);
+    text-shadow: 0 0 22px var(--gold); opacity: 0; transition: opacity .12s;
+  }
+  .f-cue.on { opacity: 1; }
+  .f-cue.bad { color: var(--red); text-shadow: 0 0 22px var(--red); }
+</style>
+</head>
+<body class="nav-game">
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">ODD ONE OUT</div>
+  <h1 class="at-logo" data-name="アフロさがし"><img src="../images/icon/find.webp" alt="アフロさがし"></h1>
+  <p class="at-sub">1頭だけ、色がちがう</p>
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
+    <li>並んだアフロ馬から、1頭だけ色のちがうものを探してタップ</li>
+    <li>当たるとつぎの問題。数が増えて、色の差も小さくなる</li>
+    <li>まちがえると3秒ちぢむ</li>
+    <li>60秒で何問こなせるかが記録</li>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">TIME</span><span class="ahud-val" id="hTime">60</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">CLEAR</span><span class="ahud-val" id="hClear">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">BEST</span><span class="ahud-val gold" id="hBest">—</span></div>
+    </div>
+  </div>
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div id="grid"></div>
+      <div class="f-cue" id="cue"></div>
+    </div>
+    <p class="astage-note">ちがう1頭をタップします</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
+<script>
+(function () {
+  var FACES = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma', 'yancha'];
+  var TOTAL = 60;              /* 持ち時間（秒） */
+  var PENALTY = 3;             /* まちがえたときにちぢむ秒数 */
+  var COLS_MAX = 6;
+
+  var stage  = document.getElementById('stage');
+  var grid   = document.getElementById('grid');
+  var cueEl  = document.getElementById('cue');
+  var timeEl = document.getElementById('hTime');
+  var clrEl  = document.getElementById('hClear');
+  var bestEl = document.getElementById('hBest');
+
+  var round = 0, cleared = 0, endAt = 0, tick = null, playing = false, oddEl = null;
+
+  (function () {
+    for (var i = 0; i < FACES.length; i++) {
+      var im = new Image(); im.src = '../images/face/' + FACES[i] + '.webp';
+    }
+  })();
+
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
+  }
+
+  AfroScore.setup({
+    game: 'find',
+    title: 'アフロさがし',
+    hash: 'アフロさがし',
+    unit: '問',
+    lower: false,
+    grades: [
+      { v: 24, name: '鷹の目' },
+      { v: 18, name: 'G1級の眼' },
+      { v: 14, name: 'オープン級' },
+      { v: 10, name: '3勝クラス' },
+      { v: 6,  name: '1勝クラス' },
+      { v: 0,  name: '新馬' }
+    ],
+    onRetry: go
+  });
+
+  function cue(text, bad) {
+    cueEl.textContent = text;
+    cueEl.classList.toggle('bad', !!bad);
+    cueEl.classList.add('on');
+    clearTimeout(cue._t);
+    cue._t = setTimeout(function () { cueEl.classList.remove('on'); }, 420);
+  }
+
+  /* 何問目かで、並べる数と色の差を決める */
+  function cols(r)  { return Math.min(COLS_MAX, 3 + Math.floor(r / 3)); }
+  function delta(r) { return Math.max(14, 150 - r * 9); }
+
+  function build() {
+    var n = cols(round);
+    var count = n * n;
+    var face = FACES[Math.floor(Math.random() * FACES.length)];
+    var baseHue = Math.floor(Math.random() * 360);
+    var d = delta(round) * (Math.random() < 0.5 ? 1 : -1);
+    var odd = Math.floor(Math.random() * count);
+
+    grid.style.gridTemplateColumns = 'repeat(' + n + ', 1fr)';
+    grid.style.gridTemplateRows = 'repeat(' + n + ', 1fr)';
+    grid.innerHTML = '';
+    var marks = stage.querySelectorAll('.f-mark');
+    for (var k = 0; k < marks.length; k++) marks[k].remove();
+    oddEl = null;
+
+    for (var i = 0; i < count; i++) {
+      var c = document.createElement('div');
+      c.className = 'fc';
+      var hue = baseHue + (i === odd ? d : 0);
+      var img = document.createElement('img');
+      img.src = '../images/face/' + face + '.webp';
+      img.alt = '';
+      img.style.filter = 'hue-rotate(' + hue + 'deg) saturate(1.25)';
+      c.appendChild(img);
+      if (i === odd) { c.setAttribute('data-odd', '1'); oddEl = c; }
+      grid.appendChild(c);
+    }
+  }
+
+  /* 正解の場所に丸を出す。飾りなので出なくても進行に影響しない */
+  function mark(el) {
+    if (!el) return;
+    var s = stage.getBoundingClientRect(), r = el.getBoundingClientRect();
+    var m = document.createElement('div');
+    m.className = 'f-mark';
+    m.style.left   = (r.left - s.left) + 'px';
+    m.style.top    = (r.top - s.top) + 'px';
+    m.style.width  = r.width + 'px';
+    m.style.height = r.height + 'px';
+    stage.appendChild(m);
+    setTimeout(function () { m.remove(); }, 560);
+  }
+
+  function pick(c) {
+    if (!playing || !c) return;
+    if (c.getAttribute('data-odd')) {
+      cleared++; round++;
+      clrEl.textContent = cleared;
+      c.classList.add('ok');
+      Sfx.good();
+      cue('せいかい！');
+      playing = false;                 /* 連打で次の問題を飛ばさないよう、一拍止める */
+      setTimeout(function () {
+        if (endAt <= Date.now()) return;
+        build();
+        playing = true;
+      }, 230);
+    } else {
+      c.classList.add('ng');
+      endAt -= PENALTY * 1000;
+      paintTime();
+      Sfx.bad();
+      cue('−' + PENALTY + '秒', true);
+      mark(oddEl);
+      stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+      setTimeout(function () { c.classList.remove('ng'); }, 300);
+      if (endAt <= Date.now()) finish();
+    }
+  }
+
+  function paintTime() {
+    var left = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
+    timeEl.textContent = left;
+    timeEl.classList.toggle('warn', left <= 10);
+  }
+
+  function finish() {
+    if (!tick && !playing) return;
+    playing = false;
+    clearInterval(tick); tick = null;
+    timeEl.textContent = '0';
+    timeEl.classList.remove('warn');
+    setTimeout(function () {
+      AfroScore.finish(cleared);
+      bestEl.textContent = document.getElementById('gBest').textContent;
+    }, 420);
+  }
+
+  function go() {
+    clearInterval(tick);
+    round = 0; cleared = 0;
+    clrEl.textContent = '0';
+    bestEl.textContent = document.getElementById('gBest').textContent;
+    screen('scPlay');
+    build();
+    endAt = Date.now() + TOTAL * 1000;
+    paintTime();
+    playing = true;
+    Sfx.bgm('find');
+    Sfx.start();
+    tick = setInterval(function () {
+      paintTime();
+      if (Date.now() >= endAt) finish();
+    }, 100);
+  }
+
+  grid.addEventListener('click', function (e) {
+    var t = e.target;
+    while (t && t !== grid && !t.classList.contains('fc')) t = t.parentNode;
+    if (t && t !== grid) pick(t);
+  });
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+})();
+</script>
+</body>
+</html>

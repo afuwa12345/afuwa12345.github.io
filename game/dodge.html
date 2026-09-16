@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アフロよけ｜AFRO Horse</title>
+<meta name="description" content="上から降ってくるバケツやコーンを左右に動いてよける無料ゲーム。何秒生き残れるか競えます。登録不要でブラウザからすぐ遊べます。">
+<link rel="canonical" href="https://afro-horse.com/game/dodge.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/dodge.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロよけ｜AFRO Horse">
+<meta property="og:description" content="降ってくる物を左右によける無料ゲーム。何秒生き残れるか競えます。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  #scTitle { --bgt: url(../images/bgt/dodge.webp); --veil: .58; }
+
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  /* 土の馬道。流れているように見せるため縦縞を下へ送る */
+  #stage {
+    background-color: #5a4224;
+    background-image:
+      linear-gradient(90deg, rgba(0,0,0,.28) 0 8%, transparent 8% 92%, rgba(0,0,0,.28) 92% 100%),
+      repeating-linear-gradient(180deg,
+        rgba(255,255,255,.05) 0 3px, transparent 3px 10px,
+        rgba(0,0,0,.06) 10px 14px, transparent 14px 26px);
+    overflow: hidden; cursor: pointer; touch-action: none;
+  }
+  #road {                      /* 流れる地面。飾りなので止まっても困らない */
+    position: absolute; inset: -26px 0 0; z-index: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(180deg,
+      rgba(255,255,255,.07) 0 2px, transparent 2px 13px);
+  }
+
+  /* アフワ */
+  #me {
+    position: absolute; bottom: 8px; z-index: 5;
+    width: 64px; height: 64px; object-fit: contain;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,.6));
+    transform: translateX(-50%);
+  }
+  #stage.hit #me { animation: dHit .5s steps(2) 3; }
+  @keyframes dHit { 50% { opacity: .25; } }
+
+  /* 降ってくるもの。絵が無いあいだは下のCSSの形が見える */
+  .ob { position: absolute; z-index: 4; border-radius: 6px; }
+  .ob img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .ob.pic { background: none !important; border: 0 !important; box-shadow: none !important; }
+  .ob.pic::after { display: none; }
+
+  .ob.t0 {                     /* バケツ */
+    background: linear-gradient(180deg, #7fc4ee 0%, #2f83c4 55%, #1d5f95 100%);
+    border: 2px solid #12405f; border-radius: 4px 4px 10px 10px;
+  }
+  .ob.t0::after {
+    content: ''; position: absolute; left: 12%; right: 12%; top: -14%; height: 26%;
+    border: 2px solid #12405f; border-bottom: 0; border-radius: 40px 40px 0 0;
+  }
+  .ob.t1 {                     /* 三角コーン */
+    background:
+      linear-gradient(180deg, transparent 0 8%, #fff 8% 22%, transparent 22% 100%),
+      linear-gradient(180deg, #ff9a3c 0%, #f4700f 100%);
+    border: 0; border-radius: 0;
+    clip-path: polygon(50% 0, 88% 82%, 100% 82%, 100% 100%, 0 100%, 0 82%, 12% 82%);
+  }
+  .ob.t2 {                     /* 水たまり */
+    background: radial-gradient(ellipse at 50% 50%, #9ec9de 0 52%, #5c8fa8 53% 100%);
+    border: 2px solid #3d6a80; border-radius: 50%;
+  }
+  .ob.bonus { background: none; border: 0; }
+
+  /* あたったときの光 */
+  .d-flash {
+    position: absolute; inset: 0; z-index: 8; pointer-events: none;
+    background: radial-gradient(circle at 50% 80%, rgba(255,8,68,.5), transparent 62%);
+    opacity: 0; transition: opacity .1s;
+  }
+  #stage.hit .d-flash { opacity: 1; }
+
+  /* 秒読み */
+  .d-cue {
+    position: absolute; inset: 0; z-index: 9; display: flex;
+    align-items: center; justify-content: center; pointer-events: none;
+    font-family: 'Dela Gothic One', sans-serif; font-size: 44px; color: var(--gold);
+    text-shadow: 0 0 22px var(--gold); opacity: 0; transition: opacity .12s;
+  }
+  .d-cue.on { opacity: 1; }
+</style>
+</head>
+<body class="nav-game">
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">DODGE</div>
+  <h1 class="at-logo" data-name="アフロよけ"><img src="../images/icon/dodge.webp" alt="アフロよけ"></h1>
+  <p class="at-sub">よけて、よけて、生き残る</p>
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
+    <li>画面を指でなぞると、アフワがついてくる</li>
+    <li>降ってくるバケツ・コーン・水たまりをよける</li>
+    <li>1回でもぶつかったら終わり</li>
+    <li>カラーアフロを拾うと2秒おまけ。生き残った秒数が記録</li>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">TIME</span><span class="ahud-val" id="hTime">0.0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">BONUS</span><span class="ahud-val" id="hBonus">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">BEST</span><span class="ahud-val gold" id="hBest">—</span></div>
+    </div>
+  </div>
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div id="road"></div>
+      <div class="d-flash"></div>
+      <img id="me" src="../images/dodge/afuwa.webp" alt="">
+      <div class="d-cue" id="cue"></div>
+    </div>
+    <p class="astage-note">指でなぞって左右に動かします</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
+<script>
+(function () {
+  var AFROS = ['afro_kin', 'afro_mizu', 'afro_kon', 'afro_cha', 'afro_gin', 'afro_kuro'];
+  var ME_W = 64;               /* アフワの見た目の幅 */
+  var HIT_W = 34, HIT_H = 40;  /* あたり判定はすこし小さめ。理不尽にしない */
+  /* むずかしさは1秒ごとに少しずつ上がる。1分ほどで頭打ちになる配分 */
+  var FALL0 = 210, FALL_UP = 5.2, FALL_MAX = 540;   /* 落ちる速さ px/秒 */
+  var GAP0 = 0.9, GAP_DN = 0.009, GAP_MIN = 0.32;   /* 出てくる間かく 秒 */
+  var BONUS_RATE = 0.13;       /* このくらいの割合でカラーアフロが混ざる */
+  var BONUS_SEC = 20;          /* 0.1秒きざみ。20 = 2.0秒 */
+  var MOVE = 780;              /* 指へ寄っていく速さ px/秒 */
+
+  var stage  = document.getElementById('stage');
+  var me     = document.getElementById('me');
+  var cueEl  = document.getElementById('cue');
+  var road   = document.getElementById('road');
+  var timeEl = document.getElementById('hTime');
+  var bonEl  = document.getElementById('hBonus');
+  var bestEl = document.getElementById('hBest');
+
+  var W = 0, H = 0;
+  var myX = 0, wantX = 0;
+  var obs = [], nextIn = 0, elapsed10 = 0, bonus = 0, bonusCount = 0;
+  var playing = false, raf = 0, last = 0, roadShift = 0;
+
+  /* アフワの絵がまだ無いときは、顔の絵で代える。
+     この script が動く前に読み込みが終わっていることがあるので、今の状態も見る */
+  function meFallback() {
+    if (me.getAttribute('src').indexOf('face') < 0) me.src = '../images/face/afuwa.webp';
+  }
+  me.addEventListener('error', meFallback);
+  if (me.complete && !me.naturalWidth) meFallback();
+  (function () {
+    for (var i = 0; i < AFROS.length; i++) {
+      var im = new Image(); im.src = '../images/afro/' + AFROS[i] + '.webp';
+    }
+  })();
+
+  /* 障害物の絵。あるものだけ使い、無いものはCSSで描いた形のまま出す。
+     毎回ためしに読みにいかないよう、はじめに1回だけ確かめる */
+  var obsPic = [false, false, false];
+  (function () {
+    for (var i = 0; i < 3; i++) {
+      (function (n) {
+        var im = new Image();
+        im.onload = function () { obsPic[n] = true; };
+        im.src = '../images/dodge/obs' + (n + 1) + '.webp';
+      })(i);
+    }
+  })();
+
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
+  }
+
+  AfroScore.setup({
+    game: 'dodge',
+    title: 'アフロよけ',
+    hash: 'アフロよけ',
+    lower: false,
+    format: function (v) { return (v / 10).toFixed(1) + '秒'; },
+    grades: [
+      { v: 600, name: '逃げ切り王' },
+      { v: 450, name: 'G1級の反応' },
+      { v: 330, name: 'オープン級' },
+      { v: 240, name: '3勝クラス' },
+      { v: 150, name: '1勝クラス' },
+      { v: 0,   name: '新馬' }
+    ],
+    onRetry: go
+  });
+
+  function cue(text, ms) {
+    cueEl.textContent = text;
+    cueEl.classList.add('on');
+    clearTimeout(cue._t);
+    cue._t = setTimeout(function () { cueEl.classList.remove('on'); }, ms || 480);
+  }
+
+  function clearObs() {
+    for (var i = 0; i < obs.length; i++) obs[i].el.remove();
+    obs = [];
+  }
+
+  function addObs() {
+    var isBonus = Math.random() < BONUS_RATE;
+    var t = Math.floor(Math.random() * 3);
+    var w = isBonus ? 40 : (t === 2 ? 62 : 42);
+    var h = isBonus ? 30 : (t === 2 ? 26 : 48);
+    var x = 6 + Math.random() * Math.max(1, W - w - 12);
+
+    var e = document.createElement('div');
+    e.className = 'ob ' + (isBonus ? 'bonus' : 't' + t);
+    e.style.width = w + 'px';
+    e.style.height = h + 'px';
+    e.style.left = x + 'px';
+    e.style.top = (-h - 4) + 'px';
+
+    if (isBonus || obsPic[t]) {
+      var img = document.createElement('img');
+      img.alt = '';
+      img.src = isBonus
+        ? '../images/afro/' + AFROS[Math.floor(Math.random() * AFROS.length)] + '.webp'
+        : '../images/dodge/obs' + (t + 1) + '.webp';
+      e.classList.add('pic');
+      e.appendChild(img);
+    }
+
+    stage.appendChild(e);
+    obs.push({ el: e, x: x, y: -h - 4, w: w, h: h, bonus: isBonus });
+  }
+
+  function hit() {
+    playing = false;
+    cancelAnimationFrame(raf);
+    stage.classList.add('hit');
+    stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+    Sfx.bad();
+    var score = elapsed10 + bonus;
+    setTimeout(function () {
+      stage.classList.remove('hit');
+      AfroScore.finish(score);
+      bestEl.textContent = document.getElementById('gBest').textContent;
+    }, 700);
+  }
+
+  function step(t) {
+    if (!playing) return;
+    var dt = Math.min(0.045, (t - last) / 1000);
+    last = t;
+
+    elapsed10 += dt * 10;
+    timeEl.textContent = (Math.floor(elapsed10) / 10).toFixed(1);
+    var sec = elapsed10 / 10;
+
+    /* 地面を流す。飾り */
+    var fall = Math.min(FALL_MAX, FALL0 + sec * FALL_UP);
+    roadShift = (roadShift + fall * 0.5 * dt) % 13;
+    road.style.backgroundPositionY = roadShift + 'px';
+
+    /* 指のほうへ寄る */
+    var d = wantX - myX;
+    var mv = MOVE * dt;
+    myX += Math.abs(d) <= mv ? d : (d > 0 ? mv : -mv);
+    myX = Math.max(ME_W / 2, Math.min(W - ME_W / 2, myX));
+    me.style.left = myX + 'px';
+
+    /* 出す */
+    nextIn -= dt;
+    if (nextIn <= 0) {
+      addObs();
+      nextIn = Math.max(GAP_MIN, GAP0 - sec * GAP_DN);
+    }
+
+    /* 落とす・あたり判定 */
+    var mx0 = myX - HIT_W / 2, mx1 = myX + HIT_W / 2;
+    var my0 = H - 8 - HIT_H, my1 = H - 8;
+    for (var i = obs.length - 1; i >= 0; i--) {
+      var o = obs[i];
+      o.y += fall * dt;
+      o.el.style.top = o.y + 'px';
+
+      if (o.x < mx1 && o.x + o.w > mx0 && o.y < my1 && o.y + o.h > my0) {
+        if (o.bonus) {
+          bonus += BONUS_SEC;
+          bonusCount++;
+          bonEl.textContent = bonusCount;
+          o.el.remove(); obs.splice(i, 1);
+          Sfx.up();
+          cue('+2秒', 420);
+          continue;
+        }
+        hit();
+        return;
+      }
+
+      if (o.y > H + 10) { o.el.remove(); obs.splice(i, 1); }
+    }
+
+    raf = requestAnimationFrame(step);
+  }
+
+  function go() {
+    screen('scPlay');
+    cancelAnimationFrame(raf);
+    clearObs();
+    elapsed10 = 0; bonus = 0; bonusCount = 0; nextIn = 0.7; roadShift = 0;
+    timeEl.textContent = '0.0';
+    bonEl.textContent = '0';
+    bestEl.textContent = document.getElementById('gBest').textContent;
+    stage.classList.remove('hit');
+
+    W = stage.clientWidth || 320;
+    H = stage.clientHeight || 360;
+    myX = wantX = W / 2;
+    me.style.left = myX + 'px';
+
+    Sfx.bgm('dodge');
+    Sfx.start();
+    playing = true;
+    last = performance.now();
+    raf = requestAnimationFrame(step);
+  }
+
+  /* 指でなぞる。押していなくても、なぞった位置についてくる */
+  function aim(e) {
+    var r = stage.getBoundingClientRect();
+    wantX = Math.max(ME_W / 2, Math.min(W - ME_W / 2, e.clientX - r.left));
+  }
+  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); aim(e); });
+  stage.addEventListener('pointermove', function (e) {
+    if (e.buttons || e.pointerType === 'touch') { e.preventDefault(); aim(e); }
+  });
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+  /* パソコンでは矢印キーでも動かせる */
+  addEventListener('keydown', function (e) {
+    if (!playing) return;
+    if (e.key === 'ArrowLeft')  { wantX = Math.max(ME_W / 2, wantX - 44); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { wantX = Math.min(W - ME_W / 2, wantX + 44); e.preventDefault(); }
+  });
+
+  addEventListener('resize', function () {
+    if (!playing) return;
+    W = stage.clientWidth || W;
+    H = stage.clientHeight || H;
+    wantX = Math.max(ME_W / 2, Math.min(W - ME_W / 2, wantX));
+  });
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+})();
+</script>
+</body>
+</html>

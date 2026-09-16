@@ -281,6 +281,12 @@ body {
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .45));
 }
 
+/* アイコンの絵がまだ無いタイル。絵文字で代える */
+.game-shot.icon.noimg::after {
+  content: attr(data-emoji); font-size: 44px; line-height: 1;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .45));
+}
+
 /* 専用イラストが入るまでの色地サムネ。キャラは切らずに収める */
 .game-shot.art { background: var(--ax, linear-gradient(135deg, var(--turf-2), var(--turf-dk))); }
 .game-shot.art img { object-fit: contain; padding: 8px; box-sizing: border-box; }
