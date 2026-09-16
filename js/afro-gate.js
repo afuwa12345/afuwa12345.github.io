@@ -82,7 +82,7 @@
     // キャラが所定の位置に着いたら、カードの地と説明を出す
     var arrive = function () {
       clearTimeout(openPop._t);
-      openPop._t = setTimeout(function () { pop.classList.add('ready'); }, 430);
+      openPop._t = setTimeout(function () { pop.classList.add('ready'); }, 600);
     };
     if (pPic && !(pPic.complete && pPic.naturalWidth)) {
       pPic.onload = function () { popFly(false); arrive(); };
