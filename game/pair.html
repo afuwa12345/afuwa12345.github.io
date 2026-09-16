@@ -38,12 +38,14 @@
   #scPlay { padding-bottom: 6px; }
   #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
-  /* 場。フェルトの台 */
+  /* 場。カードが緑なので、台は木の色にして浮かせる */
   #stage {
-    background-color: #123a28;
+    background-color: #3a2a1b;
     background-image:
-      radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,.07), transparent 62%),
-      repeating-linear-gradient(90deg, rgba(0,0,0,.05) 0 3px, transparent 3px 6px);
+      radial-gradient(120% 80% at 50% 0%, rgba(255,214,150,.10), transparent 62%),
+      repeating-linear-gradient(90deg,
+        rgba(0,0,0,.10) 0 2px, transparent 2px 5px,
+        rgba(255,255,255,.03) 5px 6px, transparent 6px 11px);
     padding: 10px;
     display: grid; gap: 8px;
     grid-template-columns: repeat(3, 1fr);
@@ -82,7 +84,11 @@
       radial-gradient(circle at 64% 24%, #0a3522 0 26%, transparent 27%);
     opacity: .9;
   }
-  .pc-b img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* 裏の絵が入ったら、CSSで描いていた裏面は引っこめる。
+     絵じたいが枠まで描いてあるので、切らずに収める */
+  .pc-b.pic { background: none; border: 0; box-shadow: none; }
+  .pc-b.pic::after { display: none; }
+  .pc-b img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
   /* 表面 */
   .pc-f {
@@ -205,6 +211,7 @@
       var im = document.createElement('img');
       im.src = BACK; im.alt = '';
       bs[i].appendChild(im);
+      bs[i].classList.add('pic');
     }
   }
 

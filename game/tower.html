@@ -72,10 +72,12 @@
     position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
     height: 112%; width: auto; max-width: none; pointer-events: none;
   }
+  /* 土台。干し草の絵が細長くつぶれないよう2段ぶんの高さにして、
+     下半分はステージの外へ出す。地面に埋まっているように見える */
   .tb.base {
     background: linear-gradient(180deg, #e0c477 0%, #c2a052 50%, #8e6d2a 100%);
   }
-  .tb.base img { height: 100%; width: 100%; object-fit: cover; }
+  .tb.base img { height: 100%; width: 100%; object-fit: cover; object-position: center top; }
   .tb.perfect { box-shadow: 0 0 16px 2px var(--gold), inset 0 1px 0 rgba(255,255,255,.8); }
 
   /* いま動いている段 */
@@ -227,8 +229,9 @@
     e.className = 'tb' + (cls ? ' ' + cls : '');
     e.style.left = left + 'px';
     e.style.width = w + 'px';
-    e.style.height = BH + 'px';
-    e.style.bottom = (i * BH) + 'px';
+    /* 土台だけ2段ぶんの高さにして、下半分は画面の外へ */
+    e.style.height = (cls === 'base' ? BH * 2 : BH) + 'px';
+    e.style.bottom = (cls === 'base' ? -BH : i * BH) + 'px';
     var src = (cls === 'base')
       ? '../images/tower/base.webp'
       : '../images/face/' + FACES[i % FACES.length] + '.webp';
