@@ -569,13 +569,33 @@ section { padding: 22px 0 0; }
   border: 2px solid var(--gold);
   box-shadow: 0 18px 50px rgba(0,0,0,.4);
 }
-.gpop.show .gpop-card { animation: gpopIn .42s cubic-bezier(.2,1.3,.35,1) backwards; }
-/* ゲートの奥から、小さく飛び出してくる動き */
-@keyframes gpopIn {
-  0%   { opacity: 0; transform: translateY(46px) scale(.42); }
-  55%  { opacity: 1; }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+/* まずキャラだけが飛んでくる。カードの地と説明はまだ出ていない */
+.gpop-card { background: transparent; border-color: transparent; box-shadow: none; }
+.gpop-pic { background: transparent; }
+.gpop-body { opacity: 0; }
+
+/* キャラが着いたら .ready が付き、地と説明が下から出る */
+.gpop.ready .gpop-card {
+  background: var(--paper); border-color: var(--gold);
+  box-shadow: 0 18px 50px rgba(0,0,0,.4);
 }
+.gpop.ready .gpop-pic {
+  background:
+    radial-gradient(ellipse at 50% 92%, rgba(0,0,0,.16), transparent 62%),
+    linear-gradient(180deg, var(--turf-2) 0%, var(--turf) 62%, var(--turf-dk) 100%);
+}
+/* 見えるかどうかはクラスで決める。動きは飾りなので、
+   アニメが止まる場面（裏に回ったときなど）でも必ず見える */
+.gpop.ready .gpop-body {
+  opacity: 1;
+  animation: gpopBody .34s cubic-bezier(.2,.9,.3,1);
+}
+@keyframes gpopBody {
+  0%   { transform: translateY(26px); }
+  100% { transform: translateY(0); }
+}
+.gpop-x { opacity: 0; }
+.gpop.ready .gpop-x { opacity: 1; }
 
 .gpop-x {
   position: absolute; top: 8px; right: 10px; z-index: 2;
@@ -597,11 +617,8 @@ section { padding: 22px 0 0; }
   display: block; width: 74%; max-width: 280px; height: auto; margin: 0 auto;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
 }
-.gpop.show .gpop-pic img { animation: gpopChara .5s cubic-bezier(.2,1.25,.4,1) backwards .06s; }
-@keyframes gpopChara {
-  0%   { opacity: 0; transform: translateY(34px) scale(.8); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
+/* キャラは馬房の位置から動いてくる。位置と大きさは JS が測って入れる */
+.gpop-pic img { transform-origin: center center; will-change: transform; }
 
 .gpop-body { padding: 15px 16px 17px; }
 

@@ -45,18 +45,66 @@
   var popX  = document.getElementById('gPopX');
   var cur = -1;
 
-  /* ポップアップの開け閉め */
-  function openPop() {
+  /* ポップアップの開け閉め。
+     開くとき  … 馬房にいるキャラの位置と大きさから、本来の位置へ大きくなりながら出る
+     閉じるとき … 逆に、馬房へ向かって小さくなりながら戻る
+     位置は開くたびに測り直して覚えておく。 */
+  var popFrom = null;      // 馬房のキャラの位置
+
+  function popFly(back, done) {
+    if (!pPic || !popFrom) { if (done) done(); return; }
+    var to = pPic.getBoundingClientRect();
+    if (!to.width) { if (done) done(); return; }
+    var dx = (popFrom.left + popFrom.width / 2) - (to.left + to.width / 2);
+    var dy = (popFrom.top + popFrom.height / 2) - (to.top + to.height / 2);
+    var sc = popFrom.width / to.width;
+    var at = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+
+    var frames = back ? [{ transform: 'none', opacity: 1 }, { transform: at, opacity: .25 }]
+                      : [{ transform: at, opacity: .25 }, { transform: 'none', opacity: 1 }];
+    if (!pPic.animate) { if (done) done(); return; }
+    var a = pPic.animate(frames, {
+      duration: back ? 380 : 520,
+      easing: back ? 'cubic-bezier(.5,0,.75,.2)' : 'cubic-bezier(.2,.9,.28,1)',
+      fill: 'both'
+    });
+    a.onfinish = function () { if (!back) a.cancel(); if (done) done(); };
+  }
+
+  function openPop(fromImg) {
     if (!pop) return;
+    popFrom = fromImg ? fromImg.getBoundingClientRect() : null;
     pop.hidden = false;
+    pop.classList.remove('ready');
     pop.classList.add('show');
     document.body.style.overflow = 'hidden';
+
+    // キャラが所定の位置に着いたら、カードの地と説明を出す
+    var arrive = function () {
+      clearTimeout(openPop._t);
+      openPop._t = setTimeout(function () { pop.classList.add('ready'); }, 430);
+    };
+    if (pPic && !(pPic.complete && pPic.naturalWidth)) {
+      pPic.onload = function () { popFly(false); arrive(); };
+    } else {
+      popFly(false); arrive();
+    }
   }
+
   function closePop() {
-    if (!pop) return;
-    pop.classList.remove('show');
-    pop.hidden = true;
-    document.body.style.overflow = '';
+    if (!pop || pop.hidden) return;
+    pop.classList.remove('ready');      // 先に地と説明を消す
+    popFly(true);                       // 動きは飾り。閉じる処理は待たない
+    clearTimeout(openPop._t);
+    clearTimeout(closePop._t);
+    closePop._t = setTimeout(function () {
+      pop.classList.remove('show');
+      pop.hidden = true;
+      document.body.style.overflow = '';
+      if (pPic && pPic.getAnimations) {
+        pPic.getAnimations().forEach(function (x) { x.cancel(); });
+      }
+    }, 340);
   }
 
   function paint() {
@@ -73,15 +121,7 @@
              || stalls[cur].querySelector('img');
       if (img) { pPic.src = img.getAttribute('src'); pPic.alt = d.name; }
     }
-    if (popX) { popX.addEventListener('click', closeAll); }
-  if (pop) {
-    pop.addEventListener('click', function (e) { if (e.target === pop) closeAll(); });
-  }
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && pop && !pop.hidden) closeAll();
-  });
-
-  if (flip) {
+    if (flip) {
       flip.hidden = (cur !== 0);
       flip.textContent = ura ? '↩ 表の顔にもどす' : '⚡ 裏の顔に切り替える';
       flip.setAttribute('aria-pressed', ura ? 'true' : 'false');
@@ -102,8 +142,22 @@
     board.classList.add('open');
     cur = i;
     paint();
-    openPop();
+    var img = stalls[i].querySelector('.stall-pic img:not(.back)')
+           || stalls[i].querySelector('.stall-pic img');
+    if (stalls[i].classList.contains('ura')) {
+      img = stalls[i].querySelector('.stall-pic .back') || img;
+    }
+    openPop(img);
   }
+
+  /* 閉じる操作。×ボタン・背景・Escape */
+  if (popX) { popX.addEventListener('click', closeAll); }
+  if (pop) {
+    pop.addEventListener('click', function (e) { if (e.target === pop) closeAll(); });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && pop && !pop.hidden) closeAll();
+  });
 
   stalls.forEach(function (s, i) {
     s.addEventListener('click', function () {
