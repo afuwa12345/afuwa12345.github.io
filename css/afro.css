@@ -495,7 +495,7 @@ section { padding: 22px 0 0; }
 .stall.on::before { opacity: 0; }
 
 .stall-no {
-  position: absolute; top: -46px; left: 50%; transform: translateX(-50%);
+  position: absolute; top: -42px; left: 50%; transform: translateX(-50%);
   z-index: 7;
   font-family: 'Anton', sans-serif; font-size: 13px; line-height: 1;
   padding: 3px 9px 4px; background: var(--c); color: var(--ci);
