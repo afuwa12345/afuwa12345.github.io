@@ -561,7 +561,11 @@ section { padding: 22px 0 0; }
   padding: 18px;
   background: rgba(12, 22, 16, .62);
   -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  /* 指でなぞっても後ろへスクロールが伝わらないようにする */
+  overscroll-behavior: contain;
+  touch-action: none;
 }
+.gpop-card { overscroll-behavior: contain; touch-action: pan-y; }
 
 /* 飛んでいるあいだだけ出る絵。位置と大きさは JS が入れる */
 .gpop-fly {

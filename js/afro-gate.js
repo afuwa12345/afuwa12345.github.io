@@ -49,6 +49,35 @@
      ① キャラがゲートから飛んで所定の位置へ（FLY_MS）
      ② そのあと枠全体が下から出てキャラを囲う（RISE_MS）
      ③ 出きったら、飛んでいた絵をカードの中の絵に入れ替える */
+  /* ポップアップ中は後ろのページを動かさない。
+     overflow:hidden だけではスマホで効かないので、body ごと固定して
+     閉じたら元のスクロール位置に戻す。 */
+  var lockY = 0;
+  function lockPage() {
+    if (document.body.hasAttribute('data-locked')) return;
+    lockY = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var b = document.body;
+    b.setAttribute('data-locked', '1');
+    b.style.position = 'fixed';
+    b.style.top = (-lockY) + 'px';
+    b.style.left = '0';
+    b.style.right = '0';
+    b.style.width = '100%';
+    b.style.overflow = 'hidden';
+  }
+  function unlockPage() {
+    var b = document.body;
+    if (!b.hasAttribute('data-locked')) return;
+    b.removeAttribute('data-locked');
+    b.style.position = '';
+    b.style.top = '';
+    b.style.left = '';
+    b.style.right = '';
+    b.style.width = '';
+    b.style.overflow = '';
+    window.scrollTo(0, lockY);
+  }
+
   var FLY_MS = 760, RISE_MS = 360;
   var LEAD_MS = 120;   // キャラが着ききる少し前から枠を出しはじめる
   var pFly = document.getElementById('pFly');
@@ -59,7 +88,7 @@
     pop.classList.remove('closing', 'rising');
     pop.hidden = false;
     pop.classList.add('show');
-    document.body.style.overflow = 'hidden';
+    lockPage();
 
     var from = fromImg ? fromImg.getBoundingClientRect() : null;
     if (!pFly || !pPic || !from || !from.width) { pop.classList.add('rising'); return; }
@@ -113,7 +142,7 @@
     closePop._t = setTimeout(function () {
       pop.classList.remove('show', 'closing');
       pop.hidden = true;
-      document.body.style.overflow = '';
+      unlockPage();
       if (pFly) {
         if (pFly.getAnimations) pFly.getAnimations().forEach(function (x) { x.cancel(); });
         pFly.style.transform = '';
