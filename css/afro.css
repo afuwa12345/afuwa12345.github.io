@@ -411,8 +411,16 @@ section { padding: 22px 0 0; }
   background:
     url(../images/gate_rail.webp) repeat-x left top / auto 26px,
     url(../images/gate_rail.webp) repeat-x left 48px / auto 26px,
+    url(../images/gate_rail.webp) repeat-x left bottom / auto 18px,
+    /* 上下の横梁を繋ぐ縦梁。柱と同じ6本 */
+    url(../images/gate_post.webp) no-repeat left 0    top 26px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 20%  top 26px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 40%  top 26px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 60%  top 26px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat left 80%  top 26px / 12px 22px,
+    url(../images/gate_post.webp) no-repeat right 0   top 26px / 12px 22px,
     linear-gradient(180deg, var(--turf-2), var(--turf));
-  padding: 74px 6px 0;
+  padding: 74px 6px 18px;
   position: relative;
   border-radius: 8px 8px 0 0;
   box-shadow: var(--sh-md);
@@ -424,7 +432,7 @@ section { padding: 22px 0 0; }
 .gate::before,
 .gate::after {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  top: 74px; bottom: 0; width: 6px;
+  top: 74px; bottom: 18px; width: 6px;
   background-image: url(../images/gate_post.webp);
   background-repeat: no-repeat;
   background-size: 12px 100%;
@@ -433,7 +441,7 @@ section { padding: 22px 0 0; }
 .gate::after  { right: 0; background-position: right top; }
 
 .board.open .gate { box-shadow: 0 2px 4px rgba(26,30,24,.07); }
-.board:not(.open) .gate { border-radius: 8px; padding-bottom: 6px; }
+.board:not(.open) .gate { border-radius: 8px; }
 .board:not(.open) .stall-pic img { filter: none; }
 .board:not(.open) .stall:first-child { border-radius: 4px 0 0 4px; }
 .board:not(.open) .stall:last-child  { border-radius: 0 4px 4px 0; }
@@ -456,12 +464,12 @@ section { padding: 22px 0 0; }
    番号と名札(z7)より後ろ、扉(z4)より手前。 */
 .stall::after {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  right: 0; top: 0; bottom: -6px; width: 6px;
+  right: 0; top: 0; bottom: 0; width: 6px;
   background: url(../images/gate_post.webp) no-repeat left top / 12px 100%;
 }
 .stall::before {
   content: ''; position: absolute; z-index: 9; pointer-events: none;
-  left: 0; top: 0; bottom: -6px; width: 6px;
+  left: 0; top: 0; bottom: 0; width: 6px;
   background: url(../images/gate_post.webp) no-repeat right top / 12px 100%;
 }
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
