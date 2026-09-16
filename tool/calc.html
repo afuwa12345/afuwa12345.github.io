@@ -406,9 +406,12 @@
   flex-shrink: 0;
   display: flex; align-items: center; gap: 14px;
   padding: 0 18px 0 0;
-  height: 130px;
+  min-height: 130px;
   overflow: hidden;
 }
+/* 文字が増えても切れないように、幅を詰められるようにする */
+.popup-hero-info { min-width: 0; flex: 1 1 auto; }
+
 .popup-hero-char {
   height: 130px; width: 130px;
   object-fit: contain; flex-shrink: 0; z-index: 2;
@@ -638,6 +641,22 @@
   position: relative; z-index: 2;
   flex-shrink: 0;
   padding: 10px 18px 18px;
+}
+
+/* スマホでは画像と文字を少し小さくして、説明文が折り返しすぎないように */
+@media (max-width: 430px) {
+  .popup-hero { gap: 9px; padding-right: 12px; min-height: 112px; }
+  .popup-hero-char { height: 104px; width: 104px; }
+  .popup-betname { font-size: 20px; }
+  .popup-betdesc { font-size: 11.5px; margin-top: 4px; }
+  .popup-mode-tag { margin-top: 5px; }
+  .popup-pts-num { font-size: 34px; }
+}
+@media (max-width: 360px) {
+  .popup-hero-char { height: 88px; width: 88px; }
+  .popup-betname { font-size: 18px; }
+  .popup-betdesc { font-size: 11px; }
+  .popup-pts-num { font-size: 29px; }
 }
 </style>
 </head>
