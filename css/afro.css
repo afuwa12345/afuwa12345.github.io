@@ -887,4 +887,8 @@ a.race:active { transform: translateY(0); }
 /* 下層の最後に置く4軸への回遊 */
 .axes.mini .axis { min-height: 66px; }
 .axes.mini .axis-en { font-size: 13px; }
+/* 小さい版では、先頭の横長タイルも同じ高さにそろえる */
+.axes.mini:has(> :nth-child(5)) > .axis:first-child { min-height: 66px; }
+.axes.mini .axis-pic { height: 52px; }
+.axes.mini > .axis:first-child > .axis-pic { height: 60px; }
 
