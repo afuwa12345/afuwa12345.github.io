@@ -419,6 +419,19 @@ section { padding: 22px 0 0; }
   overflow: hidden;
   transition: border-radius .22s;
 }
+/* 外の柱の、馬房に入りきらない側の半分。ゲートの余白(6px)にちょうど収まる。
+   馬房側の半分と合わさって、外にも1本まるごと立つ */
+.gate::before,
+.gate::after {
+  content: ''; position: absolute; z-index: 9; pointer-events: none;
+  top: 62px; bottom: 0; width: 6px;
+  background-image: url(../images/gate_post.webp);
+  background-repeat: no-repeat;
+  background-size: 12px 100%;
+}
+.gate::before { left: 0;  background-position: left top; }
+.gate::after  { right: 0; background-position: right top; }
+
 .board.open .gate { box-shadow: 0 2px 4px rgba(26,30,24,.07); }
 .board:not(.open) .gate { border-radius: 8px; padding-bottom: 6px; }
 .board:not(.open) .stall-pic img { filter: none; }
