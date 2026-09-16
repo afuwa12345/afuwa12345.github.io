@@ -425,7 +425,7 @@ section { padding: 22px 0 0; }
 
 .stall {
   appearance: none; margin: 0; padding: 0; font: inherit; color: inherit; border: 0;
-  flex: 1 1 0; min-width: 0; position: relative; overflow: hidden; cursor: pointer;
+  flex: 1 1 0; min-width: 0; position: relative; cursor: pointer;
   background: linear-gradient(180deg, #efe9dc 0%, #ddd5c6 100%);
   display: flex; flex-direction: column; justify-content: flex-end;
   transition: flex-grow .34s cubic-bezier(.34,.01,.2,1), background .22s, box-shadow .22s;
@@ -439,15 +439,14 @@ section { padding: 22px 0 0; }
   background: linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
 }
 
-/* 仕切りの柱。境目ごとに1本だけ。
-   馬房は overflow:hidden なので、はみ出さないよう右側の馬房の内側に立てる。
+/* 仕切りの柱。境目のど真ん中にまたがせる。
    番号と名札(z7)より後ろ、扉(z4)より手前。 */
 .stall + .stall::after {
   content: ''; position: absolute; z-index: 5; pointer-events: none;
-  left: 0; top: 0; bottom: 23px; width: 9px;
+  left: -4.5px; top: 0; bottom: 23px; width: 9px;
   background: url(../images/gate_post.webp) no-repeat left top / 9px 100%;
 }
-/* いちばん外の左右にも1本ずつ */
+/* いちばん外の左右にも1本ずつ（こちらは内側に収める） */
 .stall:first-child::before {
   background:
     url(../images/gate_post.webp) no-repeat left 0 / 9px calc(100% - 23px),
@@ -464,7 +463,7 @@ section { padding: 22px 0 0; }
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
 .gdoor {
   position: absolute; left: 0; right: 0; top: 21%; height: 50%;
-  z-index: 4; pointer-events: none;
+  z-index: 4; pointer-events: none; overflow: hidden;
 }
 .gdoor i {
   position: absolute; top: 0; bottom: 0; width: 50.5%;
