@@ -232,13 +232,13 @@ body {
 }
 /* 絵があるときは、番号を右下から右上へ逃がして重ならないようにする */
 .axis:has(> .axis-pic)::after {
-  right: 6px; bottom: auto; top: -10px;
-  font-size: 40px; color: rgba(255,255,255,.16);
+  right: 8px; bottom: auto; top: 4px;
+  font-size: 40px; line-height: .82; color: rgba(255,255,255,.16);
 }
 /* 先頭の横長タイルは番号が大きい指定が別にあるので、こちらでも同じ大きさに */
 .axes > .axis:first-child:has(> .axis-pic)::after,
 #menu .axes > .axis:first-child:has(> .axis-pic)::after {
-  right: 6px; bottom: auto; top: -10px; font-size: 40px;
+  right: 8px; bottom: auto; top: 4px; font-size: 40px; line-height: .82;
 }
 /* 先頭の横長タイルは絵も横長（3:1）。幅の上限を上げて大きく見せる */
 .axes > .axis:first-child > .axis-pic { height: 88px; max-width: 78%; opacity: .42; }
