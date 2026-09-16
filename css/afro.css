@@ -221,6 +221,18 @@ body {
   font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 1;
   color: rgba(255,255,255,.14); pointer-events: none;
 }
+
+/* タイルの絵。数字の代わりに置く */
+.axis-pic {
+  position: absolute; right: 8px; top: 50%;
+  transform: translateY(-50%);
+  height: 54px; width: auto; max-width: 44%;
+  object-fit: contain; opacity: .45;
+  pointer-events: none; z-index: 0;
+}
+.axis:has(> .axis-pic)::after { display: none; }
+.axes > .axis:first-child > .axis-pic { height: 46px; }
+.axis-en, .axis-ja { position: relative; z-index: 1; }
 .axis-en { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: .1em; line-height: 1.12; }
 .axis-ja { font-size: 11px; opacity: .88; margin-top: 2px; }
 .ax-keiba { --ax: linear-gradient(135deg, #1C7A4F, #14583A); }
