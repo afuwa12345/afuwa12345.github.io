@@ -439,21 +439,19 @@ section { padding: 22px 0 0; }
   background: linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
 }
 
-/* 仕切りの柱。境目に1本ずつ＋いちばん外側の左右にも1本ずつ */
-.stall:first-child::before,
+/* 仕切りの柱。馬房の中に収める（はみ出すと overflow:hidden で切れる）。
+   名札の上で止め、番号・名札より下の層に置く */
+.stall::after {
+  content: ''; position: absolute; z-index: 3; pointer-events: none;
+  left: 0; top: 0; bottom: 23px; width: 11px;
+  background: url(../images/gate_post.webp) no-repeat left top / 100% 100%;
+}
+/* いちばん右の馬房は、右端にもう1本 */
 .stall:last-child::before {
   background:
-    url(../images/gate_post.webp) no-repeat left top / 22px 100%,
+    url(../images/gate_post.webp) no-repeat right 0 / 11px calc(100% - 23px),
     linear-gradient(180deg, rgba(0,0,0,.10), transparent 26%);
-  z-index: 6;
-}
-.stall:last-child::before { background-position: right top, left top; }
-
-.stall + .stall::after {
-  content: ''; position: absolute; z-index: 6; pointer-events: none;
-  left: -11px; top: 0; bottom: 0; width: 22px;
-  background: url(../images/gate_post.webp) no-repeat center top / 100% 100%;
-  filter: drop-shadow(0 0 3px rgba(0,0,0,.45));
+  z-index: 3;
 }
 
 /* ゲートの扉。左右2枚。押した馬房だけが開く */
