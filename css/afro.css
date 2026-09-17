@@ -1218,6 +1218,11 @@ a.race:active { transform: translateY(0); }
 .yg-ruby { font-size: 10.5px; color: var(--ink-dim); font-weight: 400; margin-left: 6px; }
 .yg-desc { font-size: 12.5px; line-height: 1.85; color: var(--ink-soft); margin: 4px 0 0; }
 .yg-none { font-size: 13px; color: var(--ink-dim); padding: 20px 0; text-align: center; }
+/* まとまりの終わりに置くかけあい。絞りこみ中は隠れる */
+.yg-talk { margin: 11px 0 0; }
+.yg-talk[hidden] { display: none; }
+.yg-talk .gd-talk { margin-bottom: 8px; }
+.yg-talk .gd-talk:last-child { margin-bottom: 0; }
 
 /* ===== 競馬場ガイド =================================================== */
 .cs-list { display: grid; gap: 11px; }
