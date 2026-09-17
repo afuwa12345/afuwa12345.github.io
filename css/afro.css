@@ -840,7 +840,7 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
 /* 更新日のふだ（マンガの見出しの下） */
 .phead-sched {
   position: relative; z-index: 1; margin: 9px 0 0;
-  display: inline-flex; align-items: center; gap: 5px;
+  display: inline-block;
   font-size: 11.5px; font-weight: 700; letter-spacing: .02em;
   color: var(--paper);
   background: rgba(0,0,0,.22);
@@ -848,6 +848,8 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
   border-radius: 999px; padding: 5px 13px;
 }
 .phead-sched b { color: var(--gold-lt); font-weight: 900; }
+/* 中黒は左右に余白を持っているので、その分だけ詰める */
+.phead-sched i { font-style: normal; margin: 0 -.22em; opacity: .75; }
 
 .phead.slim .phead-en {
   font-size: 9.5px; letter-spacing: .22em; padding: 0;
