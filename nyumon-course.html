@@ -284,7 +284,7 @@
       を参照しました（2026年9月時点）。おもなGIは当サイトの2026年重賞データによります。
     </p>
 
-    <a class="backlink" href="nyumon.html">&larr; はじめての競馬にもどる</a>
+    <a class="backlink" href="koza.html">&larr; 競馬初心者講座にもどる</a>
   </div>
 </section>
 
@@ -307,6 +307,18 @@
     <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
   </div>
 </footer>
+
+<script>
+  /* 講座のトップで「読んだ」を出すための記録。その人のブラウザにだけ残る */
+  (function () {
+    try {
+      var K = 'afro.koza.read';
+      var r = JSON.parse(localStorage.getItem(K) || '{}') || {};
+      r['nyumon-course.html'] = 1;
+      localStorage.setItem(K, JSON.stringify(r));
+    } catch (e) {}
+  })();
+</script>
 
 </body>
 </html>
