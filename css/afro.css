@@ -304,6 +304,31 @@ body {
   background: var(--turf); color: var(--paper);
   font-size: 9.5px; font-weight: 700; padding: 3px 9px; border-radius: 100px;
 }
+
+/* ===== ゲーム一覧の1位スタンプ ===== */
+.game-top {
+  display: flex; align-items: baseline; gap: 6px;
+  margin: 9px 0 0; padding: 5px 9px;
+  border: 1px solid var(--gold-lt); border-radius: 7px;
+  background: linear-gradient(180deg, var(--gold-soft), rgba(244,233,201,.45));
+  font-size: 11px; line-height: 1.3; min-width: 0;
+}
+.game-top::before { content: '\1F451'; font-size: 11px; flex: none; }
+.game-top b {
+  font-weight: 700; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.game-top i {
+  font-style: normal; font-weight: 900; color: var(--gold);
+  margin-left: auto; flex: none; white-space: nowrap;
+}
+.game-top.mine { border-color: var(--turf); background: rgba(20,88,58,.1); }
+.game-top.mine i { color: var(--turf); }
+.game-top.none {
+  border-style: dashed; border-color: var(--rule); background: none; color: var(--ink-dim);
+}
+.game-top.none b { font-weight: 500; color: var(--ink-dim); white-space: nowrap; }
+
 .game-card.is-soon { border-style: dashed; box-shadow: none; cursor: default; }
 .game-card.is-soon:hover { transform: none; box-shadow: none; }
 .game-card.is-soon .game-shot img { filter: grayscale(.3) opacity(.55); }

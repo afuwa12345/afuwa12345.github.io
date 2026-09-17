@@ -72,7 +72,7 @@
     </div>
 
     <div class="games tile">
-      <a class="game-card" href="afuwa_quiz.html">
+      <a class="game-card" href="afuwa_quiz.html" data-game="quiz">
         <span class="game-badge">正解数</span>
         <span class="game-shot icon"><img src="images/icon/quiz.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -80,7 +80,7 @@
           <p class="game-desc">GI勝ち馬439頭から出題</p>
         </span>
       </a>
-      <a class="game-card" href="game/jump.html">
+      <a class="game-card" href="game/jump.html" data-game="jump">
         <span class="game-badge">距離 m</span>
         <span class="game-shot icon"><img src="images/icon/jump.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -88,7 +88,7 @@
           <p class="game-desc">タップで跳んで生垣を越える</p>
         </span>
       </a>
-      <a class="game-card" href="game/catch.html">
+      <a class="game-card" href="game/catch.html" data-game="catch">
         <span class="game-badge">そろえた数</span>
         <span class="game-shot icon"><img src="images/icon/catch.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -96,7 +96,7 @@
           <p class="game-desc">落ちたアフロの持ち主を当てる</p>
         </span>
       </a>
-      <a class="game-card" href="game/whack.html">
+      <a class="game-card" href="game/whack.html" data-game="whack">
         <span class="game-badge">点数</span>
         <span class="game-shot icon"><img src="images/icon/whack.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -104,7 +104,7 @@
           <p class="game-desc">出てきた馬を60秒たたく</p>
         </span>
       </a>
-      <a class="game-card" href="game/memory.html">
+      <a class="game-card" href="game/memory.html" data-game="memory">
         <span class="game-badge">段数</span>
         <span class="game-shot icon"><img src="images/icon/memory.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -112,7 +112,7 @@
           <p class="game-desc">光った順にタップ</p>
         </span>
       </a>
-      <a class="game-card" href="game/gate.html">
+      <a class="game-card" href="game/gate.html" data-game="gate">
         <span class="game-badge">平均 ms</span>
         <span class="game-shot icon"><img src="images/icon/gate.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -120,7 +120,7 @@
           <p class="game-desc">開いた瞬間にタップ</p>
         </span>
       </a>
-      <a class="game-card" href="game/pair.html">
+      <a class="game-card" href="game/pair.html" data-game="pair">
         <span class="game-badge">クリア秒数</span>
         <span class="game-shot icon" data-emoji="🃏"><img src="images/icon/pair.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -128,7 +128,7 @@
           <p class="game-desc">同じ顔の2枚をそろえる</p>
         </span>
       </a>
-      <a class="game-card" href="game/tower.html">
+      <a class="game-card" href="game/tower.html" data-game="tower">
         <span class="game-badge">段数</span>
         <span class="game-shot icon" data-emoji="🧱"><img src="images/icon/tower.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -136,7 +136,7 @@
           <p class="game-desc">ずれたぶんだけ細くなる</p>
         </span>
       </a>
-      <a class="game-card" href="game/dodge.html">
+      <a class="game-card" href="game/dodge.html" data-game="dodge">
         <span class="game-badge">秒数</span>
         <span class="game-shot icon" data-emoji="💦"><img src="images/icon/dodge.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -144,7 +144,7 @@
           <p class="game-desc">降ってくる物をよける</p>
         </span>
       </a>
-      <a class="game-card" href="game/find.html">
+      <a class="game-card" href="game/find.html" data-game="find">
         <span class="game-badge">問題数</span>
         <span class="game-shot icon" data-emoji="🔍"><img src="images/icon/find.webp" alt="" loading="lazy"></span>
         <span class="game-body">
@@ -221,5 +221,87 @@
   })();
 </script>
 
+
+<script src="js/afro-rank-config.js"></script>
+<script>
+/* ===== ゲーム一覧に、いまの1位を出す =====
+   つなぎ先が無いときや、取れなかったときは何も出さない。
+   ページの見え方はスタンプが無くても成り立つようにしてある。 */
+(function () {
+  var URL_ = window.AFRO_RANK_URL || '';
+  if (!URL_) return;
+
+  /* 点の見せかた。各ゲームの結果画面と同じ書き方にそろえてある */
+  var UNIT = {
+    quiz:   function (v) { return v + '問'; },
+    jump:   function (v) { return v + 'm'; },
+    catch:  function (v) { return v + '個'; },
+    whack:  function (v) { return v + '点'; },
+    memory: function (v) { return v + '段'; },
+    gate:   function (v) { return v + 'ms'; },
+    tower:  function (v) { return v + '段'; },
+    find:   function (v) { return v + '問'; },
+    pair:   function (v) { return (v / 10).toFixed(1) + '秒'; },
+    dodge:  function (v) { return (v / 10).toFixed(1) + '秒'; }
+  };
+
+  var KEY = 'afro.top.v1';
+  var LIFE = 5 * 60 * 1000;      /* 5分は取り直さない */
+
+  function paint(top) {
+    var me = '';
+    try { me = (localStorage.getItem('afro.insta') || '').toLowerCase(); } catch (e) {}
+
+    var cards = document.querySelectorAll('.game-card[data-game]');
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      var g = card.getAttribute('data-game');
+      var rec = top[g];
+      var body = card.querySelector('.game-body');
+      if (!body || card.querySelector('.game-top')) continue;
+
+      var el = document.createElement('span');
+      el.className = 'game-top';
+      if (!rec) {
+        el.classList.add('none');
+        el.innerHTML = '<b>まだ記録なし</b>';
+      } else {
+        var f = UNIT[g] || function (v) { return String(v); };
+        var mine = me && String(rec.insta).toLowerCase() === me;
+        if (mine) el.classList.add('mine');
+        el.innerHTML = '<b>@' + esc(rec.insta) + '</b><i>' + esc(f(Number(rec.score))) + '</i>';
+      }
+      body.appendChild(el);
+    }
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  /* 少し前に取ったものがあれば、それを先に出す */
+  var cached = null;
+  try {
+    var raw = sessionStorage.getItem(KEY);
+    if (raw) {
+      var o = JSON.parse(raw);
+      if (o && Date.now() - o.t < LIFE) cached = o.d;
+    }
+  } catch (e) {}
+  if (cached) { paint(cached); return; }
+
+  var ctrl = window.AbortController ? new AbortController() : null;
+  var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 8000) : 0;
+  fetch(URL_ + '?game=_top', ctrl ? { signal: ctrl.signal } : {})
+    .then(function (r) { clearTimeout(timer); return r.json(); })
+    .then(function (d) {
+      if (!d || !d.ok || !d.top) return;      /* 古いスクリプトのときはここで終わり */
+      try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), d: d.top })); } catch (e) {}
+      paint(d.top);
+    })['catch'](function () { clearTimeout(timer); });
+})();
+</script>
 </body>
 </html>
