@@ -117,7 +117,8 @@
     <ul class="at-how">
     <li>並んだアフロ馬から、1頭だけ顔のちがうものを探してタップ</li>
     <li>当たるとつぎの問題。数が増えて、似た顔どうしになっていく</li>
-    <li>後半は盤面が1色に染まる。色では見わけられない</li>
+    <li>9問目あたりは盤面が1色に染まる。色では見わけられない</li>
+    <li>12問目からは<b>同じキャラの表情ちがい</b>。ちがうのは目・まゆ・口だけ</li>
     <li>まちがえると3秒ちぢむ</li>
     <li>60秒で何問こなせるかが記録</li>
     </ul>
@@ -151,9 +152,8 @@
 <script src="../js/afro-ui.js"></script>
 <script>
 (function () {
-  /* 仲間はずれは「別の顔」。組み合わせは、やさしい順に並べてある。
-     色の差が大きい組ほど見つけやすいので、先に出す。
-     （6頭の平均色を測って並べたもの） */
+  /* 前半は「別のキャラ」、後半は「同じキャラの表情ちがい」をさがす。
+     どちらも、見わけやすい組から先に出す（実際に絵を測って並べたもの） */
   var EASY = [
     ['kurofuwa', 'yancha'], ['buruma', 'chafuwa'], ['ginma', 'kurofuwa'],
     ['chafuwa', 'ginma'],   ['afuwa', 'ginma'],    ['buruma', 'yancha']
@@ -166,6 +166,40 @@
     ['buruma', 'ginma'], ['afuwa', 'chafuwa'], ['afuwa', 'kurofuwa']
   ];
   var FACES = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma', 'yancha'];
+
+  /* 表情ちがい。同じキャラなので、色も形もまったく同じ。
+     ちがうのは 目・まゆ・口 だけになる。
+     HAVE は、絵がそろっている表情。足りないキャラは、その組を出さない */
+  var HAVE = {
+    afuwa:    ['futsu', 'warai', 'odoroki', 'tojime'],
+    buruma:   ['futsu', 'warai', 'odoroki', 'tojime'],
+    chafuwa:  ['futsu', 'warai', 'odoroki', 'tojime'],
+    ginma:    ['futsu', 'warai', 'odoroki', 'tojime'],
+    kurofuwa: ['futsu', 'warai'],
+    yancha:   ['futsu', 'warai', 'tojime']
+  };
+  /* 見わけやすい順。実際に絵を測って並べたもの */
+  var EXPR_MID  = [['warai', 'odoroki'], ['futsu', 'odoroki'], ['odoroki', 'tojime']];
+  var EXPR_HARD = [['warai', 'tojime'], ['futsu', 'warai'], ['futsu', 'tojime']];
+  var EXPR_FROM = 11;          /* この問から表情ちがいになる */
+  var EXPR_HARD_FROM = 15;     /* この問から差の小さい組になる */
+
+  /* 出せる組だけをあらかじめ並べておく */
+  function buildExpr(list) {
+    var out = [];
+    for (var i = 0; i < FACES.length; i++) {
+      var ch = FACES[i], have = HAVE[ch] || [];
+      for (var j = 0; j < list.length; j++) {
+        if (have.indexOf(list[j][0]) >= 0 && have.indexOf(list[j][1]) >= 0) {
+          out.push([ch + '_' + list[j][0], ch + '_' + list[j][1]]);
+        }
+      }
+    }
+    return out;
+  }
+  var PAIR_MID = buildExpr(EXPR_MID);
+  var PAIR_HARD = buildExpr(EXPR_HARD);
+  if (!PAIR_MID.length) PAIR_MID = PAIR_HARD;
 
   var TOTAL = 60;              /* 持ち時間（秒） */
   var PENALTY = 3;             /* まちがえたときにちぢむ秒数 */
@@ -180,10 +214,20 @@
 
   var round = 0, cleared = 0, endAt = 0, tick = null, playing = false, oddEl = null;
 
+  function pic(name) { return '../images/find/' + name + '.webp'; }
+
+  /* まず、ふつうの顔だけ先に読む。表情ちがいは後半まで使わないので後回し */
   (function () {
-    for (var i = 0; i < FACES.length; i++) {
-      var im = new Image(); im.src = '../images/face/' + FACES[i] + '.webp';
-    }
+    var i, im;
+    for (i = 0; i < FACES.length; i++) { im = new Image(); im.src = pic(FACES[i] + '_futsu'); }
+    setTimeout(function () {
+      for (var a = 0; a < FACES.length; a++) {
+        var have = HAVE[FACES[a]] || [];
+        for (var b = 1; b < have.length; b++) {
+          var im2 = new Image(); im2.src = pic(FACES[a] + '_' + have[b]);
+        }
+      }
+    }, 1200);
   })();
 
   function screen(id) {
@@ -220,18 +264,28 @@
   function cols(r) { return Math.min(COLS_MAX, 3 + Math.floor(r / 3)); }
 
   function pickPair(r) {
-    var list = (r < 5) ? EASY : (r < 11 ? MID : HARD);
+    /* 後半は、同じキャラの表情ちがい */
+    if (r >= EXPR_FROM) {
+      var el = (r < EXPR_HARD_FROM) ? PAIR_MID : PAIR_HARD;
+      var e = el[Math.floor(Math.random() * el.length)];
+      return (Math.random() < 0.5) ? [e[0], e[1]] : [e[1], e[0]];
+    }
+    var list = (r < 4) ? EASY : (r < 8 ? MID : HARD);
     var p = list[Math.floor(Math.random() * list.length)];
-    return (Math.random() < 0.5) ? [p[0], p[1]] : [p[1], p[0]];
+    if (Math.random() < 0.5) p = [p[1], p[0]];
+    return [p[0] + '_futsu', p[1] + '_futsu'];
   }
 
   /* 盤面ぜんぶに同じ色をかける。仲間はずれだけ色を変えたりはしない。
-     終盤は1色に染めるので、顔のかたちだけで見わけることになる */
+     色を消すのは「別のキャラをさがす」あいだだけ。
+     表情ちがいは同じキャラなので色は手がかりにならず、
+     染めると線が見えにくくなるだけなので、色みを回すにとどめる */
   function boardFilter(r) {
     var hue = Math.floor(Math.random() * 360);
-    if (r < 5)  return '';
-    if (r < 11) return 'hue-rotate(' + hue + 'deg) saturate(1.15)';
-    return 'grayscale(1) sepia(1) hue-rotate(' + hue + 'deg) saturate(3.4) brightness(1.02)';
+    if (r < 4) return '';
+    if (r < 8) return 'hue-rotate(' + hue + 'deg) saturate(1.15)';
+    if (r < EXPR_FROM) return 'grayscale(1) sepia(1) hue-rotate(' + hue + 'deg) saturate(3.4) brightness(1.02)';
+    return 'hue-rotate(' + hue + 'deg) saturate(1.1)';
   }
 
   function build() {
@@ -253,7 +307,7 @@
       var c = document.createElement('div');
       c.className = 'fc';
       var img = document.createElement('img');
-      img.src = '../images/face/' + (i === odd ? oddFace : face) + '.webp';
+      img.src = pic(i === odd ? oddFace : face);
       img.alt = '';
       if (filt) img.style.filter = filt;
       c.appendChild(img);
