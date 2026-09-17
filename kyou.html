@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のアフロ｜きょうの担当と、ラッキー枠番 - AFRO Horse</title>
+<meta name="description" content="毎日ひとり、アフロ馬の担当が決まります。今日のひとことと、ラッキー枠番・ラッキー馬番つき。日付だけで決まるので、同じ日なら誰が見ても同じ担当です。登録不要。">
+<link rel="canonical" href="https://afro-horse.com/kyou.html">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<meta name="theme-color" content="#8A6410">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/kyou.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="今日のアフロ｜きょうの担当と、ラッキー枠番">
+<meta property="og:description" content="毎日ひとり、アフロ馬の担当が決まります。今日は誰？">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949"
+   crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="css/afro.css">
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () {
+    if (!location.hash) window.scrollTo(0, 0);
+  });
+</script>
+
+<style>
+  .ky { max-width: 520px; margin: 0 auto; }
+
+  /* 日付 */
+  .ky-date {
+    text-align: center; font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px; letter-spacing: .18em; color: var(--ink-dim); margin: 0 0 3px;
+  }
+  .ky-week { text-align: center; font-size: 12px; color: var(--ink-dim); margin: 0 0 16px; }
+
+  /* 本体のカード */
+  .ky-card {
+    position: relative; overflow: hidden; border-radius: 18px;
+    border: 3px solid var(--ac, var(--turf)); background: var(--paper);
+    box-shadow: var(--sh-md); text-align: center;
+  }
+  .ky-pic {
+    position: relative; padding: 14px 12px 6px;
+    background:
+      radial-gradient(ellipse at 50% 96%, rgba(0,0,0,.2), transparent 62%),
+      linear-gradient(170deg, var(--ac, var(--turf)) 0%, rgba(0,0,0,.4) 200%);
+  }
+  .ky-eye {
+    font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: .28em;
+    color: rgba(255,255,255,.85); margin: 0 0 2px;
+  }
+  .ky-pic img {
+    display: block; width: 58%; max-width: 210px; height: auto; margin: 0 auto;
+  }
+  .ky-rare {
+    position: absolute; top: 11px; right: 12px;
+    font-size: 10.5px; font-weight: 700; color: #3a2a00;
+    background: var(--gold); border-radius: 999px; padding: 3px 11px;
+    box-shadow: 0 0 14px rgba(255,214,10,.7);
+  }
+  .ky-name {
+    font-family: 'Dela Gothic One', sans-serif; font-size: 25px; line-height: 1.25;
+    margin: 12px 0 0;
+  }
+  .ky-tantou { font-size: 12px; color: var(--ink-dim); margin: 3px 0 0; }
+  .ky-word {
+    font-size: 15px; font-weight: 700; line-height: 1.8; color: var(--ac, var(--turf));
+    margin: 13px 16px 0;
+  }
+
+  /* ラッキー */
+  .ky-lucky {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 9px;
+    margin: 16px 14px 18px;
+  }
+  .ky-luck {
+    background: var(--paper-2); border-radius: 11px; padding: 11px 8px 12px;
+  }
+  .ky-luck-lbl {
+    display: block; font-size: 10.5px; color: var(--ink-dim); margin: 0 0 5px;
+  }
+  .ky-luck-val {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 40px; height: 34px; padding: 0 10px; border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 23px;
+    border: 1.5px solid rgba(26,30,24,.3);
+  }
+  .ky-luck-val.plain {
+    border: 0; background: none; color: var(--ink); font-size: 26px;
+  }
+
+  /* 連続で来た日数 */
+  .ky-streak {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin: 14px 0 0; font-size: 12.5px; color: var(--ink-soft);
+  }
+  .ky-streak b {
+    font-family: 'Bebas Neue', sans-serif; font-size: 21px; color: var(--gold);
+  }
+
+  /* 次の担当まで */
+  .ky-next {
+    text-align: center; font-size: 12px; color: var(--ink-dim); margin: 8px 0 0;
+  }
+  .ky-next b { font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: var(--ink-soft); }
+
+  .ky-acts { display: grid; gap: 8px; margin: 18px 0 0; }
+  @media (min-width: 460px) { .ky-acts { grid-template-columns: 1fr 1fr; } }
+  .ky-btn {
+    display: block; text-align: center; cursor: pointer; text-decoration: none;
+    font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--ink);
+    background: var(--paper); border: 2px solid var(--rule); border-radius: 10px;
+    padding: 12px 10px; transition: border-color .14s, transform .1s;
+  }
+  .ky-btn:hover { border-color: var(--gold); }
+  .ky-btn:active { transform: translateY(1px); }
+  .ky-btn.main { background: var(--turf); border-color: var(--turf); color: var(--paper); }
+  .ky-btn[disabled] { opacity: .55; cursor: default; }
+
+  /* ここ何日かの担当 */
+  .ky-days { display: flex; gap: 6px; justify-content: center; margin: 12px 0 0; flex-wrap: wrap; }
+  .ky-day {
+    text-align: center; background: var(--paper); border: 1px solid var(--rule);
+    border-radius: 10px; padding: 7px 4px 8px; width: 60px;
+  }
+  .ky-day img { width: 74%; max-width: 40px; height: auto; display: block; margin: 0 auto 3px; }
+  .ky-day b { display: block; font-size: 10px; font-weight: 700; }
+  .ky-day i { display: block; font-style: normal; font-size: 9.5px; color: var(--ink-dim); }
+  .ky-day.today { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(224,172,28,.25); }
+
+  #kyCanvas { display: none; }
+</style>
+</head>
+<body class="theme-world">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="keiba.html">KEIBA</a>
+      <a href="comic.html">COMIC</a>
+      <a href="game.html">GAME</a>
+      <a href="world.html">WORLD</a>
+      <a href="sns.html">SNS</a>
+    </div>
+  </div>
+</nav>
+
+<header class="phead" data-bg="TODAY">
+  <div class="phead-en">TODAY</div>
+  <h1 class="phead-ja">今日のアフロ</h1>
+  <p class="phead-sub">毎日ひとり、担当が決まります</p>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="ky">
+      <p class="ky-date" id="kyDate">—</p>
+      <p class="ky-week" id="kyWeek"></p>
+
+      <div class="ky-card" id="kyCard">
+        <div class="ky-pic">
+          <p class="ky-eye">TODAY'S AFRO</p>
+          <span class="ky-rare" id="kyRare" hidden>レア</span>
+          <img id="kyImg" src="" alt="">
+        </div>
+        <h2 class="ky-name" id="kyName">—</h2>
+        <p class="ky-tantou">が今日の担当です</p>
+        <p class="ky-word" id="kyWord"></p>
+
+        <div class="ky-lucky">
+          <div class="ky-luck">
+            <span class="ky-luck-lbl">ラッキー枠番</span>
+            <span class="ky-luck-val" id="kyWaku">—</span>
+          </div>
+          <div class="ky-luck">
+            <span class="ky-luck-lbl">ラッキー馬番</span>
+            <span class="ky-luck-val plain" id="kyUma">—</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="ky-streak" id="kyStreak" hidden></p>
+      <p class="ky-next" id="kyNext"></p>
+
+      <div class="ky-acts">
+        <button class="ky-btn main" type="button" id="kySave">画像で保存する</button>
+        <a class="ky-btn" id="kyX" href="#" target="_blank" rel="noopener">X でシェア</a>
+      </div>
+
+      <p style="font-size:12px;color:var(--ink-dim);margin:18px 0 6px;text-align:left">ここ何日かの担当</p>
+      <div class="ky-days" id="kyDays"></div>
+
+      <p style="font-size:11.5px;color:var(--ink-dim);line-height:1.8;margin:14px 0 0">
+        担当は日付だけで決まります。同じ日なら、誰が見ても同じ担当です。
+        ラッキー枠番・馬番は遊びの数字で、当たりやすさとは関係ありません。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="sec-ja">もっと知る</h2>
+      <span class="sec-en">MORE</span>
+    </div>
+    <div class="tools icons">
+      <a class="trow" href="afrohorse_characters.html">
+        <span class="t-ico">&#128052;</span>
+        <span class="t-body"><span class="t-name">キャラクター紹介</span><span class="t-desc">6頭のくわしいプロフィール</span></span>
+        <span class="t-arrow">&rsaquo;</span>
+      </a>
+      <a class="trow" href="shindan.html">
+        <span class="t-ico"><img src="images/tool_icon/shindan.webp" alt="" loading="lazy"></span>
+        <span class="t-body"><span class="t-name">アフロ診断</span><span class="t-desc">12問でわかる、あなたのアフロ馬タイプ</span></span>
+        <span class="t-arrow">&rsaquo;</span>
+      </a>
+    </div>
+    <a class="backlink" href="world.html">&larr; アフロワールドにもどる</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="keiba.html">競馬</a>
+      <a href="comic.html">マンガ</a>
+      <a href="game.html">あそぶ</a>
+      <a href="world.html">アフロワールド</a>
+      <a href="sns.html">スタンプ・グッズ</a>
+      <a href="about.html">運営者情報</a>
+      <a href="contact.html">お問い合わせ</a>
+      <a href="privacy.html">プライバシー</a>
+      <a href="terms.html">利用規約</a>
+      <a href="disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
+
+<canvas id="kyCanvas" width="1080" height="1080"></canvas>
+
+<script>
+(function () {
+  /* ===== 6頭＋レア枠 ===== */
+  var CHARA = {
+    afuwa: { name: 'アフワ', ac: '#4D443A', pic: 'images/afuwa.webp', face: 'images/face/afuwa.webp',
+      words: [
+        'こわいけど、気になるから見にいく。',
+        '昼寝したら、だいたいのことは何とかなる。',
+        'プリンは最後まで残しておくタイプ。',
+        'ダメって言われると、逆にやってしまう。',
+        '今日はちょっとだけ、勇気を出してみよか。',
+        'びびりは悪いことちゃう。よう見てるってことや。',
+        'わからんことは、わからんって言うていい。',
+        'まわりを巻きこむ気はないけど、たいてい巻きこむ。'
+      ] },
+    buruma: { name: 'ブルマ', ac: '#24609E', pic: 'images/buruma.webp', face: 'images/face/buruma.webp',
+      words: [
+        '面白そうな気配、しない？',
+        'ひとりで抱えんと、誰かに言うたらええよ。',
+        '今日は声に出してみる日。',
+        '勝負が始まったら、見てるだけは無理。',
+        'にぎやかにしとけば、たいてい楽しくなる。',
+        '誘われたら、とりあえず行く。',
+        '負けても、笑い話にしたら勝ちやん。',
+        '元気は、出すもんじゃなくて出てくるもん。'
+      ] },
+    chafuwa: { name: 'チャフワ', ac: '#B5502A', pic: 'images/chahuwa.webp', face: 'images/face/chafuwa.webp',
+      words: [
+        '楽しそう！ それだけで今日は十分。',
+        '考えるより先に、体が動いてまう。',
+        'むずかしいことは、あとで考えよ。',
+        '今日はよく笑える日になりそう。',
+        '気になったら、まず触ってみる。',
+        'ごはんがおいしかったら、それでええ。',
+        '誰かが笑ってたら、こっちも楽しい。',
+        'あしたのことは、あした考える。'
+      ] },
+    kurofuwa: { name: 'クロフワ', ac: '#2B3A5C', pic: 'images/kurohuwa.webp', face: 'images/face/kurofuwa.webp',
+      words: [
+        '決めたことを、今日もやる。それだけだ。',
+        '勝ちたいなら、まず続けろ。',
+        '速さより、止まらないことだ。',
+        '今日は静かに力をためる日。',
+        '負けは覚えておけ。引きずるな。',
+        '力が入りすぎたら、一度息を吐け。',
+        '見ていないようで、見ている。',
+        '無理はするな。だが、手は抜くな。'
+      ] },
+    ginma: { name: 'ギンマ', ac: '#8E958A', pic: 'images/ginma.webp', face: 'images/face/ginma.webp',
+      words: [
+        'それ、ほんまにそうか？　一回疑ってみ。',
+        '思いついたら、やってみたらええ。',
+        '今日はよう見える日や。まわりを観察してみ。',
+        '冷静なふりして、けっこう乗っかってる。',
+        'ツッコむ側にも、ツッコまれる日は来る。',
+        '答えは急がんでええ。先に前提を疑え。',
+        'うまいこと言おうとして、たまに滑る。',
+        '遠慮なく言い合える相手は、大事にしとき。'
+      ] },
+    yancha: { name: 'やんちゃアフワ', ac: '#E0AC1C', pic: 'images/yanchaahuwa.webp', face: 'images/face/yancha.webp',
+      rare: true,
+      words: [
+        '今日は遠慮せんでええ日や。',
+        '止められると、余計にやりたくなる。',
+        'たまには、はみ出してみ。',
+        'おとなしくしてるだけが、ええことちゃう。',
+        '行きたい方に行ったらええねん。',
+        '怒られるまではセーフや。',
+        '今日のオレは、止まらん。',
+        'いつものアフワも、中にはオレがおる。'
+      ] }
+  };
+  var ORDER = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma'];
+  var RARE_EVERY = 17;   /* だいたい17日に1回くらい、やんちゃアフワが出る */
+
+  var WAKU = [null,
+    { c: '#fff',    t: '#1A1E18', n: '白' },
+    { c: '#1A1E18', t: '#fff',    n: '黒' },
+    { c: '#D6453F', t: '#fff',    n: '赤' },
+    { c: '#2F6FBF', t: '#fff',    n: '青' },
+    { c: '#F2C317', t: '#1A1E18', n: '黄' },
+    { c: '#1C7A4F', t: '#fff',    n: '緑' },
+    { c: '#E8791E', t: '#fff',    n: '橙' },
+    { c: '#E88FB4', t: '#1A1E18', n: '桃' }
+  ];
+  var WEEK = ['日', '月', '火', '水', '木', '金', '土'];
+
+  /* ===== 日付（日本時間で数える） ===== */
+  function jst(offsetDays) {
+    var now = new Date();
+    var t = now.getTime() + (now.getTimezoneOffset() + 9 * 60) * 60000;
+    var d = new Date(t + (offsetDays || 0) * 86400000);
+    return d;
+  }
+  function key(d) {
+    return d.getFullYear() + '-' +
+           ('0' + (d.getMonth() + 1)).slice(-2) + '-' +
+           ('0' + d.getDate()).slice(-2);
+  }
+
+  /* 日付の文字から数を作る。同じ日なら必ず同じ数になる */
+  function hash(s) {
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = (h * 16777619) >>> 0;
+    }
+    return h;
+  }
+
+  /* その日の担当を決める。
+     日付のハッシュをそのまま使うと、同じ子が4〜5日続くことがあった。
+     そこで「前の日の番号に1〜4を足して5で割った余り」にした。
+     0は足さないので、隣りあう日が同じ番号になることは無い。
+     決まった日（ANCHOR）から数えるだけなので、日付だけで決まるのは変わらない。 */
+  var ANCHOR = Math.floor(Date.UTC(2020, 0, 1) / 86400000);
+  var slotMemo = {};
+  function slot(n) {
+    if (slotMemo[n] !== undefined) return slotMemo[n];
+    var s = 0;
+    for (var i = ANCHOR + 1; i <= n; i++) {
+      s = (s + 1 + (hash('d' + i) % 4)) % ORDER.length;
+      slotMemo[i] = s;
+    }
+    return s;
+  }
+  function dayNo(d) {
+    return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
+  }
+
+  function pick(d) {
+    var h = hash(key(d));
+    var who = (h % RARE_EVERY === 0) ? 'yancha' : ORDER[slot(dayNo(d))];
+    var c = CHARA[who];
+    return {
+      who: who,
+      chara: c,
+      word: c.words[Math.floor(h / 7) % c.words.length],
+      waku: (Math.floor(h / 11) % 8) + 1,
+      uma:  (Math.floor(h / 13) % 18) + 1
+    };
+  }
+
+  var today = jst(0);
+  var t = pick(today);
+
+  /* ===== 画面に出す ===== */
+  document.getElementById('kyDate').textContent =
+    today.getFullYear() + '.' + ('0' + (today.getMonth() + 1)).slice(-2) + '.' + ('0' + today.getDate()).slice(-2);
+  document.getElementById('kyWeek').textContent = WEEK[today.getDay()] + '曜日';
+
+  document.getElementById('kyCard').style.setProperty('--ac', t.chara.ac);
+  document.getElementById('kyImg').src = t.chara.pic;
+  document.getElementById('kyImg').alt = t.chara.name;
+  document.getElementById('kyName').textContent = t.chara.name;
+  document.getElementById('kyWord').textContent = '「' + t.word + '」';
+  document.getElementById('kyRare').hidden = !t.chara.rare;
+
+  var w = WAKU[t.waku];
+  var wEl = document.getElementById('kyWaku');
+  wEl.textContent = t.waku;
+  wEl.style.background = w.c;
+  wEl.style.color = w.t;
+  wEl.title = w.n;
+  document.getElementById('kyUma').textContent = t.uma;
+
+  /* ===== 連続で来た日数 ===== */
+  (function () {
+    var K = 'afro.kyou';
+    var st = { last: '', run: 0 };
+    try { st = JSON.parse(localStorage.getItem(K) || 'null') || st; } catch (e) {}
+
+    var tk = key(today), yk = key(jst(-1));
+    if (st.last !== tk) {
+      st.run = (st.last === yk) ? (st.run || 0) + 1 : 1;
+      st.last = tk;
+      try { localStorage.setItem(K, JSON.stringify(st)); } catch (e) {}
+    }
+    if (st.run >= 2) {
+      var el = document.getElementById('kyStreak');
+      el.innerHTML = '<span>きのうから続けて</span><b>' + st.run + '</b><span>日目</span>';
+      el.hidden = false;
+    }
+  })();
+
+  /* ===== 次の担当まで ===== */
+  (function () {
+    var el = document.getElementById('kyNext');
+    function tick() {
+      var now = jst(0);
+      var left = 86400000 - ((now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds()) * 1000);
+      var h = Math.floor(left / 3600000);
+      var m = Math.floor(left % 3600000 / 60000);
+      el.innerHTML = '次の担当まで あと <b>' + h + '</b> 時間 <b>' + m + '</b> 分';
+    }
+    tick();
+    setInterval(tick, 30000);
+  })();
+
+  /* ===== ここ何日かの担当 ===== */
+  (function () {
+    var h = '';
+    for (var i = 4; i >= 0; i--) {
+      var d = jst(-i);
+      var p = pick(d);
+      h += '<div class="ky-day' + (i === 0 ? ' today' : '') + '">' +
+             '<img src="' + p.chara.face + '" alt="" loading="lazy">' +
+             '<b>' + (i === 0 ? '今日' : (d.getMonth() + 1) + '/' + d.getDate()) + '</b>' +
+             '<i>' + p.chara.name.replace('やんちゃアフワ', 'やんちゃ') + '</i>' +
+           '</div>';
+    }
+    document.getElementById('kyDays').innerHTML = h;
+  })();
+
+  /* ===== シェア ===== */
+  document.getElementById('kyX').href =
+    'https://twitter.com/intent/tweet?text=' +
+    encodeURIComponent('今日のアフロは【' + t.chara.name + '】でした！\n「' + t.word + '」\n' +
+                       'ラッキー枠番は ' + t.waku + '枠\n#アフロホース #今日のアフロ\n') +
+    '&url=' + encodeURIComponent('https://afro-horse.com/kyou.html');
+
+  /* ===== 1枚の画像にする（1080×1080） ===== */
+  var saveBtn = document.getElementById('kySave');
+  saveBtn.addEventListener('click', function () {
+    saveBtn.disabled = true;
+    saveBtn.textContent = '作っています...';
+    draw().then(function () {
+      saveBtn.disabled = false;
+      saveBtn.textContent = '画像で保存する';
+    })['catch'](function () {
+      saveBtn.disabled = false;
+      saveBtn.textContent = '保存できませんでした';
+    });
+  });
+
+  function loadImg(src) {
+    return new Promise(function (ok, ng) {
+      var im = new Image();
+      im.onload = function () { ok(im); };
+      im.onerror = ng;
+      im.src = src;
+    });
+  }
+
+  function wrap(g, text, cx, y, maxW, lh) {
+    var line = '', lines = [];
+    for (var i = 0; i < text.length; i++) {
+      var test = line + text[i];
+      if (g.measureText(test).width > maxW && line) { lines.push(line); line = text[i]; }
+      else line = test;
+    }
+    if (line) lines.push(line);
+    for (var j = 0; j < lines.length; j++) g.fillText(lines[j], cx, y + j * lh);
+    return lines.length;
+  }
+
+  function draw() {
+    var cv = document.getElementById('kyCanvas');
+    var g = cv.getContext('2d');
+    var W = 1080, H = 1080;
+    var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+
+    return ready.then(function () { return loadImg(t.chara.pic); }).then(function (im) {
+      var grd = g.createLinearGradient(0, 0, W * 0.4, H);
+      grd.addColorStop(0, t.chara.ac);
+      grd.addColorStop(1, '#14100c');
+      g.fillStyle = grd;
+      g.fillRect(0, 0, W, H);
+
+      g.strokeStyle = 'rgba(251,245,226,.85)';
+      g.lineWidth = 8;
+      g.strokeRect(26, 26, W - 52, H - 52);
+
+      g.textAlign = 'center';
+      g.fillStyle = 'rgba(251,245,226,.75)';
+      g.font = '500 30px "Bebas Neue", sans-serif';
+      g.fillText("T O D A Y ' S   A F R O", W / 2, 100);
+
+      g.font = '500 34px "Bebas Neue", sans-serif';
+      g.fillStyle = '#FFD60A';
+      g.fillText(today.getFullYear() + '.' +
+                 ('0' + (today.getMonth() + 1)).slice(-2) + '.' +
+                 ('0' + today.getDate()).slice(-2), W / 2, 146);
+
+      var maxH = 400;
+      var w2 = im.width * (maxH / im.height);
+      if (w2 > 480) { w2 = 480; maxH = im.height * (480 / im.width); }
+      g.drawImage(im, (W - w2) / 2, 186, w2, maxH);
+
+      g.fillStyle = '#FBF5E2';
+      g.font = '700 68px "Dela Gothic One", sans-serif';
+      g.fillText(t.chara.name, W / 2, 690);
+
+      g.fillStyle = 'rgba(251,245,226,.9)';
+      g.font = '700 33px "Zen Kaku Gothic New", sans-serif';
+      var n = wrap(g, '「' + t.word + '」', W / 2, 756, W - 170, 46);
+
+      /* ラッキー枠番の四角 */
+      var by = 756 + n * 46 + 34;
+      var bw = 120, bh = 74, gap = 26;
+      var x0 = W / 2 - (bw * 2 + gap) / 2;
+
+      var wk = WAKU[t.waku];
+      g.fillStyle = wk.c;
+      g.fillRect(x0, by, bw, bh);
+      g.strokeStyle = 'rgba(251,245,226,.7)'; g.lineWidth = 3;
+      g.strokeRect(x0, by, bw, bh);
+      g.fillStyle = wk.t;
+      g.font = '500 46px "Bebas Neue", sans-serif';
+      g.fillText(String(t.waku), x0 + bw / 2, by + 54);
+
+      g.fillStyle = 'rgba(0,0,0,.28)';
+      g.fillRect(x0 + bw + gap, by, bw, bh);
+      g.strokeRect(x0 + bw + gap, by, bw, bh);
+      g.fillStyle = '#FBF5E2';
+      g.fillText(String(t.uma), x0 + bw + gap + bw / 2, by + 54);
+
+      g.fillStyle = 'rgba(251,245,226,.7)';
+      g.font = '500 22px "Zen Kaku Gothic New", sans-serif';
+      g.fillText('ラッキー枠番', x0 + bw / 2, by + bh + 30);
+      g.fillText('ラッキー馬番', x0 + bw + gap + bw / 2, by + bh + 30);
+
+      g.fillStyle = 'rgba(251,245,226,.6)';
+      g.font = '500 28px "Bebas Neue", sans-serif';
+      g.fillText('AFRO-HORSE.COM', W / 2, 1012);
+
+      return new Promise(function (ok) {
+        cv.toBlob(function (blob) {
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = '今日のアフロ_' + key(today) + '.png';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 3000);
+          ok();
+        }, 'image/png');
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
