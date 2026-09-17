@@ -173,6 +173,10 @@
   }
   .sd-why .lead { font-size: 11.5px; color: var(--ink-dim); line-height: 1.7; margin: 0 0 11px; }
 
+  .sd-sub {
+    font-size: 11.5px; font-weight: 700; color: var(--ink-dim);
+    margin: 14px 0 5px; letter-spacing: .02em;
+  }
   .sd-ev { list-style: none; margin: 0; padding: 0; }
   .sd-ev li {
     display: flex; align-items: baseline; gap: 8px;
@@ -206,8 +210,12 @@
     background: var(--bc, var(--turf)); transition: width .5s ease-out;
   }
   .sd-scores .pt2 {
-    flex: 0 0 38px; text-align: right;
-    font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--ink-soft);
+    flex: 0 0 46px; text-align: right;
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: var(--ink-soft);
+  }
+  .sd-scores .pt2 em {
+    font-style: normal; font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 10px; color: var(--ink-dim); margin-left: 1px;
   }
   .sd-scores .row.top .nm2 { font-weight: 700; color: var(--ink); }
   .sd-scores .row.top .pt2 { color: var(--ink); }
@@ -291,9 +299,15 @@
 
           <div class="sd-why">
             <h3>そう出た理由</h3>
-            <p class="lead">えらんだ答えのうち、この結果をいちばん押した順に並べています。</p>
+            <p class="lead">
+              答えのひとつひとつに、そのタイプへの点が入っています。<br>
+              12問ぶん足して、いちばん多かったタイプが結果です。
+            </p>
+
+            <p class="sd-sub">この結果に入った点</p>
             <ul class="sd-ev" id="sdEv"></ul>
 
+            <p class="sd-sub">6タイプの合計点</p>
             <div class="sd-scores" id="sdScores"></div>
             <p class="sd-note" id="sdNote"></p>
           </div>
@@ -604,7 +618,7 @@
                '<span class="nm2">' + o.name + '</span>' +
                '<span class="bar"><i style="--bc:' + o.ac + '" data-w="' +
                  Math.round(v / top * 100) + '"></i></span>' +
-               '<span class="pt2">' + v + '</span>' +
+               '<span class="pt2">' + v + '<em>点</em></span>' +
              '</div>';
     }).join('');
     /* 幅は描いたあとで入れる。0から伸びて見える */
