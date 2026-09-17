@@ -45,40 +45,93 @@
   /* ===== アフロ診断 ===== */
   .sd { max-width: 560px; margin: 0 auto; }
 
-  /* 進み具合 */
+  /* ===== 質問カード ===== */
+  /* ページの帯が金色なので、質問は色を固定した濃い緑にする。
+     --turf はページごとに中身が変わるため、ここでは使わない */
+  .sd-qcard {
+    background: #F7F1E2; border-radius: 16px; overflow: hidden;
+    border: 1px solid #DCCDA6; box-shadow: 0 10px 28px rgba(26,30,24,.16);
+  }
+  .sd-qtop {
+    background: linear-gradient(165deg, #1F855A 0%, #14583A 60%, #0C3A25 100%);
+    padding: 15px 18px 18px; color: #fff; position: relative;
+  }
+  .sd-qmeta {
+    display: flex; align-items: center; gap: 10px; margin: 0 0 9px;
+  }
+  .sd-qno {
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: .1em;
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.34);
+    border-radius: 99px; padding: 2px 11px 1px; flex: 0 0 auto;
+  }
   .sd-bar {
-    height: 7px; border-radius: 99px; background: var(--paper-2);
-    overflow: hidden; margin: 0 0 6px;
+    flex: 1 1 auto; height: 6px; border-radius: 99px;
+    background: rgba(0,0,0,.28); overflow: hidden;
   }
   .sd-bar i {
-    display: block; height: 100%; width: 0;
-    background: linear-gradient(90deg, var(--turf-2), var(--gold));
-    transition: width .28s ease-out;
+    display: block; height: 100%; width: 0; border-radius: 99px;
+    background: linear-gradient(90deg, #FFF0A8, #FFD60A);
+    transition: width .3s ease-out;
   }
-  .sd-step {
-    font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: .12em;
-    color: var(--ink-dim); text-align: right; margin: 0 0 14px;
+  .sd-q {
+    font-family: 'Dela Gothic One', sans-serif; font-size: 18px; line-height: 1.55;
+    margin: 0; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.28);
   }
 
-  .sd-q {
-    font-family: 'Dela Gothic One', sans-serif; font-size: 17px; line-height: 1.6;
-    margin: 0 0 14px;
-  }
-  .sd-as { display: grid; gap: 9px; }
+  /* 選択肢 */
+  .sd-as { display: grid; gap: 8px; padding: 14px 14px 4px; }
   .sd-a {
-    display: block; width: 100%; text-align: left; cursor: pointer;
-    font-family: inherit; font-size: 14px; line-height: 1.6; color: var(--ink);
-    background: var(--paper); border: 2px solid var(--rule); border-radius: 12px;
-    padding: 13px 15px; box-shadow: var(--sh-sm);
-    transition: transform .12s, border-color .12s, box-shadow .12s;
+    display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+    cursor: pointer; font-family: inherit; font-size: 14.5px; line-height: 1.55;
+    color: var(--ink); background: #fff;
+    border: 2px solid #DCCDA6; border-radius: 11px;
+    padding: 14px 14px; box-shadow: 0 1px 3px rgba(26,30,24,.07);
+    transition: border-color .12s, background .12s, transform .1s, box-shadow .12s;
   }
-  .sd-a:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: var(--sh-md); }
-  .sd-a:active { transform: translateY(0); }
-  .sd-back {
-    display: inline-block; margin: 14px 0 0; font-size: 12.5px;
-    color: var(--ink-dim); background: none; border: 0; cursor: pointer;
-    font-family: inherit; text-decoration: underline;
+  .sd-a span.mk {
+    flex: 0 0 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px;
+    background: #EDE3CA; color: #6B6455;
+    transition: background .12s, color .12s;
   }
+  .sd-a:hover { border-color: #1F855A; box-shadow: 0 4px 12px rgba(20,88,58,.18); }
+  .sd-a:hover span.mk { background: #1F855A; color: #fff; }
+  .sd-a:active { transform: scale(.985); }
+  .sd-a.on { border-color: #E0AC1C; background: #FFF8E0; box-shadow: 0 0 0 3px rgba(224,172,28,.22); }
+  .sd-a.on span.mk { background: #E0AC1C; color: #3A2A00; }
+
+  /* カードの足もと */
+  .sd-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 10px 14px 14px;
+  }
+  .sd-prev {
+    font-family: inherit; font-size: 12.5px; font-weight: 700; color: #5A5446;
+    background: #fff; border: 2px solid #DCCDA6; border-radius: 9px;
+    padding: 9px 16px; cursor: pointer;
+    transition: border-color .12s, color .12s;
+  }
+  .sd-prev:hover { border-color: #1F855A; color: var(--ink); }
+  .sd-prev[disabled] { opacity: .38; cursor: default; }
+  .sd-hint { font-size: 11.5px; color: var(--ink-dim); }
+
+  /* 12問こたえたあとの一枚 */
+  .sd-done {
+    text-align: center; background: #fff; border-radius: 16px;
+    border: 1px solid var(--rule); box-shadow: 0 10px 28px rgba(26,30,24,.14);
+    padding: 26px 18px 24px;
+  }
+  .sd-done .mark {
+    font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: .26em;
+    color: var(--turf); margin: 0 0 6px;
+  }
+  .sd-done h2 {
+    font-family: 'Dela Gothic One', sans-serif; font-size: 21px; line-height: 1.4;
+    margin: 0 0 8px;
+  }
+  .sd-done p { font-size: 12.5px; line-height: 1.9; color: var(--ink-soft); margin: 0; }
+  .sd-done .sd-prev { margin: 14px 0 0; }
 
   /* はじめの画面 */
   .sd-lead { text-align: center; padding: 6px 0 4px; }
@@ -163,10 +216,37 @@
   .sd-other i { display: block; font-style: normal; font-size: 10.5px; color: var(--ink-dim); }
   .sd-other.is-me { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(224,172,28,.25); }
 
-  /* そう出た理由 */
+  /* ===== 裏返るカード =====
+     表と裏を背中あわせにして回す。高さは中身に合わせて一緒に変える。
+     どちらが見えているかはクラスで決まるので、動きが止まっても崩れない */
+  .sd-flip { perspective: 1400px; }
+  .sd-flip-in {
+    position: relative; transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.3,.8,.35,1), height .55s cubic-bezier(.3,.8,.35,1);
+  }
+  .sd-flip.flipped .sd-flip-in { transform: rotateY(180deg); }
+  .sd-face {
+    position: absolute; left: 0; right: 0; top: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  .sd-face.sd-back { transform: rotateY(180deg); }
+
+  /* 表と裏を切り替えるボタン */
+  .sd-turn {
+    display: inline-flex; align-items: center; gap: 7px; margin: 0 0 16px;
+    font-family: inherit; font-size: 13px; font-weight: 700; color: var(--ink);
+    background: var(--paper-2); border: 2px solid var(--rule); border-radius: 999px;
+    padding: 9px 20px; cursor: pointer;
+    transition: border-color .14s, background .14s;
+  }
+  .sd-turn:hover { border-color: var(--gold); background: #FFFAE8; }
+  .sd-turn .ic { font-size: 14px; }
+
+  /* そう出た理由（カードの裏） */
   .sd-why {
-    text-align: left; margin: 20px 0 0; padding: 15px 16px 16px;
-    background: var(--paper); border: 1px solid var(--rule); border-radius: 12px;
+    text-align: left; padding: 18px 16px 18px;
+    background: var(--paper); border: 3px solid var(--ac, var(--turf));
+    border-radius: 16px; box-shadow: var(--sh-md);
   }
   .sd-why h3 {
     font-family: 'Dela Gothic One', sans-serif; font-size: 14px; margin: 0 0 3px;
@@ -200,7 +280,8 @@
   .sd-scores .row {
     display: flex; align-items: center; gap: 9px; margin: 0 0 6px;
   }
-  .sd-scores .nm2 { flex: 0 0 82px; font-size: 11.5px; }
+  .sd-scores .fc2 { flex: 0 0 22px; width: 22px; height: 22px; object-fit: contain; }
+  .sd-scores .nm2 { flex: 0 0 68px; font-size: 11.5px; }
   .sd-scores .bar {
     flex: 1 1 auto; height: 10px; border-radius: 99px;
     background: var(--paper-2); overflow: hidden;
@@ -267,16 +348,39 @@
 
       <!-- ===== 質問 ===== -->
       <div id="sdQuiz" hidden>
-        <div class="sd-bar"><i id="sdBar"></i></div>
-        <p class="sd-step" id="sdStep">Q1 / 10</p>
-        <h2 class="sd-q" id="sdQ"></h2>
-        <div class="sd-as" id="sdAs"></div>
-        <button class="sd-back" type="button" id="sdBack">← ひとつ前にもどる</button>
+        <div class="sd-qcard">
+          <div class="sd-qtop">
+            <div class="sd-qmeta">
+              <span class="sd-qno" id="sdStep">Q1 / 12</span>
+              <span class="sd-bar"><i id="sdBar"></i></span>
+            </div>
+            <h2 class="sd-q" id="sdQ"></h2>
+          </div>
+          <div class="sd-as" id="sdAs"></div>
+          <div class="sd-foot">
+            <button class="sd-prev" type="button" id="sdBack">&larr; もどる</button>
+            <span class="sd-hint" id="sdHint">近いほうをえらんでください</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== こたえ終わり ===== -->
+      <div id="sdDone" hidden>
+        <div class="sd-done">
+          <p class="mark">A L L   D O N E</p>
+          <h2>12問、おつかれさま！</h2>
+          <p>えらんだ答えから、あなたのタイプを出します。</p>
+          <button class="sd-go" type="button" id="sdShow">結果を見る</button>
+          <div><button class="sd-prev" type="button" id="sdBackDone">&larr; 答えを見直す</button></div>
+        </div>
       </div>
 
       <!-- ===== 結果 ===== -->
       <div id="sdResult" hidden>
         <div class="sd-res">
+         <div class="sd-flip" id="sdFlip">
+          <div class="sd-flip-in" id="sdFlipIn">
+           <div class="sd-face sd-front" id="sdFront">
           <div class="sd-card" id="sdCard">
             <div class="sd-pic">
               <p class="sd-eye">YOUR TYPE</p>
@@ -289,6 +393,32 @@
             <div class="sd-tags" id="sdTags"></div>
             <div class="sd-buddy" id="sdBuddy"></div>
           </div>
+          <button class="sd-turn" type="button" id="sdTurn" style="margin-top:14px">
+            <span class="ic">&#128260;</span>そう出た理由を見る
+          </button>
+           </div>
+
+           <div class="sd-face sd-back" id="sdBack2">
+            <div class="sd-why">
+              <h3>そう出た理由</h3>
+              <p class="lead">
+                答えのひとつひとつに、そのタイプへの点が入っています。<br>
+                12問ぶん足して、いちばん多かったタイプが結果です。
+              </p>
+
+              <p class="sd-sub">この結果に入った点</p>
+              <ul class="sd-ev" id="sdEv"></ul>
+
+              <p class="sd-sub">6タイプの合計点</p>
+              <div class="sd-scores" id="sdScores"></div>
+              <p class="sd-note" id="sdNote"></p>
+            </div>
+            <button class="sd-turn" type="button" id="sdTurnBack" style="margin-top:14px">
+              <span class="ic">&#128260;</span>キャラにもどる
+            </button>
+           </div>
+          </div>
+         </div>
 
           <div class="sd-acts">
             <button class="sd-btn main" type="button" id="sdSave">画像で保存する</button>
@@ -297,23 +427,6 @@
             <a class="sd-btn" href="afrohorse_characters.html">キャラクター紹介へ</a>
           </div>
 
-          <div class="sd-why">
-            <h3>そう出た理由</h3>
-            <p class="lead">
-              答えのひとつひとつに、そのタイプへの点が入っています。<br>
-              12問ぶん足して、いちばん多かったタイプが結果です。
-            </p>
-
-            <p class="sd-sub">この結果に入った点</p>
-            <ul class="sd-ev" id="sdEv"></ul>
-
-            <p class="sd-sub">6タイプの合計点</p>
-            <div class="sd-scores" id="sdScores"></div>
-            <p class="sd-note" id="sdNote"></p>
-          </div>
-
-          <p style="font-size:12px;color:var(--ink-dim);margin:16px 0 6px;text-align:left">6タイプの顔</p>
-          <div class="sd-others" id="sdOthers"></div>
         </div>
       </div>
 
@@ -494,6 +607,7 @@
 
   var elIntro  = document.getElementById('sdIntro');
   var elQuiz   = document.getElementById('sdQuiz');
+  var elDone   = document.getElementById('sdDone');
   var elResult = document.getElementById('sdResult');
   var elBar    = document.getElementById('sdBar');
   var elStep   = document.getElementById('sdStep');
@@ -507,36 +621,57 @@
   function show(which) {
     elIntro.hidden  = (which !== 'intro');
     elQuiz.hidden   = (which !== 'quiz');
+    elDone.hidden   = (which !== 'done');
     elResult.hidden = (which !== 'result');
   }
+
+  var MARKS = ['A', 'B', 'C', 'D'];
 
   function paintQ() {
     var item = QS[at];
     elStep.textContent = 'Q' + (at + 1) + ' / ' + QS.length;
-    elBar.style.width = ((at) / QS.length * 100) + '%';
+    elBar.style.width = (at / QS.length * 100) + '%';
     elQ.textContent = item.q;
     elAs.innerHTML = '';
     item.a.forEach(function (pair, i) {
       var b = document.createElement('button');
       b.type = 'button';
-      b.className = 'sd-a';
-      b.textContent = pair[0];
+      b.className = 'sd-a' + (picked[at] === i ? ' on' : '');
+      b.innerHTML = '<span class="mk">' + MARKS[i] + '</span>';
+      b.appendChild(document.createTextNode(pair[0]));
       b.addEventListener('click', function () { answer(i); });
       elAs.appendChild(b);
     });
-    elBack.style.visibility = at === 0 ? 'hidden' : 'visible';
+    /* 1問目では、もどる先がない */
+    elBack.disabled = (at === 0);
+    document.getElementById('sdHint').textContent =
+      (picked[at] === undefined) ? '近いほうをえらんでください' : 'えらび直せます';
     elQ.scrollIntoView({ block: 'nearest' });
   }
 
   function answer(i) {
     picked[at] = i;
     at++;
-    if (at >= QS.length) { finish(); return; }
+    if (at >= QS.length) {
+      elBar.style.width = '100%';
+      show('done');
+      window.scrollTo(0, 0);
+      return;
+    }
     paintQ();
   }
 
   elBack.addEventListener('click', function () {
     if (at > 0) { at--; paintQ(); }
+  });
+
+  /* こたえ終わりの画面から */
+  document.getElementById('sdShow').addEventListener('click', function () { finish(); });
+  document.getElementById('sdBackDone').addEventListener('click', function () {
+    at = QS.length - 1;
+    show('quiz');
+    paintQ();
+    window.scrollTo(0, 0);
   });
 
   /* 点を数えて、いちばん多いタイプを出す。
@@ -581,7 +716,6 @@
   var result = null;
 
   function finish() {
-    elBar.style.width = '100%';
     result = judge();
     var t = TYPES[result.key];
 
@@ -615,6 +749,7 @@
       var o = TYPES[k];
       var v = result.sc[k];
       return '<div class="row' + (i === 0 ? ' top' : '') + '">' +
+               '<img class="fc2" src="images/face/' + k + '.webp" alt="" loading="lazy">' +
                '<span class="nm2">' + o.name + '</span>' +
                '<span class="bar"><i style="--bc:' + o.ac + '" data-w="' +
                  Math.round(v / top * 100) + '"></i></span>' +
@@ -644,24 +779,45 @@
     }
     document.getElementById('sdNote').textContent = note;
 
-    /* ほかのタイプも並べる */
-    document.getElementById('sdOthers').innerHTML = ORDER.map(function (k) {
-      var o = TYPES[k];
-      /* images/face/ のファイル名は、タイプの合いことばと同じ */
-      return '<div class="sd-other' + (k === result.key ? ' is-me' : '') + '">' +
-               '<img src="images/face/' + k + '.webp" alt="" loading="lazy">' +
-               '<b>' + o.name + '</b><i>' + (k === result.key ? 'あなた' : '&nbsp;') + '</i></div>';
-    }).join('');
-
     var text = 'アフロ診断の結果は【' + t.name + ' タイプ】でした！\n' +
                t.copy + '\n#アフロホース #アフロ診断\n';
     document.getElementById('sdX').href =
       'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +
       '&url=' + encodeURIComponent('https://afro-horse.com/shindan.html');
 
+    /* 裏の色も、出たタイプの色にそろえる */
+    document.querySelector('.sd-why').style.setProperty('--ac', t.ac);
+
     show('result');
     window.scrollTo(0, 0);
+    /* 出してから測らないと高さが0になる。絵が届いたらもう一度そろえる */
+    flip.classList.remove('flipped');
+    fitFlip();
+    setTimeout(fitFlip, 60);
+    setTimeout(fitFlip, 400);
+    var pic = document.getElementById('sdImg');
+    pic.addEventListener('load', fitFlip, { once: true });
   }
+
+  /* ===== カードを裏返す =====
+     表と裏で高さがちがうので、入れ物の高さも一緒に変える */
+  var flip   = document.getElementById('sdFlip');
+  var flipIn = document.getElementById('sdFlipIn');
+  var front  = document.getElementById('sdFront');
+  var back   = document.getElementById('sdBack2');
+
+  function fitFlip() {
+    var el = flip.classList.contains('flipped') ? back : front;
+    flipIn.style.height = el.offsetHeight + 'px';
+  }
+  function turn(to) {
+    flip.classList.toggle('flipped', to);
+    fitFlip();
+    flip.scrollIntoView({ block: 'nearest' });
+  }
+  document.getElementById('sdTurn').addEventListener('click', function () { turn(true); });
+  document.getElementById('sdTurnBack').addEventListener('click', function () { turn(false); });
+  addEventListener('resize', fitFlip);
 
   document.getElementById('sdStart').addEventListener('click', function () {
     picked = []; at = 0;
