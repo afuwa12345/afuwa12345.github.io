@@ -194,7 +194,7 @@
         'value="' + esc(getInsta()) + '"></label>' +
       '<button type="button" class="gr-btn primary" id="grSend">登録する</button>' +
       '<p class="gr-note" id="grMsg">@ は要りません。ランキングには <b>@ID</b> で出ます。<br>' +
-      '同じIDで出しなおすと、いちばん良い記録だけ残ります。1ヶ月で消えます。</p>';
+      '同じIDで出しなおすと、いちばん良い記録だけ残ります。</p>';
     card.appendChild(f);
 
     var msg = f.querySelector('#grMsg');
