@@ -10,6 +10,7 @@
   var CFG = null;
   var URL_ = window.AFRO_RANK_URL || '';
   var rankCache = null;
+  var rankPending = null;
 
   function key(suffix) { return 'afro.' + CFG.game + '.' + suffix; }
 
@@ -39,8 +40,18 @@
     return CFG.grades[CFG.grades.length - 1].name;
   }
 
-  function getName()  { return localStorage.getItem('afro.name')  || ''; }
+  /* ランキングは Instagram のIDで登録する。
+     同じ人が何回出しても1件にまとまるし、だれの記録か見て分かる */
   function getInsta() { return localStorage.getItem('afro.insta') || ''; }
+
+  /* @ を外して、Instagram で使える文字だけにする（英数字と . と _） */
+  function cleanInsta(v) {
+    return String(v || '').trim().replace(/^@+/, '')
+             .replace(/[^A-Za-z0-9._]/g, '').slice(0, 30);
+  }
+  function okInsta(v) {
+    return /^[A-Za-z0-9._]{1,30}$/.test(v) && v.charAt(0) !== '.' && v.slice(-1) !== '.';
+  }
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -56,29 +67,57 @@
   }
 
   /* ---------- オンラインランキング ---------- */
+  /* 8秒で打ち切り、2秒あけて3回までやり直す（クイズと同じ作り）。
+     Apps Script は久しぶりの1回目だけ立ち上がりが遅いことがある */
   function fetchRank(force) {
     if (!URL_) return Promise.reject(new Error('offline'));
     if (rankCache && !force) return Promise.resolve(rankCache);
-    return fetch(URL_ + '?game=' + encodeURIComponent(CFG.game))
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (!d || !d.ok || !Array.isArray(d.ranking)) throw new Error('bad response');
-        rankCache = d.ranking;
-        return rankCache;
-      });
+    if (rankPending) return rankPending;
+
+    var tries = 0;
+    function once() {
+      tries++;
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 8000) : 0;
+      return fetch(URL_ + '?game=' + encodeURIComponent(CFG.game),
+                   ctrl ? { signal: ctrl.signal } : {})
+        .then(function (r) { clearTimeout(timer); return r.json(); })
+        .then(function (d) {
+          if (!d || !d.ok || !Array.isArray(d.ranking)) throw new Error('bad response');
+          rankCache = d.ranking;
+          return rankCache;
+        })['catch'](function (e) {
+          clearTimeout(timer);
+          if (tries >= 3) throw e;
+          return new Promise(function (ok) { setTimeout(ok, 2000); }).then(once);
+        });
+    }
+
+    rankPending = once().then(
+      function (v) { rankPending = null; return v; },
+      function (e) { rankPending = null; throw e; }
+    );
+    return rankPending;
   }
 
-  function postRank(score, name, insta) {
+  function postRank(score, insta) {
     if (!URL_) return Promise.resolve(false);
     /* CORS回避のため Content-Type を付けずテキストとして送る（クイズと同じ作り） */
     return fetch(URL_, {
       method: 'POST',
       body: JSON.stringify({
-        game: CFG.game, name: name, insta: insta,
-        score: score, lower: !!CFG.lower, date: Date.now()
+        game: CFG.game, insta: insta, score: score, date: Date.now()
       })
-    }).then(function () { rankCache = null; return true; })
-      .catch(function () { return false; });
+    }).then(function (r) {
+      /* 返事が読めたときは中身を見る。読めなくても（CORSで見えないなど）
+         行は書けているので、成功あつかいにする（クイズと同じ考えかた） */
+      return r.json().then(function (d) {
+        return !(d && d.ok === false);
+      }, function () { return true; });
+    }).then(function (ok) {
+      if (ok) rankCache = null;
+      return ok;
+    })['catch'](function () { return false; });
   }
 
   /* ---------- 結果オーバーレイ ---------- */
@@ -150,25 +189,45 @@
 
     var f = el('div', 'gr-form');
     f.innerHTML =
-      '<label>なまえ<input type="text" id="grName" maxlength="12" placeholder="アフワ" value="' + esc(getName()) + '"></label>' +
-      '<label>Instagram（任意）<input type="text" id="grInsta" maxlength="30" placeholder="ahuroma9" value="' + esc(getInsta()) + '"></label>' +
-      '<button type="button" class="gr-btn primary" id="grSend">送信する</button>' +
-      '<p class="gr-note">なまえ入りで1週間、Instagram も入れると1ヶ月ランキングに残ります</p>';
+      '<label>Instagram ID<input type="text" id="grInsta" maxlength="30" ' +
+        'placeholder="ahuroma9" autocapitalize="off" autocorrect="off" spellcheck="false" ' +
+        'value="' + esc(getInsta()) + '"></label>' +
+      '<button type="button" class="gr-btn primary" id="grSend">登録する</button>' +
+      '<p class="gr-note" id="grMsg">@ は要りません。ランキングには <b>@ID</b> で出ます。<br>' +
+      '同じIDで出しなおすと、いちばん良い記録だけ残ります。1ヶ月で消えます。</p>';
     card.appendChild(f);
 
-    f.querySelector('#grSend').onclick = function () {
-      var btn = this;
-      var n  = f.querySelector('#grName').value.trim() || 'ななし';
-      var ig = f.querySelector('#grInsta').value.trim().replace(/^@/, '');
-      localStorage.setItem('afro.name', n);
+    var msg = f.querySelector('#grMsg');
+    var inp = f.querySelector('#grInsta');
+    var btn = f.querySelector('#grSend');
+
+    function send() {
+      var ig = cleanInsta(inp.value);
+      inp.value = ig;
+      if (!okInsta(ig)) {
+        msg.textContent = 'Instagram の ID を入れてください（英数字・ピリオド・アンダーバー）';
+        inp.focus();
+        return;
+      }
       localStorage.setItem('afro.insta', ig);
       btn.disabled = true;
       btn.textContent = '送信中...';
-      postRank(score, n, ig).then(function (ok) {
-        btn.textContent = ok ? '登録しました' : '送信できませんでした';
-        if (ok) showRank(card, score, true);
+      postRank(score, ig).then(function (ok) {
+        if (ok) {
+          btn.textContent = '登録しました';
+          msg.textContent = '@' + ig + ' で登録しました';
+          showRank(card, score, true);
+        } else {
+          btn.textContent = 'もう一度';
+          btn.disabled = false;
+          msg.textContent = '送信できませんでした。少し待ってからもう一度ためしてください';
+        }
       });
-    };
+    }
+
+    btn.onclick = send;
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
+    inp.focus();
   }
 
   function showRank(card, mine, force) {
@@ -181,10 +240,13 @@
     ol.innerHTML = '<li class="gr-loading">読み込み中...</li>';
     fetchRank(force).then(function (list) {
       if (!list.length) { ol.innerHTML = '<li class="gr-loading">まだ記録がありません</li>'; return; }
+      var my = getInsta().toLowerCase();
       ol.innerHTML = list.slice(0, 10).map(function (r, i) {
-        var me = (Number(r.score) === Number(mine) && r.name === getName()) ? ' class="is-mine"' : '';
+        var ig = String(r.insta || '');
+        var me = (my && ig.toLowerCase() === my) ? ' class="is-mine"' : '';
         return '<li' + me + '><span class="gr-no">' + (i + 1) + '</span>' +
-               '<span class="gr-nm">' + esc(r.name || 'ななし') + '</span>' +
+               '<a class="gr-nm" href="https://www.instagram.com/' + encodeURIComponent(ig) + '/" ' +
+               'target="_blank" rel="noopener">@' + esc(ig) + '</a>' +
                '<span class="gr-sc">' + esc(fmt(Number(r.score))) + '</span></li>';
       }).join('');
     })['catch'](function () {

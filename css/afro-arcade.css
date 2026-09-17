@@ -395,7 +395,13 @@ body.nav-world { --navbg: #8A6410; --navbd: #5C4309; }  /* ワールド：金茶
 }
 .gr-rank li.is-mine { background: rgba(255, 214, 10, .1); font-weight: 700; }
 .gr-no { font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: var(--gold); }
-.gr-nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Instagram のIDはリンク。押すとその人のページが開く */
+.gr-nm {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: var(--white); text-decoration: none;
+}
+a.gr-nm:hover, a.gr-nm:focus { color: var(--gold); text-decoration: underline; }
+.gr-rank li.is-mine .gr-nm { color: var(--gold); }
 .gr-sc { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--cyan); }
 .gr-loading { display: block !important; color: #8d8288; font-size: 11px; padding: 8px 0; }
 
