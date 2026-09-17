@@ -230,6 +230,17 @@
   }
   .ky-color b { color: var(--ink); }
 
+  .ky-color.r1 { box-shadow: 0 0 0 2px rgba(224,172,28,.5); }
+  .ky-color.r2 { box-shadow: 0 0 0 2px var(--gold), 0 0 18px rgba(255,214,10,.55); }
+  .ky-rank {
+    font-style: normal; font-size: 10.5px; font-weight: 700; color: #3a2a00;
+    background: var(--gold); border-radius: 999px; padding: 2px 9px; margin-left: 2px;
+  }
+  .ky-rare.lv2 {
+    background: linear-gradient(135deg,#FFF3B0,#FFD60A 45%,#E8791E);
+    box-shadow: 0 0 18px rgba(255,214,10,.9);
+  }
+
   .ky-again {
     display: inline-block; margin: 12px 0 0; font-size: 12px;
     color: var(--ink-dim); background: none; border: 0; cursor: pointer;
@@ -254,10 +265,11 @@
   </div>
 </nav>
 
-<header class="phead" data-bg="TODAY">
+<header class="phead has-chara" data-bg="TODAY">
   <div class="phead-en">TODAY</div>
   <h1 class="phead-ja">今日のアフロ</h1>
   <p class="phead-sub">毎日ひとり、担当が決まります</p>
+  <img class="phead-chara" src="images/kyou_hero.webp" alt="" aria-hidden="true">
 </header>
 
 <section>
@@ -277,7 +289,7 @@
             <img src="images/face/ginma.webp" alt="" loading="lazy">
           </div>
           <p class="ky-gate-q">今日の担当は、だれ？</p>
-          <p class="ky-gate-sub">アフロの色は、その日のラッキーカラーに変わります。<br>1日1回、日付で決まります。</p>
+          <p class="ky-gate-sub">アフロの色は<b>15種類</b>。<br>金・銀・虹はレア、迷彩・麒麟柄・ヒョウ柄・しまうまは激レアです。</p>
           <button class="ky-go" type="button" id="kyGo">今日のアフロを見る</button>
         </div>
       </div>
@@ -303,7 +315,7 @@
         <p class="ky-tantou">が今日の担当です</p>
         <p class="ky-word" id="kyWord"></p>
 
-        <div class="ky-color" id="kyColor"><i></i><span>今日のラッキーカラーは <b>—</b></span></div>
+        <div class="ky-color" id="kyColor"><i></i><span>今日のアフロは <b>—</b></span></div>
 
         <div class="ky-lucky">
           <div class="ky-luck">
@@ -330,8 +342,10 @@
       <div class="ky-days" id="kyDays"></div>
 
       <p style="font-size:11.5px;color:var(--ink-dim);line-height:1.8;margin:14px 0 0">
-        担当は日付だけで決まります。同じ日なら、誰が見ても同じ担当です。
-        ラッキーカラー・枠番・馬番は遊びの数字で、当たりやすさとは関係ありません。
+        <b>担当キャラとひとことは日付だけで決まります。</b>同じ日なら、誰が見ても同じ担当です。<br>
+        <b>アフロの色とラッキーな数字は、あなただけのもの。</b>同じ日でも人によって変わります。
+        色は15種類あり、金・銀・虹がレア（12%）、迷彩・麒麟柄・ヒョウ柄・しまうまが激レア（4%）です。<br>
+        ラッキー枠番・馬番は遊びの数字で、当たりやすさとは関係ありません。
       </p>
       </div>
     </div>
@@ -458,18 +472,40 @@
   var ORDER = ['afuwa', 'buruma', 'chafuwa', 'kurofuwa', 'ginma'];
   var RARE_EVERY = 17;   /* だいたい17日に1回くらい、やんちゃアフワが出る */
 
-  /* 枠番の色が、そのまま今日のラッキーカラーになる。
-     アフロもこの色に塗りかわる。afro は塗りに使う少し濃いめの色 */
+  /* 枠番の色（出馬表と同じ。1白 2黒 3赤 4青 5黄 6緑 7橙 8桃） */
   var WAKU = [null,
-    { c: '#fff',    t: '#1A1E18', n: '白',     afro: '#EFEFEF' },
-    { c: '#1A1E18', t: '#fff',    n: '黒',     afro: '#3A3A3A' },
-    { c: '#D6453F', t: '#fff',    n: '赤',     afro: '#D6453F' },
-    { c: '#2F6FBF', t: '#fff',    n: '青',     afro: '#2F6FBF' },
-    { c: '#F2C317', t: '#1A1E18', n: '黄',     afro: '#F2C317' },
-    { c: '#1C7A4F', t: '#fff',    n: '緑',     afro: '#1C9A5F' },
-    { c: '#E8791E', t: '#fff',    n: 'オレンジ', afro: '#E8791E' },
-    { c: '#E88FB4', t: '#1A1E18', n: 'ピンク',   afro: '#E88FB4' }
+    { c: '#fff',    t: '#1A1E18', n: '白' },
+    { c: '#1A1E18', t: '#fff',    n: '黒' },
+    { c: '#D6453F', t: '#fff',    n: '赤' },
+    { c: '#2F6FBF', t: '#fff',    n: '青' },
+    { c: '#F2C317', t: '#1A1E18', n: '黄' },
+    { c: '#1C7A4F', t: '#fff',    n: '緑' },
+    { c: '#E8791E', t: '#fff',    n: '橙' },
+    { c: '#E88FB4', t: '#1A1E18', n: '桃' }
   ];
+
+  /* アフロの色と柄。rank は 0=ふつう 1=レア 2=激レア。
+     出る割合は ふつう84% / レア12% / 激レア4% */
+  var PAL = [
+    { id: 'shiro',  n: '白',       rank: 0, flat: '#EFEFEF', chip: '#EFEFEF' },
+    { id: 'kuro',   n: '黒',       rank: 0, flat: '#3A3A3A', chip: '#3A3A3A' },
+    { id: 'aka',    n: '赤',       rank: 0, flat: '#D6453F', chip: '#D6453F' },
+    { id: 'ao',     n: '青',       rank: 0, flat: '#2F6FBF', chip: '#2F6FBF' },
+    { id: 'ki',     n: '黄',       rank: 0, flat: '#F2C317', chip: '#F2C317' },
+    { id: 'midori', n: '緑',       rank: 0, flat: '#1C9A5F', chip: '#1C9A5F' },
+    { id: 'orange', n: 'オレンジ', rank: 0, flat: '#E8791E', chip: '#E8791E' },
+    { id: 'pink',   n: 'ピンク',   rank: 0, flat: '#E88FB4', chip: '#E88FB4' },
+
+    { id: 'kin',    n: '金',       rank: 1, chip: 'linear-gradient(135deg,#FFF3B0,#E8B00A 45%,#8A6410)' },
+    { id: 'gin',    n: '銀',       rank: 1, chip: 'linear-gradient(135deg,#FFFFFF,#C9CDD2 45%,#6E757C)' },
+    { id: 'niji',   n: '虹',       rank: 1, chip: 'linear-gradient(90deg,#E4443C,#E8A11E,#E8D51E,#2FA85E,#2F7FD6,#8C4FC4)' },
+
+    { id: 'meisai', n: '迷彩',     rank: 2, chip: 'radial-gradient(circle at 30% 30%,#4A5A33 26%,transparent 27%),radial-gradient(circle at 70% 65%,#2F3A22 24%,transparent 25%),#77854F' },
+    { id: 'kirin',  n: '麒麟柄',   rank: 2, chip: 'radial-gradient(circle at 32% 34%,#8A5A22 30%,transparent 31%),radial-gradient(circle at 72% 70%,#8A5A22 28%,transparent 29%),#E8C77A' },
+    { id: 'hyou',   n: 'ヒョウ柄', rank: 2, chip: 'radial-gradient(circle at 35% 35%,#3A2410 12%,#8A5A22 13% 26%,transparent 27%),radial-gradient(circle at 70% 68%,#3A2410 12%,#8A5A22 13% 26%,transparent 27%),#E8C77A' },
+    { id: 'shima',  n: 'しまうま', rank: 2, chip: 'repeating-linear-gradient(72deg,#1A1A1A 0 5px,#F4F4F4 5px 11px)' }
+  ];
+  var RANK_NAME = ['', 'レア', '激レア'];
   var WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 
   /* ===== 日付（日本時間で数える） ===== */
@@ -485,6 +521,20 @@
            ('0' + d.getDate()).slice(-2);
   }
 
+  /* この端末だけの合いことば。これと日付をあわせて、
+     その人だけの色・柄・数字を決める。どこにも送らない。
+     消すと別のものになる（そのぶん毎日は変わらない） */
+  function myId() {
+    var K = 'afro.kyou.id', v = '';
+    try { v = localStorage.getItem(K) || ''; } catch (e) {}
+    if (!v) {
+      v = Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+      try { localStorage.setItem(K, v); } catch (e) {}
+    }
+    return v;
+  }
+  var ME = myId();
+
   /* 日付の文字から数を作る。同じ日なら必ず同じ数になる */
   function hash(s) {
     var h = 2166136261;
@@ -493,6 +543,17 @@
       h = (h * 16777619) >>> 0;
     }
     return h;
+  }
+
+  /* ハッシュの下のほうの桁はそろっていないので、割る前によく混ぜる。
+     これをしないと、白ばかり出てしまうといった偏りが出る */
+  function mix(h) {
+    h ^= h >>> 16;
+    h = Math.imul(h, 2246822507) >>> 0;
+    h ^= h >>> 13;
+    h = Math.imul(h, 3266489909) >>> 0;
+    h ^= h >>> 16;
+    return h >>> 0;
   }
 
   /* その日の担当を決める。
@@ -506,7 +567,7 @@
     if (slotMemo[n] !== undefined) return slotMemo[n];
     var s = 0;
     for (var i = ANCHOR + 1; i <= n; i++) {
-      s = (s + 1 + (hash('d' + i) % 4)) % ORDER.length;
+      s = (s + 1 + (mix(hash('d' + i)) % 4)) % ORDER.length;
       slotMemo[i] = s;
     }
     return s;
@@ -515,21 +576,37 @@
     return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
   }
 
+  /* 担当とひとことは日付だけで決まる（みんなおなじ） */
   function pick(d) {
     var h = hash(key(d));
     var who = (h % RARE_EVERY === 0) ? 'yancha' : ORDER[slot(dayNo(d))];
     var c = CHARA[who];
+    return { who: who, chara: c, word: c.words[Math.floor(h / 7) % c.words.length] };
+  }
+
+  /* 色・柄と数字は、日付＋その人で決まる（自分だけ） */
+  function pickMine(d) {
+    /* レア度をきめる数と、どの色にするかの数は別々に作る。
+       同じ数から両方とると、8色の出かたにムラが出るため */
+    var h  = mix(hash(key(d) + '#' + ME));
+    var h2 = mix(hash(key(d) + '#' + ME + '#c'));
+    var h3 = mix(hash(key(d) + '#' + ME + '#n'));
+    var roll = h % 1000;
+    var pal;
+    if (roll < 40)       pal = PAL.filter(function (x) { return x.rank === 2; })[h2 % 4];
+    else if (roll < 160) pal = PAL.filter(function (x) { return x.rank === 1; })[h2 % 3];
+    else                 pal = PAL[h2 % 8];
     return {
-      who: who,
-      chara: c,
-      word: c.words[Math.floor(h / 7) % c.words.length],
-      waku: (Math.floor(h / 11) % 8) + 1,
-      uma:  (Math.floor(h / 13) % 18) + 1
+      pal:  pal,
+      seed: h,
+      waku: (h3 % 8) + 1,
+      uma:  (mix(h3) % 18) + 1
     };
   }
 
   var today = jst(0);
   var t = pick(today);
+  var mine = pickMine(today);
 
   /* ===== アフロだけ塗りかえる =====
      アフロは緑〜青の鮮やかな色で描いてもらってある。
@@ -581,6 +658,118 @@
     return h > 85 && h < 255;                   /* 緑〜青のあいだ */
   }
 
+  /* ===== 柄をつくる =====
+     アフロと同じ大きさの布を1枚つくり、そこに色や柄を描く。
+     あとでアフロの形に切りぬいて貼る。 */
+  function rnd(seed) {
+    var x = seed >>> 0;
+    return function () {
+      x ^= x << 13; x >>>= 0;
+      x ^= x >> 17;
+      x ^= x << 5;  x >>>= 0;
+      return x / 4294967296;
+    };
+  }
+
+  function makeSkin(pal, w, h, seed) {
+    var cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    var g = cv.getContext('2d');
+    var r = rnd(seed || 1);
+    var i, n, x, y, s2;
+
+    if (pal.flat) { g.fillStyle = pal.flat; g.fillRect(0, 0, w, h); return cv; }
+
+    if (pal.id === 'kin' || pal.id === 'gin') {
+      var a = pal.id === 'kin'
+        ? ['#FFF8CC', '#F2C94C', '#C9920C', '#FFF3B0', '#8A6410']
+        : ['#FFFFFF', '#DCE0E4', '#9BA3AA', '#FFFFFF', '#5F666D'];
+      var gr = g.createLinearGradient(0, 0, w * 0.45, h);
+      gr.addColorStop(0.00, a[0]); gr.addColorStop(0.28, a[1]);
+      gr.addColorStop(0.46, a[3]); gr.addColorStop(0.68, a[2]);
+      gr.addColorStop(1.00, a[4]);
+      g.fillStyle = gr; g.fillRect(0, 0, w, h);
+      return cv;
+    }
+
+    if (pal.id === 'niji') {
+      var gr2 = g.createLinearGradient(0, h, w, 0);
+      var cols = ['#E4443C', '#E8871E', '#E8D51E', '#2FA85E', '#2F7FD6', '#6B4FC4', '#C44FA8'];
+      for (i = 0; i < cols.length; i++) gr2.addColorStop(i / (cols.length - 1), cols[i]);
+      g.fillStyle = gr2; g.fillRect(0, 0, w, h);
+      return cv;
+    }
+
+    if (pal.id === 'meisai') {
+      g.fillStyle = '#7C8A54'; g.fillRect(0, 0, w, h);
+      var mc = ['#4E5C34', '#2E3A20', '#A6AF77'];
+      for (i = 0; i < 26; i++) {
+        g.fillStyle = mc[i % mc.length];
+        x = r() * w; y = r() * h; s2 = (0.10 + r() * 0.16) * w;
+        g.beginPath();
+        for (n = 0; n < 7; n++) {
+          var ang = n / 7 * Math.PI * 2;
+          var rad = s2 * (0.62 + r() * 0.62);
+          var px = x + Math.cos(ang) * rad, py = y + Math.sin(ang) * rad * 0.8;
+          if (n === 0) g.moveTo(px, py); else g.lineTo(px, py);
+        }
+        g.closePath(); g.fill();
+      }
+      return cv;
+    }
+
+    if (pal.id === 'kirin') {
+      g.fillStyle = '#F0D08C'; g.fillRect(0, 0, w, h);
+      g.fillStyle = '#8A5A22';
+      var step = w / 4.6;
+      for (y = -step; y < h + step; y += step) {
+        for (x = -step; x < w + step; x += step) {
+          var cx = x + (r() - 0.5) * step * 0.5, cy = y + (r() - 0.5) * step * 0.5;
+          g.beginPath();
+          for (n = 0; n < 6; n++) {
+            var a2 = n / 6 * Math.PI * 2 + r() * 0.3;
+            var rr = step * (0.30 + r() * 0.14);
+            var qx = cx + Math.cos(a2) * rr, qy = cy + Math.sin(a2) * rr;
+            if (n === 0) g.moveTo(qx, qy); else g.lineTo(qx, qy);
+          }
+          g.closePath(); g.fill();
+        }
+      }
+      return cv;
+    }
+
+    if (pal.id === 'hyou') {
+      g.fillStyle = '#E8C77A'; g.fillRect(0, 0, w, h);
+      for (i = 0; i < 46; i++) {
+        x = r() * w; y = r() * h; s2 = w * (0.045 + r() * 0.035);
+        g.strokeStyle = '#8A5A22'; g.lineWidth = s2 * 0.62;
+        g.beginPath(); g.arc(x, y, s2, r() * 1.2, r() * 1.2 + 4.6); g.stroke();
+        g.fillStyle = '#4A2E10';
+        g.beginPath(); g.arc(x + s2 * 0.1, y + s2 * 0.1, s2 * 0.42, 0, 6.3); g.fill();
+      }
+      return cv;
+    }
+
+    if (pal.id === 'shima') {
+      g.fillStyle = '#F4F4F4'; g.fillRect(0, 0, w, h);
+      g.fillStyle = '#1F1F1F';
+      var band = w / 9;
+      for (i = -2; i < 14; i++) {
+        g.beginPath();
+        var x0 = i * band;
+        g.moveTo(x0, -10);
+        g.bezierCurveTo(x0 + band * 0.7, h * 0.3, x0 - band * 0.4, h * 0.7, x0 + band * 0.5, h + 10);
+        g.lineTo(x0 + band * 0.5 + band * 0.45, h + 10);
+        g.bezierCurveTo(x0 - band * 0.4 + band * 0.5, h * 0.7, x0 + band * 0.7 + band * 0.45, h * 0.3, x0 + band * 0.45, -10);
+        g.closePath(); g.fill();
+      }
+      return cv;
+    }
+
+    g.fillStyle = '#888'; g.fillRect(0, 0, w, h);
+    return cv;
+  }
+
   function paintAfro(img, hex, cv) {
     cv.width = img.naturalWidth || img.width;
     cv.height = img.naturalHeight || img.height;
@@ -590,7 +779,16 @@
 
     var id = g.getImageData(0, 0, cv.width, cv.height);
     var d = id.data;
-    var th = hexHsl(hex);
+
+    /* hex が文字なら一色、そうでなければ柄の布として受けとる */
+    var skin = null, sd = null, th = null;
+    if (typeof hex === 'string') {
+      th = hexHsl(hex);
+    } else {
+      skin = hex;
+      var sg = skin.getContext('2d', { willReadFrequently: true });
+      sd = sg.getImageData(0, 0, skin.width, skin.height).data;
+    }
 
     /* まず、もとのアフロの明るさの真ん中を測る */
     var sum = 0, cnt = 0, i;
@@ -603,12 +801,22 @@
     if (!cnt) return cv;
     var baseL = sum / cnt;
 
-    /* 明るさの差はそのままに、色あいと鮮やかさだけ入れかえる */
+    /* もとの明るさの差（影）を残したまま、色あいと鮮やかさを入れかえる。
+       柄のときは、その画素の位置にある柄の色を使う */
+    var W2 = cv.width;
     for (i = 0; i < d.length; i += 4) {
       if (d[i + 3] <= 40 || !isAfro(d[i], d[i + 1], d[i + 2])) continue;
       var l = toHsl(d[i], d[i + 1], d[i + 2])[2];
-      var nl = Math.min(0.97, Math.max(0.05, l - baseL + th[2]));
-      var c = toRgb(th[0], th[1], nl);
+      var tgt = th;
+      if (skin) {
+        var px = (i / 4) % W2, py = Math.floor((i / 4) / W2);
+        var sx = Math.min(skin.width - 1, Math.floor(px * skin.width / W2));
+        var sy = Math.min(skin.height - 1, Math.floor(py * skin.height / cv.height));
+        var si = (sy * skin.width + sx) * 4;
+        tgt = toHsl(sd[si], sd[si + 1], sd[si + 2]);
+      }
+      var nl = Math.min(0.97, Math.max(0.05, tgt[2] + (l - baseL) * 0.85));
+      var c = toRgb(tgt[0], tgt[1], nl);
       d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2];
     }
     g.putImageData(id, 0, 0);
@@ -621,32 +829,47 @@
   document.getElementById('kyWeek').textContent = WEEK[today.getDay()] + '曜日';
 
   document.getElementById('kyCard').style.setProperty('--ac', t.chara.ac);
-  var painted = null;    /* 塗りかえ済みのキャンバス。シェア画像にも使う */
+  /* 今日の色（または柄）。一色なら文字、柄なら布を渡す */
+  function skinFor(w, h) {
+    return mine.pal.flat ? mine.pal.flat : makeSkin(mine.pal, w, h, mine.seed);
+  }
+
   function showChara() {
     var cv = document.getElementById('kyImg');
     var im = new Image();
     im.onload = function () {
-      paintAfro(im, WAKU[t.waku].afro, cv);
-      painted = cv;
+      paintAfro(im, skinFor(im.naturalWidth, im.naturalHeight), cv);
     };
     im.src = t.chara.pic;
   }
   showChara();
   document.getElementById('kyName').textContent = t.chara.name;
   document.getElementById('kyWord').textContent = '「' + t.word + '」';
-  document.getElementById('kyRare').hidden = !t.chara.rare;
+  var rareEl = document.getElementById('kyRare');
+  if (mine.pal.rank === 2)      { rareEl.hidden = false; rareEl.textContent = '激レア'; rareEl.classList.add('lv2'); }
+  else if (mine.pal.rank === 1) { rareEl.hidden = false; rareEl.textContent = 'レア'; }
+  else if (t.chara.rare)        { rareEl.hidden = false; rareEl.textContent = 'レアキャラ'; }
+  else                          { rareEl.hidden = true; }
 
-  var w = WAKU[t.waku];
+  var w = WAKU[mine.waku];
   var wEl = document.getElementById('kyWaku');
-  wEl.textContent = t.waku;
+  wEl.textContent = mine.waku;
   wEl.style.background = w.c;
   wEl.style.color = w.t;
   wEl.title = w.n;
-  document.getElementById('kyUma').textContent = t.uma;
+  document.getElementById('kyUma').textContent = mine.uma;
 
+  /* 今日のアフロの色。レアなら印をつける */
   var colEl = document.getElementById('kyColor');
-  colEl.querySelector('i').style.background = w.c;
-  colEl.querySelector('b').textContent = w.n + '（' + t.waku + '枠）';
+  colEl.querySelector('i').style.background = mine.pal.chip;
+  colEl.querySelector('b').textContent = mine.pal.n;
+  if (mine.pal.rank) {
+    colEl.classList.add('r' + mine.pal.rank);
+    var tag = document.createElement('em');
+    tag.className = 'ky-rank';
+    tag.textContent = RANK_NAME[mine.pal.rank];
+    colEl.appendChild(tag);
+  }
 
   /* ===== 連続で来た日数 ===== */
   (function () {
@@ -762,8 +985,11 @@
   /* ===== シェア ===== */
   document.getElementById('kyX').href =
     'https://twitter.com/intent/tweet?text=' +
-    encodeURIComponent('今日のアフロは【' + t.chara.name + '】でした！\n「' + t.word + '」\n' +
-                       'ラッキーカラーは ' + WAKU[t.waku].n + '（' + t.waku + '枠）\n' +
+    encodeURIComponent('今日のアフロは【' + t.chara.name + '】\n' +
+                       'アフロの色は' +
+                       (mine.pal.rank ? '★' + RANK_NAME[mine.pal.rank] + '★ ' : '') +
+                       mine.pal.n + 'でした！\n' +
+                       'ラッキー枠番 ' + mine.waku + '／馬番 ' + mine.uma + '\n' +
                        '#アフロホース #今日のアフロ\n') +
     '&url=' + encodeURIComponent('https://afro-horse.com/kyou.html');
 
@@ -811,7 +1037,7 @@
     return ready.then(function () { return loadImg(t.chara.pic); }).then(function (raw) {
       /* アフロを塗りかえたものを貼る */
       var tmp = document.createElement('canvas');
-      var im = paintAfro(raw, WAKU[t.waku].afro, tmp);
+      var im = paintAfro(raw, skinFor(raw.naturalWidth, raw.naturalHeight), tmp);
       var grd = g.createLinearGradient(0, 0, W * 0.4, H);
       grd.addColorStop(0, t.chara.ac);
       grd.addColorStop(1, '#14100c');
@@ -851,25 +1077,30 @@
       var bw = 120, bh = 74, gap = 26;
       var x0 = W / 2 - (bw * 2 + gap) / 2;
 
-      var wk = WAKU[t.waku];
+      var wk = WAKU[mine.waku];
       g.fillStyle = wk.c;
       g.fillRect(x0, by, bw, bh);
       g.strokeStyle = 'rgba(251,245,226,.7)'; g.lineWidth = 3;
       g.strokeRect(x0, by, bw, bh);
       g.fillStyle = wk.t;
       g.font = '500 46px "Bebas Neue", sans-serif';
-      g.fillText(String(t.waku), x0 + bw / 2, by + 54);
+      g.fillText(String(mine.waku), x0 + bw / 2, by + 54);
 
       g.fillStyle = 'rgba(0,0,0,.28)';
       g.fillRect(x0 + bw + gap, by, bw, bh);
       g.strokeRect(x0 + bw + gap, by, bw, bh);
       g.fillStyle = '#FBF5E2';
-      g.fillText(String(t.uma), x0 + bw + gap + bw / 2, by + 54);
+      g.fillText(String(mine.uma), x0 + bw + gap + bw / 2, by + 54);
 
       g.fillStyle = 'rgba(251,245,226,.7)';
       g.font = '500 22px "Zen Kaku Gothic New", sans-serif';
       g.fillText('ラッキー枠番', x0 + bw / 2, by + bh + 30);
       g.fillText('ラッキー馬番', x0 + bw + gap + bw / 2, by + bh + 30);
+
+      g.fillStyle = mine.pal.rank ? '#FFD60A' : 'rgba(251,245,226,.9)';
+      g.font = '700 30px "Zen Kaku Gothic New", sans-serif';
+      g.fillText((mine.pal.rank ? '★' + RANK_NAME[mine.pal.rank] + '★  ' : '') +
+                 'アフロの色 ' + mine.pal.n, W / 2, by - 22);
 
       g.fillStyle = 'rgba(251,245,226,.6)';
       g.font = '500 28px "Bebas Neue", sans-serif';
