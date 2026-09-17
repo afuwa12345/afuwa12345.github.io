@@ -109,6 +109,7 @@
         game: CFG.game, insta: insta, score: score, date: Date.now()
       })
     }).then(function (r) {
+      if (!r.ok) return false;
       /* 返事が読めたときは中身を見る。読めなくても（CORSで見えないなど）
          行は書けているので、成功あつかいにする（クイズと同じ考えかた） */
       return r.json().then(function (d) {
