@@ -341,7 +341,7 @@ body.nav-world { --navbg: #8A6410; --navbd: #5C4309; }  /* ワールド：金茶
   text-shadow: 0 0 20px rgba(255, 214, 10, .7), 0 0 44px rgba(255, 43, 214, .35);
 }
 .gr-grade {
-  display: inline-block; font-family: 'Dela Gothic One', sans-serif; font-size: 13px;
+  display: inline-block; font-family: 'Noto Sans JP', sans-serif; font-weight: 900; font-size: 13px;
   color: #1a0e16; background: linear-gradient(180deg, var(--gold), var(--gold-d));
   padding: 5px 16px; border-radius: 999px;
 }

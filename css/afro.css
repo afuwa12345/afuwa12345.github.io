@@ -297,7 +297,7 @@ body {
 .gs-jump  { --ax: linear-gradient(135deg, #1C7A4F, #0D3E28); }
 .gs-quiz  { --ax: linear-gradient(135deg, #E0AC1C, #97701A); }
 .game-body { padding: 12px 14px 14px; }
-.game-name { font-family: 'Dela Gothic One', sans-serif; font-size: 15.5px; line-height: 1.4; }
+.game-name { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 15.5px; line-height: 1.4; }
 .game-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.7; margin: 3px 0 0; }
 .game-badge {
   position: absolute; top: 8px; left: 8px; z-index: 2;
@@ -350,7 +350,7 @@ body {
   background: var(--white); border: 1px dashed var(--rule); border-radius: 8px;
   padding: 22px 18px; text-align: center;
 }
-.comic-empty-ttl { font-family: 'Dela Gothic One', sans-serif; font-size: 15px; margin-bottom: 4px; }
+.comic-empty-ttl { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 15px; margin-bottom: 4px; }
 .comic-empty-txt { font-size: 12px; color: var(--ink-dim); line-height: 1.7; margin: 0; }
 
 /* まだ投稿していない回 */
@@ -674,7 +674,7 @@ section { padding: 22px 0 0; }
 /* 見出しつきの節（規約・免責） */
 .doc .article { margin-bottom: 22px; }
 .doc .article-title, .doc .section-title {
-  font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.5;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 15px; line-height: 1.5;
   color: var(--turf); margin-bottom: 7px;
   padding-bottom: 6px; border-bottom: 1px solid var(--rule);
 }
@@ -685,7 +685,7 @@ section { padding: 22px 0 0; }
 
 /* プライバシーの h2（英字ラベルつき） */
 .doc h2 {
-  font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.5;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 15px; line-height: 1.5;
   color: var(--turf); margin: 26px 0 8px;
   padding-bottom: 6px; border-bottom: 1px solid var(--rule);
 }
@@ -719,7 +719,7 @@ section { padding: 22px 0 0; }
   border-radius: 0 6px 6px 0; padding: 14px 16px; margin: 0 0 20px;
 }
 .doc .alert-title {
-  font-family: 'Dela Gothic One', sans-serif; font-size: 13.5px;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 13.5px;
   color: #8A5A10; margin-bottom: 5px;
 }
 .doc .alert-text { font-size: 13px; line-height: 1.9; color: #6B4A12; margin: 0; }
@@ -761,7 +761,7 @@ section { padding: 22px 0 0; }
 .trow:hover .t-arrow { color: var(--gold); transform: translateX(2px); }
 .t-ico { display: block; font-size: 19px; text-align: center; }
 .t-body { display: block; min-width: 0; }
-.t-name { display: block; font-family: 'Dela Gothic One', sans-serif; font-size: 14.5px; line-height: 1.45; }
+.t-name { display: block; font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 14.5px; line-height: 1.45; }
 .t-desc { display: block; font-size: 11.5px; color: var(--ink-dim); line-height: 1.5;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* 説明を読ませたい一覧では2行まで折り返す */
@@ -893,7 +893,7 @@ a:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
   font-size: 10px; color: var(--ink-dim); margin-top: 2px;
 }
 .race-jockey { display: block; width: 100%; height: auto; }
-.race-name { font-family: 'Dela Gothic One', sans-serif; font-size: 14px; line-height: 1.4; }
+.race-name { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 14px; line-height: 1.4; }
 .race-meta { font-size: 11px; color: var(--ink-dim); margin-top: 2px; }
 .race-grade {
   font-family: 'Anton', sans-serif; font-size: 12px; letter-spacing: .04em;
@@ -940,7 +940,7 @@ a.race:active { transform: translateY(0); }
 }
 @keyframes hpopIn { from { opacity: 0; transform: translateY(12px); } }
 .hpop-t {
-  font-family: 'Dela Gothic One', sans-serif; font-size: 16px;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 16px;
   color: var(--turf-dk); text-align: center; margin: 0 0 14px;
 }
 .hpop-list { margin: 0; padding: 0; }
@@ -1065,7 +1065,7 @@ a.race:active { transform: translateY(0); }
   background: var(--turf); color: var(--paper);
 }
 .gd-steps h3 {
-  font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.5;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 15px; line-height: 1.5;
   margin: 3px 0 5px;
 }
 .gd-steps p { font-size: 13px; line-height: 1.9; color: var(--ink-soft); margin: 0; }
@@ -1080,7 +1080,7 @@ a.race:active { transform: translateY(0); }
 }
 .gd-bk.pick { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(224,172,28,.18); }
 .gd-bk-name {
-  font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.4;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 15px; line-height: 1.4;
   grid-column: 1;
 }
 .gd-bk-ruby { display: block; font-size: 10px; color: var(--ink-dim); font-family: inherit; font-weight: 400; }
@@ -1099,7 +1099,7 @@ a.race:active { transform: translateY(0); }
   padding: 14px 16px 15px; margin: 18px 0 0;
 }
 .gd-warn h3 {
-  font-family: 'Dela Gothic One', sans-serif; font-size: 14px; margin: 0 0 6px; color: #8A5A0A;
+  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 14px; margin: 0 0 6px; color: #8A5A0A;
 }
 .gd-warn p { font-size: 12.5px; line-height: 1.9; color: #6B4A12; margin: 0 0 6px; }
 .gd-warn p:last-child { margin-bottom: 0; }
@@ -1118,5 +1118,5 @@ a.race:active { transform: translateY(0); }
   padding: 13px 15px; transition: border-color .14s, transform .12s;
 }
 .gd-next a:hover { border-color: var(--gold); transform: translateY(-2px); }
-.gd-next b { display: block; font-family: 'Dela Gothic One', sans-serif; font-size: 14px; }
+.gd-next b { display: block; font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 14px; }
 .gd-next span { display: block; font-size: 11.5px; color: var(--ink-dim); margin-top: 3px; line-height: 1.6; }
