@@ -1022,3 +1022,101 @@ a.race:active { transform: translateY(0); }
 .axes.mini .axis-pic { height: 52px; }
 .axes.mini > .axis:first-child > .axis-pic { height: 60px; }
 
+
+
+/* ===== 入門ページ（はじめての競馬）=====================================
+   キャラのかけあい、番号つきの手順、馬券の一覧、注意書き。
+   nyumon*.html で使う。 */
+
+/* キャラのかけあい */
+.gd-talk { display: flex; align-items: flex-start; gap: 10px; margin: 0 0 12px; }
+.gd-talk.right { flex-direction: row-reverse; }
+.gd-face {
+  flex: 0 0 46px; width: 46px; height: 46px; object-fit: contain;
+  background: var(--paper-2); border-radius: 50%; padding: 2px;
+}
+.gd-bubble {
+  position: relative; margin: 0; max-width: 32em;
+  background: var(--paper); border: 2px solid var(--rule); border-radius: 12px;
+  padding: 11px 14px; font-size: 13.5px; line-height: 1.85;
+}
+.gd-bubble::before {
+  content: ''; position: absolute; top: 14px; left: -8px;
+  width: 12px; height: 12px; transform: rotate(45deg);
+  background: var(--paper); border-left: 2px solid var(--rule); border-bottom: 2px solid var(--rule);
+}
+.gd-talk.right .gd-bubble { background: var(--paper-2); }
+.gd-talk.right .gd-bubble::before {
+  left: auto; right: -8px; background: var(--paper-2);
+  border: 0; border-right: 2px solid var(--rule); border-top: 2px solid var(--rule);
+}
+
+/* 番号つきの手順 */
+.gd-steps { list-style: none; margin: 0; padding: 0; counter-reset: gd; }
+.gd-steps > li {
+  position: relative; counter-increment: gd;
+  padding: 0 0 0 44px; margin: 0 0 18px;
+}
+.gd-steps > li::before {
+  content: counter(gd); position: absolute; left: 0; top: 0;
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif; font-size: 17px;
+  background: var(--turf); color: var(--paper);
+}
+.gd-steps h3 {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.5;
+  margin: 3px 0 5px;
+}
+.gd-steps p { font-size: 13px; line-height: 1.9; color: var(--ink-soft); margin: 0; }
+
+/* 馬券の一覧 */
+.gd-bakens { display: grid; gap: 9px; }
+.gd-bk {
+  display: grid; gap: 4px 12px; align-items: baseline;
+  grid-template-columns: auto 1fr;
+  background: var(--paper); border: 2px solid var(--rule); border-radius: 12px;
+  padding: 12px 14px 13px;
+}
+.gd-bk.pick { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(224,172,28,.18); }
+.gd-bk-name {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.4;
+  grid-column: 1;
+}
+.gd-bk-ruby { display: block; font-size: 10px; color: var(--ink-dim); font-family: inherit; font-weight: 400; }
+.gd-bk-star {
+  grid-column: 2; justify-self: end; font-size: 12px; color: var(--gold); letter-spacing: 1px;
+}
+.gd-bk-what { grid-column: 1 / -1; font-size: 13px; line-height: 1.85; margin: 2px 0 0; }
+.gd-bk-cond {
+  grid-column: 1 / -1; font-size: 11.5px; line-height: 1.7; color: var(--ink-dim);
+  border-top: 1px dashed var(--rule); padding-top: 7px; margin: 7px 0 0;
+}
+
+/* 注意書き */
+.gd-warn {
+  background: #FFF4E2; border: 2px solid #E8C98A; border-radius: 12px;
+  padding: 14px 16px 15px; margin: 18px 0 0;
+}
+.gd-warn h3 {
+  font-family: 'Dela Gothic One', sans-serif; font-size: 14px; margin: 0 0 6px; color: #8A5A0A;
+}
+.gd-warn p { font-size: 12.5px; line-height: 1.9; color: #6B4A12; margin: 0 0 6px; }
+.gd-warn p:last-child { margin-bottom: 0; }
+.gd-warn a { color: #8A5A0A; }
+
+/* 出典 */
+.gd-src { font-size: 11.5px; line-height: 1.9; color: var(--ink-dim); margin: 20px 0 0; }
+.gd-src a { color: var(--ink-soft); }
+
+/* 次に読むもの */
+.gd-next { display: grid; gap: 9px; margin: 6px 0 0; }
+@media (min-width: 620px) { .gd-next { grid-template-columns: 1fr 1fr; } }
+.gd-next a {
+  display: block; text-decoration: none; color: var(--ink);
+  background: var(--paper); border: 2px solid var(--rule); border-radius: 12px;
+  padding: 13px 15px; transition: border-color .14s, transform .12s;
+}
+.gd-next a:hover { border-color: var(--gold); transform: translateY(-2px); }
+.gd-next b { display: block; font-family: 'Dela Gothic One', sans-serif; font-size: 14px; }
+.gd-next span { display: block; font-size: 11.5px; color: var(--ink-dim); margin-top: 3px; line-height: 1.6; }
