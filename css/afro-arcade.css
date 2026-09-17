@@ -161,6 +161,36 @@ body.nav-world { --navbg: #8A6410; --navbd: #5C4309; }  /* ワールド：金茶
   color: var(--gold); text-shadow: 0 0 10px var(--gold); margin-left: 8px;
 }
 
+
+/* タイトル画面の1位スタンプ */
+.at-top {
+  display: inline-flex; align-items: baseline; gap: 7px;
+  margin: 9px 0 0; padding: 6px 16px;
+  border: 1px solid rgba(255, 214, 10, .5); border-radius: 999px;
+  background: rgba(255, 214, 10, .08);
+  font-size: 12.5px; font-weight: 700; color: #f0e9ed;
+  max-width: 88vw;
+}
+.at-top span {
+  font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: .12em;
+  color: var(--gold); flex: none;
+}
+.at-top span::before { content: '\1F451'; margin-right: 5px; }
+.at-top b {
+  font-family: 'Bebas Neue', sans-serif; font-size: 19px;
+  color: var(--cyan); text-shadow: 0 0 10px rgba(0, 240, 255, .5); flex: none;
+}
+.at-top.mine { border-color: var(--green); background: rgba(18, 209, 122, .12); }
+.at-top.mine span { color: var(--green); }
+.at-top.none {
+  border-color: var(--grey2); background: rgba(8, 6, 10, .5); color: #8d8288;
+}
+.at-top.none span { color: #8d8288; }
+
+/* ランキングだけを見る窓 */
+#rankPop .gr-rank { margin: 0; }
+#rankPop .gr-rank ol { max-height: 52vh; overflow: auto; }
+
 .abtn {
   position: relative; overflow: hidden;
   display: inline-block; border: 0; cursor: pointer; text-decoration: none;

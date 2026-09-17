@@ -255,6 +255,80 @@
     });
   }
 
+
+  /* ---------- タイトル画面のランキング ----------
+     いまの1位を出して、押すと上位10人が見られるようにする。
+     つなぎ先が無いときは何も足さない。取れなかったときは
+     スタンプだけ引っこめて、ボタンはそのまま（押せば読み直す） */
+  function titleRank() {
+    var title = document.getElementById('scTitle');
+    if (!title || !URL_) return;
+
+    var stamp = el('div', 'at-top', '<span>1位</span><b>—</b>');
+    var best = title.querySelector('.at-best');
+    if (best && best.parentNode) best.parentNode.insertBefore(stamp, best.nextSibling);
+    else title.appendChild(stamp);
+
+    var btn = el('button', 'abtn ghost', 'ランキング');
+    btn.type = 'button';
+    var how = document.getElementById('howBtn');
+    if (how && how.parentNode) how.parentNode.insertBefore(btn, how);
+    else title.appendChild(btn);
+    btn.onclick = function () { openRankPop(); };
+
+    fetchRank().then(function (list) {
+      if (!list.length) {
+        stamp.classList.add('none');
+        stamp.innerHTML = '<span>まだ記録なし</span>';
+        return;
+      }
+      var top = list[0];
+      var me = getInsta().toLowerCase();
+      if (me && String(top.insta).toLowerCase() === me) stamp.classList.add('mine');
+      stamp.innerHTML = '<span>1位</span>@' + esc(top.insta) +
+                        '<b>' + esc(fmt(Number(top.score))) + '</b>';
+    })['catch'](function () { stamp.remove(); });
+  }
+
+  /* 上位10人を見るだけの窓。説明の窓と同じ作り */
+  function openRankPop() {
+    var pop = document.getElementById('rankPop');
+    if (!pop) {
+      pop = el('div', 'ahow');
+      pop.id = 'rankPop';
+      pop.innerHTML =
+        '<div class="ahow-card">' +
+          '<div class="ahow-t">RANKING</div>' +
+          '<div class="gr-rank"><ol></ol></div>' +
+          '<button type="button" class="gr-btn primary">とじる</button>' +
+        '</div>';
+      document.body.appendChild(pop);
+      pop.querySelector('.gr-btn').onclick = function () { pop.hidden = true; };
+      pop.addEventListener('click', function (e) { if (e.target === pop) pop.hidden = true; });
+    }
+    pop.hidden = false;
+
+    var ol = pop.querySelector('ol');
+    ol.innerHTML = '<li class="gr-loading">読み込み中...</li>';
+    fetchRank().then(function (list) {
+      if (!list.length) {
+        ol.innerHTML = '<li class="gr-loading">まだ記録がありません。1位をねらえる</li>';
+        return;
+      }
+      var my = getInsta().toLowerCase();
+      ol.innerHTML = list.slice(0, 10).map(function (r, i) {
+        var ig = String(r.insta || '');
+        var me = (my && ig.toLowerCase() === my) ? ' class="is-mine"' : '';
+        return '<li' + me + '><span class="gr-no">' + (i + 1) + '</span>' +
+               '<a class="gr-nm" href="https://www.instagram.com/' + encodeURIComponent(ig) + '/" ' +
+               'target="_blank" rel="noopener">@' + esc(ig) + '</a>' +
+               '<span class="gr-sc">' + esc(fmt(Number(r.score))) + '</span></li>';
+      }).join('');
+    })['catch'](function () {
+      ol.innerHTML = '<li class="gr-loading">読み込めませんでした</li>';
+    });
+  }
+
   window.AfroScore = {
     setup: function (cfg) {
       CFG = cfg;
@@ -262,6 +336,7 @@
       var b = getBest();
       var slot = document.getElementById('gBest');
       if (slot) slot.textContent = (b === null ? '—' : fmt(b));
+      titleRank();
       return this;
     },
     finish: finish,

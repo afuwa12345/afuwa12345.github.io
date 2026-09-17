@@ -210,6 +210,28 @@ body::before{
 }
 .btn-primary::before{content:'▶';margin-right:12px;color:var(--gold);text-shadow:0 0 8px var(--gold)}
 
+/* タイトル画面の1位スタンプ */
+.title-top{
+  display:inline-flex;align-items:baseline;gap:7px;
+  margin:8px auto 0;padding:6px 16px;max-width:86vw;
+  border:2px solid var(--gold);border-radius:999px;
+  background:rgba(255,214,10,0.1);
+  font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:700;color:var(--white);
+}
+.title-top span{
+  font-family:'Russo One',sans-serif;font-size:11px;letter-spacing:0.12em;
+  color:var(--gold);flex:none;
+}
+.title-top span::before{content:'👑';margin-right:5px}
+.title-top b{
+  font-family:'Russo One',sans-serif;font-size:18px;
+  color:var(--cyan);text-shadow:0 0 8px rgba(0,240,255,0.5);flex:none;margin-left:2px;
+}
+.title-top.mine{border-color:#12d17a;background:rgba(18,209,122,0.12)}
+.title-top.mine span{color:#12d17a}
+.title-top.none{border-color:var(--grey2);background:rgba(0,0,0,0.5);color:#8d8288}
+.title-top.none span{color:#8d8288}
+
 .best-score{
   margin-top:20px;
   background:rgba(0,0,0,0.7);border:2px solid var(--gold);
@@ -947,6 +969,7 @@ body::before{
   <div class="press-start">▼ PRESS START ▼</div>
   <button class="btn-ranking" id="btn-ranking" onclick="showRanking('home')">🏆 RANKING</button>
   <div class="best-score">BEST <b id="best-display">- -</b></div>
+  <div class="title-top" id="title-top" hidden></div>
   <div class="title-flag title-flag-bottom"></div>
 </div>
 
@@ -1848,8 +1871,25 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
 loadBest();
 // 起動時にランキング事前取得（殿堂入り判定の高速化、失敗しても無視）
+/* タイトル画面に、いまの1位を出す */
+function paintTitleTop(){
+  const el = document.getElementById('title-top');
+  if(!el) return;
+  const top = computeTop10(RANKING_CACHE)[0];
+  if(!top){
+    el.hidden = false;
+    el.className = 'title-top none';
+    el.innerHTML = '<span>まだ記録なし</span>';
+    return;
+  }
+  const me = String(localStorage.getItem('afro.insta')||'').toLowerCase();
+  el.hidden = false;
+  el.className = 'title-top' + (me && String(top.insta).toLowerCase()===me ? ' mine' : '');
+  el.innerHTML = '<span>1位</span>@'+escapeHtml(top.insta)+'<b>'+top.score+'</b>問';
+}
+
 if(RANK_ON){
-  fetchRanking().catch(()=>{});
+  fetchRanking().then(paintTitleTop).catch(()=>{});
 }else{
   // つなぎ先がまだ無いときは、ランキングのボタンを出さない
   const rb = document.getElementById('btn-ranking');
