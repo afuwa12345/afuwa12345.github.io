@@ -328,6 +328,12 @@
         var ne = document.getElementById('mkName');
         if (ne) ne.value = o.name;
       }
+      /* 馬名メーカーから ?name= で渡されたときは、そちらを優先する */
+      var q = (location.search.match(/[?&]name=([^&]*)/) || [])[1];
+      if (q) {
+        var ne2 = document.getElementById('mkName');
+        try { if (ne2) ne2.value = decodeURIComponent(q).slice(0, 12); } catch (e) {}
+      }
     } catch (e) {}
     for (var i = 0; i < PARTS.length; i++) {
       var p = PARTS[i];

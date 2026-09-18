@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>馬名メーカー｜自分が競走馬だったら何ていう名前？ - AFRO Horse</title>
+<meta name="description" content="自分が競走馬だったら、どんな名前になる？ カタカナ9文字以内という本物のルールで、由来つきの馬名をつくります。名前を入れると、あなただけの一頭が決まります。登録不要。">
+<link rel="canonical" href="https://afro-horse.com/umamei.html">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<meta name="theme-color" content="#8A6410">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/umamei.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="馬名メーカー｜自分が競走馬だったら何ていう名前？">
+<meta property="og:description" content="カタカナ9文字以内という本物のルールで、由来つきの馬名をつくります。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949"
+   crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="css/afro.css">
+
+<style>
+  /* ===== 名前の札 ===== */
+  .um-card {
+    position: relative; margin: 0 auto; max-width: 420px;
+    border: 2px solid var(--gold-lt); border-radius: 18px;
+    background: linear-gradient(180deg, var(--white), var(--gold-soft));
+    box-shadow: var(--sh-md); padding: 26px 20px 22px; text-align: center;
+    overflow: hidden;
+  }
+  .um-card::before {
+    content: ''; position: absolute; inset: 6px; border-radius: 12px;
+    border: 1px dashed rgba(181,135,26,.45); pointer-events: none;
+  }
+  .um-eye {
+    font-family: 'Anton', sans-serif; font-size: 10px; letter-spacing: .26em;
+    color: var(--gold); margin: 0 0 12px;
+  }
+  .um-name {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(24px, 7.4vw, 38px); line-height: 1.3;
+    color: var(--ink); word-break: keep-all;
+    min-height: 1.3em;
+  }
+  .um-name.spin { opacity: .45; }
+  .um-len {
+    display: inline-block; margin: 10px 0 0; padding: 3px 11px;
+    border-radius: 999px; background: var(--turf); color: var(--paper);
+    font-size: 11px; font-weight: 900;
+  }
+  .um-why { font-size: 13px; color: var(--ink-soft); margin: 12px 0 0; line-height: 1.8; }
+  .um-why b { color: var(--gold); font-weight: 900; }
+
+  /* ===== 自分の名前から ===== */
+  .um-me { max-width: 420px; margin: 20px auto 0; }
+  .um-me-t { font-size: 13px; font-weight: 900; margin: 0 0 8px; }
+  .um-me-row { display: flex; gap: 8px; }
+  .um-me input {
+    flex: 1; min-width: 0; padding: 11px 13px;
+    border: 1px solid var(--rule); border-radius: 11px;
+    background: var(--white); color: var(--ink);
+    font-family: inherit; font-size: 14px; font-weight: 700;
+  }
+  .um-me input:focus { outline: 0; border-color: var(--turf); }
+  .um-me-note { font-size: 11.5px; color: var(--ink-dim); margin: 8px 0 0; line-height: 1.7; }
+
+  /* ===== ボタン ===== */
+  .um-acts { display: flex; flex-wrap: wrap; gap: 9px; max-width: 420px; margin: 20px auto 0; }
+  .um-btn {
+    flex: 1 1 130px; display: inline-flex; align-items: center; justify-content: center;
+    padding: 13px 14px; border: 0; border-radius: 12px; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 900; text-decoration: none;
+    background: var(--paper-2); color: var(--ink); box-shadow: var(--sh-sm);
+    transition: transform .12s, box-shadow .12s;
+  }
+  .um-btn:hover { transform: translateY(-2px); box-shadow: var(--sh-md); }
+  .um-btn.primary { background: var(--turf); color: var(--paper); }
+  .um-btn.gold { background: var(--gold); color: #fff; }
+  /* 主役の「もう一回ひく」は1行ぶん使う。残り2つで次の行 */
+  #umRoll { flex: 1 1 100%; }
+
+  /* ===== きまり ===== */
+  .um-rule {
+    max-width: 420px; margin: 26px auto 0; padding: 14px 16px;
+    border: 1px solid var(--rule); border-radius: 12px; background: var(--white);
+  }
+  .um-rule h2 { font-size: 13px; margin: 0 0 8px; }
+  .um-rule ul { margin: 0; padding-left: 18px; }
+  .um-rule li { font-size: 12.5px; color: var(--ink-soft); line-height: 1.9; }
+  .um-rule p { font-size: 11px; color: var(--ink-dim); margin: 9px 0 0; line-height: 1.7; }
+</style>
+</head>
+<body class="theme-world">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="keiba.html">KEIBA</a>
+      <a href="comic.html">COMIC</a>
+      <a href="game.html">GAME</a>
+      <a href="world.html">WORLD</a>
+      <a href="sns.html">SNS</a>
+    </div>
+  </div>
+</nav>
+
+<header class="phead" data-bg="NAME">
+  <div class="phead-en">NAME MAKER</div>
+  <h1 class="phead-ja">馬名メーカー</h1>
+  <p class="phead-sub">自分が競走馬だったら、何ていう名前？</p>
+</header>
+
+<section>
+  <div class="wrap">
+
+    <div class="um-card">
+      <p class="um-eye">YOUR RACEHORSE NAME</p>
+      <div class="um-name" id="umName">アフロホース</div>
+      <div><span class="um-len" id="umLen">6文字</span></div>
+      <p class="um-why" id="umWhy"></p>
+    </div>
+
+    <div class="um-acts">
+      <button type="button" class="um-btn primary" id="umRoll">もう一回ひく</button>
+      <a class="um-btn" id="umToMaker" href="maker.html">この名前でつくる</a>
+      <a class="um-btn gold" id="umShare" href="#" target="_blank" rel="noopener">X でシェア</a>
+    </div>
+
+    <div class="um-me">
+      <p class="um-me-t">自分の名前から決める</p>
+      <div class="um-me-row">
+        <input type="text" id="umMe" maxlength="20" placeholder="なまえ・ニックネーム">
+        <button type="button" class="um-btn" id="umGo" style="flex:0 0 auto">決める</button>
+      </div>
+      <p class="um-me-note">
+        同じ名前を入れれば、いつでも同じ馬名になります。<br>
+        入れた名前はこの端末の外には出ません。
+      </p>
+    </div>
+
+    <div class="um-rule">
+      <h2>ほんとうの馬名のきまり</h2>
+      <ul>
+        <li>カタカナで<b>2文字以上9文字以内</b></li>
+        <li>すでに走った馬と同じ名前は使えない</li>
+        <li>有名な馬の名前や、実在の人名・商品名も使えない</li>
+        <li>馬主の<b>冠名</b>を頭に付けてよい（メイショウ○○ の「メイショウ」など）</li>
+      </ul>
+      <p>出典：JRA「競走馬の登録」。ここで作る名前は遊びのもので、実際に登録できるとはかぎりません。</p>
+    </div>
+
+    <a class="backlink" href="world.html">&larr; アフロワールドにもどる</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="keiba.html">競馬</a>
+      <a href="comic.html">マンガ</a>
+      <a href="game.html">あそぶ</a>
+      <a href="world.html">アフロワールド</a>
+      <a href="sns.html">スタンプ・グッズ</a>
+      <a href="about.html">運営者情報</a>
+      <a href="contact.html">お問い合わせ</a>
+      <a href="privacy.html">プライバシー</a>
+      <a href="terms.html">利用規約</a>
+      <a href="disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
+
+<script src="js/afro-umamei.js"></script>
+<script src="js/afro-ui.js"></script>
+<script>
+(function () {
+  var nameEl = document.getElementById('umName');
+  var lenEl  = document.getElementById('umLen');
+  var whyEl  = document.getElementById('umWhy');
+  var meEl   = document.getElementById('umMe');
+  var KEY = 'afro.umamei.v1';
+  var cur = null;
+
+  function show(r) {
+    cur = r;
+    nameEl.textContent = r.name;
+    lenEl.textContent = r.name.length + '文字';
+    whyEl.innerHTML = '由来： <b>' + r.why + '</b>' +
+      (r.kan ? '<br>冠名は「' + r.kan + '」' : '');
+    document.getElementById('umToMaker').href = 'maker.html?name=' + encodeURIComponent(r.name);
+    var t = 'ぼくが競走馬だったら【' + r.name + '】\n' +
+            '由来：' + r.why + '\n#アフロホース #馬名メーカー\n';
+    document.getElementById('umShare').href =
+      'https://twitter.com/intent/tweet?text=' + encodeURIComponent(t) +
+      '&url=' + encodeURIComponent('https://afro-horse.com/umamei.html');
+    try { localStorage.setItem(KEY, JSON.stringify({ r: r, me: meEl.value })); } catch (e) {}
+  }
+
+  /* 決まるまで少しだけ回す。止まったときにちゃんと出るよう、
+     見た目は動きに頼らず、最後は必ず結果を入れる */
+  function spin(final) {
+    var i = 0, wait = 45;
+    nameEl.classList.add('spin');
+    clearTimeout(spin._t);
+    (function step() {
+      nameEl.textContent = AfroUmamei.make(Date.now() + i * 7919).name;
+      i++;
+      wait *= 1.22;
+      if (wait < 220) {
+        spin._t = setTimeout(step, wait);
+      } else {
+        nameEl.classList.remove('spin');
+        show(final);
+      }
+    })();
+    clearTimeout(spin._g);
+    spin._g = setTimeout(function () {
+      nameEl.classList.remove('spin');
+      show(final);
+    }, 2200);
+  }
+
+  document.getElementById('umRoll').addEventListener('click', function () {
+    meEl.value = '';
+    spin(AfroUmamei.make(Math.floor(Math.random() * 4294967296)));
+  });
+
+  function fromMe() {
+    var v = meEl.value.trim();
+    if (!v) { meEl.focus(); return; }
+    spin(AfroUmamei.make(AfroUmamei.hash(v)));
+  }
+  document.getElementById('umGo').addEventListener('click', fromMe);
+  meEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') fromMe(); });
+
+  /* 前に出したものがあれば、そこから始める */
+  (function () {
+    var o = null;
+    try { o = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+    if (o && o.r && o.r.name) {
+      if (o.me) meEl.value = o.me;
+      show(o.r);
+    } else {
+      show(AfroUmamei.make(Math.floor(Math.random() * 4294967296)));
+    }
+  })();
+})();
+</script>
+</body>
+</html>
