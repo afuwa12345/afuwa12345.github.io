@@ -169,6 +169,10 @@
   .mk-btn.gold { background: var(--gold); color: #fff; }
 
   .mk-note { font-size: 11.5px; color: var(--ink-dim); line-height: 1.8; margin: 12px 0 0; }
+  #mkMsg {
+    color: var(--turf); font-weight: 700;
+    background: var(--gold-soft); border-radius: 9px; padding: 9px 12px;
+  }
 
   /* 顔のパーツは、パーツの絵そのものを見本にする */
   .mk-sw.face button { width: 56px; height: 46px; background: var(--paper-2); }
@@ -223,8 +227,10 @@
     <div class="mk-acts">
       <button type="button" class="mk-btn" id="mkRandom">ランダム</button>
       <button type="button" class="mk-btn primary" id="mkSave">画像を保存</button>
-      <a class="mk-btn gold" id="mkShare" href="#" target="_blank" rel="noopener">X でシェア</a>
+      <button type="button" class="mk-btn gold" id="mkShare">X でシェア</button>
     </div>
+
+    <p class="mk-note" id="mkMsg" hidden></p>
 
     <p class="mk-note">
       保存した絵は、SNSのアイコンにしても、待ち受けにしても大丈夫です。<br>
@@ -725,21 +731,56 @@
     save(); render(); markAll();
   });
 
-  /* ===== 保存 ===== */
-  document.getElementById('mkSave').addEventListener('click', function () {
+  /* ===== 画像にする ===== */
+  /* 白地にしてから1枚の絵にする。data: の文字列で返す */
+  function makeUrl() {
     var out = document.createElement('canvas');
     out.width = SIZE; out.height = SIZE;
     var g = out.getContext('2d');
     g.fillStyle = '#FFFFFF';
     g.fillRect(0, 0, SIZE, SIZE);
     g.drawImage(canvas, 0, 0);
+    return out.toDataURL('image/png');
+  }
+
+  /* data: の文字列を、そのままファイルに変える。
+     途中で待たないので、押した流れのまま共有をひらける
+     （待ちをはさむと、スマホでは共有がひらけないことがある） */
+  function urlToFile(url, name) {
+    var bin = atob(url.split(',')[1]);
+    var arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new File([arr], name, { type: 'image/png' });
+  }
+
+  function fileName() {
+    var nm = myName().replace(/[\\/:*?"<>|\s]/g, '');
+    return 'afro-horse' + (nm ? '-' + nm : '') + '.png';
+  }
+
+  function download(url, name) {
     var a = document.createElement('a');
-    a.download = 'afro-horse-maker.png';
-    a.href = out.toDataURL('image/png');
+    a.download = name;
+    a.href = url;
     a.click();
+  }
+
+  function say(text) {
+    var m = document.getElementById('mkMsg');
+    if (!m) return;
+    m.textContent = text;
+    m.hidden = !text;
+  }
+
+  /* ===== 保存 ===== */
+  document.getElementById('mkSave').addEventListener('click', function () {
+    download(makeUrl(), fileName());
+    say('画像を保存しました。');
   });
 
   /* ===== シェア ===== */
+  var shareText = '';
+
   function paintShare() {
     var names = [];
     PARTS.forEach(function (p) {
@@ -751,10 +792,36 @@
                : '自分だけのアフロ馬をつくった！\n';
     if (names.length) t += 'アフロは【' + names.join('・') + '】\n';
     t += '#アフロホース #アフロ馬メーカー\n';
-    document.getElementById('mkShare').href =
-      'https://twitter.com/intent/tweet?text=' + encodeURIComponent(t) +
-      '&url=' + encodeURIComponent('https://afro-horse.com/maker.html');
+    shareText = t;
   }
+
+  function xIntent() {
+    return 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) +
+           '&url=' + encodeURIComponent('https://afro-horse.com/maker.html');
+  }
+
+  document.getElementById('mkShare').addEventListener('click', function () {
+    var url = makeUrl();
+    var file = null;
+    try { file = urlToFile(url, fileName()); } catch (e) {}
+
+    /* スマホなど、絵ごと渡せる端末はそのまま渡す。
+       共有の窓から X を選べば、絵が付いたまま投稿できる */
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({
+        files: [file],
+        text: shareText,
+        title: 'アフロ馬メーカー'
+      }).then(function () { say(''); })['catch'](function () { /* やめただけ */ });
+      return;
+    }
+
+    /* パソコンなどは、絵を直接わたせない。
+       絵を保存してから、文だけ入った投稿画面をひらく */
+    download(url, fileName());
+    say('画像を保存しました。開いた投稿画面に、その画像を貼りつけてください。');
+    window.open(xIntent(), '_blank', 'noopener');
+  });
 
   /* 打つたびに描きなおす */
   (function () {
