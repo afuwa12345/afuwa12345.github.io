@@ -236,15 +236,6 @@ footer {text-align:center;color:var(--mute);font-family:'DotGothic16',monospace;
         <input type="range" id="bgmVolume" min="0" max="100" value="15" style="width:100%;accent-color:var(--amber)">
         <p style="font-size:11px;color:var(--mute);text-align:right;margin-top:4px"><span id="bgmVolumeLabel">15</span>%</p>
       </div>
-      <div style="margin-top:16px;padding-top:12px;border-top:1px dashed #3a1515">
-        <h2 style="font-size:14px;margin-bottom:8px">🧪 テストモード</h2>
-        <p style="font-size:11px;color:var(--mute);margin-bottom:10px">やんちゃアフワを手動で切替できます</p>
-        <div style="display:flex;gap:6px">
-          <button class="yancha-toggle-btn" data-mode="auto" id="ymAuto">⏰ 自動</button>
-          <button class="yancha-toggle-btn" data-mode="off" id="ymOff">😊 通常</button>
-          <button class="yancha-toggle-btn" data-mode="on" id="ymOn">⚡ やんちゃ</button>
-        </div>
-      </div>
       <button class="modal-close" id="modalClose">閉じる</button>
     </div>
   </div>
@@ -3050,9 +3041,8 @@ function setYanchaMode(mode) {
     afuwaEl.style.backgroundImage = `url('${getCurrentIdleFrame()}')`;
   }
 }
-document.getElementById('ymAuto').addEventListener('click', () => setYanchaMode('auto'));
-document.getElementById('ymOff').addEventListener('click', () => setYanchaMode('off'));
-document.getElementById('ymOn').addEventListener('click', () => setYanchaMode('on'));
+/* テストモードのボタンは外した。やんちゃアフワは時間で自動に切りかわる。
+   setYanchaMode はほかからも呼ばれるので残してある */
 updateYanchaToggleUI();
 
 // =========================================
