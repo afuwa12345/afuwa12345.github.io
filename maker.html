@@ -405,6 +405,24 @@
     } catch (e) { done(); }
   }
 
+  /* 絵の左上に、どこで作ったかを小さく入れる。
+     キャラは中央から右に寄っているので、ここは空いている */
+  function drawMark(g) {
+    var x = SIZE * 0.045;
+    g.save();
+    g.textAlign = 'left';
+    g.textBaseline = 'alphabetic';
+
+    g.font = '900 ' + (SIZE * 0.036) + 'px "Zen Kaku Gothic New", sans-serif';
+    g.fillStyle = 'rgba(26,30,24,.62)';
+    g.fillText('アフロ馬メーカー', x, SIZE * 0.062);
+
+    g.font = '700 ' + (SIZE * 0.026) + 'px "Zen Kaku Gothic New", sans-serif';
+    g.fillStyle = 'rgba(181,135,26,.85)';
+    g.fillText('afro-horse.com', x, SIZE * 0.097);
+    g.restore();
+  }
+
   function myName() {
     var el = document.getElementById('mkName');
     return (el && el.value || '').replace(/[\r\n\t]/g, '').trim().slice(0, 12);
@@ -459,6 +477,7 @@
     } else {
       ctx.drawImage(off, 0, 0);
     }
+    drawMark(ctx);
     paintShare();
   }
 
