@@ -330,6 +330,9 @@
     for (var k = 0; k < PARTS.length; k++) {
       arrs.push(new Uint8Array(n));
       W[PARTS[k].id] = arrs[k];
+      var kk = PARTS[k].key;
+      var kl = Math.sqrt(kk[0] * kk[0] + kk[1] * kk[1] + kk[2] * kk[2]) || 1;
+      PARTS[k].unit = [kk[0] / kl, kk[1] / kl, kk[2] / kl];
     }
     for (var i = 0, j = 0; i < n; i++, j += 4) {
       var al = d[j + 3];
@@ -340,12 +343,18 @@
       var dk = Math.sqrt(r0 * r0 + g0 * g0 + b0 * b0);
       if (dk < 45) continue;
 
-      var bi = -1, bd = 1e9;
+      /* 「いちばん近い色」で選んではいけない。
+         線に近づいて暗くなった水色は、RGB のものさしでは
+         紫や緑のほうが近くなってしまい、フチだけ別の色に塗られる。
+
+         暗いか明るいかは見ないで、色あいの向きだけで見くらべる。
+         暗くなった水色は、向きとしては水色のままなので正しく選べる */
+      var len0 = Math.sqrt(r0 * r0 + g0 * g0 + b0 * b0) || 1;
+      var bi = -1, bs = -1;
       for (var k2 = 0; k2 < PARTS.length; k2++) {
-        var key = PARTS[k2].key;
-        var dr = r0 - key[0], dg = g0 - key[1], db = b0 - key[2];
-        var dd = dr * dr + dg * dg + db * db;
-        if (dd < bd) { bd = dd; bi = k2; }
+        var u = PARTS[k2].unit;
+        var cos = (r0 * u[0] + g0 * u[1] + b0 * u[2]) / len0;
+        if (cos > bs) { bs = cos; bi = k2; }
       }
       if (bi < 0) continue;
 
