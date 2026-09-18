@@ -40,15 +40,9 @@
     position: relative; margin: 0 auto;
     width: min(100%, 380px); aspect-ratio: 1;
     border: 1px solid var(--rule); border-radius: 16px;
-    background:
-      linear-gradient(45deg, var(--paper-2) 25%, transparent 25% 75%, var(--paper-2) 75%) 0 0 / 22px 22px,
-      linear-gradient(45deg, var(--paper-2) 25%, transparent 25% 75%, var(--paper-2) 75%) 11px 11px / 22px 22px,
-      var(--white);
+    background: var(--white);
     overflow: hidden;
   }
-  .mk-stage.on-turf { background: var(--turf); }
-  .mk-stage.on-white { background: var(--white); }
-  .mk-stage.on-dark { background: #1A1E18; }
   .mk-stage canvas { display: block; width: 100%; height: 100%; }
   .mk-load {
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -113,15 +107,6 @@
 
   .mk-note { font-size: 11.5px; color: var(--ink-dim); line-height: 1.8; margin: 12px 0 0; }
 
-  /* 背景えらび */
-  .mk-bg { display: flex; gap: 7px; margin: 10px 0 0; justify-content: center; }
-  .mk-bg button {
-    padding: 6px 12px; border: 1px solid var(--rule); border-radius: 999px;
-    background: var(--white); cursor: pointer; font-family: inherit;
-    font-size: 11.5px; font-weight: 700; color: var(--ink-soft);
-  }
-  .mk-bg button.on { background: var(--turf); border-color: var(--turf); color: var(--paper); }
-
   /* 顔のパーツは、パーツの絵そのものを見本にする */
   .mk-sw.face button { width: 56px; height: 46px; background: var(--paper-2); }
   .mk-sw.face button img {
@@ -162,13 +147,6 @@
     <div class="mk-stage" id="mkStage">
       <canvas id="mkCanvas" width="900" height="900"></canvas>
       <div class="mk-load" id="mkLoad">よみこみ中...</div>
-    </div>
-
-    <div class="mk-bg" id="mkBg">
-      <button type="button" data-bg="" class="on">とうめい</button>
-      <button type="button" data-bg="on-white">しろ</button>
-      <button type="button" data-bg="on-turf">みどり</button>
-      <button type="button" data-bg="on-dark">くろ</button>
     </div>
 
     <div id="mkParts"></div>
@@ -247,14 +225,14 @@
   var base = null;          /* もとの絵の画素 */
   var W = {};               /* 場所ごとの「どれだけ塗るか」0〜255 */
   var pick = {};            /* いま選んでいるもの */
-  var bgCls = '';
+
 
   /* ===== 覚えておく ===== */
   var KEY = 'afro.maker.v1';
   function load() {
     try {
       var o = JSON.parse(localStorage.getItem(KEY) || '{}');
-      if (o && o.pick) { pick = o.pick; bgCls = o.bg || ''; }
+      if (o && o.pick) { pick = o.pick; }
     } catch (e) {}
     for (var i = 0; i < PARTS.length; i++) {
       var p = PARTS[i];
@@ -269,7 +247,7 @@
     }
   }
   function save() {
-    try { localStorage.setItem(KEY, JSON.stringify({ pick: pick, bg: bgCls })); } catch (e) {}
+    try { localStorage.setItem(KEY, JSON.stringify({ pick: pick })); } catch (e) {}
   }
 
   /* ===== 色を決める ===== */
@@ -503,18 +481,6 @@
     FACE.forEach(function (f) { if (f._box) markFace(f, f._box); });
   }
 
-  /* ===== 背景 ===== */
-  var bgWrap = document.getElementById('mkBg');
-  bgWrap.addEventListener('click', function (e) {
-    var b = e.target.closest('button');
-    if (!b) return;
-    bgCls = b.getAttribute('data-bg') || '';
-    stage.className = 'mk-stage' + (bgCls ? ' ' + bgCls : '');
-    var all = bgWrap.querySelectorAll('button');
-    for (var i = 0; i < all.length; i++) all[i].classList.toggle('on', all[i] === b);
-    save();
-  });
-
   /* ===== ランダム ===== */
   document.getElementById('mkRandom').addEventListener('click', function () {
     PARTS.forEach(function (p) {
@@ -534,9 +500,8 @@
     var out = document.createElement('canvas');
     out.width = SIZE; out.height = SIZE;
     var g = out.getContext('2d');
-    if (bgCls === 'on-white') { g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, SIZE, SIZE); }
-    else if (bgCls === 'on-turf') { g.fillStyle = '#14583A'; g.fillRect(0, 0, SIZE, SIZE); }
-    else if (bgCls === 'on-dark') { g.fillStyle = '#1A1E18'; g.fillRect(0, 0, SIZE, SIZE); }
+    g.fillStyle = '#FFFFFF';
+    g.fillRect(0, 0, SIZE, SIZE);
     g.drawImage(canvas, 0, 0);
     var a = document.createElement('a');
     a.download = 'afro-horse-maker.png';
@@ -561,11 +526,6 @@
 
   /* ===== はじめる ===== */
   load();
-  stage.className = 'mk-stage' + (bgCls ? ' ' + bgCls : '');
-  var bb = bgWrap.querySelectorAll('button');
-  for (var i = 0; i < bb.length; i++) {
-    bb[i].classList.toggle('on', (bb[i].getAttribute('data-bg') || '') === bgCls);
-  }
 
   function loadParts() {
     return fetch('images/maker/parts.json').then(function (r) { return r.json(); })
