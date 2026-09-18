@@ -227,13 +227,14 @@
     <div class="mk-acts">
       <button type="button" class="mk-btn" id="mkRandom">ランダム</button>
       <button type="button" class="mk-btn primary" id="mkSave">画像を保存</button>
-      <button type="button" class="mk-btn gold" id="mkShare">X でシェア</button>
+      <button type="button" class="mk-btn gold" id="mkShare">シェア</button>
     </div>
 
     <p class="mk-note" id="mkMsg" hidden></p>
 
     <p class="mk-note">
       保存した絵は、SNSのアイコンにしても、待ち受けにしても大丈夫です。<br>
+      スマホなら「画像つきでシェア」から、Xにも Instagram のストーリーズにも、絵ごと送れます。<br>
       選んだ組み合わせはこの端末に覚えておくので、次に来たときも同じ姿から始められます。
     </p>
 
@@ -799,6 +800,20 @@
     return 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) +
            '&url=' + encodeURIComponent('https://afro-horse.com/maker.html');
   }
+
+  /* 絵ごと渡せる端末かどうかで、ボタンの文字を変える。
+     渡せるなら X だけでなく Instagram のストーリーズにも出せるので、
+     「X でシェア」とは書かない */
+  (function () {
+    var b = document.getElementById('mkShare');
+    var can = false;
+    try {
+      var probe = new File([new Uint8Array([0])], 'a.png', { type: 'image/png' });
+      can = !!(navigator.canShare && navigator.canShare({ files: [probe] }));
+    } catch (e) {}
+    b.textContent = can ? '画像つきでシェア' : 'X でシェア';
+    if (can) b.title = 'X・Instagramのストーリーズ・LINE などに、絵ごと送れます';
+  })();
 
   document.getElementById('mkShare').addEventListener('click', function () {
     var url = makeUrl();
