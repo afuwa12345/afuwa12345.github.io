@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アフロ馬メーカー｜自分だけのアフロ馬をつくる - AFRO Horse</title>
+<meta name="description" content="アフロの色や柄、体・口まわり・しっぽ・蹄の色を選んで、自分だけのアフロ馬をつくれます。金・銀・虹・迷彩・麒麟柄など15種類。作った絵はそのまま保存できて、SNSのアイコンにも使えます。登録不要。">
+<link rel="canonical" href="https://afro-horse.com/maker.html">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<meta name="theme-color" content="#8A6410">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/maker.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロ馬メーカー｜自分だけのアフロ馬をつくる">
+<meta property="og:description" content="アフロの色や柄、体やしっぽの色を選んで、自分だけのアフロ馬をつくれます。作った絵はそのまま保存できます。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949"
+   crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="css/afro.css">
+
+<style>
+  /* ===== 絵を見せるところ ===== */
+  .mk-stage {
+    position: relative; margin: 0 auto;
+    width: min(100%, 380px); aspect-ratio: 1;
+    border: 1px solid var(--rule); border-radius: 16px;
+    background:
+      linear-gradient(45deg, var(--paper-2) 25%, transparent 25% 75%, var(--paper-2) 75%) 0 0 / 22px 22px,
+      linear-gradient(45deg, var(--paper-2) 25%, transparent 25% 75%, var(--paper-2) 75%) 11px 11px / 22px 22px,
+      var(--white);
+    overflow: hidden;
+  }
+  .mk-stage.on-turf { background: var(--turf); }
+  .mk-stage.on-white { background: var(--white); }
+  .mk-stage.on-dark { background: #1A1E18; }
+  .mk-stage canvas { display: block; width: 100%; height: 100%; }
+  .mk-load {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--ink-dim); background: var(--white);
+  }
+  .mk-load.done { display: none; }
+
+  /* ===== 選ぶところ ===== */
+  .mk-part { margin: 18px 0 0; }
+  .mk-part-t {
+    display: flex; align-items: baseline; gap: 8px; margin: 0 0 9px;
+    font-size: 13.5px; font-weight: 900;
+  }
+  .mk-part-t em {
+    font-style: normal; font-family: 'Anton', sans-serif; font-size: 10px;
+    letter-spacing: .18em; color: var(--gold);
+  }
+  .mk-part-t b { margin-left: auto; font-size: 11.5px; font-weight: 700; color: var(--ink-soft); }
+
+  .mk-sw { display: flex; flex-wrap: wrap; gap: 7px; }
+  .mk-sw button {
+    position: relative; width: 38px; height: 38px; padding: 0; cursor: pointer;
+    border: 2px solid var(--rule); border-radius: 10px; background: none;
+    overflow: hidden; transition: transform .12s, border-color .12s;
+  }
+  .mk-sw button i {
+    position: absolute; inset: 0; display: block; border-radius: 7px;
+  }
+  .mk-sw button:hover { transform: translateY(-2px); }
+  .mk-sw button.on { border-color: var(--turf); box-shadow: 0 0 0 2px rgba(20,88,58,.18); }
+  .mk-sw button.on::after {
+    content: ''; position: absolute; right: 2px; bottom: 2px; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--turf); box-shadow: 0 0 0 2px var(--white);
+  }
+  .mk-sw button.rare { border-color: var(--gold-lt); }
+  .mk-sw button.rare2 { border-color: var(--gold); box-shadow: 0 0 9px rgba(181,135,26,.35); }
+  .mk-sw button.none i {
+    background: var(--paper-2);
+    background-image: linear-gradient(45deg, transparent 45%, var(--rule) 45% 55%, transparent 55%);
+  }
+
+  /* 自由に色を選ぶ */
+  .mk-free { display: flex; align-items: center; gap: 8px; margin: 8px 0 0; }
+  .mk-free input[type="color"] {
+    width: 38px; height: 38px; padding: 0; border: 2px solid var(--rule);
+    border-radius: 10px; background: none; cursor: pointer;
+  }
+  .mk-free span { font-size: 11.5px; color: var(--ink-soft); }
+
+  /* ===== 下のボタン ===== */
+  .mk-acts { display: flex; flex-wrap: wrap; gap: 9px; margin: 22px 0 0; }
+  .mk-btn {
+    flex: 1 1 140px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 13px 14px; border: 0; border-radius: 12px; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 900; text-decoration: none;
+    background: var(--paper-2); color: var(--ink); box-shadow: var(--sh-sm);
+    transition: transform .12s, box-shadow .12s;
+  }
+  .mk-btn:hover { transform: translateY(-2px); box-shadow: var(--sh-md); }
+  .mk-btn.primary { background: var(--turf); color: var(--paper); }
+  .mk-btn.gold { background: var(--gold); color: #fff; }
+
+  .mk-note { font-size: 11.5px; color: var(--ink-dim); line-height: 1.8; margin: 12px 0 0; }
+
+  /* 背景えらび */
+  .mk-bg { display: flex; gap: 7px; margin: 10px 0 0; justify-content: center; }
+  .mk-bg button {
+    padding: 6px 12px; border: 1px solid var(--rule); border-radius: 999px;
+    background: var(--white); cursor: pointer; font-family: inherit;
+    font-size: 11.5px; font-weight: 700; color: var(--ink-soft);
+  }
+  .mk-bg button.on { background: var(--turf); border-color: var(--turf); color: var(--paper); }
+
+  /* 顔のパーツは、パーツの絵そのものを見本にする */
+  .mk-sw.face button { width: 56px; height: 46px; background: var(--paper-2); }
+  .mk-sw.face button img {
+    position: absolute; inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px);
+    object-fit: contain;
+  }
+
+  @media (max-width: 480px) {
+    .mk-sw button { width: 34px; height: 34px; }
+    .mk-sw.face button { width: 50px; height: 42px; }
+  }
+</style>
+</head>
+<body class="theme-world">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="keiba.html">KEIBA</a>
+      <a href="comic.html">COMIC</a>
+      <a href="game.html">GAME</a>
+      <a href="world.html">WORLD</a>
+      <a href="sns.html">SNS</a>
+    </div>
+  </div>
+</nav>
+
+<header class="phead" data-bg="MAKER">
+  <div class="phead-en">AFRO MAKER</div>
+  <h1 class="phead-ja">アフロ馬メーカー</h1>
+  <p class="phead-sub">自分だけのアフロ馬をつくる</p>
+</header>
+
+<section>
+  <div class="wrap">
+
+    <div class="mk-stage" id="mkStage">
+      <canvas id="mkCanvas" width="900" height="900"></canvas>
+      <div class="mk-load" id="mkLoad">よみこみ中...</div>
+    </div>
+
+    <div class="mk-bg" id="mkBg">
+      <button type="button" data-bg="" class="on">とうめい</button>
+      <button type="button" data-bg="on-white">しろ</button>
+      <button type="button" data-bg="on-turf">みどり</button>
+      <button type="button" data-bg="on-dark">くろ</button>
+    </div>
+
+    <div id="mkParts"></div>
+
+    <div class="mk-acts">
+      <button type="button" class="mk-btn" id="mkRandom">ランダム</button>
+      <button type="button" class="mk-btn primary" id="mkSave">画像を保存</button>
+      <a class="mk-btn gold" id="mkShare" href="#" target="_blank" rel="noopener">X でシェア</a>
+    </div>
+
+    <p class="mk-note">
+      保存した絵は、SNSのアイコンにしても、待ち受けにしても大丈夫です。<br>
+      選んだ組み合わせはこの端末に覚えておくので、次に来たときも同じ姿から始められます。
+    </p>
+
+    <a class="backlink" href="world.html">&larr; アフロワールドにもどる</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="f-tag">AFRO HORSE</div>
+    <p class="f-copy">&copy; AFRO Horse</p>
+  </div>
+</footer>
+
+<script src="js/afro-paint.js"></script>
+<script src="js/afro-ui.js"></script>
+<script>
+(function () {
+  /* ===== 塗り分けの下地 =====
+     ベースの絵は、場所ごとにわざと違う色で塗ってある。
+     その色を手がかりに「ここはアフロ」「ここは蹄」と見分けて塗りかえる。
+     key は実際の絵から測った色。r は「この距離までは完全に塗りかえる」半径 */
+  var PARTS = [
+    { id: 'afro',   name: 'アフロ',     en: 'AFRO',   key: [0x36, 0xA2, 0x3E], r: 60, pat: true,  def: 'cha' },
+    { id: 'body',   name: '体・頭',     en: 'BODY',   key: [0xAF, 0xF1, 0xFD], r: 60, pat: false, def: 'kinari' },
+    { id: 'muzzle', name: '口のまわり', en: 'MUZZLE', key: [0xFD, 0xAE, 0xC4], r: 60, pat: false, def: 'tan' },
+    { id: 'tail',   name: 'しっぽ',     en: 'TAIL',   key: [0xFD, 0x90, 0x1E], r: 70, pat: false, def: 'cha' },
+    { id: 'hoof',   name: 'ひづめ',     en: 'HOOF',   key: [0x7B, 0x45, 0xB0], r: 80, pat: false, def: 'sumi' }
+  ];
+
+  /* 体まわりで使う、おちついた色。アフロは AfroPaint.PAL（15種）を使う */
+  var SKIN = [
+    { id: 'kinari', n: 'きなり',   flat: '#F4EBD6', chip: '#F4EBD6' },
+    { id: 'shiro',  n: '白',       flat: '#FBFBF8', chip: '#FBFBF8' },
+    { id: 'tan',    n: 'ベージュ', flat: '#D6BA96', chip: '#D6BA96' },
+    { id: 'cha',    n: '茶',       flat: '#8A6A50', chip: '#8A6A50' },
+    { id: 'koicha', n: 'こげ茶',   flat: '#4D443A', chip: '#4D443A' },
+    { id: 'sumi',   n: 'すみ',     flat: '#3A342D', chip: '#3A342D' },
+    { id: 'hai',    n: 'はい色',   flat: '#B9B5AC', chip: '#B9B5AC' },
+    { id: 'ashige', n: 'あし毛',   flat: '#E2DED5', chip: '#E2DED5' },
+    { id: 'kuri',   n: '栗毛',     flat: '#B5794A', chip: '#B5794A' },
+    { id: 'ao',     n: '青毛',     flat: '#2E2A2A', chip: '#2E2A2A' },
+    { id: 'momo',   n: 'もも',     flat: '#E8B4B8', chip: '#E8B4B8' },
+    { id: 'kin',    n: '金',       flat: '#D4A02A', chip: '#D4A02A' }
+  ];
+
+  /* 顔のパーツ。images/maker/parts.json に位置と大きさが入っている */
+  var FACE = [
+    { id: 'me',    name: '目',   en: 'EYES' },
+    { id: 'mayu',  name: 'まゆ', en: 'BROWS' },
+    { id: 'hana',  name: '鼻',   en: 'NOSE' },
+    { id: 'kuchi', name: '口',   en: 'MOUTH' }
+  ];
+  var MAN = null;            /* parts.json の中身 */
+  var PIMG = {};             /* 読みこんだパーツの絵 */
+
+  var stage  = document.getElementById('mkStage');
+  var canvas = document.getElementById('mkCanvas');
+  var ctx    = canvas.getContext('2d');
+  var loadEl = document.getElementById('mkLoad');
+  var partsEl = document.getElementById('mkParts');
+
+  var SIZE = 900;
+  var base = null;          /* もとの絵の画素 */
+  var W = {};               /* 場所ごとの「どれだけ塗るか」0〜255 */
+  var pick = {};            /* いま選んでいるもの */
+  var bgCls = '';
+
+  /* ===== 覚えておく ===== */
+  var KEY = 'afro.maker.v1';
+  function load() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY) || '{}');
+      if (o && o.pick) { pick = o.pick; bgCls = o.bg || ''; }
+    } catch (e) {}
+    for (var i = 0; i < PARTS.length; i++) {
+      var p = PARTS[i];
+      if (!pick[p.id]) pick[p.id] = { kind: 'skin', id: p.def };
+    }
+    for (var j = 0; j < FACE.length; j++) {
+      if (!pick[FACE[j].id]) pick[FACE[j].id] = { kind: 'face', n: 1 };
+    }
+    if (!pick.afro || pick.afro.kind === 'skin') {
+      /* アフロだけは初期値を本来の色（こげ茶）にする */
+      pick.afro = { kind: 'free', hex: '#4D443A' };
+    }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify({ pick: pick, bg: bgCls })); } catch (e) {}
+  }
+
+  /* ===== 色を決める ===== */
+  function palById(id) {
+    var L = AfroPaint.PAL;
+    for (var i = 0; i < L.length; i++) if (L[i].id === id) return L[i];
+    return null;
+  }
+  function skinById(id) {
+    for (var i = 0; i < SKIN.length; i++) if (SKIN[i].id === id) return SKIN[i];
+    return SKIN[0];
+  }
+  function hex2rgb(h) {
+    var n = parseInt(String(h).slice(1), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  /* その場所に塗るもの。一色なら [r,g,b]、柄なら画素の並び */
+  function inkFor(p) {
+    var s = pick[p.id];
+    if (!s) return hex2rgb('#888888');
+    if (s.kind === 'free') return hex2rgb(s.hex);
+    if (s.kind === 'skin') return hex2rgb(skinById(s.id).flat);
+    var pal = palById(s.id);
+    if (!pal) return hex2rgb('#888888');
+    if (pal.flat) return hex2rgb(pal.flat);
+    var cv = AfroPaint.makeSkin(pal, SIZE, SIZE, 12345);
+    return cv.getContext('2d').getImageData(0, 0, SIZE, SIZE).data;
+  }
+
+  /* ===== 描く ===== */
+  function render() {
+    if (!base) return;
+    var out = new Uint8ClampedArray(base.data);
+    for (var k = 0; k < PARTS.length; k++) {
+      var p = PARTS[k];
+      var w = W[p.id];
+      var ink = inkFor(p);
+      var isPat = ink.length > 3;
+      for (var i = 0, j = 0; i < w.length; i++, j += 4) {
+        var a = w[i];
+        if (!a) continue;
+        var f = a / 255;
+        var r = isPat ? ink[j] : ink[0];
+        var g = isPat ? ink[j + 1] : ink[1];
+        var b = isPat ? ink[j + 2] : ink[2];
+        out[j]     = out[j]     * (1 - f) + r * f;
+        out[j + 1] = out[j + 1] * (1 - f) + g * f;
+        out[j + 2] = out[j + 2] * (1 - f) + b * f;
+      }
+    }
+    ctx.putImageData(new ImageData(out, SIZE, SIZE), 0, 0);
+
+    /* 顔のパーツを上から重ねる。順番は 鼻 → 口 → 目 → まゆ */
+    ['hana', 'kuchi', 'me', 'mayu'].forEach(function (key) {
+      var s = pick[key];
+      if (!MAN || !s || s.n === 0) return;
+      var r = MAN.parts[key] && MAN.parts[key][s.n - 1];
+      var im = r && PIMG[r.id];
+      if (r && im && im.complete && im.naturalWidth) ctx.drawImage(im, r.x, r.y);
+    });
+    paintShare();
+  }
+
+  /* ===== 下ごしらえ ===== */
+  function prepare(img) {
+    var tmp = document.createElement('canvas');
+    tmp.width = SIZE; tmp.height = SIZE;
+    var g = tmp.getContext('2d', { willReadFrequently: true });
+    g.drawImage(img, 0, 0, SIZE, SIZE);
+    base = g.getImageData(0, 0, SIZE, SIZE);
+    var d = base.data, n = SIZE * SIZE;
+
+    for (var k = 0; k < PARTS.length; k++) {
+      var p = PARTS[k];
+      var arr = new Uint8Array(n);
+      var kr = p.key[0], kg = p.key[1], kb = p.key[2];
+      var full = p.r, fade = p.r + 40;
+      for (var i = 0, j = 0; i < n; i++, j += 4) {
+        if (d[j + 3] < 8) continue;
+        var dr = d[j] - kr, dg = d[j + 1] - kg, db = d[j + 2] - kb;
+        var dist = Math.sqrt(dr * dr + dg * dg + db * db);
+        if (dist >= fade) continue;
+        var w = dist <= full ? 1 : (fade - dist) / (fade - full);
+        arr[i] = Math.round(w * (d[j + 3] / 255) * 255);
+      }
+      W[p.id] = arr;
+    }
+  }
+
+  /* ===== 選ぶところを作る ===== */
+  function chipStyle(el, css) {
+    var i = document.createElement('i');
+    i.style.background = css;
+    el.appendChild(i);
+  }
+
+  function build() {
+    partsEl.innerHTML = '';
+    PARTS.forEach(function (p) {
+      var box = document.createElement('div');
+      box.className = 'mk-part';
+
+      var t = document.createElement('div');
+      t.className = 'mk-part-t';
+      t.innerHTML = '<span>' + p.name + '</span><em>' + p.en + '</em><b></b>';
+      box.appendChild(t);
+
+      var row = document.createElement('div');
+      row.className = 'mk-sw';
+      box.appendChild(row);
+
+      var list = p.pat ? AfroPaint.PAL : SKIN;
+      list.forEach(function (c) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.title = c.n;
+        b.setAttribute('data-id', c.id);
+        if (c.rank === 1) b.className = 'rare';
+        if (c.rank === 2) b.className = 'rare2';
+        chipStyle(b, c.chip);
+        b.onclick = function () {
+          pick[p.id] = { kind: p.pat ? 'pal' : 'skin', id: c.id };
+          save(); render(); mark(p, box);
+        };
+        row.appendChild(b);
+      });
+
+      /* 自由に色を選ぶ */
+      var free = document.createElement('div');
+      free.className = 'mk-free';
+      var inp = document.createElement('input');
+      inp.type = 'color';
+      inp.value = (pick[p.id] && pick[p.id].kind === 'free') ? pick[p.id].hex : '#8A6A50';
+      inp.oninput = function () {
+        pick[p.id] = { kind: 'free', hex: inp.value };
+        save(); render(); mark(p, box);
+      };
+      var lab = document.createElement('span');
+      lab.textContent = '自分で色をえらぶ';
+      free.appendChild(inp); free.appendChild(lab);
+      box.appendChild(free);
+
+      partsEl.appendChild(box);
+      p._box = box;
+      mark(p, box);
+    });
+
+    if (MAN) FACE.forEach(buildFace);
+  }
+
+  /* 顔のパーツを選ぶところ。見本はパーツの絵そのものを出す */
+  function buildFace(f) {
+    var list = (MAN.parts[f.id] || []).filter(function (x) { return !!x; });
+    if (!list.length) return;
+
+    var box = document.createElement('div');
+    box.className = 'mk-part';
+    var t = document.createElement('div');
+    t.className = 'mk-part-t';
+    t.innerHTML = '<span>' + f.name + '</span><em>' + f.en + '</em><b></b>';
+    box.appendChild(t);
+
+    var row = document.createElement('div');
+    row.className = 'mk-sw face';
+    box.appendChild(row);
+
+    (MAN.parts[f.id] || []).forEach(function (r, i) {
+      if (!r) return;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pic';
+      b.setAttribute('data-n', String(i + 1));
+      b.title = f.name + (i + 1);
+      var im = document.createElement('img');
+      im.src = 'images/maker/' + r.id + '.webp';
+      im.alt = '';
+      b.appendChild(im);
+      b.onclick = function () {
+        pick[f.id] = { kind: 'face', n: i + 1 };
+        save(); render(); markFace(f, box);
+      };
+      row.appendChild(b);
+    });
+
+    partsEl.appendChild(box);
+    f._box = box;
+    markFace(f, box);
+  }
+
+  function markFace(f, box) {
+    var s = pick[f.id] || {};
+    var btns = box.querySelectorAll('.mk-sw button');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('on', Number(btns[i].getAttribute('data-n')) === s.n);
+    }
+    box.querySelector('.mk-part-t b').textContent = f.name + (s.n || 1);
+  }
+
+  /* いま選んでいるものに印をつける */
+  function mark(p, box) {
+    var s = pick[p.id] || {};
+    var btns = box.querySelectorAll('.mk-sw button');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('on', s.kind !== 'free' && btns[i].getAttribute('data-id') === s.id);
+    }
+    var name = '自分で選んだ色';
+    if (s.kind === 'pal') { var q = palById(s.id); if (q) name = q.n; }
+    else if (s.kind === 'skin') { name = skinById(s.id).n; }
+    box.querySelector('.mk-part-t b').textContent = name;
+  }
+
+  function markAll() {
+    PARTS.forEach(function (p) { if (p._box) mark(p, p._box); });
+    FACE.forEach(function (f) { if (f._box) markFace(f, f._box); });
+  }
+
+  /* ===== 背景 ===== */
+  var bgWrap = document.getElementById('mkBg');
+  bgWrap.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    bgCls = b.getAttribute('data-bg') || '';
+    stage.className = 'mk-stage' + (bgCls ? ' ' + bgCls : '');
+    var all = bgWrap.querySelectorAll('button');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('on', all[i] === b);
+    save();
+  });
+
+  /* ===== ランダム ===== */
+  document.getElementById('mkRandom').addEventListener('click', function () {
+    PARTS.forEach(function (p) {
+      var list = p.pat ? AfroPaint.PAL : SKIN;
+      var c = list[Math.floor(Math.random() * list.length)];
+      pick[p.id] = { kind: p.pat ? 'pal' : 'skin', id: c.id };
+    });
+    if (MAN) FACE.forEach(function (f) {
+      var n = (MAN.parts[f.id] || []).length;
+      if (n) pick[f.id] = { kind: 'face', n: Math.floor(Math.random() * n) + 1 };
+    });
+    save(); render(); markAll();
+  });
+
+  /* ===== 保存 ===== */
+  document.getElementById('mkSave').addEventListener('click', function () {
+    var out = document.createElement('canvas');
+    out.width = SIZE; out.height = SIZE;
+    var g = out.getContext('2d');
+    if (bgCls === 'on-white') { g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, SIZE, SIZE); }
+    else if (bgCls === 'on-turf') { g.fillStyle = '#14583A'; g.fillRect(0, 0, SIZE, SIZE); }
+    else if (bgCls === 'on-dark') { g.fillStyle = '#1A1E18'; g.fillRect(0, 0, SIZE, SIZE); }
+    g.drawImage(canvas, 0, 0);
+    var a = document.createElement('a');
+    a.download = 'afro-horse-maker.png';
+    a.href = out.toDataURL('image/png');
+    a.click();
+  });
+
+  /* ===== シェア ===== */
+  function paintShare() {
+    var names = [];
+    PARTS.forEach(function (p) {
+      var s = pick[p.id] || {};
+      if (s.kind === 'pal') { var q = palById(s.id); if (q && q.rank) names.push(q.n); }
+    });
+    var t = '自分だけのアフロ馬をつくった！\n';
+    if (names.length) t += 'アフロは【' + names.join('・') + '】\n';
+    t += '#アフロホース #アフロ馬メーカー\n';
+    document.getElementById('mkShare').href =
+      'https://twitter.com/intent/tweet?text=' + encodeURIComponent(t) +
+      '&url=' + encodeURIComponent('https://afro-horse.com/maker.html');
+  }
+
+  /* ===== はじめる ===== */
+  load();
+  stage.className = 'mk-stage' + (bgCls ? ' ' + bgCls : '');
+  var bb = bgWrap.querySelectorAll('button');
+  for (var i = 0; i < bb.length; i++) {
+    bb[i].classList.toggle('on', (bb[i].getAttribute('data-bg') || '') === bgCls);
+  }
+
+  function loadParts() {
+    return fetch('images/maker/parts.json').then(function (r) { return r.json(); })
+      .then(function (d) {
+        MAN = d;
+        var waits = [];
+        FACE.forEach(function (f) {
+          (MAN.parts[f.id] || []).forEach(function (r) {
+            if (!r) return;
+            var im = new Image();
+            PIMG[r.id] = im;
+            waits.push(new Promise(function (ok) {
+              im.onload = ok; im.onerror = ok;
+              im.src = 'images/maker/' + r.id + '.webp';
+            }));
+          });
+        });
+        return Promise.all(waits);
+      })['catch'](function () { MAN = null; });
+  }
+
+  var img = new Image();
+  img.onload = function () {
+    prepare(img);
+    loadParts().then(function () {
+      build();
+      render();
+      loadEl.classList.add('done');
+    });
+  };
+  img.onerror = function () { loadEl.textContent = '絵をよみこめませんでした'; };
+  img.src = 'images/maker/base.webp';
+})();
+</script>
+</body>
+</html>

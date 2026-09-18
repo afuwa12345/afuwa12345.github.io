@@ -92,6 +92,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://afro-horse.com/maker.html</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://afro-horse.com/keiba.html</loc>
     <lastmod>2026-09-17</lastmod>
     <priority>0.9</priority>
