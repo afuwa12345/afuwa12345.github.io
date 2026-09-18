@@ -363,17 +363,46 @@
     g.textAlign = 'center';
     g.textBaseline = 'alphabetic';
     for (var i = 0; i < 24; i++) {
-      g.font = '900 ' + size + 'px "Dela Gothic One", "Zen Kaku Gothic New", sans-serif';
+      /* Dela Gothic One は漢字が極太すぎて、画数の多い字が
+         黒い塊になる。持っていない漢字も多く、そこだけ別の字体で
+         出てしまう。Zen Kaku Gothic New の一番太いものにする */
+      g.font = '900 ' + size + 'px "Zen Kaku Gothic New", sans-serif';
       if (g.measureText(text).width <= maxW || size < SIZE * 0.035) break;
       size -= SIZE * 0.004;
     }
     var y = SIZE * 0.975;
-    g.lineJoin = 'round';
-    g.lineWidth = size * 0.30;
-    g.strokeStyle = '#FFFFFF';
-    g.strokeText(text, SIZE / 2, y);
+
+    /* 白いフチを「線」で描くと、線が字の内側にも太るので、
+       「景」のように画数の多い字は隙間が埋まってつぶれる。
+       そこで、ぼかした白い影を何度か重ねて縁どりにする。
+       こちらは字の形をいっさい削らない */
+    g.save();
+    g.shadowColor = '#FFFFFF';
+    g.shadowBlur = size * 0.22;
+    g.fillStyle = '#FFFFFF';
+    for (var k = 0; k < 4; k++) g.fillText(text, SIZE / 2, y);
+    g.restore();
+
     g.fillStyle = '#1A1E18';
     g.fillText(text, SIZE / 2, y);
+  }
+
+  /* Canvas に描く字は、フォントの読み込みを起こさない。
+     ページに出ていない漢字は取りに行かれないので、
+     その字だけ既定の字体で出てしまう。先に読ませておく */
+  function ensureFont(text, cb) {
+    if (!text || !document.fonts || !document.fonts.load) { cb(); return; }
+    var want = '900 80px "Zen Kaku Gothic New"';
+    function done() {
+      cb();
+      /* 届いたばかりの字がまだ反映されていないことがあるので、
+         少し置いてもう一度だけ描きなおす */
+      setTimeout(cb, 350);
+      setTimeout(cb, 1200);
+    }
+    try {
+      document.fonts.load(want, text).then(done, done);
+    } catch (e) { done(); }
   }
 
   function myName() {
@@ -712,13 +741,19 @@
   (function () {
     var ne = document.getElementById('mkName');
     if (!ne) return;
-    ne.addEventListener('input', function () { save(); render(); });
+    ne.addEventListener('input', function () {
+      save();
+      render();                       /* まず今ある字体で出す */
+      ensureFont(myName(), render);   /* そろったら描きなおす */
+    });
   })();
 
   /* 字体がそろってから、もう一度だけ描きなおす。
      先に描くと、名前が別の字体のまま残ってしまう */
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () { if (base) render(); });
+    document.fonts.ready.then(function () {
+      ensureFont(myName(), function () { if (base) render(); });
+    });
   }
 
   /* ===== はじめる ===== */
