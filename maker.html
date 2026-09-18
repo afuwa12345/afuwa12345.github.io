@@ -50,6 +50,22 @@
   }
   .mk-load.done { display: none; }
 
+  /* ===== なまえ ===== */
+  .mk-name {
+    display: flex; align-items: center; gap: 9px;
+    max-width: 380px; margin: 14px auto 0;
+  }
+  .mk-name label {
+    flex: none; font-size: 12px; font-weight: 900; color: var(--ink-soft);
+  }
+  .mk-name input {
+    flex: 1; min-width: 0; padding: 9px 12px;
+    border: 1px solid var(--rule); border-radius: 10px;
+    background: var(--white); color: var(--ink);
+    font-family: inherit; font-size: 14px; font-weight: 700;
+  }
+  .mk-name input:focus { outline: 0; border-color: var(--turf); }
+
   /* ===== 画像の下のボタン ===== */
   .mk-tabs {
     display: flex; flex-wrap: wrap; gap: 7px; justify-content: center;
@@ -196,6 +212,11 @@
       <div class="mk-load" id="mkLoad">よみこみ中...</div>
     </div>
 
+    <div class="mk-name">
+      <label for="mkName">なまえ</label>
+      <input type="text" id="mkName" maxlength="12" placeholder="つけてみる（12文字まで）">
+    </div>
+
     <div class="mk-tabs" id="mkTabs"></div>
     <div class="mk-pop" id="mkPop" hidden></div>
 
@@ -282,6 +303,10 @@
     try {
       var o = JSON.parse(localStorage.getItem(KEY) || '{}');
       if (o && o.pick) { pick = o.pick; }
+      if (o && o.name) {
+        var ne = document.getElementById('mkName');
+        if (ne) ne.value = o.name;
+      }
     } catch (e) {}
     for (var i = 0; i < PARTS.length; i++) {
       var p = PARTS[i];
@@ -296,7 +321,9 @@
     }
   }
   function save() {
-    try { localStorage.setItem(KEY, JSON.stringify({ pick: pick })); } catch (e) {}
+    try {
+      localStorage.setItem(KEY, JSON.stringify({ pick: pick, name: myName() }));
+    } catch (e) {}
   }
 
   /* ===== 色を決める ===== */
@@ -328,6 +355,32 @@
   }
 
   /* ===== 描く ===== */
+  /* 名前を絵の下に書く。長いほど小さくして、はみ出さないようにする */
+  function drawName(g, text) {
+    var pad = SIZE * 0.08;
+    var maxW = SIZE - pad * 2;
+    var size = SIZE * 0.085;
+    g.textAlign = 'center';
+    g.textBaseline = 'alphabetic';
+    for (var i = 0; i < 24; i++) {
+      g.font = '900 ' + size + 'px "Dela Gothic One", "Zen Kaku Gothic New", sans-serif';
+      if (g.measureText(text).width <= maxW || size < SIZE * 0.035) break;
+      size -= SIZE * 0.004;
+    }
+    var y = SIZE * 0.975;
+    g.lineJoin = 'round';
+    g.lineWidth = size * 0.30;
+    g.strokeStyle = '#FFFFFF';
+    g.strokeText(text, SIZE / 2, y);
+    g.fillStyle = '#1A1E18';
+    g.fillText(text, SIZE / 2, y);
+  }
+
+  function myName() {
+    var el = document.getElementById('mkName');
+    return (el && el.value || '').replace(/[\r\n\t]/g, '').trim().slice(0, 12);
+  }
+
   function render() {
     if (!base) return;
     var out = new Uint8ClampedArray(base.data);
@@ -348,7 +401,15 @@
         out[j + 2] = out[j + 2] * (1 - f) + b * f;
       }
     }
-    ctx.putImageData(new ImageData(out, SIZE, SIZE), 0, 0);
+    /* いったん別の紙に組み立てる。名前を入れるときに縮めたいため */
+    if (!render._off) {
+      render._off = document.createElement('canvas');
+      render._off.width = SIZE; render._off.height = SIZE;
+    }
+    var off = render._off;
+    var og = off.getContext('2d');
+    og.clearRect(0, 0, SIZE, SIZE);
+    og.putImageData(new ImageData(out, SIZE, SIZE), 0, 0);
 
     /* 顔のパーツを上から重ねる。順番は 鼻 → 口 → 目 → まゆ */
     ['hana', 'kuchi', 'me', 'mayu'].forEach(function (key) {
@@ -356,8 +417,19 @@
       if (!MAN || !s || s.n === 0) return;
       var r = MAN.parts[key] && MAN.parts[key][s.n - 1];
       var im = r && PIMG[r.id];
-      if (r && im && im.complete && im.naturalWidth) ctx.drawImage(im, r.x, r.y);
+      if (r && im && im.complete && im.naturalWidth) og.drawImage(im, r.x, r.y);
     });
+
+    /* 名前があるときは、絵を少し縮めて下に場所をあける */
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    var nm = myName();
+    if (nm) {
+      var k = 0.88;
+      ctx.drawImage(off, 0, 0, SIZE, SIZE, (SIZE - SIZE * k) / 2, 0, SIZE * k, SIZE * k);
+      drawName(ctx, nm);
+    } else {
+      ctx.drawImage(off, 0, 0);
+    }
     paintShare();
   }
 
@@ -626,12 +698,27 @@
       var s = pick[p.id] || {};
       if (s.kind === 'pal') { var q = palById(s.id); if (q && q.rank) names.push(q.n); }
     });
-    var t = '自分だけのアフロ馬をつくった！\n';
+    var nm = myName();
+    var t = nm ? ('自分だけのアフロ馬【' + nm + '】をつくった！\n')
+               : '自分だけのアフロ馬をつくった！\n';
     if (names.length) t += 'アフロは【' + names.join('・') + '】\n';
     t += '#アフロホース #アフロ馬メーカー\n';
     document.getElementById('mkShare').href =
       'https://twitter.com/intent/tweet?text=' + encodeURIComponent(t) +
       '&url=' + encodeURIComponent('https://afro-horse.com/maker.html');
+  }
+
+  /* 打つたびに描きなおす */
+  (function () {
+    var ne = document.getElementById('mkName');
+    if (!ne) return;
+    ne.addEventListener('input', function () { save(); render(); });
+  })();
+
+  /* 字体がそろってから、もう一度だけ描きなおす。
+     先に描くと、名前が別の字体のまま残ってしまう */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { if (base) render(); });
   }
 
   /* ===== はじめる ===== */
