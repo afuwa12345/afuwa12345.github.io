@@ -343,20 +343,36 @@
     base = g.getImageData(0, 0, SIZE, SIZE);
     var d = base.data, n = SIZE * SIZE;
 
+    /* どの画素も「いちばん近い下地の色」に必ず割りあてる。
+       距離で切ると、線とのにじみが取り残されて
+       元の色（緑や桃）がフチに残ってしまうため。
+
+       黒い線のそばだけは弱める。そうしないと輪郭まで塗れてしまう */
+    var arrs = [];
     for (var k = 0; k < PARTS.length; k++) {
-      var p = PARTS[k];
-      var arr = new Uint8Array(n);
-      var kr = p.key[0], kg = p.key[1], kb = p.key[2];
-      var full = p.r, fade = p.r + 40;
-      for (var i = 0, j = 0; i < n; i++, j += 4) {
-        if (d[j + 3] < 8) continue;
-        var dr = d[j] - kr, dg = d[j + 1] - kg, db = d[j + 2] - kb;
-        var dist = Math.sqrt(dr * dr + dg * dg + db * db);
-        if (dist >= fade) continue;
-        var w = dist <= full ? 1 : (fade - dist) / (fade - full);
-        arr[i] = Math.round(w * (d[j + 3] / 255) * 255);
+      arrs.push(new Uint8Array(n));
+      W[PARTS[k].id] = arrs[k];
+    }
+    for (var i = 0, j = 0; i < n; i++, j += 4) {
+      var al = d[j + 3];
+      if (al < 8) continue;
+      var r0 = d[j], g0 = d[j + 1], b0 = d[j + 2];
+
+      /* 黒からの遠さ。線の上では 0 に近い */
+      var dk = Math.sqrt(r0 * r0 + g0 * g0 + b0 * b0);
+      if (dk < 45) continue;
+
+      var bi = -1, bd = 1e9;
+      for (var k2 = 0; k2 < PARTS.length; k2++) {
+        var key = PARTS[k2].key;
+        var dr = r0 - key[0], dg = g0 - key[1], db = b0 - key[2];
+        var dd = dr * dr + dg * dg + db * db;
+        if (dd < bd) { bd = dd; bi = k2; }
       }
-      W[p.id] = arr;
+      if (bi < 0) continue;
+
+      var w = Math.min(1, (dk - 45) / 45);
+      arrs[bi][i] = Math.round(w * (al / 255) * 255);
     }
   }
 
