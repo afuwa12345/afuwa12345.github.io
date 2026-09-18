@@ -594,9 +594,13 @@
       var c = list[Math.floor(Math.random() * list.length)];
       pick[p.id] = { kind: p.pat ? 'pal' : 'skin', id: c.id };
     });
+    /* 使わないことにしたコマ（中身が空）は引かない。
+       引いてしまうと、そのパーツだけ何も出ない姿になる */
     if (MAN) FACE.forEach(function (f) {
-      var n = (MAN.parts[f.id] || []).length;
-      if (n) pick[f.id] = { kind: 'face', n: Math.floor(Math.random() * n) + 1 };
+      var list = MAN.parts[f.id] || [];
+      var ok = [];
+      for (var i = 0; i < list.length; i++) if (list[i]) ok.push(i + 1);
+      if (ok.length) pick[f.id] = { kind: 'face', n: ok[Math.floor(Math.random() * ok.length)] };
     });
     save(); render(); markAll();
   });
