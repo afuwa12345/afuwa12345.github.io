@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>競馬16タイプ診断｜あなたに似た競走馬は？ - AFRO Horse</title>
-<meta name="description" content="30の質問に7段階で答えると、5つのものさしからあなたの競馬タイプが32通りで出ます。最後は、似た走り方をした実在の競走馬まで。登録不要・無料。">
+<meta name="description" content="30の質問に7段階で答えると、5つのものさしからあなたの競馬タイプが48通りで出ます。最後は、似た走り方をした実在の競走馬まで。登録不要・無料。">
 <link rel="canonical" href="https://afro-horse.com/type16.html">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon.ico">
@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://afro-horse.com/type16.html">
 <meta property="og:site_name" content="AFRO Horse">
 <meta property="og:title" content="競馬16タイプ診断｜あなたに似た競走馬は？">
-<meta property="og:description" content="30問・5つのものさしで32タイプ。最後は似た競走馬まで出ます。">
+<meta property="og:description" content="30問・5つのものさしで48通り。最後は似た競走馬まで出ます。">
 <meta property="og:image" content="https://afro-horse.com/images/logo.webp">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@AFUWA12345">
@@ -326,7 +326,7 @@
           <p class="t16-hero-q">あなたに似た<br><em>競走馬</em>は、どれ？</p>
           <p class="t16-hero-sub">
             30の質問に答えるだけ。<br>
-            5つのものさしから<b>32タイプ</b>に分かれて、<br>
+            4つのものさしで<b>16タイプ</b>に分かれ、<br>さらに「構え」が付いて<b>48通り</b>。<br>
             似た走り方をした<b>実在の競走馬</b>が出ます。
           </p>
           <div class="t16-hero-pic">
@@ -350,8 +350,9 @@
           <div class="t16-det-in">
             <p>
               30の文に「どれくらいそう思うか」を7段階で答えてもらい、5つの軸それぞれで点を足します。
-              強いほうの文字を取って、4文字そろったのがあなたのタイプ。
-              5つ目の軸は、その後ろに付く「構え」です（ESTP-A のような形）。
+              強いほうの文字を取って、4文字そろったのがあなたのタイプ（16通り）。
+              5つ目の軸は、その後ろに付く「構え」で、動じない（A）・まんなか（M）・熱くなる（T）の3つ。
+              あわせて48通りになり、その1つ1つに別の競走馬がいます。
               軸の文字は、よく知られた16タイプ診断と同じものにそろえてあります。
             </p>
             <div class="t16-axes" id="t16Axes"></div>
@@ -606,14 +607,14 @@
   function paint(code, bars, fromUrl, suffix) {
     var t = T.TYPES[code];
     if (!t) return;
-    suffix = (suffix === 'A' || suffix === 'T') ? suffix : 'A';
-    var pick = T.pickHorse(code, bars);
+    suffix = (suffix === 'A' || suffix === 'M' || suffix === 'T') ? suffix : 'M';
+    var pick = T.pickHorse(code, suffix);
     /* リンクから開いたときの割合は、その人が答えた数字ではない。だから出さない */
     $('t16BarsT').hidden = !!fromUrl;
     $('t16Bars').hidden  = !!fromUrl;
     $('t16Again').textContent = fromUrl ? '自分でやってみる' : 'もう一回やる';
     res = { code: code, suffix: suffix, full: code + '-' + suffix,
-            t: t, bars: bars, horse: pick.horse,
+            t: t, bars: bars, horse: pick,
             barsForImage: fromUrl ? [] : bars };
     $('t16Suf').innerHTML = '<b>' + suffix + '：' + T.SUF[suffix].name + '</b><br>' +
                             T.SUF[suffix].desc;
@@ -643,9 +644,12 @@
       var half = (b.pct <= 55);
       d.innerHTML =
         '<p class="t16-bar-t"><span class="l">' + b.side.k + ' ' + b.side.name + '</span>' +
-        '<span class="r">' + b.pct + '% ／ ' + b.other.name + ' ' + (100 - b.pct) + '%</span></p>' +
-        '<div class="t16-track"><i data-w="' + b.pct + '"></i></div>' +
-        '<p class="t16-bar-n">' + (half ? 'ほぼ半々。どちらの面も持っています' : b.side.line) + '</p>';
+        '<span class="r">' + (b.mid ? b.ax.a.name + ' と ' + b.ax.b.name + ' のあいだ'
+                                    : b.pct + '% ／ ' + b.other.name + ' ' + (100 - b.pct) + '%') +
+        '</span></p>' +
+        '<div class="t16-track"><i data-w="' + (b.mid ? 50 : b.pct) + '"></i></div>' +
+        '<p class="t16-bar-n">' +
+        (b.mid ? b.side.line : (half ? 'ほぼ半々。どちらの面も持っています' : b.side.line)) + '</p>';
       bb.appendChild(d);
     });
     setTimeout(function () {
@@ -728,9 +732,11 @@
     var code = q.split('-')[0], suf = q.split('-')[1];
     if (code && T.TYPES[code]) {
       var bars = T.AXES.concat([T.AT]).map(function (ax, i) {
-        var k = (i < 4) ? code[i] : (suf || 'A');
-        var mine = (k === ax.a.k) ? ax.a : ax.b;
-        return { ax: ax, side: mine, other: (mine === ax.a ? ax.b : ax.a), pct: 68, pt: 0 };
+        var k = (i < 4) ? code[i] : (suf || 'M');
+        var mine = (k === ax.m && ax.m.k === k) ? ax.m : (k === ax.a.k ? ax.a : ax.b);
+        if (i === 4) mine = (k === 'M') ? ax.m : (k === 'A' ? ax.a : ax.b);
+        return { ax: ax, side: mine, other: (mine === ax.a ? ax.b : ax.a),
+                 mid: (i === 4 && k === 'M'), pct: 68, pt: 0 };
       });
       paint(code, bars, true, suf);
     } else {
