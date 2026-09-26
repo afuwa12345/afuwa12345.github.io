@@ -320,8 +320,10 @@ async function 叩く(key, text, temp){
       + $('model').value + ':generateContent?key=' + encodeURIComponent(key),
       {method:'POST', headers:{'Content-Type':'application/json'},
        body: JSON.stringify({contents:[{parts:[{text}]}],
-         generationConfig:{temperature:temp, maxOutputTokens:2200,
-                           responseMimeType:'application/json'}})});
+         generationConfig:{temperature:temp, maxOutputTokens:4096,
+                           responseMimeType:'application/json',
+                           /* ★2.5系は「考える」ぶんも出力枠を食う。切らないと返事が途中で切れる */
+                           thinkingConfig:{thinkingBudget:0}}})});
     const d = await r.json().catch(() => ({}));
     if (r.status === 429 || (d.error && d.error.code === 429)){
       const m = /retry in ([\d.]+)s/i.exec(JSON.stringify(d));
@@ -332,7 +334,11 @@ async function 叩く(key, text, temp){
     if (d.error) throw new Error(d.error.message);
     const c = (d.candidates || [])[0];
     if (!c) throw new Error('返事が空です');
-    return c.content.parts.map(p => p.text || '').join('').trim();
+    const t = (c.content && c.content.parts || []).map(p => p.text || '').join('').trim();
+    if (c.finishReason && c.finishReason !== 'STOP')
+      throw new Error('返事が途中で切れました（' + c.finishReason + '）');
+    if (!t) throw new Error('返事が空でした');
+    return t;
   }
   throw new Error('上限が空かないので中止しました');
 }
@@ -365,7 +371,8 @@ $('gen').onclick = async () => {
       $('gen').disabled = false; return; }
     let 中身;
     try { 中身 = JSON.parse(返事.replace(/```json|```/g, '').trim()); }
-    catch (e) { $('apimsg').textContent = '返事の形が読めませんでした。もう一度お試しください';
+    catch (e) { $('apimsg').textContent = '返事の形が読めませんでした：'
+                  + String(返事).slice(0, 80);
                 $('gen').disabled = false; return; }
     const 次 = [];
     残り.forEach(x => {
