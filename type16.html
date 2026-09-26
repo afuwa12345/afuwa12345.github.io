@@ -229,6 +229,10 @@
     font-family: 'Anton', sans-serif; font-size: 11px; letter-spacing: .22em;
     color: rgba(255,255,255,.75); margin: 0;
   }
+  .t16-win-pic {
+    width: 168px; height: 168px; margin: 10px auto 0; display: block;
+    object-fit: contain;
+  }
   .t16-win-n {
     font-family: 'Dela Gothic One', sans-serif;
     font-size: clamp(30px, 9vw, 44px); line-height: 1.25; margin: 10px 0 0;
@@ -494,6 +498,7 @@
 
         <div class="t16-win" id="t16Win">
           <p class="t16-win-eye">YOUR CLOSEST MATCH</p>
+          <img class="t16-win-pic" id="t16HorsePic" src="" alt="" hidden>
           <h2 class="t16-win-n" id="t16HorseN"></h2>
           <p class="t16-win-m" id="t16HorseM"></p>
           <p class="t16-win-w" id="t16HorseW"></p>
@@ -757,6 +762,13 @@
 
     var h = res.horse;
     if (h) {
+      /* 馬の絵。無いときは出さない（壊れた絵を見せない） */
+      var pic = $('t16HorsePic');
+      pic.hidden = true;
+      pic.onload = function () { pic.hidden = false; };
+      pic.onerror = function () { pic.hidden = true; };
+      pic.src = 'images/type16/' + code + '_' + suffix + '.webp';
+      res.pic = pic.src;
       $('t16HorseN').textContent = h.n;
       $('t16HorseM').textContent = h.era + '　脚質：' + h.ky;
       $('t16HorseW').textContent = '主な勝ち鞍：' + h.win;
@@ -1009,7 +1021,14 @@
     var W = 1080, H = 1080, t = res.t, h = res.horse;
     var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
 
-    return ready.then(function () { return loadImg(CHARA[t.buddy].p); }).then(function (im) {
+    /* 馬の絵は無いこともある。無ければ、その場所を空けて詰める */
+    return ready.then(function () {
+      return Promise.all([
+        loadImg(CHARA[t.buddy].p),
+        res.pic ? loadImg(res.pic)['catch'](function () { return null; }) : null
+      ]);
+    }).then(function (pair) {
+      var im = pair[0], hp = pair[1];
       var grd = g.createLinearGradient(0, 0, W * 0.4, H);
       grd.addColorStop(0, t.ac);
       grd.addColorStop(1, '#14100c');
@@ -1021,54 +1040,49 @@
       g.textAlign = 'center';
       g.fillStyle = 'rgba(232,196,104,.95)';
       g.font = '28px "Anton", sans-serif';
-      g.fillText('YOUR CLOSEST MATCH', W / 2, 128);
+      g.fillText('YOUR CLOSEST MATCH', W / 2, 112);
 
-      /* 主役は馬。名前を大きく */
+      /* 主役は馬の絵 */
+      var top = 150;
+      if (hp) {
+        var ph = 380, pw = hp.width * ph / hp.height;
+        g.drawImage(hp, (W - pw) / 2, top, pw, ph);
+        top += ph + 18;
+      }
+
       if (h) {
         g.fillStyle = '#FBF5E2';
-        g.font = '900 78px "Zen Kaku Gothic New", sans-serif';
-        g.fillText(h.n, W / 2, 226);
+        g.font = '900 76px "Zen Kaku Gothic New", sans-serif';
+        g.fillText(h.n, W / 2, top + 64);
         g.fillStyle = 'rgba(251,245,226,.72)';
         g.font = '500 28px "Zen Kaku Gothic New", sans-serif';
-        g.fillText(h.era + '　脚質：' + h.ky, W / 2, 274);
+        g.fillText(h.era + '　脚質：' + h.ky, W / 2, top + 112);
+        top += 150;
       }
+
+      /* 区切り */
+      g.strokeStyle = 'rgba(251,245,226,.3)';
+      g.lineWidth = 2;
+      g.beginPath(); g.moveTo(300, top + 6); g.lineTo(W - 300, top + 6); g.stroke();
 
       /* タイプ */
       g.fillStyle = 'rgba(251,245,226,.92)';
-      g.font = '96px "Anton", sans-serif';
-      g.fillText(res.full, W / 2, 400);
-      g.font = '900 44px "Zen Kaku Gothic New", sans-serif';
-      g.fillText(t.name + '（' + T.SUF[res.suffix].name + '）', W / 2, 460);
-      g.fillStyle = 'rgba(251,245,226,.8)';
-      g.font = '500 28px "Zen Kaku Gothic New", sans-serif';
-      g.fillText(t.copy, W / 2, 510);
+      g.font = '78px "Anton", sans-serif';
+      g.fillText(res.full, W / 2, top + 84);
+      g.font = '900 38px "Zen Kaku Gothic New", sans-serif';
+      g.fillText(t.name + '（' + T.SUF[res.suffix].name + '）', W / 2, top + 140);
 
-      var y = 590;
-      (res.barsForImage || []).forEach(function (b) {
-        g.textAlign = 'left';
-        g.fillStyle = 'rgba(251,245,226,.9)';
-        g.font = '900 26px "Zen Kaku Gothic New", sans-serif';
-        g.fillText(b.side.k + ' ' + b.side.name, 150, y - 12);
-        g.textAlign = 'right';
-        g.fillStyle = 'rgba(251,245,226,.6)';
-        g.fillText(b.pct + '%', W - 150, y - 12);
-        g.fillStyle = 'rgba(251,245,226,.22)';
-        g.fillRect(150, y, W - 300, 14);
-        g.fillStyle = '#E8C468';
-        g.fillRect(150, y, (W - 300) * b.pct / 100, 14);
-        y += 62;
-      });
-
-      var s = 230, ix = W - s - 70, iy = H - s - 92;
+      /* 相棒は小さく、右下に */
+      var s = 150, ix = W - s - 60, iy = H - s - 56;
       g.drawImage(im, ix, iy, s, s);
 
       g.textAlign = 'left';
       g.fillStyle = 'rgba(251,245,226,.85)';
       g.font = '30px "Anton", sans-serif';
-      g.fillText('afro-horse.com', 84, H - 88);
+      g.fillText('afro-horse.com', 76, H - 82);
       g.fillStyle = 'rgba(251,245,226,.6)';
       g.font = '500 24px "Zen Kaku Gothic New", sans-serif';
-      g.fillText('競馬16タイプ診断', 84, H - 52);
+      g.fillText('競馬16タイプ診断', 76, H - 46);
 
       return cv.toDataURL('image/png');
     });
