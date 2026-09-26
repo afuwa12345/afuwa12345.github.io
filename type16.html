@@ -105,12 +105,7 @@
   /* ===== 質問（全画面） ===== */
   /* 上に貼りつく、キャラのふきだし。
      進み具合もここに入れて、キャラが言っているように見せる */
-  .t16-run-top {
-    position: sticky; top: 0; z-index: 30;
-    background: var(--paper); border-bottom: 1px solid var(--rule);
-    padding: 10px 14px 12px;
-    box-shadow: 0 6px 14px rgba(26,30,24,.06);
-  }
+  .t16-run-top { margin: 18px 0 0; }
   .t16-talk { display: flex; align-items: flex-start; gap: 9px; }
   .t16-talk > img { width: 46px; height: 46px; object-fit: contain; flex: 0 0 auto; }
   .t16-bub {
@@ -125,15 +120,14 @@
   }
   .t16-bub-t { margin: 0; font-size: 12.5px; line-height: 1.65; color: var(--ink-soft); }
   .t16-bub-t b { color: var(--ink); }
-  /* 進み具合のバー。質問の下に置く。
-     色は前と同じ、濃い緑の地に金 */
+  /* 進み具合のバー。ふきだしの中に入れる */
   .t16-track-top {
-    height: 8px; border-radius: 99px; background: var(--turf-dk);
-    overflow: hidden; margin: 0 0 22px;
+    height: 6px; border-radius: 99px; background: var(--rule-soft);
+    overflow: hidden; margin: 8px 0 0;
   }
   .t16-track-top i {
     display: block; height: 100%; width: 0; border-radius: 99px;
-    background: linear-gradient(90deg, var(--gold-lt), #fff); transition: width .3s ease;
+    background: linear-gradient(90deg, var(--turf), var(--gold)); transition: width .3s ease;
   }
   .t16-bub-m {
     display: flex; justify-content: space-between; gap: 8px;
@@ -143,14 +137,14 @@
   .t16-num i { font-style: normal; opacity: .6; }
   .t16-axtag { text-align: right; min-width: 0; }
   .t16-stage {
-    min-height: calc(100vh - 104px); min-height: calc(100dvh - 104px);
+    min-height: 100vh; min-height: 100dvh;
     display: flex; flex-direction: column; justify-content: center;
     padding: 18px 16px 24px; background: var(--paper);
   }
   .t16-qtext {
     font-family: 'Dela Gothic One', sans-serif;
     font-size: clamp(20px, 5.6vw, 27px); line-height: 1.55;
-    text-align: center; margin: 0 0 4vh; color: var(--ink);
+    text-align: center; margin: 0 0 6vh; color: var(--ink);
   }
   .t16-ends {
     display: flex; justify-content: space-between; align-items: center;
@@ -457,21 +451,8 @@
 
       <!-- ===== 質問（全画面） ===== -->
       <div id="t16Quiz" hidden>
-        <div class="t16-run-top">
-          <div class="t16-talk">
-            <img id="t16SayPic" src="" alt="">
-            <div class="t16-bub">
-              <p class="t16-bub-t" id="t16SayTxt"></p>
-              <p class="t16-bub-m">
-                <span class="t16-num" id="t16Step">Q1 <i>/ 30</i></span>
-                <span class="t16-axtag" id="t16AxName"></span>
-              </p>
-            </div>
-          </div>
-        </div>
         <div class="t16-stage">
           <p class="t16-qtext" id="t16Q"></p>
-          <div class="t16-track-top"><i id="t16Bar"></i></div>
           <div>
             <div class="t16-ends">
               <span class="y">そう思う</span>
@@ -484,6 +465,21 @@
             <button type="button" class="t16-next" id="t16Next" disabled>次へ</button>
           </div>
           <p class="t16-quitrow"><button type="button" class="t16-quit" id="t16Quit">やめる</button></p>
+
+          <!-- キャラのふきだし。進み具合もこの中 -->
+          <div class="t16-run-top">
+            <div class="t16-talk">
+              <img id="t16SayPic" src="" alt="">
+              <div class="t16-bub">
+                <p class="t16-bub-t" id="t16SayTxt"></p>
+                <div class="t16-track-top"><i id="t16Bar"></i></div>
+                <p class="t16-bub-m">
+                  <span class="t16-num" id="t16Step">Q1 <i>/ 30</i></span>
+                  <span class="t16-axtag" id="t16AxName"></span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
