@@ -63,7 +63,7 @@
   .t16-hero-q em { font-style: normal; color: var(--gold); }
   .t16-hero-sub { font-size: 14px; color: var(--ink-soft); line-height: 1.85; margin: 12px 0 0; }
   .t16-hero-pic { display: flex; justify-content: center; gap: 2px; margin: 14px 0 0; }
-  .t16-hero-pic img { width: 58px; height: 58px; object-fit: contain; }
+  .t16-hero-pic img { width: 50px; height: 50px; object-fit: contain; }
   .t16-meta-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 16px 0 0; }
   .t16-pill {
     border: 1px solid var(--rule); border-radius: 99px; background: var(--white);
@@ -125,17 +125,19 @@
   }
   .t16-bub-t { margin: 0; font-size: 12.5px; line-height: 1.65; color: var(--ink-soft); }
   .t16-bub-t b { color: var(--ink); }
+  /* 進み具合のバー。質問の下に置く。
+     色は前と同じ、濃い緑の地に金 */
   .t16-track-top {
-    height: 6px; border-radius: 99px; background: var(--rule-soft);
-    overflow: hidden; margin: 8px 0 0;
+    height: 8px; border-radius: 99px; background: var(--turf-dk);
+    overflow: hidden; margin: 0 0 22px;
   }
   .t16-track-top i {
     display: block; height: 100%; width: 0; border-radius: 99px;
-    background: linear-gradient(90deg, var(--turf), var(--gold)); transition: width .3s ease;
+    background: linear-gradient(90deg, var(--gold-lt), #fff); transition: width .3s ease;
   }
   .t16-bub-m {
     display: flex; justify-content: space-between; gap: 8px;
-    margin: 6px 0 0; font-size: 10.5px; color: var(--ink-dim);
+    margin: 7px 0 0; font-size: 10.5px; color: var(--ink-dim);
   }
   .t16-num { font-family: 'Anton', sans-serif; font-size: 12px; letter-spacing: .06em; }
   .t16-num i { font-style: normal; opacity: .6; }
@@ -148,7 +150,7 @@
   .t16-qtext {
     font-family: 'Dela Gothic One', sans-serif;
     font-size: clamp(20px, 5.6vw, 27px); line-height: 1.55;
-    text-align: center; margin: 0 0 6vh; color: var(--ink);
+    text-align: center; margin: 0 0 4vh; color: var(--ink);
   }
   .t16-ends {
     display: flex; justify-content: space-between; align-items: center;
@@ -411,16 +413,23 @@
             似た走り方をした<b>実在の競走馬</b>が出ます。
           </p>
           <div class="t16-hero-pic">
-            <img src="images/afuwa.webp" alt="" loading="lazy">
-            <img src="images/buruma.webp" alt="" loading="lazy">
-            <img src="images/kurohuwa.webp" alt="" loading="lazy">
-            <img src="images/ginma.webp" alt="" loading="lazy">
+            <img src="images/afuwa.webp" alt="アフワ" loading="lazy">
+            <img src="images/buruma.webp" alt="ブルマ" loading="lazy">
+            <img src="images/chahuwa.webp" alt="チャフワ" loading="lazy">
+            <img src="images/kurohuwa.webp" alt="クロフワ" loading="lazy">
+            <img src="images/ginma.webp" alt="ギンマ" loading="lazy">
+            <img src="images/yanchaahuwa.webp" alt="やんちゃアフワ" loading="lazy">
           </div>
           <div class="t16-meta-row">
             <span class="t16-pill">30問・3分</span>
             <span class="t16-pill">登録いらず</span>
             <span class="t16-pill">結果は画像にできる</span>
           </div>
+        </div>
+
+        <div class="t16-say" style="margin:18px 0 0">
+          <img src="images/chahuwa.webp" alt="" loading="lazy">
+          <p><b>チャフワ</b>　30問こたえるだけだよ！　むずかしくないから、いっしょにやろ！</p>
         </div>
 
         <button class="t16-go" type="button" id="t16Start">診断をはじめる</button>
@@ -453,7 +462,6 @@
             <img id="t16SayPic" src="" alt="">
             <div class="t16-bub">
               <p class="t16-bub-t" id="t16SayTxt"></p>
-              <div class="t16-track-top"><i id="t16Bar"></i></div>
               <p class="t16-bub-m">
                 <span class="t16-num" id="t16Step">Q1 <i>/ 30</i></span>
                 <span class="t16-axtag" id="t16AxName"></span>
@@ -463,6 +471,7 @@
         </div>
         <div class="t16-stage">
           <p class="t16-qtext" id="t16Q"></p>
+          <div class="t16-track-top"><i id="t16Bar"></i></div>
           <div>
             <div class="t16-ends">
               <span class="y">そう思う</span>
