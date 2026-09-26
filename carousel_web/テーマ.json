@@ -1,0 +1,730 @@
+{
+ "classic": {
+  "name": "クラシック",
+  "vars": {
+   "--bg": "#1a1612",
+   "--bg2": "#2a2420",
+   "--accent": "#c4756b",
+   "--accent-dark": "#9a5a52",
+   "--accent2": "#d4b88a",
+   "--text": "#f0e8dc",
+   "--text-sub": "#a89d8c",
+   "--bubble": "#f0e8dc",
+   "--bubble-text": "#3a2e24"
+  }
+ },
+ "g1gold": {
+  "name": "G1 GOLD",
+  "vars": {
+   "--bg": "#1a1812",
+   "--bg2": "#2a261c",
+   "--accent": "#b89a5a",
+   "--accent-dark": "#8a7340",
+   "--accent2": "#e8d8b4",
+   "--text": "#f0e4c8",
+   "--text-sub": "#b8a880",
+   "--bubble": "#2a241a",
+   "--bubble-text": "#f0e4c8"
+  }
+ },
+ "spring": {
+  "name": "春爛漫",
+  "vars": {
+   "--bg": "#fdf6f4",
+   "--bg2": "#f5e3dd",
+   "--accent": "#d68a9c",
+   "--accent-dark": "#a66878",
+   "--accent2": "#9bb88a",
+   "--text": "#5a4a48",
+   "--text-sub": "#8a7a78",
+   "--bubble": "#fff",
+   "--bubble-text": "#5a4a48"
+  }
+ },
+ "summer": {
+  "name": "夏空",
+  "vars": {
+   "--bg": "#1c2e3e",
+   "--bg2": "#2a3e50",
+   "--accent": "#d6bc6a",
+   "--accent-dark": "#a89050",
+   "--accent2": "#7ab4c4",
+   "--text": "#f0ece4",
+   "--text-sub": "#a8b8c4",
+   "--bubble": "#fff",
+   "--bubble-text": "#1c2e3e"
+  }
+ },
+ "autumn": {
+  "name": "秋深",
+  "vars": {
+   "--bg": "#1f1612",
+   "--bg2": "#2e221c",
+   "--accent": "#c47a4e",
+   "--accent-dark": "#965d3a",
+   "--accent2": "#c4a884",
+   "--text": "#f0e4d4",
+   "--text-sub": "#b8a890",
+   "--bubble": "#f0e4d4",
+   "--bubble-text": "#2e221c"
+  }
+ },
+ "winter": {
+  "name": "冬銀",
+  "vars": {
+   "--bg": "#1c2230",
+   "--bg2": "#2a3040",
+   "--accent": "#90b8d4",
+   "--accent-dark": "#6a8aa4",
+   "--accent2": "#c0c4cc",
+   "--text": "#e8ecf0",
+   "--text-sub": "#a4b0bc",
+   "--bubble": "#e8ecf0",
+   "--bubble-text": "#1c2230"
+  }
+ },
+ "neon": {
+  "name": "ナイター",
+  "vars": {
+   "--bg": "#1a1424",
+   "--bg2": "#2a1e38",
+   "--accent": "#c47ab0",
+   "--accent-dark": "#9a5a86",
+   "--accent2": "#7ac4b4",
+   "--text": "#f0e4f0",
+   "--text-sub": "#b8a4c4",
+   "--bubble": "#2a1e38",
+   "--bubble-text": "#f0e4f0"
+  }
+ },
+ "forest": {
+  "name": "深緑",
+  "vars": {
+   "--bg": "#1a221a",
+   "--bg2": "#2a322a",
+   "--accent": "#b89a5a",
+   "--accent-dark": "#8a7340",
+   "--accent2": "#94b894",
+   "--text": "#e8eee4",
+   "--text-sub": "#a8b4a4",
+   "--bubble": "#e8eee4",
+   "--bubble-text": "#2a322a"
+  }
+ },
+ "cream": {
+  "name": "クリーム",
+  "vars": {
+   "--bg": "#fdf9f0",
+   "--bg2": "#f5ecd8",
+   "--accent": "#d4756b",
+   "--accent-dark": "#a85a52",
+   "--accent2": "#8b9a6b",
+   "--text": "#4a3a2c",
+   "--text-sub": "#8a7a6a",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a3a2c"
+  }
+ },
+ "sky": {
+  "name": "そら",
+  "vars": {
+   "--bg": "#f0f8fb",
+   "--bg2": "#dde8f0",
+   "--accent": "#5a8aa4",
+   "--accent-dark": "#3a6a84",
+   "--accent2": "#d4a574",
+   "--text": "#2a3a4a",
+   "--text-sub": "#6a7a8a",
+   "--bubble": "#fff",
+   "--bubble-text": "#2a3a4a"
+  }
+ },
+ "mint": {
+  "name": "ミント",
+  "vars": {
+   "--bg": "#f0f8f4",
+   "--bg2": "#d8e8de",
+   "--accent": "#5a9a7a",
+   "--accent-dark": "#3a7a5a",
+   "--accent2": "#d4946a",
+   "--text": "#2a3a2c",
+   "--text-sub": "#6a7a6c",
+   "--bubble": "#fff",
+   "--bubble-text": "#2a3a2c"
+  }
+ },
+ "peach": {
+  "name": "ピーチ",
+  "vars": {
+   "--bg": "#fff5f0",
+   "--bg2": "#f5e0d8",
+   "--accent": "#d6826a",
+   "--accent-dark": "#a86250",
+   "--accent2": "#6a8aa4",
+   "--text": "#4a2c1f",
+   "--text-sub": "#8a6c5f",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a2c1f"
+  }
+ },
+ "midnight": {
+  "name": "真夜中",
+  "vars": {
+   "--bg": "#10141f",
+   "--bg2": "#1c2333",
+   "--accent": "#4a78c4",
+   "--accent-dark": "#355a98",
+   "--accent2": "#8fb4e0",
+   "--text": "#e4ebf5",
+   "--text-sub": "#9aa8c0",
+   "--bubble": "#1c2333",
+   "--bubble-text": "#e4ebf5"
+  }
+ },
+ "crimson": {
+  "name": "深紅",
+  "vars": {
+   "--bg": "#1f1014",
+   "--bg2": "#2e1820",
+   "--accent": "#d6445a",
+   "--accent-dark": "#a83244",
+   "--accent2": "#e8a0aa",
+   "--text": "#f4e0e4",
+   "--text-sub": "#c098a0",
+   "--bubble": "#f4e0e4",
+   "--bubble-text": "#2e1820"
+  }
+ },
+ "emerald": {
+  "name": "エメラルド",
+  "vars": {
+   "--bg": "#0f1a14",
+   "--bg2": "#1a2a20",
+   "--accent": "#3aa874",
+   "--accent-dark": "#2a8058",
+   "--accent2": "#88d6b0",
+   "--text": "#e0f0e8",
+   "--text-sub": "#94b8a4",
+   "--bubble": "#e0f0e8",
+   "--bubble-text": "#1a2a20"
+  }
+ },
+ "amethyst": {
+  "name": "アメジスト",
+  "vars": {
+   "--bg": "#16101f",
+   "--bg2": "#241a30",
+   "--accent": "#9a5ac4",
+   "--accent-dark": "#744398",
+   "--accent2": "#c4a0e0",
+   "--text": "#ece4f4",
+   "--text-sub": "#a898c0",
+   "--bubble": "#241a30",
+   "--bubble-text": "#ece4f4"
+  }
+ },
+ "copper": {
+  "name": "カッパー",
+  "vars": {
+   "--bg": "#1f1610",
+   "--bg2": "#2e221a",
+   "--accent": "#c4824a",
+   "--accent-dark": "#986235",
+   "--accent2": "#e0b88f",
+   "--text": "#f4e8dc",
+   "--text-sub": "#c0a890",
+   "--bubble": "#f4e8dc",
+   "--bubble-text": "#2e221a"
+  }
+ },
+ "deepsea": {
+  "name": "深海",
+  "vars": {
+   "--bg": "#0e1c1e",
+   "--bg2": "#182e30",
+   "--accent": "#2e9aa4",
+   "--accent-dark": "#227478",
+   "--accent2": "#84cdd4",
+   "--text": "#e0f0f0",
+   "--text-sub": "#94b4b8",
+   "--bubble": "#e0f0f0",
+   "--bubble-text": "#182e30"
+  }
+ },
+ "roseash": {
+  "name": "ローズ闇",
+  "vars": {
+   "--bg": "#1f1418",
+   "--bg2": "#2e2024",
+   "--accent": "#c45a82",
+   "--accent-dark": "#984362",
+   "--accent2": "#e0a0bc",
+   "--text": "#f4e4ea",
+   "--text-sub": "#c098a8",
+   "--bubble": "#2e2024",
+   "--bubble-text": "#f4e4ea"
+  }
+ },
+ "limedark": {
+  "name": "ライム闇",
+  "vars": {
+   "--bg": "#161f10",
+   "--bg2": "#242e1a",
+   "--accent": "#88b83a",
+   "--accent-dark": "#688a2a",
+   "--accent2": "#c4e088",
+   "--text": "#ecf4dc",
+   "--text-sub": "#aab894",
+   "--bubble": "#ecf4dc",
+   "--bubble-text": "#242e1a"
+  }
+ },
+ "indigo": {
+  "name": "藍",
+  "vars": {
+   "--bg": "#12111f",
+   "--bg2": "#1e1c30",
+   "--accent": "#5a5ac4",
+   "--accent-dark": "#434398",
+   "--accent2": "#a0a0e0",
+   "--text": "#e4e4f4",
+   "--text-sub": "#9a9ac0",
+   "--bubble": "#1e1c30",
+   "--bubble-text": "#e4e4f4"
+  }
+ },
+ "burgundy": {
+  "name": "ワイン",
+  "vars": {
+   "--bg": "#1c0f12",
+   "--bg2": "#2a181c",
+   "--accent": "#a8344a",
+   "--accent-dark": "#822838",
+   "--accent2": "#d68f9c",
+   "--text": "#f0dce0",
+   "--text-sub": "#b8909a",
+   "--bubble": "#f0dce0",
+   "--bubble-text": "#2a181c"
+  }
+ },
+ "blackgold": {
+  "name": "黒金",
+  "vars": {
+   "--bg": "#14130f",
+   "--bg2": "#221f18",
+   "--accent": "#d4af4a",
+   "--accent-dark": "#a88835",
+   "--accent2": "#ecd88f",
+   "--text": "#f4f0dc",
+   "--text-sub": "#b8b090",
+   "--bubble": "#221f18",
+   "--bubble-text": "#f4f0dc"
+  }
+ },
+ "ocean": {
+  "name": "大洋",
+  "vars": {
+   "--bg": "#0f1620",
+   "--bg2": "#1a2632",
+   "--accent": "#3a7ac4",
+   "--accent-dark": "#2a5c98",
+   "--accent2": "#88b4e0",
+   "--text": "#e0e8f0",
+   "--text-sub": "#94a4b8",
+   "--bubble": "#e0e8f0",
+   "--bubble-text": "#1a2632"
+  }
+ },
+ "plum": {
+  "name": "プラム",
+  "vars": {
+   "--bg": "#1a101a",
+   "--bg2": "#281a28",
+   "--accent": "#b04ab0",
+   "--accent-dark": "#883588",
+   "--accent2": "#dc8fdc",
+   "--text": "#f0dcf0",
+   "--text-sub": "#b890b8",
+   "--bubble": "#281a28",
+   "--bubble-text": "#f0dcf0"
+  }
+ },
+ "moss": {
+  "name": "モス",
+  "vars": {
+   "--bg": "#14180f",
+   "--bg2": "#202618",
+   "--accent": "#6a8a3a",
+   "--accent-dark": "#50682c",
+   "--accent2": "#aac488",
+   "--text": "#e8eedc",
+   "--text-sub": "#a4b094",
+   "--bubble": "#e8eedc",
+   "--bubble-text": "#202618"
+  }
+ },
+ "ember": {
+  "name": "残火",
+  "vars": {
+   "--bg": "#1f120f",
+   "--bg2": "#2e1c18",
+   "--accent": "#d6604a",
+   "--accent-dark": "#a84838",
+   "--accent2": "#e8a08f",
+   "--text": "#f4e4dc",
+   "--text-sub": "#c0a090",
+   "--bubble": "#2e1c18",
+   "--bubble-text": "#f4e4dc"
+  }
+ },
+ "steel": {
+  "name": "スチール",
+  "vars": {
+   "--bg": "#14171a",
+   "--bg2": "#20262c",
+   "--accent": "#6a8a9a",
+   "--accent-dark": "#506874",
+   "--accent2": "#aac0cc",
+   "--text": "#e4ebf0",
+   "--text-sub": "#98a8b0",
+   "--bubble": "#e4ebf0",
+   "--bubble-text": "#20262c"
+  }
+ },
+ "violetnight": {
+  "name": "紫夜",
+  "vars": {
+   "--bg": "#15101c",
+   "--bg2": "#221a2c",
+   "--accent": "#7a5ac4",
+   "--accent-dark": "#5c4398",
+   "--accent2": "#b0a0e0",
+   "--text": "#e8e4f4",
+   "--text-sub": "#a498c0",
+   "--bubble": "#221a2c",
+   "--bubble-text": "#e8e4f4"
+  }
+ },
+ "jadedark": {
+  "name": "翡翠",
+  "vars": {
+   "--bg": "#0f1c18",
+   "--bg2": "#1a2e28",
+   "--accent": "#2ea888",
+   "--accent-dark": "#228066",
+   "--accent2": "#84d6c0",
+   "--text": "#e0f0ec",
+   "--text-sub": "#94b8ac",
+   "--bubble": "#e0f0ec",
+   "--bubble-text": "#1a2e28"
+  }
+ },
+ "rust": {
+  "name": "ラスト",
+  "vars": {
+   "--bg": "#1c130f",
+   "--bg2": "#2a1e18",
+   "--accent": "#b8623a",
+   "--accent-dark": "#8c4a2c",
+   "--accent2": "#d6a088",
+   "--text": "#f0e4dc",
+   "--text-sub": "#b8a090",
+   "--bubble": "#2a1e18",
+   "--bubble-text": "#f0e4dc"
+  }
+ },
+ "cobalt": {
+  "name": "コバルト",
+  "vars": {
+   "--bg": "#0f1320",
+   "--bg2": "#1a2032",
+   "--accent": "#4a5ad6",
+   "--accent-dark": "#3844a8",
+   "--accent2": "#8f9ae8",
+   "--text": "#e0e4f4",
+   "--text-sub": "#949ac0",
+   "--bubble": "#e0e4f4",
+   "--bubble-text": "#1a2032"
+  }
+ },
+ "lavender": {
+  "name": "ラベンダー",
+  "vars": {
+   "--bg": "#f6f3fb",
+   "--bg2": "#e6def0",
+   "--accent": "#8a6ac4",
+   "--accent-dark": "#6a4ea4",
+   "--accent2": "#b89a5a",
+   "--text": "#3a2e4a",
+   "--text-sub": "#7a6c8a",
+   "--bubble": "#fff",
+   "--bubble-text": "#3a2e4a"
+  }
+ },
+ "coral": {
+  "name": "コーラル",
+  "vars": {
+   "--bg": "#fff4f1",
+   "--bg2": "#f5ddd6",
+   "--accent": "#e0705a",
+   "--accent-dark": "#b05444",
+   "--accent2": "#5a9aa4",
+   "--text": "#4a2c24",
+   "--text-sub": "#8a6c64",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a2c24"
+  }
+ },
+ "lemon": {
+  "name": "レモン",
+  "vars": {
+   "--bg": "#fdfbef",
+   "--bg2": "#f2ecd0",
+   "--accent": "#c4a83a",
+   "--accent-dark": "#98822c",
+   "--accent2": "#6a9aa4",
+   "--text": "#4a4226",
+   "--text-sub": "#8a8266",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a4226"
+  }
+ },
+ "aqua": {
+  "name": "アクア",
+  "vars": {
+   "--bg": "#eff9fa",
+   "--bg2": "#d6ebed",
+   "--accent": "#3a9aa4",
+   "--accent-dark": "#2a7478",
+   "--accent2": "#d4906a",
+   "--text": "#244a4a",
+   "--text-sub": "#6a8a8a",
+   "--bubble": "#fff",
+   "--bubble-text": "#244a4a"
+  }
+ },
+ "blush": {
+  "name": "ブラッシュ",
+  "vars": {
+   "--bg": "#fdf2f5",
+   "--bg2": "#f5dde3",
+   "--accent": "#d66a8a",
+   "--accent-dark": "#a8526a",
+   "--accent2": "#8a9a6a",
+   "--text": "#4a2c34",
+   "--text-sub": "#8a6c74",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a2c34"
+  }
+ },
+ "sage": {
+  "name": "セージ",
+  "vars": {
+   "--bg": "#f3f6ef",
+   "--bg2": "#e0e8d6",
+   "--accent": "#6a9a5a",
+   "--accent-dark": "#527444",
+   "--accent2": "#c4906a",
+   "--text": "#2c3a24",
+   "--text-sub": "#6c7a64",
+   "--bubble": "#fff",
+   "--bubble-text": "#2c3a24"
+  }
+ },
+ "apricot": {
+  "name": "アプリコット",
+  "vars": {
+   "--bg": "#fff6ee",
+   "--bg2": "#f5e4d0",
+   "--accent": "#d6925a",
+   "--accent-dark": "#a87044",
+   "--accent2": "#6a8aa4",
+   "--text": "#4a3424",
+   "--text-sub": "#8a7464",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a3424"
+  }
+ },
+ "periwinkle": {
+  "name": "ペリ青",
+  "vars": {
+   "--bg": "#f2f3fc",
+   "--bg2": "#dde0f2",
+   "--accent": "#6a7ad6",
+   "--accent-dark": "#525ea8",
+   "--accent2": "#d6a05a",
+   "--text": "#2c3450",
+   "--text-sub": "#6c748a",
+   "--bubble": "#fff",
+   "--bubble-text": "#2c3450"
+  }
+ },
+ "pistachio": {
+  "name": "ピスタチオ",
+  "vars": {
+   "--bg": "#f4f8ee",
+   "--bg2": "#e2ecd2",
+   "--accent": "#8aaa4a",
+   "--accent-dark": "#6a8438",
+   "--accent2": "#d68f6a",
+   "--text": "#34401f",
+   "--text-sub": "#74806c",
+   "--bubble": "#fff",
+   "--bubble-text": "#34401f"
+  }
+ },
+ "sunsetlight": {
+  "name": "夕焼け",
+  "vars": {
+   "--bg": "#fff3ef",
+   "--bg2": "#f7dfd4",
+   "--accent": "#e07a4a",
+   "--accent-dark": "#b05e38",
+   "--accent2": "#9a6ac4",
+   "--text": "#4a3024",
+   "--text-sub": "#8a7064",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a3024"
+  }
+ },
+ "seafoam": {
+  "name": "シーフォーム",
+  "vars": {
+   "--bg": "#eff9f4",
+   "--bg2": "#d6ebe0",
+   "--accent": "#4aaa84",
+   "--accent-dark": "#388466",
+   "--accent2": "#d68f6a",
+   "--text": "#244a3a",
+   "--text-sub": "#6a8a7a",
+   "--bubble": "#fff",
+   "--bubble-text": "#244a3a"
+  }
+ },
+ "butter": {
+  "name": "バター",
+  "vars": {
+   "--bg": "#fdfaee",
+   "--bg2": "#f4ecce",
+   "--accent": "#d4b04a",
+   "--accent-dark": "#a88835",
+   "--accent2": "#d6826a",
+   "--text": "#4a4024",
+   "--text-sub": "#8a8064",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a4024"
+  }
+ },
+ "orchid": {
+  "name": "オーキッド",
+  "vars": {
+   "--bg": "#fbf2fa",
+   "--bg2": "#efdcee",
+   "--accent": "#b85ab0",
+   "--accent-dark": "#904388",
+   "--accent2": "#6a9a8a",
+   "--text": "#44284a",
+   "--text-sub": "#846c8a",
+   "--bubble": "#fff",
+   "--bubble-text": "#44284a"
+  }
+ },
+ "terracotta": {
+  "name": "テラコッタ",
+  "vars": {
+   "--bg": "#fbf3ee",
+   "--bg2": "#f0ddd0",
+   "--accent": "#c46a4a",
+   "--accent-dark": "#985238",
+   "--accent2": "#6a8a6a",
+   "--text": "#4a3024",
+   "--text-sub": "#8a7064",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a3024"
+  }
+ },
+ "powderblue": {
+  "name": "空色",
+  "vars": {
+   "--bg": "#f0f6fb",
+   "--bg2": "#dbe7f0",
+   "--accent": "#5a8ac4",
+   "--accent-dark": "#446aa0",
+   "--accent2": "#d6a05a",
+   "--text": "#2c3a4a",
+   "--text-sub": "#6c7a8a",
+   "--bubble": "#fff",
+   "--bubble-text": "#2c3a4a"
+  }
+ },
+ "honeydew": {
+  "name": "ハニーデュー",
+  "vars": {
+   "--bg": "#f3faef",
+   "--bg2": "#ddecd4",
+   "--accent": "#7aaa4a",
+   "--accent-dark": "#5e8438",
+   "--accent2": "#d68f9c",
+   "--text": "#2c401f",
+   "--text-sub": "#6c806c",
+   "--bubble": "#fff",
+   "--bubble-text": "#2c401f"
+  }
+ },
+ "salmon": {
+  "name": "サーモン",
+  "vars": {
+   "--bg": "#fff3f0",
+   "--bg2": "#f8ddd5",
+   "--accent": "#e0805a",
+   "--accent-dark": "#b06244",
+   "--accent2": "#5a9aa4",
+   "--text": "#4a2e24",
+   "--text-sub": "#8a6e64",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a2e24"
+  }
+ },
+ "lilac": {
+  "name": "ライラック",
+  "vars": {
+   "--bg": "#f7f3fb",
+   "--bg2": "#e8def0",
+   "--accent": "#9a6ad6",
+   "--accent-dark": "#7652a8",
+   "--accent2": "#c4a05a",
+   "--text": "#3a2c4a",
+   "--text-sub": "#7a6c8a",
+   "--bubble": "#fff",
+   "--bubble-text": "#3a2c4a"
+  }
+ },
+ "marigold": {
+  "name": "マリーゴールド",
+  "vars": {
+   "--bg": "#fff7ec",
+   "--bg2": "#f7e6c8",
+   "--accent": "#e0a03a",
+   "--accent-dark": "#b07e2c",
+   "--accent2": "#c46a5a",
+   "--text": "#4a3a1f",
+   "--text-sub": "#8a7a64",
+   "--bubble": "#fff",
+   "--bubble-text": "#4a3a1f"
+  }
+ },
+ "iceblue": {
+  "name": "アイス青",
+  "vars": {
+   "--bg": "#eef7fa",
+   "--bg2": "#d8eaee",
+   "--accent": "#4a96b4",
+   "--accent-dark": "#38748c",
+   "--accent2": "#d68f9c",
+   "--text": "#244044",
+   "--text-sub": "#6a868a",
+   "--bubble": "#fff",
+   "--bubble-text": "#244044"
+  }
+ }
+}

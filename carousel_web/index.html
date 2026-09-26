@@ -23,6 +23,17 @@
  /* レースを選ぶボタン */
  #pick{background:var(--accent2);color:#1a1510;font-size:15px;padding:9px 16px;
    display:flex;align-items:center;gap:9px}
+ #pickT{background:#332b23;color:var(--text);display:flex;align-items:center;gap:8px}
+ #pickT i{width:15px;height:15px;border-radius:4px;display:inline-block;border:1px solid #0006}
+ #pickT::after{content:'▾';font-size:11px;color:var(--sub)}
+ .tlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px;
+   max-height:56vh;overflow:auto}
+ .tlist button{background:#332b23;color:var(--text);text-align:left;font-weight:700;
+   padding:8px 10px;display:flex;align-items:center;gap:8px}
+ .tlist button.on{outline:2px solid var(--accent2)}
+ .sw{width:34px;height:20px;border-radius:4px;flex-shrink:0;border:1px solid #0006;
+   display:flex;overflow:hidden}
+ .sw b{flex:1}
  #pick small{font-weight:400;font-size:11px;opacity:.75}
  #pick::after{content:'▾';font-size:12px}
  .info{margin-left:auto;font-size:11px;color:var(--sub);text-align:right;line-height:1.6}
@@ -78,6 +89,7 @@
 <div class="bar top">
   <div><label>レース</label><button id="pick">—</button></div>
   <div><label>キャラ</label><select id="chara"></select></div>
+  <div><label>色</label><button id="pickT">—</button></div>
   <div><label>比率</label><select id="ratio">
     <option value="4:5">4:5（1080×1350）</option>
     <option value="1:1">1:1（1080×1080）</option></select></div>
@@ -109,6 +121,14 @@
 
 <div class="sheets" id="sheets"></div>
 
+<div class="mask" id="maskT">
+  <div class="modal">
+    <div class="mh"><b>色を選ぶ</b><span id="cntT" class="info"></span>
+      <button class="sub" id="closeT">閉じる</button></div>
+    <div class="tlist" id="tlist"></div>
+  </div>
+</div>
+
 <div class="mask" id="mask">
   <div class="modal">
     <div class="mh"><b>レースを選ぶ</b><span id="cnt" class="info"></span>
@@ -134,6 +154,49 @@ const SERIF_LOCAL = JSON.parse(localStorage.getItem('afro_serif') || '{}');
 window.__SERIF = SERIF_LOCAL;
 
 Object.keys(CN).forEach(k => $('chara').add(new Option(CN[k], k)));
+
+/* ===== 色テーマ ===== */
+let THEMES = {}, THEME = localStorage.getItem('afro_theme') || '';   // '' はおまかせ
+function 自動テーマ(){
+  const x = META[RACE] || {};
+  if (x.grade === 'G1') return 'g1gold';
+  const m = +x.month;
+  if (m >= 3 && m <= 5)  return 'spring';
+  if (m >= 6 && m <= 8)  return 'summer';
+  if (m >= 9 && m <= 11) return 'autumn';
+  return 'winter';
+}
+const 今のテーマ = () => THEME || 自動テーマ();
+function テーマCSS(k){
+  const v = (THEMES[k] || {}).vars || {};
+  return ':root{' + ['--bg','--bg2','--accent','--accent2','--text']
+      .map(n => v[n] ? n + ':' + v[n] + ';' : '').join('')
+    + (v['--text-sub'] ? '--sub:' + v['--text-sub'] + ';' : '') + '}';
+}
+function テーマ一覧(){
+  const now = 今のテーマ();
+  $('cntT').textContent = Object.keys(THEMES).length + ' 色';
+  const sw = k => { const v = THEMES[k].vars;
+    return `<span class="sw"><b style="background:${v['--bg']}"></b>`
+         + `<b style="background:${v['--accent']}"></b>`
+         + `<b style="background:${v['--accent2']}"></b></span>`; };
+  $('tlist').innerHTML =
+    `<button data-t=""${THEME === '' ? ' class="on"' : ''}>
+       <span class="sw"><b style="background:#888"></b></span>おまかせ（G1と月で変わる）</button>`
+    + Object.keys(THEMES).map(k =>
+        `<button data-t="${k}"${THEME === k ? ' class="on"' : ''}>${sw(k)}${THEMES[k].name}</button>`
+      ).join('');
+}
+$('pickT').onclick = () => { $('maskT').classList.add('on'); テーマ一覧(); };
+$('closeT').onclick = () => $('maskT').classList.remove('on');
+$('maskT').onclick = e => { if (e.target === $('maskT')) $('maskT').classList.remove('on'); };
+$('tlist').onclick = e => {
+  const b = e.target.closest('button[data-t]'); if (!b) return;
+  THEME = b.dataset.t;
+  localStorage.setItem('afro_theme', THEME);
+  $('maskT').classList.remove('on');
+  draw();
+};
 $('chara').insertBefore(new Option('レースごとの担当（おまかせ）', ''), $('chara').firstChild);
 $('chara').value = '';
 $('grade').add(new Option('グレードすべて', ''));
@@ -185,8 +248,10 @@ $('list').onclick = e => {
 const q0 = new URLSearchParams(location.search).get('race');
 if (q0 && RACES.includes(q0)) RACE = q0;
 
-fetch('./担当キャラ.json?v=' + Date.now()).then(r => r.json())
-  .then(m => { CHARA_MAP = m; draw(); }).catch(() => draw());
+Promise.all([
+  fetch('./担当キャラ.json?v=' + Date.now()).then(r => r.json()).catch(() => ({})),
+  fetch('./テーマ.json?v=' + Date.now()).then(r => r.json()).catch(() => ({}))
+]).then(([m, t]) => { CHARA_MAP = m; THEMES = t; draw(); });
 
 function draw(){
   window.__RACE  = RACE;
@@ -209,9 +274,17 @@ function draw(){
       + '<textarea data-no="' + no + '" placeholder="（空ならそのままの文）">'
       + v.replace(/</g,'&lt;') + '</textarea></div></div>';
   }).join('');
+  const tk = 今のテーマ(), tv = (THEMES[tk] || {}).vars || {};
+  $('pickT').innerHTML = `<i style="background:${tv['--accent'] || '#888'}"></i>`
+    + ((THEMES[tk] || {}).name || '—') + (THEME ? '' : '（おまかせ）');
   PAGES.forEach((html, i) => {
     const d = $('f' + i).contentDocument;
     d.open(); d.write(html); d.close();
+    if (THEMES[tk]){                 /* ★スライドの色を差し替える */
+      const st = d.createElement('style');
+      st.textContent = テーマCSS(tk);
+      d.head.appendChild(st);
+    }
   });
   setTimeout(fit, 60);
   history.replaceState(null, '', '?race=' + encodeURIComponent(RACE));
@@ -312,35 +385,46 @@ ${ng.map(x => '・' + x).join('\n')}
 出力はJSONだけ。説明もかぎ括弧も付けないでください。
 {${仕事.map(x => `"${x.no}":"台詞"`).join(',')}}`;
 }
+/* ★モデルごとに無料枠は別。上限に当たったら、待つ前に別のモデルへ逃がす */
+const 逃げ先 = ['gemini-2.5-flash-lite', 'gemini-2.0-flash', 'gemini-2.5-flash'];
 async function 叩く(key, text, temp){
-  for (let 回 = 0; 回 < 4; 回++){
-    await 順番待ち();
-    CALLS.push(Date.now());
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/'
-      + $('model').value + ':generateContent?key=' + encodeURIComponent(key),
-      {method:'POST', headers:{'Content-Type':'application/json'},
-       body: JSON.stringify({contents:[{parts:[{text}]}],
-         generationConfig:{temperature:temp, maxOutputTokens:4096,
-                           responseMimeType:'application/json',
-                           /* ★2.5系は「考える」ぶんも出力枠を食う。切らないと返事が途中で切れる */
-                           thinkingConfig:{thinkingBudget:0}}})});
-    const d = await r.json().catch(() => ({}));
-    if (r.status === 429 || (d.error && d.error.code === 429)){
-      const m = /retry in ([\d.]+)s/i.exec(JSON.stringify(d));
-      const 秒 = m ? Math.ceil(+m[1]) + 2 : 62;
-      await 待機(秒 * 1000, '回数の上限に当たりました。空くのを待っています');
-      continue;
+  const 試す = [$('model').value].concat(逃げ先.filter(m => m !== $('model').value));
+  let 待った = false;
+  for (const model of 試す){
+    for (let 回 = 0; 回 < 2; 回++){
+      await 順番待ち();
+      CALLS.push(Date.now());
+      const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/'
+        + model + ':generateContent?key=' + encodeURIComponent(key),
+        {method:'POST', headers:{'Content-Type':'application/json'},
+         body: JSON.stringify({contents:[{parts:[{text}]}],
+           generationConfig:{temperature:temp, maxOutputTokens:4096,
+                             responseMimeType:'application/json',
+                             thinkingConfig:{thinkingBudget:0}}})});
+      const d = await r.json().catch(() => ({}));
+      if (r.status === 429 || (d.error && d.error.code === 429)){
+        $('apimsg').textContent = model + ' が上限。別のモデルを試します…';
+        break;                       // ★待たずに次のモデルへ
+      }
+      if (d.error) throw new Error(d.error.message);
+      const c = (d.candidates || [])[0];
+      if (!c) throw new Error('返事が空です');
+      const t = (c.content && c.content.parts || []).map(p => p.text || '').join('').trim();
+      if (c.finishReason && c.finishReason !== 'STOP')
+        throw new Error('返事が途中で切れました（' + c.finishReason + '）');
+      if (!t) throw new Error('返事が空でした');
+      if (model !== $('model').value)
+        $('apimsg').textContent = model + ' で書けました';
+      return t;
     }
-    if (d.error) throw new Error(d.error.message);
-    const c = (d.candidates || [])[0];
-    if (!c) throw new Error('返事が空です');
-    const t = (c.content && c.content.parts || []).map(p => p.text || '').join('').trim();
-    if (c.finishReason && c.finishReason !== 'STOP')
-      throw new Error('返事が途中で切れました（' + c.finishReason + '）');
-    if (!t) throw new Error('返事が空でした');
-    return t;
   }
-  throw new Error('上限が空かないので中止しました');
+  // どのモデルも上限だったときだけ待つ
+  if (!待った){
+    await 待機(62000, 'どのモデルも上限です。枠が空くのを待っています');
+    待った = true;
+    return 叩く(key, text, temp);
+  }
+  throw new Error('どのモデルも上限のままでした');
 }
 $('gen').onclick = async () => {
   const key = $('key').value.trim();
