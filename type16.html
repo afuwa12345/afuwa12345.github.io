@@ -300,21 +300,36 @@
   .t16-lead2 {
     font-size: 12px; color: var(--ink-dim); text-align: center; margin: 0 0 12px;
   }
-  .t16-h3 { display: grid; gap: 10px; margin: 0 0 18px; }
+  /* 3頭を横にならべる。画像が入ると、ここが主役になる */
+  .t16-h3 {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 10px;
+  }
   .t16-hcard {
-    border: 1px solid var(--rule); border-radius: 13px; padding: 13px 14px; background: var(--paper);
+    border: 1px solid var(--rule); border-radius: 13px; padding: 8px 7px 10px;
+    background: var(--paper); text-align: center; min-width: 0;
   }
-  .t16-badge {
-    display: inline-block; border-radius: 99px; padding: 3px 10px; margin: 0 0 8px;
-    font-size: 11px; font-weight: 900; color: #fff; background: var(--ink-dim);
+  .t16-hpic {
+    aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: var(--rule-soft);
+    display: flex; align-items: center; justify-content: center; margin: 0 0 8px;
   }
-  .t16-badge.a { background: #1F855A; }
-  .t16-badge.m { background: #8E958A; }
-  .t16-badge.t { background: #A8281E; }
-  .t16-hcard b { display: block; font-family: 'Dela Gothic One', sans-serif; font-size: 19px; }
-  .t16-hcard i { display: block; font-style: normal; font-size: 11.5px; color: var(--ink-dim); margin: 4px 0 0; }
-  .t16-hcard .w { font-size: 12px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.75; }
-  .t16-hcard .y { font-size: 12.5px; margin: 7px 0 0; line-height: 1.8; }
+  .t16-hpic img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .t16-hpic span {
+    font-family: 'Anton', sans-serif; font-size: 26px; color: var(--ink-dim); opacity: .55;
+  }
+  .t16-hcard b {
+    display: block; font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(11px, 3.1vw, 14px); line-height: 1.35;
+    /* カタカナの長い名前は、折り返さないと枠からはみ出す */
+    word-break: normal; overflow-wrap: anywhere;
+  }
+  .t16-hcard i {
+    display: block; font-style: normal; font-size: 10.5px; color: var(--ink-dim);
+    margin: 5px 0 0; line-height: 1.5;
+  }
+  .t16-hcard .w {
+    font-size: 10.5px; color: var(--ink-soft); margin: 6px 0 0; line-height: 1.6;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden;
+  }
 
   /* 押したよ、が分かるひとこと */
   .t16-toast {
@@ -780,12 +795,15 @@
     var horses = SUFS.map(function (sf) {
       var h = T.pickHorse(code, sf.k);
       if (!h) return '';
+      /* どの構えでどの馬が出るかは、ここでは伏せておく。
+         画像がまだ無いときは、壊れた絵ではなく「？」のままにする */
       return '<div class="t16-hcard">' +
-        '<span class="t16-badge ' + sf.cls + '">' + sf.k + ' ' + esc(T.SUF[sf.k].name) + '</span>' +
+        '<div class="t16-hpic"><span>?</span>' +
+          '<img src="images/type16/' + code + '_' + sf.k + '.webp" alt="" loading="lazy"' +
+          ' onerror="this.remove()" onload="this.previousElementSibling.remove()"></div>' +
         '<b>' + esc(h.n) + '</b>' +
-        '<i>' + esc(h.era) + '　脚質：' + esc(h.ky) + '</i>' +
-        '<p class="w">主な勝ち鞍：' + esc(h.win) + '</p>' +
-        '<p class="y">' + esc(h.why) + '</p></div>';
+        '<i>' + esc(h.era) + '<br>' + esc(h.ky) + '</i>' +
+        '<p class="w">' + esc(h.win) + '</p></div>';
     }).join('');
 
     var list = function (arr, mk) {
@@ -807,21 +825,11 @@
         '</div>' +
         '<div class="t16-body">' +
           '<p class="t16-desc">' + esc(t.desc) + '</p>' +
-          '<p class="t16-sub">この型の3頭</p>' +
+          '<p class="t16-sub">この型に出てくる馬</p>' +
           '<div class="t16-h3">' + horses + '</div>' +
-          '<p class="t16-sub">強みとクセ</p>' +
-          '<div class="t16-lists">' + list(t.good, '◎') + list(t.bad, '△') + '</div>' +
-          '<p class="t16-sub">口ぐせ</p>' +
-          '<p class="t16-kuse">' + esc(t.kuse) + '</p>' +
-          '<p class="t16-sub">話が合う</p>' +
-          '<div class="t16-fit">' + t.fit.map(function (x) { return chip(x, false); }).join('') + '</div>' +
-          '<p class="t16-sub" style="margin-top:16px">ぶつかりやすい</p>' +
-          '<div class="t16-fit">' + t.clash.map(function (x) { return chip(x, true); }).join('') + '</div>' +
-          '<div class="t16-buddy">' +
-            '<img src="' + c.p + '" alt="" loading="lazy">' +
-            '<p>アフロ馬でいうと <b>' + esc(c.n) + '</b>。<br>' +
-            '<a href="afrohorse_characters.html">キャラクター紹介を見る</a></p>' +
-          '</div>' +
+          '<p class="t16-note" style="margin-top:0">' +
+            'どの1頭になるかは、答えかたで決まります。' +
+          '</p>' +
         '</div>' +
       '</div>' +
       '<button class="t16-go" type="button" id="t16FromInfo">自分のタイプを診断する</button>' +
