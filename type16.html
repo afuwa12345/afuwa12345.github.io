@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>競馬16タイプ診断｜あなたに似た競走馬は？ - AFRO Horse</title>
+<title>アフロ競走馬診断｜あなたに似た競走馬は？ - AFRO Horse</title>
 <meta name="description" content="30の質問に7段階で答えると、5つのものさしからあなたの競馬タイプが48通りで出ます。最後は、似た走り方をした実在の競走馬まで。登録不要・無料。">
 <link rel="canonical" href="https://afro-horse.com/type16.html">
 <link rel="manifest" href="manifest.json">
@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afro-horse.com/type16.html">
 <meta property="og:site_name" content="AFRO Horse">
-<meta property="og:title" content="競馬16タイプ診断｜あなたに似た競走馬は？">
+<meta property="og:title" content="アフロ競走馬診断｜あなたに似た競走馬は？">
 <meta property="og:description" content="30問・5つのものさしで48通り。最後は似た競走馬まで出ます。">
 <meta property="og:image" content="https://afro-horse.com/images/logo.webp">
 <meta name="twitter:card" content="summary_large_image">
@@ -394,10 +394,11 @@
   </div>
 </nav>
 
-<header class="phead" data-bg="TYPE">
+<header class="phead has-chara" data-bg="TYPE">
   <div class="phead-en">16 TYPES</div>
-  <h1 class="phead-ja">競馬16タイプ診断</h1>
-  <p class="phead-sub">30問でわかる、あなたの競馬の向き合い方</p>
+  <h1 class="phead-ja">アフロ競走馬診断</h1>
+  <p class="phead-sub">30問でわかる、あなたに似た競走馬</p>
+  <img class="phead-chara" src="images/type16_hero.webp" alt="" aria-hidden="true">
 </header>
 
 <section>
@@ -824,7 +825,7 @@
     var url = SITE + '?t=' + res.full;
     var text = '【' + (h ? h.n : t.name) + '】型でした。\n' +
                res.full + '／' + t.name + '（' + T.SUF[suffix].name + '）\n' +
-               'あなたに似た競走馬は？\n#競馬16タイプ診断 #アフロホース\n';
+               'あなたに似た競走馬は？\n#アフロ競走馬診断 #アフロホース\n';
     $('t16X').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +
       '&url=' + encodeURIComponent(url);
     $('t16Line').href = 'https://line.me/R/msg/text/?' + encodeURIComponent(text + '\n' + url);
@@ -977,12 +978,12 @@
      できない端末では、保存してから貼ってもらう */
   $('t16Pic').addEventListener('click', function () {
     if (!res) return;
-    var name = '競馬16タイプ_' + res.full + '.png';
+    var name = 'アフロ競走馬診断_' + res.full + '.png';
     if (png && navigator.canShare && navigator.share) {
       var f = null;
       try { f = dataToFile(png, name); } catch (e) { f = null; }
       if (f && navigator.canShare({ files: [f] })) {
-        navigator.share({ files: [f], text: res.text, title: '競馬16タイプ診断' })
+        navigator.share({ files: [f], text: res.text, title: 'アフロ競走馬診断' })
           ['catch'](function () {});
         return;
       }
@@ -993,7 +994,7 @@
 
   $('t16Save').addEventListener('click', function () {
     if (!res) return;
-    savePng('競馬16タイプ_' + res.full + '.png');
+    savePng('アフロ競走馬診断_' + res.full + '.png');
     toast('画像を保存しました');
   });
 
@@ -1082,7 +1083,7 @@
       g.fillText('afro-horse.com', 76, H - 82);
       g.fillStyle = 'rgba(251,245,226,.6)';
       g.font = '500 24px "Zen Kaku Gothic New", sans-serif';
-      g.fillText('競馬16タイプ診断', 76, H - 46);
+      g.fillText('アフロ競走馬診断', 76, H - 46);
 
       return cv.toDataURL('image/png');
     });
