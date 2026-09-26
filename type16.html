@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>競馬16タイプ診断｜あなたに似た競走馬は？ - AFRO Horse</title>
-<meta name="description" content="24の質問に7段階で答えると、4つのものさしからあなたの競馬タイプが16通りで出ます。最後は、似た走り方をした実在の競走馬まで。登録不要・無料。">
+<meta name="description" content="30の質問に7段階で答えると、5つのものさしからあなたの競馬タイプが32通りで出ます。最後は、似た走り方をした実在の競走馬まで。登録不要・無料。">
 <link rel="canonical" href="https://afro-horse.com/type16.html">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon.ico">
@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://afro-horse.com/type16.html">
 <meta property="og:site_name" content="AFRO Horse">
 <meta property="og:title" content="競馬16タイプ診断｜あなたに似た競走馬は？">
-<meta property="og:description" content="24問・4つのものさしで16タイプ。最後は似た競走馬まで出ます。">
+<meta property="og:description" content="30問・5つのものさしで32タイプ。最後は似た競走馬まで出ます。">
 <meta property="og:image" content="https://afro-horse.com/images/logo.webp">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@AFUWA12345">
@@ -232,6 +232,12 @@
   .t16-track i { display: block; height: 100%; border-radius: 99px; background: var(--ac, #14583A); width: 0; transition: width .6s ease; }
   .t16-bar-n { font-size: 11px; color: var(--ink-dim); margin: 5px 0 0; }
 
+  .t16-suf {
+    font-size: 13px; color: var(--ink-soft); line-height: 1.9; margin: 0 0 18px;
+    border: 1px solid var(--rule-soft); border-radius: 12px; padding: 12px 14px;
+    background: var(--paper);
+  }
+  .t16-suf b { color: var(--ink); }
   .t16-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 18px; }
   .t16-lists ul { margin: 0; padding-left: 17px; }
   .t16-lists li { font-size: 12.5px; color: var(--ink-soft); line-height: 1.85; }
@@ -307,7 +313,7 @@
 <header class="phead" data-bg="TYPE">
   <div class="phead-en">16 TYPES</div>
   <h1 class="phead-ja">競馬16タイプ診断</h1>
-  <p class="phead-sub">24問でわかる、あなたの競馬の向き合い方</p>
+  <p class="phead-sub">30問でわかる、あなたの競馬の向き合い方</p>
 </header>
 
 <section>
@@ -319,8 +325,8 @@
         <div class="t16-hero">
           <p class="t16-hero-q">あなたに似た<br><em>競走馬</em>は、どれ？</p>
           <p class="t16-hero-sub">
-            24の質問に答えるだけ。<br>
-            4つのものさしから<b>16タイプ</b>に分かれて、<br>
+            30の質問に答えるだけ。<br>
+            5つのものさしから<b>32タイプ</b>に分かれて、<br>
             似た走り方をした<b>実在の競走馬</b>が出ます。
           </p>
           <div class="t16-hero-pic">
@@ -330,7 +336,7 @@
             <img src="images/ginma.webp" alt="" loading="lazy">
           </div>
           <div class="t16-meta-row">
-            <span class="t16-pill">24問・3分</span>
+            <span class="t16-pill">30問・3分</span>
             <span class="t16-pill">登録いらず</span>
             <span class="t16-pill">結果は画像にできる</span>
           </div>
@@ -343,8 +349,9 @@
           <summary>どうやって決めているの？</summary>
           <div class="t16-det-in">
             <p>
-              24の文に「どれくらいそう思うか」を7段階で答えてもらい、4つの軸それぞれで点を足します。
-              強いほうの文字を取って、4文字そろったのがあなたのタイプです。
+              30の文に「どれくらいそう思うか」を7段階で答えてもらい、5つの軸それぞれで点を足します。
+              強いほうの文字を取って、4文字そろったのがあなたのタイプ。
+              5つ目の軸は、その後ろに付く「構え」です（ESTP-A のような形）。
               軸の文字は、よく知られた16タイプ診断と同じものにそろえてあります。
             </p>
             <div class="t16-axes" id="t16Axes"></div>
@@ -361,7 +368,7 @@
       <div id="t16Quiz" hidden>
         <div class="t16-run-top">
           <div class="t16-run-row">
-            <span class="t16-num" id="t16Step">Q1 <i>/ 24</i></span>
+            <span class="t16-num" id="t16Step">Q1 <i>/ 30</i></span>
             <span class="t16-axtag" id="t16AxName"></span>
           </div>
           <div class="t16-track-top"><i id="t16Bar"></i></div>
@@ -411,8 +418,11 @@
           <div class="t16-body">
             <p class="t16-desc" id="t16Desc"></p>
 
-            <p class="t16-sub" id="t16BarsT">4つのものさし</p>
+            <p class="t16-sub" id="t16BarsT">5つのものさし</p>
             <div class="t16-bars" id="t16Bars"></div>
+
+            <p class="t16-sub">勝負どころの構え</p>
+            <p class="t16-suf" id="t16Suf"></p>
 
             <p class="t16-sub">強みとクセ</p>
             <div class="t16-lists">
@@ -548,7 +558,8 @@
     $('t16Step').innerHTML = 'Q' + (at + 1) + ' <i>/ ' + T.QS.length + '</i>';
     $('t16Bar').style.width = (at / T.QS.length * 100) + '%';
     $('t16Q').textContent = q.t;
-    var ax = T.AXES.filter(function (a) { return a.id === q.ax; })[0];
+    /* 5つ目の軸もここで探す。入れ忘れると、25問目から落ちる */
+    var ax = T.AXES.concat([T.AT]).filter(function (a) { return a.id === q.ax; })[0];
     $('t16AxName').textContent = ax.q;
 
     var box = $('t16Dots');
@@ -588,20 +599,24 @@
   /* ===== 結果 ===== */
   function finish() {
     var j = T.judge(vals);
-    paint(j.code, j.bars);
-    history.replaceState(null, '', '?t=' + j.code);
+    paint(j.code, j.bars, false, j.suffix);
+    history.replaceState(null, '', '?t=' + j.full);
   }
 
-  function paint(code, bars, fromUrl) {
+  function paint(code, bars, fromUrl, suffix) {
     var t = T.TYPES[code];
     if (!t) return;
+    suffix = (suffix === 'A' || suffix === 'T') ? suffix : 'A';
     var pick = T.pickHorse(code, bars);
     /* リンクから開いたときの割合は、その人が答えた数字ではない。だから出さない */
     $('t16BarsT').hidden = !!fromUrl;
     $('t16Bars').hidden  = !!fromUrl;
     $('t16Again').textContent = fromUrl ? '自分でやってみる' : 'もう一回やる';
-    res = { code: code, t: t, bars: bars, horse: pick.horse,
+    res = { code: code, suffix: suffix, full: code + '-' + suffix,
+            t: t, bars: bars, horse: pick.horse,
             barsForImage: fromUrl ? [] : bars };
+    $('t16Suf').innerHTML = '<b>' + suffix + '：' + T.SUF[suffix].name + '</b><br>' +
+                            T.SUF[suffix].desc;
 
     $('t16Win').style.setProperty('--ac', t.ac);
     $('t16Head').style.setProperty('--ac', t.ac);
@@ -615,8 +630,8 @@
       $('t16HorseY').textContent = h.why;
     }
 
-    $('t16Code').textContent = code;
-    $('t16Name').textContent = t.name;
+    $('t16Code').textContent = res.full;
+    $('t16Name').textContent = t.name + '（' + T.SUF[res.suffix].name + '）';
     $('t16En').textContent = t.en;
     $('t16Copy').textContent = t.copy;
     $('t16Desc').textContent = t.desc;
@@ -655,9 +670,9 @@
 
     grid($('t16All'), code);
 
-    var url = SITE + '?t=' + code;
+    var url = SITE + '?t=' + res.full;
     var text = '【' + (h ? h.n : t.name) + '】型でした。\n' +
-               code + '／' + t.name + '\n' +
+               res.full + '／' + t.name + '（' + T.SUF[suffix].name + '）\n' +
                'あなたに似た競走馬は？\n#競馬16タイプ診断 #アフロホース\n';
     $('t16X').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +
       '&url=' + encodeURIComponent(url);
@@ -709,14 +724,15 @@
 
   /* ===== ?t=CODE で、その型を直接ひらく ===== */
   (function () {
-    var q = new URLSearchParams(location.search).get('t');
-    if (q && T.TYPES[q.toUpperCase()]) {
-      var code = q.toUpperCase();
-      var bars = T.AXES.map(function (ax, i) {
-        var mine = (code[i] === ax.a.k) ? ax.a : ax.b;
+    var q = (new URLSearchParams(location.search).get('t') || '').toUpperCase();
+    var code = q.split('-')[0], suf = q.split('-')[1];
+    if (code && T.TYPES[code]) {
+      var bars = T.AXES.concat([T.AT]).map(function (ax, i) {
+        var k = (i < 4) ? code[i] : (suf || 'A');
+        var mine = (k === ax.a.k) ? ax.a : ax.b;
         return { ax: ax, side: mine, other: (mine === ax.a ? ax.b : ax.a), pct: 68, pt: 0 };
       });
-      paint(code, bars, true);
+      paint(code, bars, true, suf);
     } else {
       show('intro');
     }
@@ -734,7 +750,7 @@
      できない端末では、保存してから貼ってもらう */
   $('t16Pic').addEventListener('click', function () {
     if (!res) return;
-    var name = '競馬16タイプ_' + res.code + '.png';
+    var name = '競馬16タイプ_' + res.full + '.png';
     if (png && navigator.canShare && navigator.share) {
       var f = null;
       try { f = dataToFile(png, name); } catch (e) { f = null; }
@@ -750,7 +766,7 @@
 
   $('t16Save').addEventListener('click', function () {
     if (!res) return;
-    savePng('競馬16タイプ_' + res.code + '.png');
+    savePng('競馬16タイプ_' + res.full + '.png');
     toast('画像を保存しました');
   });
 
@@ -805,9 +821,9 @@
       /* タイプ */
       g.fillStyle = 'rgba(251,245,226,.92)';
       g.font = '96px "Anton", sans-serif';
-      g.fillText(res.code, W / 2, 400);
+      g.fillText(res.full, W / 2, 400);
       g.font = '900 44px "Zen Kaku Gothic New", sans-serif';
-      g.fillText(t.name, W / 2, 460);
+      g.fillText(t.name + '（' + T.SUF[res.suffix].name + '）', W / 2, 460);
       g.fillStyle = 'rgba(251,245,226,.8)';
       g.font = '500 28px "Zen Kaku Gothic New", sans-serif';
       g.fillText(t.copy, W / 2, 510);

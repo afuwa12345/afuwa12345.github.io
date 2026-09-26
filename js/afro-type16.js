@@ -30,7 +30,25 @@
       b: { k: 'P', name: '出たとこ', line: 'パドックを見てから考える' } }
   ];
 
-  /* ===== 24の文 =====
+  /* ===== 5つ目のものさし =====
+     本家の16タイプ診断でいう -A / -T にあたるもの。
+     4文字の後ろに付いて、同じタイプでも構えがちがうことを出す。
+     ※ TF の T（理詰め）とは別の T。本家も同じ文字を使っている */
+  var AT = { id: 'AT', q: '勝負どころの構え',
+    a: { k: 'A', name: '動じない', line: '当たっても外しても、同じ顔をしている' },
+    b: { k: 'T', name: '熱くなる', line: '一鞍ごとに、気持ちが動く' } };
+
+  /* その構えの説明 */
+  var SUF = {
+    A: { name: '動じない',
+         desc: '結果に振り回されにくい人。決めた形をそのまま続けられるし、外した日も顔に出ない。'
+             + 'ただ、うまくいかなかった理由に向き合わないまま次へ行ってしまうことがある。' },
+    T: { name: '熱くなる',
+         desc: '一鞍ごとに気持ちが動く人。悔しさをちゃんと次に持ち込めるぶん、伸びしろがある。'
+             + 'そのかわり、熱くなった日は自分で止まりにくい。' }
+  };
+
+  /* ===== 30の文 =====
      ax … どの軸のことか
      d  … 「そう思う」がどちらの文字に効くか（1 = 先の文字 / -1 = 後ろの文字）
 
@@ -67,7 +85,15 @@
     { ax: 'JP', d:  1, t: '1日に使う額を決めて、その中でおさめる' },
     { ax: 'JP', d: -1, t: '気分が乗ったレースを、その場で足してしまう' },
     { ax: 'JP', d:  1, t: '当たった日も外した日も、記録に残している' },
-    { ax: 'JP', d: -1, t: '席も買い方も、その日の流れで決まる' }
+    { ax: 'JP', d: -1, t: '席も買い方も、その日の流れで決まる' },
+
+    /* --- A / T（勝負どころの構え） --- */
+    { ax: 'AT', d:  1, t: '大きく外した日でも、次のレースにはふつうに向かえる' },
+    { ax: 'AT', d: -1, t: '外した直後は、しばらく引きずってしまう' },
+    { ax: 'AT', d:  1, t: '自分の買い方には、だいたい自信がある' },
+    { ax: 'AT', d: -1, t: '人の的中を見ると、自分の買い目が急に不安になる' },
+    { ax: 'AT', d:  1, t: '荒れた日でも、決めた額は変えない' },
+    { ax: 'AT', d: -1, t: '勝っている日は、つい額が増えていく' }
   ];
 
   /* ===== 16タイプ =====
@@ -363,9 +389,11 @@
 
   /* はっきり出た人ほど、そのタイプの代表格になる */
   function pickHorse(code, bars) {
+    /* 5つ目（構え）は、どのタイプかの話ではないので入れない */
+    var four = (bars || []).slice(0, 4);
     var sum = 0;
-    for (var i = 0; i < bars.length; i++) sum += bars[i].pct;
-    var avg = sum / bars.length;
+    for (var i = 0; i < four.length; i++) sum += four[i].pct;
+    var avg = four.length ? sum / four.length : 50;
     var list = HORSES[code] || [];
     return { horse: list[avg >= 65 ? 0 : 1] || list[0], avg: Math.round(avg) };
   }
@@ -375,26 +403,31 @@
   var MAXPT = 18;
 
   function judge(vals) {
-    var sc = { EI: 0, SN: 0, TF: 0, JP: 0 };
+    var sc = { EI: 0, SN: 0, TF: 0, JP: 0, AT: 0 };
     for (var i = 0; i < QS.length; i++) {
       var v = vals[i];
       if (typeof v !== 'number') v = 0;
       sc[QS[i].ax] += v * QS[i].d;
     }
     var code = '', bars = [];
-    for (var j = 0; j < AXES.length; j++) {
-      var ax = AXES[j], p = sc[ax.id];
+    var list = AXES.concat([AT]);
+    for (var j = 0; j < list.length; j++) {
+      var ax = list[j], p = sc[ax.id];
       /* ちょうど0のときは、先の文字にしておく。割合は50%のまま出す */
       var side = (p >= 0) ? ax.a : ax.b;
       var pct = Math.round(50 + 50 * Math.abs(p) / MAXPT);
-      code += side.k;
+      if (ax !== AT) code += side.k;
       bars.push({ ax: ax, side: side, other: (p >= 0) ? ax.b : ax.a, pct: pct, pt: p });
     }
-    return { code: code, bars: bars, sc: sc };
+    var suffix = bars[4].side.k;
+    return { code: code, suffix: suffix, full: code + '-' + suffix,
+             bars: bars, sc: sc };
   }
 
   window.AfroType16 = {
     AXES: AXES,
+    AT: AT,
+    SUF: SUF,
     QS: QS,
     TYPES: TYPES,
     MAXPT: MAXPT,
