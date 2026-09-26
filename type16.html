@@ -632,12 +632,18 @@
     var ax = T.AXES.concat([T.AT]).filter(function (a) { return a.id === q.ax; })[0];
     $('t16AxName').textContent = ax.q;
 
-    /* その軸の担当キャラ。軸が変わったときだけ入れかえる */
+    /* その軸の担当キャラ。軸が変わったときと、
+       決まった問目（あと少し、など）にだけ言いかえる */
     var ac = T.AX_CHARA[q.ax];
-    if (ac && paintQ._who !== ac.who) {
-      paintQ._who = ac.who;
-      $('t16SayPic').src = CHARA[ac.who].p;
-      $('t16SayTxt').innerHTML = '<b>' + CHARA[ac.who].n + '</b>　' + ac.line;
+    if (ac) {
+      var mile = T.PROGRESS[at + 1];
+      var newWho = (paintQ._who !== ac.who);
+      if (newWho || mile) {
+        paintQ._who = ac.who;
+        $('t16SayPic').src = CHARA[ac.who].p;
+        $('t16SayTxt').innerHTML = '<b>' + CHARA[ac.who].n + '</b>　' +
+          (mile && !newWho ? mile : ac.line);
+      }
     }
 
     var box = $('t16Dots');
