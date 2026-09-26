@@ -106,9 +106,7 @@
     <a class="getkey" href="https://aistudio.google.com/app/apikey" target="_blank"
        rel="noopener">aistudio.google.com で無料でもらえます →</a></div>
   <div><label>モデル</label><select id="model">
-    <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-    <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite（軽い・上限がゆるい）</option>
-    <option value="gemini-2.0-flash">gemini-2.0-flash</option></select></div>
+    <option value="gemini-2.5-flash">gemini-2.5-flash</option></select></div>
   <div><label>1分あたり</label><select id="rpm">
     <option value="4">4本（無料枠むけ）</option>
     <option value="9">9本</option>
@@ -404,10 +402,43 @@ ${ng.map(x => '・' + x).join('\n')}
 出力はJSONだけ。説明もかぎ括弧も付けないでください。
 {${仕事.map(x => `"${x.no}":"台詞"`).join(',')}}`;
 }
-/* ★モデルごとに無料枠は別。上限に当たったら、待つ前に別のモデルへ逃がす */
-const 逃げ先 = ['gemini-2.5-flash-lite', 'gemini-2.0-flash', 'gemini-2.5-flash'];
+/* ★モデル名は推測で書かない。APIに「使えるもの」を聞く
+   （gemini-2.5-flash-lite のように提供が終わる名前があるため） */
+let MODELS = [];
+async function モデル一覧(key){
+  if (MODELS.length) return MODELS;
+  const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models?key='
+    + encodeURIComponent(key) + '&pageSize=200');
+  const d = await r.json();
+  if (d.error) throw new Error(d.error.message);
+  MODELS = (d.models || [])
+    .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+    .map(m => m.name.replace('models/', ''))
+    .filter(n => /gemini/.test(n) && !/vision|embedding|aqa|tts|image|live|native-audio/.test(n));
+  // 速くて安いものを先に
+  const 順 = n => (/flash-lite/.test(n) ? 0 : /flash/.test(n) ? 1 : /pro/.test(n) ? 3 : 2)
+                + (/preview|exp/.test(n) ? 0.5 : 0);
+  MODELS.sort((a, b) => 順(a) - 順(b) || a.localeCompare(b));
+  const sel = $('model'), 前 = localStorage.getItem('afro_model');
+  sel.innerHTML = MODELS.map(n => `<option value="${n}">${n}</option>`).join('');
+  if (前 && MODELS.includes(前)) sel.value = 前;
+  return MODELS;
+}
+$('key').addEventListener('change', () => 一覧を読む(true));
+function 一覧を読む(しらせる){
+  const k = $('key').value.trim();
+  if (!k) return;
+  モデル一覧(k).then(m => {
+    if (しらせる) $('apimsg').innerHTML = `使えるモデル <b>${m.length}</b> 件を読み込みました`;
+  }).catch(e => {
+    if (しらせる) $('apimsg').textContent = 'モデル一覧が取れません：' + e.message.slice(0,120);
+  });
+}
+/* キーを覚えているなら、開いたときに静かに一覧を取っておく */
+setTimeout(() => 一覧を読む(false), 300);
 async function 叩く(key, text, temp){
-  const 試す = [$('model').value].concat(逃げ先.filter(m => m !== $('model').value));
+  const 今 = $('model').value || 'gemini-2.5-flash';
+  const 試す = [今].concat(MODELS.filter(m => m !== 今)).filter(Boolean);
   let 待った = false;
   for (const model of 試す){
     for (let 回 = 0; 回 < 2; 回++){
@@ -417,15 +448,22 @@ async function 叩く(key, text, temp){
         + model + ':generateContent?key=' + encodeURIComponent(key),
         {method:'POST', headers:{'Content-Type':'application/json'},
          body: JSON.stringify({contents:[{parts:[{text}]}],
-           generationConfig:{temperature:temp, maxOutputTokens:4096,
-                             responseMimeType:'application/json',
-                             thinkingConfig:{thinkingBudget:0}}})});
+           /* ★v4と同じ中身にする。余計な指定を足すと動かなくなることがある */
+           generationConfig:{responseMimeType:'application/json',
+                             maxOutputTokens:2500, temperature:temp}})});
       const d = await r.json().catch(() => ({}));
       if (r.status === 429 || (d.error && d.error.code === 429)){
         $('apimsg').textContent = model + ' が上限。別のモデルを試します…';
         break;                       // ★待たずに次のモデルへ
       }
-      if (d.error) throw new Error(d.error.message);
+      if (d.error){
+        if (/no longer available|not found|not supported/i.test(d.error.message)){
+          $('apimsg').textContent = model + ' は使えません。別のモデルを試します…';
+          MODELS = MODELS.filter(x => x !== model);
+          break;                     /* ★消えたモデルは一覧から外して次へ */
+        }
+        throw new Error(d.error.message);
+      }
       const c = (d.candidates || [])[0];
       if (!c) throw new Error('返事が空です');
       const t = (c.content && c.content.parts || []).map(p => p.text || '').join('').trim();
@@ -449,6 +487,9 @@ $('gen').onclick = async () => {
   const key = $('key').value.trim();
   if (!key) { $('apimsg').textContent = 'APIキーを入れてください'; return; }
   localStorage.setItem('afro_gemini_key', key);
+  try { await モデル一覧(key); }
+  catch (e) { $('apimsg').textContent = 'モデル一覧が取れません：' + e.message.slice(0,150);
+              return; }
   if (!ORDER)   ORDER   = await fetch('./台詞注文.json?v=' + Date.now()).then(r => r.json());
   if (!SETTING) SETTING = await fetch('./キャラ設定.json?v=' + Date.now()).then(r => r.json());
   const over = $('chara').value;
@@ -470,7 +511,7 @@ $('gen').onclick = async () => {
     catch (e) { const m = String(e.message);
       $('apimsg').textContent = /quota|429/i.test(m)
         ? '回数の上限です。1分あたりの本数を下げるか、少し待ってからやり直してください'
-        : '通信に失敗：' + m.slice(0, 120);
+        : '通信に失敗：' + m.slice(0, 200);
       $('gen').disabled = false; return; }
     let 中身;
     try { 中身 = JSON.parse(返事.replace(/```json|```/g, '').trim()); }
