@@ -40,8 +40,10 @@
     b: { k: 'T', name: '熱くなる', line: '一鞍ごとに、気持ちが動く' },
     m: { k: 'M', name: 'まんなか', line: '熱くなる日も、静かな日もある' } };
 
-  /* どちらとも言えない幅。これより中なら まんなか になる */
-  var MID = 5;
+  /* どちらとも言えない幅。これより中なら まんなか になる。
+     ひろすぎると、ほとんどの人が まんなか になってしまう。
+     5 では まんなか が6割を超えたので 3 にした（だいたい3等分になる） */
+  var MID = 3;
 
   /* その構えの説明 */
   var SUF = {
@@ -494,6 +496,29 @@
      点は -18 〜 +18（6問 × 3点）。0なら半々 */
   var MAXPT = 18;
 
+  /* ===== ちょうど半々だったときの決め方 =====
+     前は必ず先の文字（E・S・T・J）にしていた。
+     ちょうど0になる人は各軸で8%ほどいるので、
+     そのぶん ESTJ ばかりが出て、INFP はその半分以下しか出なかった。
+     いまは答え全体から作った数で、どちらに倒すかを決める。
+     でたらめに見えるが、同じ答えなら必ず同じ結果になる */
+  function mix32(h) {
+    h = h >>> 0;
+    h ^= h >>> 16; h = (h * 0x7feb352d) >>> 0;
+    h ^= h >>> 15; h = (h * 0x846ca68b) >>> 0;
+    h ^= h >>> 16;
+    return h >>> 0;
+  }
+  function seedOf(vals) {
+    var h = 2166136261;
+    for (var i = 0; i < vals.length; i++) {
+      var v = (typeof vals[i] === 'number') ? vals[i] : 0;
+      h ^= (v + 3) + i * 7;
+      h = (h * 16777619) >>> 0;
+    }
+    return mix32(h);
+  }
+
   function judge(vals) {
     var sc = { EI: 0, SN: 0, TF: 0, JP: 0, AT: 0 };
     for (var i = 0; i < QS.length; i++) {
@@ -502,12 +527,15 @@
       sc[QS[i].ax] += v * QS[i].d;
     }
     var code = '', bars = [];
+    var seed = seedOf(vals);
     for (var j = 0; j < AXES.length; j++) {
       var ax = AXES[j], p = sc[ax.id];
-      /* ちょうど0のときは、先の文字にしておく。割合は50%のまま出す */
-      var side = (p >= 0) ? ax.a : ax.b;
+      /* ちょうど0のときだけ、答え全体から決める。割合は50%のまま出す */
+      var side = (p === 0)
+        ? ((mix32(seed + j * 2654435761) & 1) ? ax.a : ax.b)
+        : (p > 0 ? ax.a : ax.b);
       code += side.k;
-      bars.push({ ax: ax, side: side, other: (p >= 0) ? ax.b : ax.a,
+      bars.push({ ax: ax, side: side, other: (side === ax.a) ? ax.b : ax.a,
                   pct: Math.round(50 + 50 * Math.abs(p) / MAXPT), pt: p });
     }
     /* 構えは3段階。どちらにも寄っていなければ まんなか */
