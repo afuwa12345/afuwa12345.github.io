@@ -296,6 +296,26 @@
   .t16-one em { display: block; font-style: normal; font-size: 10.5px; color: var(--ink-dim); margin-top: 2px; }
   .t16-one.now { border-color: var(--gold); background: var(--gold-soft); }
 
+  /* ===== 型の説明ページ ===== */
+  .t16-lead2 {
+    font-size: 12px; color: var(--ink-dim); text-align: center; margin: 0 0 12px;
+  }
+  .t16-h3 { display: grid; gap: 10px; margin: 0 0 18px; }
+  .t16-hcard {
+    border: 1px solid var(--rule); border-radius: 13px; padding: 13px 14px; background: var(--paper);
+  }
+  .t16-badge {
+    display: inline-block; border-radius: 99px; padding: 3px 10px; margin: 0 0 8px;
+    font-size: 11px; font-weight: 900; color: #fff; background: var(--ink-dim);
+  }
+  .t16-badge.a { background: #1F855A; }
+  .t16-badge.m { background: #8E958A; }
+  .t16-badge.t { background: #A8281E; }
+  .t16-hcard b { display: block; font-family: 'Dela Gothic One', sans-serif; font-size: 19px; }
+  .t16-hcard i { display: block; font-style: normal; font-size: 11.5px; color: var(--ink-dim); margin: 4px 0 0; }
+  .t16-hcard .w { font-size: 12px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.75; }
+  .t16-hcard .y { font-size: 12.5px; margin: 7px 0 0; line-height: 1.8; }
+
   /* 押したよ、が分かるひとこと */
   .t16-toast {
     position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
@@ -402,6 +422,9 @@
           <p class="t16-quitrow"><button type="button" class="t16-quit" id="t16Quit">やめる</button></p>
         </div>
       </div>
+
+      <!-- ===== 型の説明（一覧から開いたとき） ===== -->
+      <div id="t16Info" hidden></div>
 
       <!-- ===== 結果 ===== -->
       <div id="t16Result" hidden>
@@ -535,7 +558,7 @@
     CODES.forEach(function (cd) {
       var a = document.createElement('a');
       a.className = 't16-one' + (cd === now ? ' now' : '');
-      a.href = '?t=' + cd;
+      a.href = '?type=' + cd;
       var h = (T.HORSES[cd] || [])[0];
       a.innerHTML = '<b>' + cd + '</b><span>' + T.TYPES[cd].name + '</span>' +
                     (h ? '<em>' + h.n + '</em>' : '');
@@ -560,6 +583,7 @@
     $('t16Intro').hidden  = (which !== 'intro');
     $('t16Quiz').hidden   = (which !== 'quiz');
     $('t16Result').hidden = (which !== 'result');
+    $('t16Info').hidden   = (which !== 'info');
     document.body.classList.toggle('t16-run', which === 'quiz');
   }
 
@@ -729,10 +753,89 @@
     list.forEach(function (cd) {
       var a = document.createElement('a');
       a.className = 't16-chip' + (bad ? ' bad' : '');
-      a.href = '?t=' + cd;
+      a.href = '?type=' + cd;
       a.innerHTML = '<b>' + cd + '</b>' + T.TYPES[cd].name;
       box.appendChild(a);
     });
+  }
+
+  /* ===== 型の説明ページ =====
+     一覧から来た人に見せるもの。その人の診断結果ではないので、
+     割合もシェアのボタンも出さない。かわりに3頭をならべる */
+  var SUFS = [
+    { k: 'A', cls: 'a' },
+    { k: 'M', cls: 'm' },
+    { k: 'T', cls: 't' }
+  ];
+
+  function esc(v) {
+    return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function explain(code) {
+    var t = T.TYPES[code];
+    if (!t) { show('intro'); return; }
+    var c = CHARA[t.buddy];
+
+    var horses = SUFS.map(function (sf) {
+      var h = T.pickHorse(code, sf.k);
+      if (!h) return '';
+      return '<div class="t16-hcard">' +
+        '<span class="t16-badge ' + sf.cls + '">' + sf.k + ' ' + esc(T.SUF[sf.k].name) + '</span>' +
+        '<b>' + esc(h.n) + '</b>' +
+        '<i>' + esc(h.era) + '　脚質：' + esc(h.ky) + '</i>' +
+        '<p class="w">主な勝ち鞍：' + esc(h.win) + '</p>' +
+        '<p class="y">' + esc(h.why) + '</p></div>';
+    }).join('');
+
+    var list = function (arr, mk) {
+      return '<ul>' + arr.map(function (x) { return '<li>' + mk + ' ' + esc(x) + '</li>'; }).join('') + '</ul>';
+    };
+    var chip = function (cd, bad) {
+      return '<a class="t16-chip' + (bad ? ' bad' : '') + '" href="?type=' + cd + '">' +
+             '<b>' + cd + '</b>' + esc(T.TYPES[cd].name) + '</a>';
+    };
+
+    $('t16Info').innerHTML =
+      '<p class="t16-lead2">16タイプのうちの1つです</p>' +
+      '<div class="t16-card" style="--ac:' + t.ac + ';margin-top:0">' +
+        '<div class="t16-head" style="--ac:' + t.ac + '">' +
+          '<p class="t16-code">' + code + '</p>' +
+          '<h2 class="t16-name">' + esc(t.name) + '</h2>' +
+          '<p class="t16-en">' + esc(t.en) + '</p>' +
+          '<p class="t16-copy">' + esc(t.copy) + '</p>' +
+        '</div>' +
+        '<div class="t16-body">' +
+          '<p class="t16-desc">' + esc(t.desc) + '</p>' +
+          '<p class="t16-sub">この型の3頭</p>' +
+          '<div class="t16-h3">' + horses + '</div>' +
+          '<p class="t16-sub">強みとクセ</p>' +
+          '<div class="t16-lists">' + list(t.good, '◎') + list(t.bad, '△') + '</div>' +
+          '<p class="t16-sub">口ぐせ</p>' +
+          '<p class="t16-kuse">' + esc(t.kuse) + '</p>' +
+          '<p class="t16-sub">話が合う</p>' +
+          '<div class="t16-fit">' + t.fit.map(function (x) { return chip(x, false); }).join('') + '</div>' +
+          '<p class="t16-sub" style="margin-top:16px">ぶつかりやすい</p>' +
+          '<div class="t16-fit">' + t.clash.map(function (x) { return chip(x, true); }).join('') + '</div>' +
+          '<div class="t16-buddy">' +
+            '<img src="' + c.p + '" alt="" loading="lazy">' +
+            '<p>アフロ馬でいうと <b>' + esc(c.n) + '</b>。<br>' +
+            '<a href="afrohorse_characters.html">キャラクター紹介を見る</a></p>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="t16-go" type="button" id="t16FromInfo">自分のタイプを診断する</button>' +
+      '<p class="t16-godesc">30問・3分／答えた内容はこの端末の中だけで計算しています</p>' +
+      '<p class="t16-sub" style="margin-top:26px">16タイプぜんぶ</p>' +
+      '<div class="t16-all" id="t16AllInfo"></div>';
+
+    grid($('t16AllInfo'), code);
+    $('t16FromInfo').addEventListener('click', function () {
+      vals = []; at = 0; show('quiz'); paintQ(); window.scrollTo(0, 0);
+      history.replaceState(null, '', location.pathname);
+    });
+    show('info');
+    window.scrollTo(0, 0);
   }
 
   /* ===== リンクをコピー =====
@@ -760,6 +863,8 @@
 
   /* ===== ?t=CODE で、その型を直接ひらく ===== */
   (function () {
+    var ty = (new URLSearchParams(location.search).get('type') || '').toUpperCase();
+    if (ty && T.TYPES[ty]) { explain(ty); return; }
     var q = (new URLSearchParams(location.search).get('t') || '').toUpperCase();
     var code = q.split('-')[0], suf = q.split('-')[1];
     if (code && T.TYPES[code]) {
