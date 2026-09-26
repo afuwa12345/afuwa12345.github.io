@@ -293,7 +293,6 @@
   }
   .t16-one b { display: block; font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: .06em; color: var(--turf); }
   .t16-one span { display: block; font-size: 11px; color: var(--ink-soft); margin-top: 3px; line-height: 1.5; }
-  .t16-one em { display: block; font-style: normal; font-size: 10.5px; color: var(--ink-dim); margin-top: 2px; }
   .t16-one.now { border-color: var(--gold); background: var(--gold-soft); }
 
   /* ===== 型の説明ページ ===== */
@@ -574,9 +573,8 @@
       var a = document.createElement('a');
       a.className = 't16-one' + (cd === now ? ' now' : '');
       a.href = '?type=' + cd;
-      var h = (T.HORSES[cd] || [])[0];
-      a.innerHTML = '<b>' + cd + '</b><span>' + T.TYPES[cd].name + '</span>' +
-                    (h ? '<em>' + h.n + '</em>' : '');
+      /* 馬の名前はここでは出さない。診断してからのお楽しみ */
+      a.innerHTML = '<b>' + cd + '</b><span>' + T.TYPES[cd].name + '</span>';
       box.appendChild(a);
     });
   }
