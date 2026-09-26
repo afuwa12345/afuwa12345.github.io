@@ -112,7 +112,9 @@
     <option value="9">9本</option>
     <option value="14">14本</option>
     <option value="60">制限なし</option></select></div>
-  <div><button id="gen">このレースの台詞を書かせる</button></div>
+  <div><button id="gen">7枚ぶん書かせる（前半＋後半）</button></div>
+  <div><button class="sub" id="gen1">1〜4枚目だけ</button></div>
+  <div><button class="sub" id="gen2">5〜7枚目だけ</button></div>
   <div><button class="sub" id="clr">台詞を元にもどす</button></div>
   <div class="info" id="apimsg">数字はこちらで決めています。APIには言い回しだけ書かせます</div>
 </div>
@@ -448,9 +450,10 @@ async function 叩く(key, text, temp){
         + model + ':generateContent?key=' + encodeURIComponent(key),
         {method:'POST', headers:{'Content-Type':'application/json'},
          body: JSON.stringify({contents:[{parts:[{text}]}],
-           /* ★v4と同じ中身にする。余計な指定を足すと動かなくなることがある */
+           /* ★7枚ぶんはv4の項目より長い。枠を広げ、「考える」ぶんは切って出力に回す */
            generationConfig:{responseMimeType:'application/json',
-                             maxOutputTokens:2500, temperature:temp}})});
+                             maxOutputTokens:8192, temperature:temp,
+                             thinkingConfig:{thinkingBudget:0}}})});
       const d = await r.json().catch(() => ({}));
       if (r.status === 429 || (d.error && d.error.code === 429)){
         $('apimsg').textContent = model + ' が上限。別のモデルを試します…';
@@ -467,6 +470,7 @@ async function 叩く(key, text, temp){
       const c = (d.candidates || [])[0];
       if (!c) throw new Error('返事が空です');
       const t = (c.content && c.content.parts || []).map(p => p.text || '').join('').trim();
+      if (c.finishReason === 'MAX_TOKENS') throw new Error('MAX_TOKENS');
       if (c.finishReason && c.finishReason !== 'STOP')
         throw new Error('返事が途中で切れました（' + c.finishReason + '）');
       if (!t) throw new Error('返事が空でした');
@@ -483,57 +487,92 @@ async function 叩く(key, text, temp){
   }
   throw new Error('どのモデルも上限のままでした');
 }
-$('gen').onclick = async () => {
+/* 1回で書かせる。長すぎて切れたら半分ずつに分けて投げ直す */
+async function 書く(key, 仕事, c, temp){
+  const 出来 = {};
+  try {
+    const 返事 = await 叩く(key, プロンプト(仕事, c, ORDER.禁止), temp);
+    const 中身 = JSON.parse(返事.replace(/```json|```/g, '').trim());
+    仕事.forEach(x => {
+      const t = String(中身[x.no] || 中身[String(x.no)] || '').replace(/\n/g, '').trim();
+      if (t) 出来[x.no] = t;
+    });
+    return 出来;
+  } catch (e) {
+    const 長すぎ = /MAX_TOKENS/.test(String(e.message));
+    if (!長すぎ || 仕事.length < 2) throw e;
+    const 半 = Math.ceil(仕事.length / 2);
+    $('apimsg').textContent = '返事が長すぎたので、' + 仕事.length + '枚を分けて書かせます…';
+    const a = await 書く(key, 仕事.slice(0, 半), c, temp);
+    const b = await 書く(key, 仕事.slice(半), c, temp);
+    return Object.assign(a, b);
+  }
+}
+async function 生成(範囲, ラベル){
   const key = $('key').value.trim();
   if (!key) { $('apimsg').textContent = 'APIキーを入れてください'; return; }
   localStorage.setItem('afro_gemini_key', key);
-  try { await モデル一覧(key); }
-  catch (e) { $('apimsg').textContent = 'モデル一覧が取れません：' + e.message.slice(0,150);
-              return; }
+  try { await モデル一覧(key); } catch (e) {}
   if (!ORDER)   ORDER   = await fetch('./台詞注文.json?v=' + Date.now()).then(r => r.json());
   if (!SETTING) SETTING = await fetch('./キャラ設定.json?v=' + Date.now()).then(r => r.json());
   const over = $('chara').value;
-  let 仕事 = [];
+  const 全部 = [];
   for (let no = 1; no <= 7; no++){
     const o = ORDER.注文[RACE + '|' + no];
-    if (o) 仕事.push({no, o});
+    if (o && 範囲.includes(no)) 全部.push({no, o});
   }
-  if (!仕事.length) { $('apimsg').textContent = 'このレースの注文書がありません'; return; }
-  const c = SETTING[over || 仕事[0].o.c];
-  $('gen').disabled = true;
+  if (!全部.length) { $('apimsg').textContent = 'このレースの注文書がありません'; return; }
+  const c = SETTING[over || 全部[0].o.c];
+  ['gen','gen1','gen2'].forEach(id => $(id).disabled = true);
 
-  let ok = 0, 残り = 仕事;
+  let ok = 0, 残り = 全部;
   for (let 回 = 0; 回 <= 2 && 残り.length; 回++){
-    $('apimsg').textContent = (回 === 0 ? '' : '数字が合わなかった分を書き直し中…')
+    $('apimsg').textContent = (回 === 0 ? ラベル : '数字が合わなかった分を書き直し中…')
       + `${c.名前} が ${残り.length} 枚ぶん考え中…`;
-    let 返事;
-    try { 返事 = await 叩く(key, プロンプト(残り, c, ORDER.禁止), 0.9 - 0.2 * 回); }
-    catch (e) { const m = String(e.message);
-      $('apimsg').textContent = /quota|429/i.test(m)
-        ? '回数の上限です。1分あたりの本数を下げるか、少し待ってからやり直してください'
+    let 出来;
+    try { 出来 = await 書く(key, 残り, c, 0.9 - 0.2 * 回); }
+    catch (e) {
+      const m = String(e.message);
+      $('apimsg').textContent =
+        /quota|429/i.test(m) ? '回数の上限です。少し待ってからやり直してください'
+        : /MAX_TOKENS/.test(m) ? '返事が長すぎました。「1〜4枚目だけ」「5〜7枚目だけ」で分けてお試しください'
         : '通信に失敗：' + m.slice(0, 200);
-      $('gen').disabled = false; return; }
-    let 中身;
-    try { 中身 = JSON.parse(返事.replace(/```json|```/g, '').trim()); }
-    catch (e) { $('apimsg').textContent = '返事の形が読めませんでした：'
-                  + String(返事).slice(0, 80);
-                $('gen').disabled = false; return; }
+      ['gen','gen1','gen2'].forEach(id => $(id).disabled = false);
+      draw(); return;
+    }
     const 次 = [];
     残り.forEach(x => {
-      let t = (中身[x.no] || 中身[String(x.no)] || '').replace(/\n/g, '').trim();
+      const t = 出来[x.no];
       if (!t) { 次.push(x); return; }
-      const bad = 違反する数字(t, x.o.n);
-      if (bad.length) { x.bad = bad; 次.push(x); return; }
+      if (違反する数字(t, x.o.n).length) { 次.push(x); return; }
       SERIF_LOCAL[RACE + '|' + x.no] = {text: t}; ok++;
     });
     残り = 次;
   }
   localStorage.setItem('afro_serif', JSON.stringify(SERIF_LOCAL));
-  $('apimsg').innerHTML = `書けた <b>${ok}</b> 枚`
-    + (残り.length ? `／数字が合わず不採用 ${残り.length} 枚（元の文のまま）` : '')
-    + `　＜APIは ${CALLS.length} 回＞`;
-  $('gen').disabled = false;
+  ['gen','gen1','gen2'].forEach(id => $(id).disabled = false);
   draw();
+  return {ok, ng: 残り.length};
+}
+$('gen1').onclick = async () => {
+  const r = await 生成([1,2,3,4], '');
+  if (r) $('apimsg').innerHTML = `1〜4枚目：書けた <b>${r.ok}</b> 枚`
+    + (r.ng ? `／不採用 ${r.ng} 枚` : '') + `　＜APIは ${CALLS.length} 回＞`;
+};
+$('gen2').onclick = async () => {
+  const r = await 生成([5,6,7], '');
+  if (r) $('apimsg').innerHTML = `5〜7枚目：書けた <b>${r.ok}</b> 枚`
+    + (r.ng ? `／不採用 ${r.ng} 枚` : '') + `　＜APIは ${CALLS.length} 回＞`;
+};
+$('gen').onclick = async () => {
+  /* ★7枚を一度に投げると返事が長すぎて切れるので、最初から前半・後半に分ける */
+  const a = await 生成([1,2,3,4], '前半（1〜4枚目）／');
+  if (!a) return;
+  const b = await 生成([5,6,7], '後半（5〜7枚目）／');
+  if (!b) return;
+  $('apimsg').innerHTML = `書けた <b>${a.ok + b.ok}</b> 枚`
+    + ((a.ng + b.ng) ? `／数字が合わず不採用 ${a.ng + b.ng} 枚（元の文のまま）` : '')
+    + `　＜APIは ${CALLS.length} 回＞`;
 };
 $('clr').onclick = () => {
   Object.keys(SERIF_LOCAL).forEach(k => {
