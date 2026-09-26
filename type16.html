@@ -103,25 +103,45 @@
   .t16-ax i { font-style: normal; color: var(--ink-dim); }
 
   /* ===== 質問（全画面） ===== */
+  /* 上に貼りつく、キャラのふきだし。
+     進み具合もここに入れて、キャラが言っているように見せる */
   .t16-run-top {
     position: sticky; top: 0; z-index: 30;
-    background: linear-gradient(180deg, #0C3A25, #14583A);
-    padding: 10px 14px 11px; color: #fff;
+    background: var(--paper); border-bottom: 1px solid var(--rule);
+    padding: 10px 14px 12px;
+    box-shadow: 0 6px 14px rgba(26,30,24,.06);
   }
-  .t16-run-row { display: flex; align-items: center; gap: 10px; }
-  .t16-num { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: .06em; flex: 0 0 auto; }
-  .t16-num i { font-style: normal; opacity: .55; font-size: 12px; }
-  .t16-axtag { margin-left: auto; font-size: 11px; color: rgba(255,255,255,.72); flex: 0 0 auto; }
+  .t16-talk { display: flex; align-items: flex-start; gap: 9px; }
+  .t16-talk > img { width: 46px; height: 46px; object-fit: contain; flex: 0 0 auto; }
+  .t16-bub {
+    position: relative; flex: 1; min-width: 0;
+    background: var(--white); border: 1px solid var(--rule); border-radius: 13px;
+    padding: 9px 12px 10px;
+  }
+  .t16-bub::before {
+    content: ''; position: absolute; left: -6px; top: 15px; width: 10px; height: 10px;
+    background: var(--white); border-left: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    transform: rotate(45deg);
+  }
+  .t16-bub-t { margin: 0; font-size: 12.5px; line-height: 1.65; color: var(--ink-soft); }
+  .t16-bub-t b { color: var(--ink); }
   .t16-track-top {
-    height: 6px; border-radius: 99px; background: rgba(255,255,255,.2);
-    overflow: hidden; margin: 9px 0 0;
+    height: 6px; border-radius: 99px; background: var(--rule-soft);
+    overflow: hidden; margin: 8px 0 0;
   }
   .t16-track-top i {
     display: block; height: 100%; width: 0; border-radius: 99px;
-    background: linear-gradient(90deg, var(--gold-lt), #fff); transition: width .3s ease;
+    background: linear-gradient(90deg, var(--turf), var(--gold)); transition: width .3s ease;
   }
+  .t16-bub-m {
+    display: flex; justify-content: space-between; gap: 8px;
+    margin: 6px 0 0; font-size: 10.5px; color: var(--ink-dim);
+  }
+  .t16-num { font-family: 'Anton', sans-serif; font-size: 12px; letter-spacing: .06em; }
+  .t16-num i { font-style: normal; opacity: .6; }
+  .t16-axtag { text-align: right; min-width: 0; }
   .t16-stage {
-    min-height: calc(100vh - 62px); min-height: calc(100dvh - 62px);
+    min-height: calc(100vh - 104px); min-height: calc(100dvh - 104px);
     display: flex; flex-direction: column; justify-content: center;
     padding: 18px 16px 24px; background: var(--paper);
   }
@@ -180,7 +200,7 @@
     text-decoration: underline; cursor: pointer; font-family: inherit;
   }
 
-  /* ふきだし。質問中と結果の両方で使う */
+  /* ふきだし（結果で使う） */
   .t16-say { display: flex; align-items: flex-start; gap: 9px; margin: 0 0 16px; }
   .t16-say img { width: 48px; height: 48px; object-fit: contain; flex: 0 0 auto; }
   .t16-say p {
@@ -429,17 +449,19 @@
       <!-- ===== 質問（全画面） ===== -->
       <div id="t16Quiz" hidden>
         <div class="t16-run-top">
-          <div class="t16-run-row">
-            <span class="t16-num" id="t16Step">Q1 <i>/ 30</i></span>
-            <span class="t16-axtag" id="t16AxName"></span>
+          <div class="t16-talk">
+            <img id="t16SayPic" src="" alt="">
+            <div class="t16-bub">
+              <p class="t16-bub-t" id="t16SayTxt"></p>
+              <div class="t16-track-top"><i id="t16Bar"></i></div>
+              <p class="t16-bub-m">
+                <span class="t16-num" id="t16Step">Q1 <i>/ 30</i></span>
+                <span class="t16-axtag" id="t16AxName"></span>
+              </p>
+            </div>
           </div>
-          <div class="t16-track-top"><i id="t16Bar"></i></div>
         </div>
         <div class="t16-stage">
-          <div class="t16-say" id="t16Say">
-            <img id="t16SayPic" src="" alt="">
-            <p id="t16SayTxt"></p>
-          </div>
           <p class="t16-qtext" id="t16Q"></p>
           <div>
             <div class="t16-ends">
