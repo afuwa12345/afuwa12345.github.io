@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>競馬16タイプ診断｜あなたに似た競走馬は？ - AFRO Horse</title>
+<meta name="description" content="24の質問に7段階で答えると、4つのものさしからあなたの競馬タイプが16通りで出ます。最後は、似た走り方をした実在の競走馬まで。登録不要・無料。">
+<link rel="canonical" href="https://afro-horse.com/type16.html">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<meta name="theme-color" content="#8A6410">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/type16.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="競馬16タイプ診断｜あなたに似た競走馬は？">
+<meta property="og:description" content="24問・4つのものさしで16タイプ。最後は似た競走馬まで出ます。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949"
+   crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="css/afro.css">
+<script>
+  /* ページを開いたら必ず一番上から表示する */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+</script>
+
+<style>
+  .t16 { max-width: 560px; margin: 0 auto; }
+
+  /* ===== はじめの画面 ===== */
+  .t16-lead {
+    background: var(--white); border: 1px solid var(--rule); border-radius: 16px;
+    padding: 20px 18px; box-shadow: var(--sh-sm);
+  }
+  .t16-lead h2 { font-size: 16px; margin: 0 0 10px; }
+  .t16-lead p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.9; margin: 0 0 12px; }
+  .t16-axes { display: grid; gap: 8px; margin: 14px 0 0; }
+  .t16-ax {
+    display: flex; align-items: center; gap: 10px;
+    border: 1px solid var(--rule-soft); border-radius: 11px; padding: 9px 12px;
+    background: var(--paper);
+  }
+  .t16-ax b {
+    font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: .06em;
+    color: var(--turf); flex: 0 0 auto;
+  }
+  .t16-ax span { font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; }
+  .t16-ax i { font-style: normal; color: var(--ink-dim); }
+
+  /* ===== 質問 ===== */
+  .t16-qcard {
+    background: #F7F1E2; border: 1px solid #DCCDA6; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 10px 28px rgba(26,30,24,.16);
+  }
+  .t16-qtop {
+    background: linear-gradient(165deg, #1F855A 0%, #14583A 60%, #0C3A25 100%);
+    color: #fff; padding: 15px 18px 20px;
+  }
+  .t16-meta {
+    display: flex; align-items: center; gap: 10px; font-size: 11px;
+    letter-spacing: .12em; color: rgba(255,255,255,.72); margin: 0 0 10px;
+    font-family: 'Anton', sans-serif;
+  }
+  .t16-meta .bar { flex: 1; height: 4px; border-radius: 99px; background: rgba(255,255,255,.22); overflow: hidden; }
+  .t16-meta .bar i { display: block; height: 100%; background: var(--gold-lt); width: 0; transition: width .25s; }
+  .t16-q { font-size: 18px; font-weight: 900; line-height: 1.6; margin: 0; }
+
+  /* ===== 7段階 ===== */
+  .t16-scale { padding: 18px 14px 16px; }
+  .t16-ends {
+    display: flex; justify-content: space-between; font-size: 11.5px;
+    font-weight: 900; color: var(--ink-soft); margin: 0 4px 10px;
+  }
+  .t16-ends .y { color: #1F855A; }
+  .t16-ends .n { color: #A8281E; }
+  .t16-dots { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+  .t16-dot {
+    border: 2px solid var(--rule); background: transparent; border-radius: 50%;
+    cursor: pointer; padding: 0; flex: 0 0 auto; transition: transform .12s, border-color .12s, background .12s;
+  }
+  .t16-dot:hover { transform: scale(1.12); }
+  .t16-dot[data-v="3"], .t16-dot[data-v="-3"] { width: 52px; height: 52px; }
+  .t16-dot[data-v="2"], .t16-dot[data-v="-2"] { width: 42px; height: 42px; }
+  .t16-dot[data-v="1"], .t16-dot[data-v="-1"] { width: 34px; height: 34px; }
+  .t16-dot[data-v="0"] { width: 28px; height: 28px; }
+  .t16-dot.y { border-color: #6FBF9A; }
+  .t16-dot.n { border-color: #D98B84; }
+  .t16-dot.on.y { background: #1F855A; border-color: #1F855A; }
+  .t16-dot.on.n { background: #A8281E; border-color: #A8281E; }
+  .t16-dot.on[data-v="0"] { background: var(--ink-dim); border-color: var(--ink-dim); }
+  .t16-navs { display: flex; gap: 8px; padding: 0 14px 16px; }
+  .t16-navs button {
+    flex: 1; padding: 10px; border: 1px solid var(--rule); border-radius: 10px;
+    background: var(--white); color: var(--ink-soft);
+    font-family: inherit; font-size: 13px; font-weight: 900; cursor: pointer;
+  }
+  .t16-navs button:disabled { opacity: .4; cursor: default; }
+
+  /* ===== 結果 ===== */
+  .t16-card {
+    border-radius: 18px; overflow: hidden; box-shadow: var(--sh-md);
+    background: var(--white); border: 1px solid var(--rule);
+  }
+  .t16-head { padding: 22px 20px 18px; color: #fff; background: var(--ac, #14583A); text-align: center; }
+  .t16-code {
+    font-family: 'Anton', sans-serif; font-size: 44px; letter-spacing: .14em;
+    line-height: 1; margin: 0;
+  }
+  .t16-name { font-family: 'Dela Gothic One', sans-serif; font-size: 22px; margin: 12px 0 0; }
+  .t16-en { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: .24em; opacity: .75; margin: 5px 0 0; }
+  .t16-copy { font-size: 13.5px; margin: 12px 0 0; line-height: 1.8; }
+
+  .t16-body { padding: 18px 18px 20px; }
+  .t16-desc { font-size: 13.5px; line-height: 1.95; color: var(--ink); margin: 0 0 18px; }
+
+  .t16-sub {
+    font-size: 11px; font-family: 'Anton', sans-serif; letter-spacing: .14em;
+    color: var(--gold); margin: 0 0 8px;
+  }
+  /* 4本のものさし */
+  .t16-bars { display: grid; gap: 11px; margin: 0 0 18px; }
+  .t16-bar-t { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 900; margin: 0 0 4px; }
+  .t16-bar-t .l { color: var(--ink); }
+  .t16-bar-t .r { color: var(--ink-dim); }
+  .t16-track { height: 9px; border-radius: 99px; background: var(--rule-soft); overflow: hidden; }
+  .t16-track i { display: block; height: 100%; border-radius: 99px; background: var(--ac, #14583A); width: 0; transition: width .5s ease; }
+  .t16-bar-n { font-size: 11px; color: var(--ink-dim); margin: 4px 0 0; }
+
+  .t16-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 18px; }
+  .t16-lists ul { margin: 0; padding-left: 17px; }
+  .t16-lists li { font-size: 12.5px; color: var(--ink-soft); line-height: 1.85; }
+  @media (max-width: 420px) { .t16-lists { grid-template-columns: 1fr; } }
+
+  .t16-kuse {
+    border-left: 3px solid var(--ac, #14583A); padding: 4px 0 4px 12px;
+    font-size: 14px; font-weight: 900; margin: 0 0 18px;
+  }
+
+  /* 似ている競走馬 */
+  .t16-horse {
+    border: 1px solid var(--gold-lt); border-radius: 14px; overflow: hidden;
+    background: linear-gradient(180deg, var(--white), var(--gold-soft)); margin: 0 0 18px;
+  }
+  .t16-horse-t {
+    background: var(--gold); color: #fff; font-size: 11px; font-weight: 900;
+    letter-spacing: .12em; padding: 7px 14px;
+  }
+  .t16-horse-in { padding: 14px 15px 15px; }
+  .t16-horse-n { font-family: 'Dela Gothic One', sans-serif; font-size: 21px; margin: 0; }
+  .t16-horse-m { font-size: 11.5px; color: var(--ink-dim); margin: 5px 0 0; }
+  .t16-horse-w { font-size: 12.5px; color: var(--ink-soft); margin: 9px 0 0; line-height: 1.8; }
+  .t16-horse-w b { color: var(--gold); }
+  .t16-horse-y { font-size: 13px; margin: 10px 0 0; line-height: 1.85; }
+
+  .t16-fit { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 6px; }
+  .t16-chip {
+    border: 1px solid var(--rule); border-radius: 99px; padding: 5px 11px;
+    font-size: 12px; font-weight: 900; text-decoration: none; color: var(--ink);
+    background: var(--white);
+  }
+  .t16-chip b { font-family: 'Anton', sans-serif; letter-spacing: .06em; margin-right: 5px; color: var(--turf); }
+  .t16-chip.bad b { color: #A8281E; }
+
+  .t16-buddy {
+    display: flex; align-items: center; gap: 12px; margin: 16px 0 0;
+    border-top: 1px dashed var(--rule); padding-top: 14px;
+  }
+  .t16-buddy img { width: 62px; height: 62px; object-fit: contain; flex: 0 0 auto; }
+  .t16-buddy p { margin: 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.75; }
+  .t16-buddy b { color: var(--ink); }
+
+  .t16-acts { display: flex; flex-wrap: wrap; gap: 9px; margin: 18px 0 0; }
+  .t16-btn {
+    flex: 1 1 140px; display: inline-flex; align-items: center; justify-content: center;
+    padding: 13px 14px; border: 0; border-radius: 12px; cursor: pointer; text-decoration: none;
+    font-family: inherit; font-size: 14px; font-weight: 900;
+    background: var(--paper-2, #EFE7D2); color: var(--ink); box-shadow: var(--sh-sm);
+  }
+  .t16-btn.main { background: var(--turf); color: var(--paper); }
+  .t16-btn.gold { background: var(--gold); color: #fff; }
+
+  .t16-note { font-size: 11px; color: var(--ink-dim); line-height: 1.8; margin: 14px 0 0; }
+
+  /* 16タイプ一覧 */
+  .t16-all { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin: 12px 0 0; }
+  @media (max-width: 520px) { .t16-all { grid-template-columns: repeat(2, 1fr); } }
+  .t16-one {
+    border: 1px solid var(--rule); border-radius: 10px; padding: 9px 8px;
+    background: var(--white); text-decoration: none; text-align: center; display: block;
+  }
+  .t16-one b { display: block; font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: .06em; color: var(--turf); }
+  .t16-one span { display: block; font-size: 11px; color: var(--ink-soft); margin-top: 3px; line-height: 1.5; }
+  .t16-one.now { border-color: var(--gold); background: var(--gold-soft); }
+
+  #t16Canvas { display: none; }
+</style>
+</head>
+<body class="theme-world">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="keiba.html">KEIBA</a>
+      <a href="comic.html">COMIC</a>
+      <a href="game.html">GAME</a>
+      <a href="world.html">WORLD</a>
+      <a href="sns.html">SNS</a>
+    </div>
+  </div>
+</nav>
+
+<header class="phead" data-bg="TYPE">
+  <div class="phead-en">16 TYPES</div>
+  <h1 class="phead-ja">競馬16タイプ診断</h1>
+  <p class="phead-sub">24問でわかる、あなたの競馬の向き合い方</p>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="t16">
+
+      <!-- ===== はじめ ===== -->
+      <div id="t16Intro">
+        <div class="t16-lead">
+          <h2>4つのものさしで、16通り</h2>
+          <p>
+            24の文に「どれくらいそう思うか」を7段階で答えてください。
+            軸ごとに点を足して、強いほうの文字を取ります。4文字そろって、あなたのタイプです。
+          </p>
+          <p>最後に、似た走り方をした<b>実在の競走馬</b>も出ます。</p>
+          <div class="t16-axes" id="t16Axes"></div>
+        </div>
+        <div class="t16-acts">
+          <button class="t16-btn main" type="button" id="t16Start">はじめる（24問・3分）</button>
+        </div>
+        <p class="t16-note">
+          答えた内容はこの端末の中だけで計算しています。どこにも送っていません。
+        </p>
+      </div>
+
+      <!-- ===== 質問 ===== -->
+      <div id="t16Quiz" hidden>
+        <div class="t16-qcard">
+          <div class="t16-qtop">
+            <p class="t16-meta">
+              <span id="t16Step">Q1 / 24</span>
+              <span class="bar"><i id="t16Bar"></i></span>
+              <span id="t16AxName"></span>
+            </p>
+            <p class="t16-q" id="t16Q"></p>
+          </div>
+          <div class="t16-scale">
+            <div class="t16-ends">
+              <span class="y">そう思う</span>
+              <span class="n">思わない</span>
+            </div>
+            <div class="t16-dots" id="t16Dots"></div>
+          </div>
+          <div class="t16-navs">
+            <button type="button" id="t16Back">&larr; もどる</button>
+            <button type="button" id="t16Skip">わからない（まんなか）</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 結果 ===== -->
+      <div id="t16Result" hidden>
+        <div class="t16-card" id="t16Card">
+          <div class="t16-head" id="t16Head">
+            <p class="t16-code" id="t16Code"></p>
+            <h2 class="t16-name" id="t16Name"></h2>
+            <p class="t16-en" id="t16En"></p>
+            <p class="t16-copy" id="t16Copy"></p>
+          </div>
+          <div class="t16-body">
+            <p class="t16-desc" id="t16Desc"></p>
+
+            <p class="t16-sub" id="t16BarsT">4つのものさし</p>
+            <div class="t16-bars" id="t16Bars"></div>
+
+            <p class="t16-sub">似ている競走馬</p>
+            <div class="t16-horse">
+              <div class="t16-horse-t" id="t16HorseT">CLOSEST MATCH</div>
+              <div class="t16-horse-in">
+                <p class="t16-horse-n" id="t16HorseN"></p>
+                <p class="t16-horse-m" id="t16HorseM"></p>
+                <p class="t16-horse-w" id="t16HorseW"></p>
+                <p class="t16-horse-y" id="t16HorseY"></p>
+              </div>
+            </div>
+
+            <p class="t16-sub">強みとクセ</p>
+            <div class="t16-lists">
+              <ul id="t16Good"></ul>
+              <ul id="t16Bad"></ul>
+            </div>
+
+            <p class="t16-sub">口ぐせ</p>
+            <p class="t16-kuse" id="t16Kuse"></p>
+
+            <p class="t16-sub">話が合う</p>
+            <div class="t16-fit" id="t16Fit"></div>
+            <p class="t16-sub" style="margin-top:14px">ぶつかりやすい</p>
+            <div class="t16-fit" id="t16Clash"></div>
+
+            <div class="t16-buddy" id="t16Buddy"></div>
+          </div>
+        </div>
+
+        <div class="t16-acts">
+          <button class="t16-btn main" type="button" id="t16Save">画像で保存する</button>
+          <a class="t16-btn gold" id="t16X" href="#" target="_blank" rel="noopener">X でシェア</a>
+          <button class="t16-btn" type="button" id="t16Again">もう一回やる</button>
+        </div>
+
+        <p class="t16-sub" style="margin-top:22px">16タイプぜんぶ</p>
+        <div class="t16-all" id="t16All"></div>
+
+        <p class="t16-note">
+          これは遊びの診断です。競走馬の戦績はよく知られたものだけを書いています。
+          馬券の買い方をすすめるものではありません。
+        </p>
+      </div>
+
+    </div>
+
+    <a class="backlink" href="world.html">&larr; アフロワールドにもどる</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="keiba.html">競馬</a>
+      <a href="comic.html">マンガ</a>
+      <a href="game.html">あそぶ</a>
+      <a href="world.html">アフロワールド</a>
+      <a href="sns.html">スタンプ・グッズ</a>
+      <a href="about.html">運営者情報</a>
+      <a href="contact.html">お問い合わせ</a>
+      <a href="privacy.html">プライバシー</a>
+      <a href="terms.html">利用規約</a>
+      <a href="disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
+
+<canvas id="t16Canvas" width="1080" height="1080"></canvas>
+
+<script src="js/afro-type16.js"></script>
+<script src="js/afro-ui.js"></script>
+<script>
+(function () {
+  var T = window.AfroType16;
+  var $ = function (id) { return document.getElementById(id); };
+  var CHARA = {
+    afuwa:    { n: 'アフワ',         p: 'images/afuwa.webp' },
+    buruma:   { n: 'ブルマ',         p: 'images/buruma.webp' },
+    chafuwa:  { n: 'チャフワ',       p: 'images/chahuwa.webp' },
+    kurofuwa: { n: 'クロフワ',       p: 'images/kurohuwa.webp' },
+    ginma:    { n: 'ギンマ',         p: 'images/ginma.webp' },
+    yancha:   { n: 'やんちゃアフワ', p: 'images/yanchaahuwa.webp' }
+  };
+  var CODES = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP',
+               'ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+
+  var vals = [];    /* 各問の答え -3〜3 */
+  var at = 0;
+  var res = null;
+
+  /* ===== はじめの画面に、4つの軸を並べる ===== */
+  (function () {
+    var box = $('t16Axes');
+    T.AXES.forEach(function (ax) {
+      var d = document.createElement('div');
+      d.className = 't16-ax';
+      d.innerHTML = '<b>' + ax.a.k + ' / ' + ax.b.k + '</b>' +
+        '<span>' + ax.q + '<br><i>' + ax.a.name + ' ・ ' + ax.b.name + '</i></span>';
+      box.appendChild(d);
+    });
+  })();
+
+  function show(which) {
+    $('t16Intro').hidden  = (which !== 'intro');
+    $('t16Quiz').hidden   = (which !== 'quiz');
+    $('t16Result').hidden = (which !== 'result');
+  }
+
+  /* ===== 質問を出す ===== */
+  var STEPS = [3, 2, 1, 0, -1, -2, -3];
+
+  function paintQ() {
+    var q = T.QS[at];
+    $('t16Step').textContent = 'Q' + (at + 1) + ' / ' + T.QS.length;
+    $('t16Bar').style.width = (at / T.QS.length * 100) + '%';
+    $('t16Q').textContent = q.t;
+    var ax = T.AXES.filter(function (a) { return a.id === q.ax; })[0];
+    $('t16AxName').textContent = ax.q;
+
+    var box = $('t16Dots');
+    box.innerHTML = '';
+    STEPS.forEach(function (v) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 't16-dot ' + (v > 0 ? 'y' : v < 0 ? 'n' : '') +
+                    (vals[at] === v ? ' on' : '');
+      b.setAttribute('data-v', String(v));
+      b.setAttribute('aria-label',
+        v === 3 ? 'とてもそう思う' : v === -3 ? 'まったく思わない' :
+        v === 0 ? 'どちらでもない' : (v > 0 ? 'そう思う' : '思わない'));
+      b.addEventListener('click', function () { answer(v); });
+      box.appendChild(b);
+    });
+    $('t16Back').disabled = (at === 0);
+  }
+
+  function answer(v) {
+    vals[at] = v;
+    at++;
+    if (at >= T.QS.length) { $('t16Bar').style.width = '100%'; finish(); return; }
+    paintQ();
+    $('t16Q').scrollIntoView({ block: 'nearest' });
+  }
+
+  $('t16Back').addEventListener('click', function () { if (at > 0) { at--; paintQ(); } });
+  $('t16Skip').addEventListener('click', function () { answer(0); });
+  $('t16Start').addEventListener('click', function () {
+    vals = []; at = 0; show('quiz'); paintQ(); window.scrollTo(0, 0);
+  });
+  $('t16Again').addEventListener('click', function () {
+    vals = []; at = 0; show('quiz'); paintQ(); window.scrollTo(0, 0);
+    history.replaceState(null, '', location.pathname);
+  });
+
+  /* ===== 結果を作る ===== */
+  function finish() {
+    var j = T.judge(vals);
+    paint(j.code, j.bars);
+    history.replaceState(null, '', '?t=' + j.code);
+  }
+
+  function paint(code, bars, fromUrl) {
+    var t = T.TYPES[code];
+    if (!t) return;
+    /* リンクから開いたときは、割合はその人の答えではない。だから出さない */
+    $('t16BarsT').hidden = !!fromUrl;
+    $('t16Bars').hidden  = !!fromUrl;
+    $('t16Again').textContent = fromUrl ? '自分でやってみる' : 'もう一回やる';
+    var pick = T.pickHorse(code, bars || fakeBars());
+    /* 画像にも、その人が答えていない割合は描かない */
+    res = { code: code, t: t, bars: bars, horse: pick.horse,
+            barsForImage: fromUrl ? [] : bars };
+
+    $('t16Head').style.setProperty('--ac', t.ac);
+    $('t16Card').style.setProperty('--ac', t.ac);
+    $('t16Code').textContent = code;
+    $('t16Name').textContent = t.name;
+    $('t16En').textContent = t.en;
+    $('t16Copy').textContent = t.copy;
+    $('t16Desc').textContent = t.desc;
+
+    /* ものさし4本 */
+    var bb = $('t16Bars');
+    bb.innerHTML = '';
+    (bars || []).forEach(function (b) {
+      var d = document.createElement('div');
+      var half = (b.pct <= 55);
+      d.innerHTML =
+        '<p class="t16-bar-t"><span class="l">' + b.side.k + ' ' + b.side.name + '</span>' +
+        '<span class="r">' + b.pct + '% ／ ' + b.other.name + ' ' + (100 - b.pct) + '%</span></p>' +
+        '<div class="t16-track"><i data-w="' + b.pct + '"></i></div>' +
+        '<p class="t16-bar-n">' + (half ? 'ほぼ半々。どちらの面も持っています' : b.side.line) + '</p>';
+      bb.appendChild(d);
+    });
+    setTimeout(function () {
+      var ii = bb.querySelectorAll('.t16-track i');
+      for (var i = 0; i < ii.length; i++) ii[i].style.width = ii[i].getAttribute('data-w') + '%';
+    }, 60);
+
+    /* 馬 */
+    var h = res.horse;
+    if (h) {
+      $('t16HorseN').textContent = h.n;
+      $('t16HorseM').textContent = h.era + '　脚質：' + h.ky;
+      $('t16HorseW').innerHTML = '主な勝ち鞍：<b>' + h.win + '</b>';
+      $('t16HorseY').textContent = h.why;
+    }
+
+    var ul = $('t16Good'); ul.innerHTML = '';
+    t.good.forEach(function (x) { var li = document.createElement('li'); li.textContent = '◎ ' + x; ul.appendChild(li); });
+    var ul2 = $('t16Bad'); ul2.innerHTML = '';
+    t.bad.forEach(function (x) { var li = document.createElement('li'); li.textContent = '△ ' + x; ul2.appendChild(li); });
+
+    $('t16Kuse').textContent = t.kuse;
+
+    chips($('t16Fit'), t.fit, false);
+    chips($('t16Clash'), t.clash, true);
+
+    var c = CHARA[t.buddy];
+    $('t16Buddy').innerHTML =
+      '<img src="' + c.p + '" alt="" loading="lazy">' +
+      '<p>アフロ馬でいうと <b>' + c.n + '</b>。<br>' +
+      '<a href="afrohorse_characters.html">キャラクター紹介を見る</a></p>';
+
+    /* 16タイプ一覧 */
+    var all = $('t16All');
+    all.innerHTML = '';
+    CODES.forEach(function (cd) {
+      var a = document.createElement('a');
+      a.className = 't16-one' + (cd === code ? ' now' : '');
+      a.href = '?t=' + cd;
+      a.innerHTML = '<b>' + cd + '</b><span>' + T.TYPES[cd].name + '</span>';
+      all.appendChild(a);
+    });
+
+    var text = '競馬16タイプ診断の結果は【' + code + '／' + t.name + '】でした。\n' +
+               (h ? '似ている競走馬は ' + h.n + '。\n' : '') +
+               '#アフロホース #競馬16タイプ診断\n';
+    $('t16X').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +
+      '&url=' + encodeURIComponent('https://afro-horse.com/type16.html?t=' + code);
+
+    show('result');
+    window.scrollTo(0, 0);
+  }
+
+  /* URLから直接ひらいたとき用。割合は出せないので、はっきり出た形にしておく */
+  function fakeBars() {
+    return T.AXES.map(function (ax) {
+      return { ax: ax, side: ax.a, other: ax.b, pct: 70, pt: 0 };
+    });
+  }
+
+  function chips(box, list, bad) {
+    box.innerHTML = '';
+    list.forEach(function (cd) {
+      var a = document.createElement('a');
+      a.className = 't16-chip' + (bad ? ' bad' : '');
+      a.href = '?t=' + cd;
+      a.innerHTML = '<b>' + cd + '</b>' + T.TYPES[cd].name;
+      box.appendChild(a);
+    });
+  }
+
+  /* ===== ?t=CODE で、その型を直接ひらく ===== */
+  (function () {
+    var q = new URLSearchParams(location.search).get('t');
+    if (q && T.TYPES[q.toUpperCase()]) {
+      var code = q.toUpperCase();
+      var bars = T.AXES.map(function (ax, i) {
+        var mine = (code[i] === ax.a.k) ? ax.a : ax.b;
+        return { ax: ax, side: mine, other: (mine === ax.a ? ax.b : ax.a), pct: 68, pt: 0 };
+      });
+      paint(code, bars, true);
+    } else {
+      show('intro');
+    }
+  })();
+
+  /* ===== 結果を1枚の画像にする（1080×1080） ===== */
+  $('t16Save').addEventListener('click', function () {
+    if (!res) return;
+    var b = this;
+    b.disabled = true; b.textContent = '作っています...';
+    draw().then(function () { b.disabled = false; b.textContent = '画像で保存する'; })
+      ['catch'](function () { b.disabled = false; b.textContent = '保存できませんでした'; });
+  });
+
+  function loadImg(src) {
+    return new Promise(function (ok, ng) {
+      var im = new Image();
+      im.onload = function () { ok(im); };
+      im.onerror = ng;
+      im.src = src;
+    });
+  }
+
+  function draw() {
+    var cv = $('t16Canvas'), g = cv.getContext('2d');
+    var W = 1080, H = 1080, t = res.t, h = res.horse;
+    var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+
+    return ready.then(function () { return loadImg(CHARA[t.buddy].p); }).then(function (im) {
+      var grd = g.createLinearGradient(0, 0, W * 0.4, H);
+      grd.addColorStop(0, t.ac);
+      grd.addColorStop(1, '#14100c');
+      g.fillStyle = grd; g.fillRect(0, 0, W, H);
+
+      g.strokeStyle = 'rgba(251,245,226,.85)'; g.lineWidth = 8;
+      g.strokeRect(26, 26, W - 52, H - 52);
+
+      g.textAlign = 'center';
+      g.fillStyle = 'rgba(251,245,226,.72)';
+      g.font = '30px "Anton", sans-serif';
+      g.fillText('KEIBA 16 TYPES', W / 2, 118);
+
+      g.fillStyle = '#FBF5E2';
+      g.font = '150px "Anton", sans-serif';
+      g.fillText(res.code, W / 2, 268);
+
+      g.font = '900 52px "Zen Kaku Gothic New", sans-serif';
+      g.fillText(t.name, W / 2, 348);
+
+      g.fillStyle = 'rgba(251,245,226,.85)';
+      g.font = '500 30px "Zen Kaku Gothic New", sans-serif';
+      g.fillText(t.copy, W / 2, 404);
+
+      /* ものさし4本 */
+      var y = 470;
+      (res.barsForImage || []).forEach(function (b) {
+        g.textAlign = 'left';
+        g.fillStyle = 'rgba(251,245,226,.9)';
+        g.font = '900 26px "Zen Kaku Gothic New", sans-serif';
+        g.fillText(b.side.k + ' ' + b.side.name, 150, y - 12);
+        g.textAlign = 'right';
+        g.fillStyle = 'rgba(251,245,226,.6)';
+        g.fillText(b.pct + '%', W - 150, y - 12);
+        g.fillStyle = 'rgba(251,245,226,.22)';
+        g.fillRect(150, y, W - 300, 14);
+        g.fillStyle = '#E8C468';
+        g.fillRect(150, y, (W - 300) * b.pct / 100, 14);
+        y += 62;
+      });
+
+      /* 似ている競走馬 */
+      if (h) {
+        if (!(res.barsForImage || []).length) y = 560;
+        g.textAlign = 'center';
+        g.fillStyle = 'rgba(232,196,104,.95)';
+        g.font = '26px "Anton", sans-serif';
+        g.fillText('CLOSEST MATCH', W / 2, y + 44);
+        g.fillStyle = '#FBF5E2';
+        g.font = '900 56px "Zen Kaku Gothic New", sans-serif';
+        g.fillText(h.n, W / 2, y + 112);
+        g.fillStyle = 'rgba(251,245,226,.7)';
+        g.font = '500 26px "Zen Kaku Gothic New", sans-serif';
+        g.fillText(h.era + '　脚質：' + h.ky, W / 2, y + 156);
+      }
+
+      /* 相棒 */
+      var s = 250, ix = W - s - 72, iy = H - s - 96;
+      g.drawImage(im, ix, iy, s, s);
+
+      g.textAlign = 'left';
+      g.fillStyle = 'rgba(251,245,226,.8)';
+      g.font = '28px "Anton", sans-serif';
+      g.fillText('afro-horse.com', 84, H - 76);
+
+      return new Promise(function (ok) {
+        cv.toBlob(function (blob) {
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = '競馬16タイプ_' + res.code + '.png';
+          a.click();
+          setTimeout(function () { URL.revokeObjectURL(a.href); ok(); }, 1000);
+        }, 'image/png');
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
