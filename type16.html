@@ -919,8 +919,9 @@
           '<p class="t16-copy">' + esc(t.copy) + '</p>' +
         '</div>' +
         '<div class="t16-body">' +
-          '<p class="t16-desc">' + esc(t.desc) + '</p>' +
-          '<p class="t16-sub">この型に出てくる馬</p>' +
+          /* 型の説明文はここには出さない。
+             どう答えればどの型になるか、読めてしまうため */
+          '<p class="t16-sub" style="margin-top:2px">この型に出てくる馬</p>' +
           '<div class="t16-h3">' + horses + '</div>' +
           '<p class="t16-note" style="margin-top:0">' +
             'どの1頭になるかは、答えかたで決まります。' +
