@@ -825,7 +825,8 @@
     var ul2 = $('t16Bad'); ul2.innerHTML = '';
     t.bad.forEach(function (x) { var li = document.createElement('li'); li.textContent = '△ ' + x; ul2.appendChild(li); });
 
-    $('t16Kuse').textContent = t.kuse;
+    /* 口ぐせは、出た馬のもの。無いときは型のものを使う */
+    $('t16Kuse').textContent = (h && h.kuse) ? h.kuse : t.kuse;
     chips($('t16Fit'), t.fit, false);
     chips($('t16Clash'), t.clash, true);
 
