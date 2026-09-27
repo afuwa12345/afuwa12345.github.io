@@ -1066,12 +1066,8 @@
     var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
 
     return ready.then(function () {
-      return Promise.all([
-        loadImg(CHARA[t.buddy].p),
-        res.pic ? loadImg(res.pic)['catch'](function () { return null; }) : null
-      ]);
-    }).then(function (pair) {
-      var im = pair[0], hp = pair[1];
+      return res.pic ? loadImg(res.pic)['catch'](function () { return null; }) : null;
+    }).then(function (hp) {
 
       /* 地は、そのタイプの色。まわりに紙の色の余白を残す */
       g.fillStyle = '#F7F2E3';
@@ -1136,17 +1132,14 @@
         });
       }
 
-      /* 下にキャラとサイト名 */
-      var s = 150, ix = W - s - 78, iy = H - s - 80;
-      g.drawImage(im, ix, iy, s, s);
-
-      g.textAlign = 'left';
+      /* 下にサイト名だけ。まん中にそろえる */
+      g.textAlign = 'center';
       g.fillStyle = 'rgba(255,255,255,.92)';
-      g.font = '30px "Anton", sans-serif';
-      g.fillText('afro-horse.com', 96, H - 116);
+      g.font = '32px "Anton", sans-serif';
+      g.fillText('afro-horse.com', W / 2, H - 116);
       g.fillStyle = 'rgba(255,255,255,.7)';
-      g.font = '500 23px "Zen Kaku Gothic New", sans-serif';
-      g.fillText('アフロ競走馬診断', 96, H - 80);
+      g.font = '500 24px "Zen Kaku Gothic New", sans-serif';
+      g.fillText('アフロ競走馬診断', W / 2, H - 78);
 
       return cv.toDataURL('image/png');
     });
