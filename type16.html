@@ -238,9 +238,21 @@
     font-size: clamp(30px, 9vw, 44px); line-height: 1.25; margin: 10px 0 0;
   }
   .t16-win-m { font-size: 12px; color: rgba(255,255,255,.78); margin: 8px 0 0; }
+  /* 型と二つ名。共有する画像と同じ並びにする */
+  .t16-win-t {
+    margin: 14px 0 0; padding-top: 13px;
+    border-top: 1px solid rgba(255,255,255,.28);
+  }
+  .t16-win-code {
+    font-family: 'Anton', sans-serif; font-size: 32px; letter-spacing: .12em;
+    line-height: 1; margin: 0;
+  }
+  .t16-win-nm {
+    font-family: 'Dela Gothic One', sans-serif; font-size: 15px;
+    margin: 9px 0 0; line-height: 1.5;
+  }
   .t16-win-w {
-    font-size: 12.5px; color: rgba(255,255,255,.92); margin: 12px 0 0; line-height: 1.8;
-    border-top: 1px solid rgba(255,255,255,.22); padding-top: 12px;
+    font-size: 12.5px; color: rgba(255,255,255,.92); margin: 14px 0 0; line-height: 1.8;
   }
   .t16-win-y { font-size: 13.5px; margin: 10px 0 0; line-height: 1.85; }
 
@@ -502,6 +514,10 @@
           <img class="t16-win-pic" id="t16HorsePic" src="" alt="" hidden>
           <h2 class="t16-win-n" id="t16HorseN"></h2>
           <p class="t16-win-m" id="t16HorseM"></p>
+          <div class="t16-win-t">
+            <p class="t16-win-code" id="t16WinCode"></p>
+            <p class="t16-win-nm" id="t16WinNm"></p>
+          </div>
           <p class="t16-win-w" id="t16HorseW"></p>
           <p class="t16-win-y" id="t16HorseY"></p>
         </div>
@@ -776,8 +792,10 @@
       $('t16HorseY').textContent = h.why;
     }
 
+    $('t16WinCode').textContent = res.full;
+    $('t16WinNm').textContent = t.name;
     $('t16Code').textContent = res.full;
-    $('t16Name').textContent = t.name + '（' + T.SUF[res.suffix].name + '）';
+    $('t16Name').textContent = t.name;
     $('t16En').textContent = t.en;
     $('t16Copy').textContent = t.copy;
     $('t16Desc').textContent = t.desc;
@@ -824,7 +842,7 @@
 
     var url = SITE + '?t=' + res.full;
     var text = '【' + (h ? h.n : t.name) + '】型でした。\n' +
-               res.full + '／' + t.name + '（' + T.SUF[suffix].name + '）\n' +
+               res.full + '／' + t.name + '\n' +
                'あなたに似た競走馬は？\n#アフロ競走馬診断 #アフロホース\n';
     $('t16X').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +
       '&url=' + encodeURIComponent(url);
@@ -1071,7 +1089,7 @@
       g.font = '78px "Anton", sans-serif';
       g.fillText(res.full, W / 2, top + 84);
       g.font = '900 38px "Zen Kaku Gothic New", sans-serif';
-      g.fillText(t.name + '（' + T.SUF[res.suffix].name + '）', W / 2, top + 140);
+      g.fillText(t.name, W / 2, top + 140);
 
       /* 相棒は小さく、右下に */
       var s = 150, ix = W - s - 60, iy = H - s - 56;
