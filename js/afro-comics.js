@@ -23,7 +23,7 @@ var PER_PAGE = 21;   // 1ページあたりの話数（3列 × 7行）
 
 var COMICS = [
   // url を空にしておくと「近日公開」として並びます（投稿したらURLを入れる）
-  { no: 7, title: 'アフワ、予想する。', img: 'images/comic/07.webp', url: '' },
+  { no: 7, title: 'アフワ、予想する。', img: 'images/comic/07.webp', url: 'https://www.instagram.com/p/DeEnN0BlL7-/' },
   { no: 6, title: 'アフワ、競馬を知る。', img: 'images/comic/06.webp', url: 'https://www.instagram.com/p/Dd5-PcwlO8n/' },
   { no: 5, title: '絶対に起こすな。', img: 'images/comic/05.webp', url: 'https://www.instagram.com/p/Ddx4anqFMx4/' },
   { no: 4, title: 'アフワ、育てる。', img: 'images/comic/04.webp', url: 'https://www.instagram.com/p/DdnhI_GFNPM/' },
