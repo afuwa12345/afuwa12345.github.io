@@ -23,7 +23,9 @@ var PER_PAGE = 21;   // 1ページあたりの話数（3列 × 7行）
 
 var COMICS = [
   // url を空にしておくと「近日公開」として並びます（投稿したらURLを入れる）
-  { no: 10, title: 'アフワ、返品する。', img: 'images/comic/10.webp', url: '' },
+  { no: 12, title: 'クロフワ、かわいい。', img: 'images/comic/12.webp', url: '' },
+  { no: 11, title: 'アフワ、当たる。', img: 'images/comic/11.webp', url: 'https://www.instagram.com/p/Deod-UEFPCp/' },
+  { no: 10, title: 'アフワ、返品する。', img: 'images/comic/10.webp', url: 'https://www.instagram.com/p/DeeMeZHlL8H/' },
   { no: 9, title: 'アフワ、並ぶ。', img: 'images/comic/09.webp', url: 'https://www.instagram.com/p/DeWJDGAFIvW/' },
   { no: 8, title: 'アフワ、働く。', img: 'images/comic/08.webp', url: 'https://www.instagram.com/p/DeMFQYHlGo5/' },
   { no: 7, title: 'アフワ、予想する。', img: 'images/comic/07.webp', url: 'https://www.instagram.com/p/DeEnN0BlL7-/' },
