@@ -1,0 +1,7 @@
+# マンガの一覧などは js の中にあるので、ブラウザが古いものを
+# 覚えたままにならないよう、持ち時間を短くする（5分）。
+/js/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/images/comic/*
+  Cache-Control: public, max-age=300, must-revalidate
