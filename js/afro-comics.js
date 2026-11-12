@@ -23,7 +23,9 @@ var PER_PAGE = 21;   // 1ページあたりの話数（3列 × 7行）
 
 var COMICS = [
   // url を空にしておくと「近日公開」として並びます（投稿したらURLを入れる）
-  { no: 17, title: '全員集合！', img: 'images/comic/17.webp', url: '' },
+  { no: 19, title: 'アフワ、貸す。', img: 'images/comic/19.webp', url: '' },
+  { no: 18, title: 'ブルマ、勝負する。', img: 'images/comic/18.webp', url: 'https://www.instagram.com/p/DfmUxm2lFEc/' },
+  { no: 17, title: '全員集合！', img: 'images/comic/17.webp', url: 'https://www.instagram.com/p/DfektDolKOb/' },
   { no: 16, title: 'チャフワ、参上！！！', img: 'images/comic/16.webp', url: 'https://www.instagram.com/p/DfUXFZzFFr3/' },
   { no: 15, title: 'アフワ、浸かる。', img: 'images/comic/15.webp', url: 'https://www.instagram.com/p/DfMgfolFKZP/' },
   { no: 14, title: 'ブルマ、流行らせる。', img: 'images/comic/14.webp', url: 'https://www.instagram.com/p/DfCwhOTkn-f/' },
