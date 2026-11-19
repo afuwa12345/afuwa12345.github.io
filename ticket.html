@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今週の記念チケット｜コンビニで印刷できる - AFRO Horse</title>
+<meta name="description" content="今週の重賞の記念チケットを、セブン‐イレブンのマルチコピー機で印刷できます。プリント予約番号とQRコードを毎週ここに出します。出馬表入り、アフロ馬デザイン。">
+<link rel="canonical" href="https://afro-horse.com/ticket.html">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<meta name="theme-color" content="#8A6410">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/ticket.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="今週の記念チケット｜コンビニで印刷できる">
+<meta property="og:description" content="今週の重賞の記念チケット。セブン‐イレブンで印刷できる番号を毎週出します。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949"
+   crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="css/afro.css">
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+</script>
+
+<style>
+  .tk { max-width: 620px; margin: 0 auto; }
+
+  /* ===== 今週のぶん ===== */
+  .tk-now {
+    background: var(--white); border: 1px solid var(--rule); border-radius: 18px;
+    box-shadow: var(--sh-md); padding: 18px 16px 20px;
+  }
+  .tk-head { display: flex; align-items: center; gap: 11px; }
+  .tk-grade {
+    font-family: 'Anton', sans-serif; font-size: 19px; letter-spacing: .06em;
+    background: var(--turf); color: var(--paper); border-radius: 8px;
+    padding: 5px 11px; flex: 0 0 auto;
+  }
+  .tk-race { font-family: 'Dela Gothic One', sans-serif; font-size: 22px; margin: 0; line-height: 1.3; }
+  .tk-en { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: .16em; color: var(--ink-dim); margin: 3px 0 0; }
+  .tk-when { font-size: 13px; color: var(--ink-soft); margin: 11px 0 0; }
+
+  .tk-pics { display: grid; gap: 10px; margin: 15px 0 0; }
+  .tk-pic { display: block; border-radius: 10px; overflow: hidden; border: 1px solid var(--rule-soft); }
+  .tk-pic img { display: block; width: 100%; height: auto; }
+
+  /* ===== 印刷のところ ===== */
+  .tk-print {
+    margin: 18px 0 0; padding: 16px 14px 18px; text-align: center;
+    border-radius: 14px; background: var(--paper); border: 1px solid var(--rule);
+  }
+  .tk-print.is-done { background: var(--rule-soft); }
+  .tk-sub { font-size: 12.5px; font-weight: 900; color: var(--ink-soft); margin: 0 0 10px; }
+  .tk-no-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .tk-no {
+    font-family: 'Anton', sans-serif; font-size: clamp(30px, 9vw, 42px);
+    letter-spacing: .12em; color: var(--ink); line-height: 1;
+  }
+  .tk-copy {
+    border: 1px solid var(--rule); background: var(--white); color: var(--ink);
+    border-radius: 10px; padding: 9px 13px; cursor: pointer;
+    font-family: inherit; font-size: 12.5px; font-weight: 900; white-space: nowrap;
+  }
+  .tk-qr {
+    display: block; width: 190px; height: 190px; margin: 14px auto 0;
+    border: 6px solid #fff; border-radius: 10px; box-shadow: var(--sh-sm);
+  }
+  .tk-until { font-size: 13px; font-weight: 900; color: var(--gold); margin: 12px 0 0; }
+  .tk-paper { font-size: 12px; color: var(--ink-dim); margin: 5px 0 0; }
+  .tk-done { font-family: 'Dela Gothic One', sans-serif; font-size: 17px; margin: 0; }
+  .tk-note { font-size: 12.5px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.8; }
+
+  /* ===== 手順 ===== */
+  .tk-how { margin: 0; padding-left: 20px; }
+  .tk-how li { font-size: 13px; color: var(--ink-soft); line-height: 1.95; margin-bottom: 4px; }
+  .tk-how b { color: var(--ink); }
+  .tk-cost {
+    font-size: 12px; color: var(--ink-dim); line-height: 1.8; margin: 12px 0 0;
+    border-top: 1px dashed var(--rule); padding-top: 11px;
+  }
+
+  /* ===== これまでの回 ===== */
+  .tk-olds { display: grid; gap: 9px; }
+  .tk-old {
+    display: flex; align-items: center; gap: 11px;
+    background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 9px 11px;
+  }
+  .tk-old img { width: 104px; height: auto; border-radius: 6px; flex: 0 0 auto; }
+  .tk-old b { display: block; font-size: 14px; }
+  .tk-old i { display: block; font-style: normal; font-size: 11.5px; color: var(--ink-dim); margin-top: 3px; }
+</style>
+</head>
+<body class="theme-keiba">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="keiba.html">KEIBA</a>
+      <a href="comic.html">COMIC</a>
+      <a href="game.html">GAME</a>
+      <a href="world.html">WORLD</a>
+      <a href="sns.html">SNS</a>
+    </div>
+  </div>
+</nav>
+
+<header class="phead" data-bg="TICKET">
+  <div class="phead-en">TICKET</div>
+  <h1 class="phead-ja">今週の記念チケット</h1>
+  <p class="phead-sub">コンビニで印刷できる、出馬表入りのチケット</p>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="tk">
+      <div class="tk-now" id="tkNow"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="tk">
+      <div class="sec-head">
+        <h2 class="sec-ja">印刷のしかた</h2>
+        <span class="sec-en">HOW TO</span>
+      </div>
+      <ol class="tk-how">
+        <li>セブン‐イレブンの<b>マルチコピー機</b>の前に行く</li>
+        <li>はじめの画面で<b>「プリント」→「ネットプリント」</b>をえらぶ</li>
+        <li>上の<b>予約番号を入れる</b>（QRをかざしてもOK）</li>
+        <li>出てきた内容を確かめて、お金を入れてプリント</li>
+      </ol>
+      <p class="tk-cost">
+        プリント代はお客さん負担です（フォト用紙Lサイズ・カラーで1枚あたり数十円）。
+        番号には期限があり、過ぎると印刷できなくなります。
+        このチケットは遊びのもので、入場券や馬券ではありません。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="tk">
+      <div class="sec-head">
+        <h2 class="sec-ja">これまでの回</h2>
+        <span class="sec-en">PAST</span>
+      </div>
+      <div class="tk-olds" id="tkPast"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="sec-ja">もっと見る</h2>
+      <span class="sec-en">MORE</span>
+    </div>
+    <div class="tools">
+      <a class="trow" href="keiba.html">
+        <span class="t-ico">&#127943;</span>
+        <span class="t-body"><span class="t-name">競馬</span><span class="t-desc">ツールと初心者講座</span></span>
+        <span class="t-arrow">&rsaquo;</span>
+      </a>
+      <a class="trow" href="comic.html">
+        <span class="t-ico">&#128214;</span>
+        <span class="t-body"><span class="t-name">マンガ</span><span class="t-desc">アフロホースを読む</span></span>
+        <span class="t-arrow">&rsaquo;</span>
+      </a>
+    </div>
+    <a class="backlink" href="keiba.html">&larr; 競馬にもどる</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="keiba.html">競馬</a>
+      <a href="comic.html">マンガ</a>
+      <a href="game.html">あそぶ</a>
+      <a href="world.html">アフロワールド</a>
+      <a href="sns.html">スタンプ・グッズ</a>
+      <a href="about.html">運営者情報</a>
+      <a href="contact.html">お問い合わせ</a>
+      <a href="privacy.html">プライバシー</a>
+      <a href="terms.html">利用規約</a>
+      <a href="disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
+
+<script src="js/afro-ticket.js"></script>
+<script src="js/afro-ui.js"></script>
+</body>
+</html>
