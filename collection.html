@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>記念チケット コレクション｜これまでの全部 - AFRO Horse</title>
+<meta name="description" content="これまでに配った記念チケットの一覧。重賞ごとに作った、出馬表入りのアフロ馬デザイン。配布中のものはコンビニで印刷できます。">
+<link rel="canonical" href="https://afro-horse.com/collection.html">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<meta name="theme-color" content="#8A6410">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/collection.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="記念チケット コレクション｜これまでの全部">
+<meta property="og:description" content="これまでに配った記念チケットの一覧。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8477162282751949"
+   crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Anton&display=swap">
+<link rel="stylesheet" href="css/afro.css">
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+</script>
+
+<style>
+  .tk { max-width: 760px; margin: 0 auto; }
+
+  .tk-lead {
+    text-align: center; font-size: 13px; color: var(--ink-soft);
+    line-height: 1.9; margin: 0 0 16px;
+  }
+  .tk-lead b {
+    font-family: 'Anton', sans-serif; font-size: 22px; color: var(--gold);
+    letter-spacing: .04em; margin: 0 3px;
+  }
+
+  /* ===== 札 ===== */
+  .tk-list { display: grid; gap: 14px; }
+  .tk-card {
+    background: var(--white); border: 1px solid var(--rule); border-radius: 14px;
+    overflow: hidden; box-shadow: var(--sh-sm);
+  }
+  .tk-pic { display: block; position: relative; }
+  .tk-pic img {
+    display: block; width: 100%; height: auto;
+    /* 長押しのメニューと、選んで引っぱるのを止める */
+    -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+    pointer-events: none;
+  }
+  .tk-guard { position: absolute; inset: 0; }
+  .tk-card-b { padding: 11px 14px 13px; position: relative; }
+  .tk-card-b b {
+    display: block; font-family: 'Dela Gothic One', sans-serif; font-size: 16px;
+    line-height: 1.4; padding-right: 76px;
+  }
+  .tk-card-b b em {
+    font-style: normal; font-family: 'Anton', sans-serif; font-size: 12px;
+    letter-spacing: .06em; background: var(--turf); color: var(--paper);
+    border-radius: 5px; padding: 3px 7px; margin-right: 7px; vertical-align: 2px;
+  }
+  .tk-card-b i {
+    display: block; font-style: normal; font-size: 11.5px; color: var(--ink-dim);
+    margin-top: 5px;
+  }
+  .tk-badge {
+    position: absolute; top: 12px; right: 13px;
+    font-size: 11px; font-weight: 900; border-radius: 99px; padding: 4px 10px;
+    background: var(--rule-soft); color: var(--ink-dim);
+  }
+  .tk-badge.is-live { background: var(--turf); color: var(--paper); }
+
+  @media (min-width: 600px) {
+    .tk-list { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body class="theme-keiba">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">AFRO<em>Horse</em></a>
+    <div class="nav-links">
+      <a href="keiba.html">KEIBA</a>
+      <a href="comic.html">COMIC</a>
+      <a href="game.html">GAME</a>
+      <a href="world.html">WORLD</a>
+      <a href="sns.html">SNS</a>
+    </div>
+  </div>
+</nav>
+
+<header class="phead" data-bg="COLLECTION">
+  <div class="phead-en">COLLECTION</div>
+  <h1 class="phead-ja">チケット コレクション</h1>
+  <p class="phead-sub">これまでに配った記念チケット</p>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="tk">
+      <p class="tk-lead">
+        これまでに<b id="tkCount">0</b>枚。<br>
+        配布中のものは、チケットのページから印刷できます。
+      </p>
+      <div class="tk-list" id="tkAll"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="sec-ja">もっと見る</h2>
+      <span class="sec-en">MORE</span>
+    </div>
+    <div class="tools icons">
+      <a class="trow" href="ticket.html">
+        <span class="t-ico"><img src="images/tool_icon/ticket.webp" alt="" loading="lazy"></span>
+        <span class="t-body"><span class="t-name">今週の記念チケット</span><span class="t-desc">いま配っているぶんはこちら</span></span>
+        <span class="t-arrow">&rsaquo;</span>
+      </a>
+    </div>
+    <a class="backlink" href="ticket.html">&larr; 今週のチケットにもどる</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-logo">AFRO<em>Horse</em></div>
+    <div class="f-tag">WIN WITH STYLE</div>
+    <div class="f-links">
+      <a href="keiba.html">競馬</a>
+      <a href="comic.html">マンガ</a>
+      <a href="game.html">あそぶ</a>
+      <a href="world.html">アフロワールド</a>
+      <a href="sns.html">スタンプ・グッズ</a>
+      <a href="about.html">運営者情報</a>
+      <a href="contact.html">お問い合わせ</a>
+      <a href="privacy.html">プライバシー</a>
+      <a href="terms.html">利用規約</a>
+      <a href="disclaimer.html">免責事項</a>
+    </div>
+    <div class="f-copy">© 2026 AFRO Horse.　※エンタメ目的のサイトです。馬券の購入は自己責任でお願いします。</div>
+  </div>
+</footer>
+
+<script src="js/afro-ticket.js"></script>
+<script src="js/afro-ui.js"></script>
+</body>
+</html>

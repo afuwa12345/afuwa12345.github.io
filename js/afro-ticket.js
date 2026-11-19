@@ -40,7 +40,9 @@ var TICKETS = [
 
 (function () {
   var box = document.getElementById('tkNow');
-  if (!box || typeof TICKETS === 'undefined' || !TICKETS.length) return;
+  var all = document.getElementById('tkAll');
+  /* 今週のぶんを出す場所も、ぜんぶ出す場所も無ければ、何もしない */
+  if ((!box && !all) || typeof TICKETS === 'undefined' || !TICKETS.length) return;
 
   function esc(v) {
     return String(v == null ? '' : v)
@@ -80,6 +82,8 @@ var TICKETS = [
   var now = list[0];
   var done = over(now.until) || now.done === true;
 
+  if (box) {
+
   /* 絵はそのまま持っていかれないように、原寸へのリンクを張らず、
      上に透明のふたを重ねる（長押しの「画像を保存」を出させない） */
   var pics = (now.pics || []).map(function (p, i) {
@@ -114,20 +118,30 @@ var TICKETS = [
       ) +
     '</div>';
 
-  /* 右クリックと引っぱり出しを止める */
-  box.addEventListener('contextmenu', function (e) {
-    if (e.target.closest('.tk-pic')) e.preventDefault();
-  });
-  box.addEventListener('dragstart', function (e) {
-    if (e.target.closest('.tk-pic')) e.preventDefault();
-  });
+  }  /* ← 今週のぶん、ここまで */
+
+  /* 右クリックと引っぱり出しを止める（絵のあるところ全部） */
+  function mamoru(el) {
+    if (!el) return;
+    el.addEventListener('contextmenu', function (e) {
+      if (e.target.closest('.tk-pic')) e.preventDefault();
+    });
+    el.addEventListener('dragstart', function (e) {
+      if (e.target.closest('.tk-pic')) e.preventDefault();
+    });
+  }
+  mamoru(box);
+  mamoru(all);
 
   /* 番号をコピー */
   var btn = document.getElementById('tkCopy');
   if (btn) {
     btn.addEventListener('click', function () {
       var v = now.no;
-      var ok = function () { btn.textContent = 'コピーしました'; setTimeout(function () { btn.textContent = '番号をコピー'; }, 1800); };
+      var ok = function () {
+        btn.textContent = 'コピーしました';
+        setTimeout(function () { btn.textContent = '番号をコピー'; }, 1800);
+      };
       var ng = function () {
         /* 新しいやり方が断られたときは、古いやり方でもう一度 */
         var ta = document.createElement('textarea');
@@ -145,17 +159,43 @@ var TICKETS = [
     });
   }
 
-  /* これまでの回 */
+  /* 1枚ぶんの札。コレクションのページと、下の「これまでの回」で使う */
+  function fuda(t) {
+    var p = (t.pics || [])[0] || '';
+    var owari = over(t.until) || t.done === true;
+    return '<div class="tk-card">' +
+             (p ? '<span class="tk-pic">' +
+                    '<img src="' + esc(p) + '" alt="' + esc(t.race) + ' の記念チケット" loading="lazy">' +
+                    '<span class="tk-guard"></span>' +
+                  '</span>' : '') +
+             '<div class="tk-card-b">' +
+               '<b>' + (t.grade ? '<em>' + esc(t.grade) + '</em>' : '') + esc(t.race) + '</b>' +
+               '<i>' + wareki(t.date) + '　' + esc(t.place) + '　' + esc(t.course || '') + '</i>' +
+               '<span class="tk-badge' + (owari ? '' : ' is-live') + '">' +
+                 (owari ? '配布おわり' : '配布中') +
+               '</span>' +
+             '</div>' +
+           '</div>';
+  }
+
+  /* これまでの回（チケットのページの下。多いときは3つだけ出す） */
   var past = document.getElementById('tkPast');
-  if (past && list.length > 1) {
-    past.innerHTML = list.slice(1).map(function (t) {
-      var p = (t.pics || [])[0] || '';
-      return '<div class="tk-old">' +
-               (p ? '<img src="' + esc(p) + '" alt="" loading="lazy">' : '') +
-               '<div><b>' + esc(t.race) + '</b><i>' + wareki(t.date) + '　' + esc(t.place) + '</i></div>' +
-             '</div>';
-    }).join('');
-  } else if (past) {
-    past.closest('section').hidden = true;
+  if (past) {
+    var old = list.slice(1);
+    if (old.length) {
+      past.innerHTML = old.slice(0, 3).map(fuda).join('');
+      var more = document.getElementById('tkMore');
+      if (more) more.hidden = false;
+    } else {
+      var sec = past.closest('section');
+      if (sec) sec.hidden = true;
+    }
+  }
+
+  /* ぜんぶ出す（コレクションのページ） */
+  if (all) {
+    all.innerHTML = list.map(fuda).join('');
+    var cnt = document.getElementById('tkCount');
+    if (cnt) cnt.textContent = list.length;
   }
 })();
