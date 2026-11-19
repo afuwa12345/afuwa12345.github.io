@@ -78,10 +78,13 @@ var TICKETS = [
   var now = list[0];
   var done = over(now.until);
 
+  /* 絵はそのまま持っていかれないように、原寸へのリンクを張らず、
+     上に透明のふたを重ねる（長押しの「画像を保存」を出させない） */
   var pics = (now.pics || []).map(function (p, i) {
-    return '<a class="tk-pic" href="' + esc(p) + '" target="_blank" rel="noopener">' +
-             '<img src="' + esc(p) + '" alt="' + esc(now.race) + ' の記念チケット ' + (i + 1) + '枚目">' +
-           '</a>';
+    return '<span class="tk-pic">' +
+             '<img src="' + esc(p) + '" alt="' + esc(now.race) + ' の記念チケット">' +
+             '<span class="tk-guard"></span>' +
+           '</span>';
   }).join('');
 
   box.innerHTML =
@@ -108,6 +111,14 @@ var TICKETS = [
           '<p class="tk-paper">' + esc(now.paper) + '</p>'
       ) +
     '</div>';
+
+  /* 右クリックと引っぱり出しを止める */
+  box.addEventListener('contextmenu', function (e) {
+    if (e.target.closest('.tk-pic')) e.preventDefault();
+  });
+  box.addEventListener('dragstart', function (e) {
+    if (e.target.closest('.tk-pic')) e.preventDefault();
+  });
 
   /* 番号をコピー */
   var btn = document.getElementById('tkCopy');

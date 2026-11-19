@@ -57,8 +57,18 @@
   .tk-when { font-size: 13px; color: var(--ink-soft); margin: 11px 0 0; }
 
   .tk-pics { display: grid; gap: 10px; margin: 15px 0 0; }
-  .tk-pic { display: block; border-radius: 10px; overflow: hidden; border: 1px solid var(--rule-soft); }
-  .tk-pic img { display: block; width: 100%; height: auto; }
+  .tk-pic {
+    display: block; position: relative; border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--rule-soft);
+  }
+  .tk-pic img {
+    display: block; width: 100%; height: auto;
+    /* 長押しのメニューと、選んで引っぱるのを止める */
+    -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+    pointer-events: none;
+  }
+  /* 絵の上にかぶせる透明のふた。長押ししても絵をつかめない */
+  .tk-guard { position: absolute; inset: 0; }
 
   /* ===== 印刷のところ ===== */
   .tk-print {
