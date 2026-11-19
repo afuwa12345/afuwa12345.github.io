@@ -12,6 +12,7 @@
        course … 距離
        no     … セブンのプリント予約番号（8文字）
        until  … 番号の期限（YYYY-MM-DD HH:MM）。過ぎると自動で「受付終了」になる
+       done   … true にすると、期限前でもすぐ「受付終了」にできる（消したときなど）
        paper  … 用紙のえらび方（コピー機で選ぶもの）
        qr     … QRの画像
        pics   … チケットの絵。2枚でも1枚でもOK
@@ -30,7 +31,8 @@ var TICKETS = [
     course: '芝 2200m',
     no: 'JNP38M7A',
     until: '2026-11-19 23:59',
-    paper: 'フォト用紙L・カラー・2枚',
+    done: true,
+    paper: 'フォト用紙L・カラー',
     qr: 'images/ticket/2026-11-15_qr.webp',
     pics: ['images/ticket/2026-11-15.webp']
   }
@@ -76,7 +78,7 @@ var TICKETS = [
   });
 
   var now = list[0];
-  var done = over(now.until);
+  var done = over(now.until) || now.done === true;
 
   /* 絵はそのまま持っていかれないように、原寸へのリンクを張らず、
      上に透明のふたを重ねる（長押しの「画像を保存」を出させない） */
