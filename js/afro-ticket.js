@@ -32,10 +32,7 @@ var TICKETS = [
     until: '2026-11-19 23:59',
     paper: 'フォト用紙L・カラー・2枚',
     qr: 'images/ticket/2026-11-15_qr.webp',
-    pics: [
-      'images/ticket/2026-11-15_a.webp',
-      'images/ticket/2026-11-15_b.webp'
-    ]
+    pics: ['images/ticket/2026-11-15.webp']
   }
 ];
 
