@@ -41,6 +41,19 @@
 <style>
   .tk { max-width: 620px; margin: 0 auto; }
 
+  /* 帯の絵は横長のチケットなので、背の高さに合わせず横幅で置く。
+     そのままだと題名を押しつぶしてしまう */
+  .phead.has-chara { padding-right: 46%; min-height: 164px; }
+  .phead-chara {
+    height: auto; width: 44%; max-width: 44%;
+    top: 50%; bottom: auto; transform: translateY(-50%);
+    right: -6px;
+  }
+  @media (max-width: 420px) {
+    .phead.has-chara { padding-right: 45%; min-height: 150px; }
+    .phead-chara { width: 41%; max-width: 41%; right: -4px; }
+  }
+
   /* ===== 今週のぶん ===== */
   .tk-now {
     background: var(--white); border: 1px solid var(--rule); border-radius: 18px;
@@ -131,10 +144,11 @@
   </div>
 </nav>
 
-<header class="phead" data-bg="TICKET">
+<header class="phead has-chara" data-bg="TICKET">
   <div class="phead-en">TICKET</div>
   <h1 class="phead-ja">今週の記念チケット</h1>
   <p class="phead-sub">コンビニで印刷できる、出馬表入りのチケット</p>
+  <img class="phead-chara" src="images/ticket_hero.webp" alt="" aria-hidden="true">
 </header>
 
 <section>
