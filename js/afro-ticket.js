@@ -34,20 +34,6 @@ var TICKETS = [
     paper: 'フォト用紙L・カラー',
     qr: 'images/ticket/2026-11-22_qr.webp',
     pics: ['images/ticket/2026-11-22.webp']
-  },
-  {
-    race: 'エリザベス女王杯',
-    en: 'QUEEN ELIZABETH II CUP',
-    grade: 'GI',
-    date: '2026-11-15',
-    place: '京都競馬場',
-    course: '芝 2200m',
-    no: 'JNP38M7A',
-    until: '2026-11-19 23:59',
-    done: true,
-    paper: 'フォト用紙L・カラー',
-    qr: 'images/ticket/2026-11-15_qr.webp',
-    pics: ['images/ticket/2026-11-15.webp']
   }
 ];
 
