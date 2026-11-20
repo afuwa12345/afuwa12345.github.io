@@ -144,24 +144,13 @@
     background: var(--rule-soft); color: var(--ink-dim);
   }
   .tk-badge.is-live { background: var(--turf); color: var(--paper); }
-  /* コレクションへ行くボタン */
-  .tk-coll {
-    display: block; margin: 14px 0 0; padding: 14px 16px;
-    border: 1px solid var(--gold-lt); border-radius: 14px;
-    background: linear-gradient(180deg, var(--white), var(--gold-soft));
-    text-decoration: none; color: var(--ink); box-shadow: var(--sh-sm);
-    position: relative;
+  /* コレクションへ行くボタン（絵） */
+  .tk-coll { display: block; margin: 14px 0 0; }
+  .tk-coll img {
+    display: block; width: 100%; height: auto;
+    filter: drop-shadow(0 3px 8px rgba(26,30,24,.18));
   }
-  .tk-coll::after {
-    content: '›'; position: absolute; right: 15px; top: 50%;
-    transform: translateY(-50%); color: var(--gold); font-size: 20px;
-  }
-  .tk-coll span {
-    display: block; font-family: 'Dela Gothic One', sans-serif; font-size: 15px;
-  }
-  .tk-coll i {
-    display: block; font-style: normal; font-size: 11.5px; color: var(--ink-dim); margin-top: 4px;
-  }
+  .tk-coll:active img { transform: translateY(1px); }
 
   .tk-all-link {
     display: block; text-align: center; margin: 14px 0 0; padding: 13px;
@@ -197,8 +186,8 @@
     <div class="tk">
       <div class="tk-now" id="tkNow"></div>
       <a class="tk-coll" href="collection.html">
-        <span>チケット コレクション</span>
-        <i>これまでに配ったぶんを全部見る</i>
+        <img src="images/ticket_collection.webp"
+             alt="チケット コレクション｜過去のチケットはこちらから">
       </a>
     </div>
   </div>
