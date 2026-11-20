@@ -29,7 +29,7 @@ var TICKETS = [
     date: '2026-11-22',
     place: '京都競馬場',
     course: '芝 1600m',
-    no: 'P79T4K4P',
+    no: 'TZLG8C7K',
     until: '2026-11-21 23:59',
     paper: 'フォト用紙L・カラー',
     qr: 'images/ticket/2026-11-22_qr.webp',
