@@ -23,6 +23,19 @@
 
 var TICKETS = [
   {
+    race: 'マイルチャンピオンシップ',
+    en: 'MILE CHAMPIONSHIP',
+    grade: 'GI',
+    date: '2026-11-22',
+    place: '京都競馬場',
+    course: '芝 1600m',
+    no: 'P79T4K4P',
+    until: '2026-11-21 23:59',
+    paper: 'フォト用紙L・カラー',
+    qr: 'images/ticket/2026-11-22_qr.webp',
+    pics: ['images/ticket/2026-11-22.webp']
+  },
+  {
     race: 'エリザベス女王杯',
     en: 'QUEEN ELIZABETH II CUP',
     grade: 'GI',
