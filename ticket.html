@@ -110,9 +110,27 @@
   .tk-note { font-size: 12.5px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.8; }
 
   /* ===== 手順 ===== */
+  .tk-way {
+    background: var(--white); border: 1px solid var(--rule); border-radius: 14px;
+    padding: 14px 16px 16px; margin: 0 0 12px;
+  }
+  .tk-way h3 {
+    font-size: 14px; margin: 0 0 9px; display: flex; align-items: center; gap: 8px;
+  }
+  .tk-way h3 span {
+    font-family: 'Anton', sans-serif; font-size: 11px; letter-spacing: .08em;
+    background: var(--turf); color: var(--paper); border-radius: 6px; padding: 3px 8px;
+  }
   .tk-how { margin: 0; padding-left: 20px; }
-  .tk-how li { font-size: 13px; color: var(--ink-soft); line-height: 1.95; margin-bottom: 4px; }
+  .tk-how li { font-size: 13px; color: var(--ink-soft); line-height: 1.95; margin-bottom: 3px; }
   .tk-how b { color: var(--ink); }
+  /* コピー機の画面に出るボタンの名前 */
+  .tk-key {
+    display: inline-block; border-radius: 5px; padding: 1px 7px; margin: 0 1px;
+    font-size: 12px; font-weight: 900; color: #fff; background: var(--ink-soft);
+  }
+  .tk-key.g { background: #148f8f; }
+  .tk-key.o { background: #c9631a; }
   .tk-cost {
     font-size: 12px; color: var(--ink-dim); line-height: 1.8; margin: 12px 0 0;
     border-top: 1px dashed var(--rule); padding-top: 11px;
@@ -200,15 +218,30 @@
         <h2 class="sec-ja">印刷のしかた</h2>
         <span class="sec-en">HOW TO</span>
       </div>
-      <ol class="tk-how">
-        <li>セブン‐イレブンの<b>マルチコピー機</b>の前に行く</li>
-        <li>はじめの画面で<b>「プリント」→「ネットプリント」</b>をえらぶ</li>
-        <li>上の<b>予約番号を入れる</b>（QRをかざしてもOK）</li>
-        <li>出てきた内容を確かめて、お金を入れてプリント</li>
-      </ol>
+      <div class="tk-way">
+        <h3><span>QR</span>QRコードをかざす場合</h3>
+        <ol class="tk-how">
+          <li>マルチコピー機の<b>はじめの画面</b>で、上のQRコードをかざす<br>
+              （読み取り口のガラスから<b>2〜10cm 離して</b>かざす）</li>
+          <li>注意事項を確かめて、次に進む</li>
+          <li>プリント設定をして <span class="tk-key o">これで決定</span> を選ぶ</li>
+        </ol>
+      </div>
+
+      <div class="tk-way">
+        <h3><span>NO.</span>予約番号を入れる場合</h3>
+        <ol class="tk-how">
+          <li>はじめの画面で <span class="tk-key g">プリント</span> を選ぶ</li>
+          <li>次の画面で <span class="tk-key o">ネットプリント</span> を選ぶ</li>
+          <li>注意事項を確かめて、<b>上の予約番号を入れる</b></li>
+          <li>プリント設定をして <span class="tk-key o">これで決定</span> を選ぶ</li>
+        </ol>
+      </div>
+
       <p class="tk-cost">
-        プリント代はお客さん負担です（フォト用紙Lサイズ・カラーで1枚あたり数十円）。
-        番号には期限があり、過ぎると印刷できなくなります。
+        枚数や用紙は、コピー機の画面で選べます。プリント代はお客さん負担です
+        （フォト用紙Lサイズ・カラーで1枚あたり数十円）。
+        預けたデータは期限がくると自動で消えるので、それまでに印刷してください。
         このチケットは遊びのもので、入場券や馬券ではありません。
       </p>
     </div>
