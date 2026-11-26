@@ -78,15 +78,12 @@
 
   /* 馬 */
   .r-h {
-    position: absolute; width: 92px; height: auto;
+    position: absolute; height: 96px; width: auto;
     filter: drop-shadow(0 4px 8px rgba(0,0,0,.6));
     will-change: transform;
   }
-  .r-h.me { width: 104px; }
+  .r-h.me { height: 110px; }
   .r-h.run { animation: rBob .24s steps(2, end) infinite; }
-  .r-h.c1 { filter: drop-shadow(0 4px 8px rgba(0,0,0,.6)) sepia(1) saturate(4.5) hue-rotate(172deg); }
-  .r-h.c2 { filter: drop-shadow(0 4px 8px rgba(0,0,0,.6)) sepia(1) saturate(5)   hue-rotate(312deg); }
-  .r-h.c3 { filter: drop-shadow(0 4px 8px rgba(0,0,0,.6)) grayscale(1) brightness(1.25) contrast(1.15); }
   @keyframes rBob { 0% { margin-bottom: 0; } 100% { margin-bottom: 7px; } }
 
   /* ムチの輪。縮んできて、点線に重なった瞬間が「脚が地につく」とき */
@@ -153,7 +150,7 @@
 <!-- ===== タイトル ===== -->
 <section class="ascreen active" id="scTitle">
   <div class="at-eye">LAST 200M</div>
-  <h1 class="at-logo"><img src="../images/icon/race.svg" alt="アフロ追い比べ"></h1>
+  <h1 class="at-logo"><img src="../images/icon/race.webp" alt="アフロ追い比べ"></h1>
   <p class="at-sub">脚が地についた瞬間に、ムチ</p>
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
@@ -239,11 +236,11 @@
 
   /* ライバル3頭。u は進んだ割合。横並びから始まる */
   var RIVALS = [
-    { nm: 'ブルマ',   cls: 'c1', lane: 0, x0:  3.0,
+    { nm: 'ブルマ',   img: 'buruma', lane: 0, x0:  3.0,
       v: function (u) { return 19.8 - 4.6 * u * u; } },        /* 先に抜け出して、最後バテる */
-    { nm: 'チャフワ', cls: 'c2', lane: 1, x0:  1.2,
+    { nm: 'チャフワ', img: 'chafuwa', lane: 1, x0:  1.2,
       v: function (u) { return 17.9 - 0.5 * u; } },            /* ずっと同じ脚 */
-    { nm: 'ギンマ',   cls: 'c3', lane: 3, x0: -1.5,
+    { nm: 'ギンマ',   img: 'ginma', lane: 3, x0: -1.5,
       v: function (u) { return 16.3 + 4.4 * u * u; } }         /* 最後だけ伸びる */
   ];
 
@@ -262,8 +259,11 @@
   var staFill= document.getElementById('staFill');
 
   /* 本物のキャラの絵ができるまでは、サイトにある正しい絵を色だけ変えて使う */
-  var HORSE = '../images/game/run_afuwa.webp';
-  (function () { var i = new Image(); i.src = HORSE; })();
+  function horse(nm) { return '../images/race/run_' + nm + '.webp'; }
+  (function () {
+    var all = ['afuwa', 'buruma', 'chafuwa', 'ginma'];
+    for (var i = 0; i < all.length; i++) { var im = new Image(); im.src = horse(all[i]); }
+  })();
 
   var me, foes, els, poles, goalEl, ringEl, markEl, draftEl;
   var state = 'idle', t0 = 0, last = 0, raf = null, cd = 0;
@@ -325,8 +325,8 @@
 
     foes.forEach(function (f) {
       var img = document.createElement('img');
-      img.className = 'r-h ' + f.r.cls;
-      img.src = HORSE; img.alt = '';
+      img.className = 'r-h';
+      img.src = horse(f.r.img); img.alt = '';
       img.style.bottom = LANE[f.r.lane];
       img.style.zIndex = 10 - f.r.lane;
       stage.appendChild(img);
@@ -334,7 +334,7 @@
     });
     var mine = document.createElement('img');
     mine.className = 'r-h me';
-    mine.src = HORSE; mine.alt = 'あなたのアフロ馬';
+    mine.src = horse('afuwa'); mine.alt = 'あなたのアフロ馬';
     mine.style.bottom = LANE[me.lane];
     mine.style.zIndex = 10 - me.lane;
     stage.appendChild(mine);
@@ -379,7 +379,7 @@
     for (var i = 0; i < els.length; i++) {
       var e = els[i];
       var px = (e.o.x - cam) * PPM;
-      var hw = (e.el.offsetWidth || 90) / 2;
+      var hw = (e.el.offsetWidth || 80) / 2;
       e.el.style.transform = 'translate(' + (px - hw) + 'px, 0)';
       e.el.classList.toggle('run', state === 'run');
     }

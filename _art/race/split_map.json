@@ -4,8 +4,13 @@
   "padding": 8,
   "sheets": [
     {
-      "file": "RACE_RUN_v2.png",
-      "names": ["run_afuwa", "run_buruma", "run_chafuwa", "run_ginma"]
+      "file": "RACE_RUN_v3.png",
+      "names": [
+        "run_afuwa",
+        "run_buruma",
+        "run_chafuwa",
+        "run_ginma"
+      ]
     }
   ]
 }

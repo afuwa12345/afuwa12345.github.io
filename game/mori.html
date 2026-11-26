@@ -45,7 +45,7 @@
 
   /* アフロ。押しているあいだ、これが大きくなる */
   .m-head {
-    width: 108px; height: auto; display: block;
+    width: 186px; height: auto; display: block;
     transform-origin: center center;
     filter: drop-shadow(0 6px 14px rgba(0,0,0,.55));
     will-change: transform;
@@ -108,7 +108,7 @@
 <!-- ===== タイトル ===== -->
 <section class="ascreen active" id="scTitle">
   <div class="at-eye">CHICKEN RACE</div>
-  <h1 class="at-logo"><img src="../images/icon/mori.svg" alt="アフロ盛り"></h1>
+  <h1 class="at-logo"><img src="../images/icon/mori.webp" alt="アフロ盛り"></h1>
   <p class="at-sub">どこまで盛れる？</p>
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
@@ -142,7 +142,7 @@
   <div class="ain grow">
     <div class="astage" id="stage">
       <div class="m-warn" id="warn">はちきれそう！</div>
-      <img class="m-head" id="head" src="../images/find/afuwa_futsu.webp" alt="">
+      <img class="m-head" id="head" src="../images/mori/afuwa_calm.webp" alt="">
       <div class="m-size" id="size"></div>
       <div class="acue" id="cue" hidden>
         <div class="acue-big" id="cueBig"></div>
@@ -179,17 +179,20 @@
   var MAXS = 3.6;
 
   var CHARA = [
-    { nm: 'アフワ',   f: 'afuwa' },
-    { nm: 'ブルマ',   f: 'buruma' },
-    { nm: 'チャフワ', f: 'chafuwa' },
-    { nm: 'ギンマ',   f: 'ginma' }
+    { nm: 'アフワ', f: 'afuwa' },
+    { nm: 'ブルマ', f: 'buruma' }
   ];
-  var FACE = { calm: 'futsu', fun: 'warai', oh: 'odoroki' };
+  /* アフロそのものが4段階でふくらむ絵。台紙の大きさはそろえてある */
+  var STAGE = ['calm', 'big', 'limit', 'pop'];
+  var BIG_AT = 1.38;        /* これを超えたら「ふくらんだ顔」に差しかえる */
+  var VS = 0.38;            /* 絵も大きくなるので、拡大はひかえめに */
 
   /* 先に読ませておく。差しかわった瞬間に一拍おかないよう */
   (function () {
     for (var i = 0; i < CHARA.length; i++) {
-      for (var k in FACE) { var im = new Image(); im.src = '../images/find/' + CHARA[i].f + '_' + FACE[k] + '.webp'; }
+      for (var k = 0; k < STAGE.length; k++) {
+        var im = new Image(); im.src = '../images/mori/' + CHARA[i].f + '_' + STAGE[k] + '.webp';
+      }
     }
   })();
 
@@ -233,9 +236,15 @@
 
   function pts(v) { return Math.round((v - 1) * 100); }
 
+  var shown = '';
   function face(kind) {
-    head.src = '../images/find/' + chara.f + '_' + FACE[kind] + '.webp';
+    var key = chara.f + '_' + kind;
+    if (key === shown) { return; }
+    shown = key;
+    head.src = '../images/mori/' + key + '.webp';
   }
+  /* 見た目の大きさ。絵がすでにふくらんでいるぶん、拡大はゆるめる */
+  function vs(v) { return 1 + (Math.min(MAXS, v) - 1) * VS; }
 
   function paintLaps() {
     var h = '';
@@ -260,6 +269,7 @@
     warned = false;
     state = 'ready';
     stage.classList.remove('is-warn');
+    shown = '';
     head.style.transform = 'scale(1)';
     face('calm');
     sizeEl.textContent = '';
@@ -275,7 +285,7 @@
     laps[turn] = p;
     sum += p;
     nowEl.textContent = p;
-    face('fun');
+    face('big');
     Sfx.good();
     state = 'wait';
     paintLaps();
@@ -288,7 +298,7 @@
   function boom() {
     laps[turn] = 0;
     state = 'wait';
-    face('oh');
+    face('pop');
     Sfx.bad();
     stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
     stage.classList.remove('is-warn');
@@ -303,7 +313,7 @@
       stage.appendChild(b);
       (function (el) { setTimeout(function () { el.remove(); }, 700); })(b);
     }
-    head.style.transform = 'scale(.82)';
+    head.style.transform = 'scale(1.05)';
     sizeEl.textContent = '';
     nowEl.textContent = '0';
     paintLaps();
@@ -335,13 +345,14 @@
     var r = s / lim;                 /* 限界までどれくらい来たか */
     var danger = r >= warn;
     stage.classList.toggle('is-warn', danger);
-    if (danger && !warned) { warned = true; face('oh'); }   /* 顔でも知らせる */
+    if (danger && !warned) { warned = true; }
+    face(danger ? 'limit' : (s >= BIG_AT ? 'big' : 'calm'));   /* 絵でも知らせる */
 
     /* ふるえ。限界に近いほど大きくゆれる */
     var sh = danger ? (r - warn) / (1 - warn) : 0;
     var dx = sh ? (Math.random() - 0.5) * sh * 14 : 0;
     var dy = sh ? (Math.random() - 0.5) * sh * 14 : 0;
-    head.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + Math.min(MAXS, s) + ')';
+    head.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + vs(s) + ')';
     sizeEl.textContent = pts(s);
 
     /* カチカチ。近いほど速くなる */

@@ -4,12 +4,22 @@
   "padding": 8,
   "sheets": [
     {
-      "file": "MORI_FACE_A.png",
-      "names": ["afuwa_calm", "afuwa_big", "afuwa_limit", "afuwa_pop"]
+      "file": "MORI_FACE_A_v2.png",
+      "names": [
+        "afuwa_calm",
+        "afuwa_big",
+        "afuwa_limit",
+        "afuwa_pop"
+      ]
     },
     {
       "file": "MORI_FACE_B.png",
-      "names": ["buruma_calm", "buruma_big", "buruma_limit", "buruma_pop"]
+      "names": [
+        "buruma_calm",
+        "buruma_big",
+        "buruma_limit",
+        "buruma_pop"
+      ]
     }
   ]
 }
