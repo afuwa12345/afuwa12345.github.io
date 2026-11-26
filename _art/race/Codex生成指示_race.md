@@ -8,7 +8,9 @@
 - 上書きしない。毎回できあがりを確認して、ずれていたら最大2回まで作り直す。
 - **全部終わったら、保存したファイルのフルパスを一覧で報告すること。**
 
-**このゲームは直線400mの追い比べ。4頭が横から見た形で右に向かって全力で走る。止め絵でも走って見えるように、脚は思いきり伸ばして、スピード線と砂けむりを強めに。**
+**このゲームはゴール前200mの叩き合い。4頭が横から見た形で右に向かって全力で走る。止め絵でも走って見えるように、腕と脚は思いきり振って、スピード線と砂けむりを強めに。**
+
+**いちばん大事：アフロ馬は四つ足の馬ではなく、二足歩行のキャラ。人が全力疾走するのと同じ形で、腕を振って2本の脚で走る。前にもらった絵は四つ足になっていたので、ここだけは必ず守ること。**
 
 ## 1. 生成リスト
 
@@ -33,7 +35,11 @@
 ```text
 POSES: All four cells show the SAME full-gallop running pose, side view facing RIGHT, at the SAME size and the SAME angle. Only the character differs between cells.
 
-THE POSE (identical in all four cells): full gallop seen from the side, facing right. Front legs stretched far forward, back legs kicked far back, body leaning forward, the huge afro bouncing and squashed back by the wind, tail streaming behind, mouth open with effort, eyes forward and determined. Horizontal speed lines behind the body (allowed) and a small dust puff under the back hooves (allowed).
+THE POSE (identical in all four cells): running hard on TWO legs, seen from the side, facing right. **Copy the running pose of the attached RUN reference exactly** — that picture is the correct way this character runs.
+
+The body stays UPRIGHT, standing tall and only leaning forward a little. It is NOT stretched out horizontally. One short leg swings forward and the other kicks back, both short arms swing (one forward, one back), the head and its huge afro stay high above the body, the tail flicks behind, mouth open with effort, eyes forward and determined. Horizontal speed lines behind the body (allowed) and a small dust puff under the back hoof (allowed).
+
+ABSOLUTELY NOT a four-legged horse galloping, and NOT a body held horizontal. Think of a costumed mascot running, seen from the side.
 
 TOP-LEFT     RACE_RUN_AFUWA:   the pose above, character = AFUWA.
 TOP-RIGHT    RACE_RUN_BURUMA:  the pose above, character = BURUMA.
@@ -56,7 +62,9 @@ The turf must be plain and almost empty, with only very soft mowing stripes, bec
 ### 3枚目 RACE_ICON　丸バッジ（文字なし）
 
 ```text
-Inside the circular badge: a green turf racecourse with a white running rail and a blue sky, white speed lines radiating out from the middle. Two of the afro horses from the attached running reference, seen from the side, galloping hard to the RIGHT, neck and neck in a close finish, filling the upper two thirds of the circle. The left one is AFUWA (cream body, dark brown afro), the right one is BURUMA (white body, sky-blue afro). Legs stretched out in full gallop, tails flying, determined faces, dust flying behind them.
+Inside the circular badge: a green turf racecourse with a white running rail and a blue sky, white speed lines radiating out from the middle. Two of the afro horse mascots, seen from the side, running hard to the RIGHT ON TWO LEGS with their bodies upright and their arms swinging, neck and neck in a close finish, filling the upper two thirds of the circle. Copy the running pose of the attached RUN reference. The left one is AFUWA (cream body, dark brown afro), the right one is BURUMA (white body, sky-blue afro). Legs striding, arms pumping, tails flying, determined faces, dust flying behind them.
+
+They are two-legged mascots, NOT four-legged horses.
 
 Leave the bottom third of the circle as plain green turf with nothing on it.
 

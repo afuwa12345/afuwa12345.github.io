@@ -14,7 +14,8 @@
 
 | 記号 | パス | 役割 |
 |---|---|---|
-| RUN | `images/game/run_afuwa.webp` | 走っているアフワ。横向きの体型・線の太さ・大きさの基準 |
+| RUN | `images/game/run_afuwa.webp` | 走っているアフワ。**走り方はこの絵が正解**。体は立ったまま、2本脚 |
+| JUMP | `images/game/jump_afuwa.webp` | 跳んでいるアフワ。腕と脚の付きかたの基準 |
 | FACE | `images/find/afuwa_futsu.webp` ほか `images/find/*_futsu.webp` | 各キャラの顔・アフロの色の基準 |
 | ICON | `images/icon/gate.webp` | ゲームアイコンの画風・丸バッジの作りの基準 |
 | BG | `images/bg/jump.webp` | 背景の画風・色味の基準 |
@@ -32,18 +33,20 @@ STYLE: Cute chunky hand-drawn cartoon mascot. Very thick smooth black outlines, 
 
 LAYOUT:
 - Exactly 4 cells, 2 columns x 2 rows, equal size, generous empty space between cells. No borders, no frames.
-- One full-body pose per cell, centered, nothing cut off: the whole afro, all four legs, the tail and the hooves must be fully inside the cell.
+- One full-body pose per cell, centered, nothing cut off: the whole afro, both arms, both legs, the tail and the hooves must be fully inside the cell.
 - Same character size in all 4 cells. No strong perspective.
 
 BACKGROUND: Transparent (PNG alpha). No floor, no shadow, no white halo. No text, letters or numbers. Draw ONLY the props and effect marks a pose explicitly allows.
 
-ACTION: Each pose must read instantly at phone size, as a frozen frame of a big cartoon movement: strong lean, fully stretched legs, squash and stretch, plus speed lines or dust puffs where allowed. The face stays simple; the body does the acting.
+ACTION: Each pose must read instantly at phone size, as a frozen frame of a big cartoon movement: strong lean, fully stretched arms and legs, squash and stretch, plus speed lines or dust puffs where allowed. The face stays simple; the body does the acting.
 ```
 
 ## 3. CHARACTERS（キャラの指定。必要なものだけ使う）
 
 ```text
-ALL AFRO HORSES: a small chibi cartoon horse whose mane is one ENORMOUS round fluffy afro covering the whole top and sides of the head, far bigger than the face. Short stubby legs, a short tuft tail in the same colour as the afro, two small pointed ears poking out of the afro, a soft rounded muzzle, simple black dot eyes. Thick black outline, flat colours.
+ALL AFRO HORSES: a chibi cartoon horse MASCOT that stands and moves on TWO legs like a person, NOT on four legs. Body plan: an upright rounded body, TWO short arms with simple rounded hands, TWO short legs ending in dark hooves, and a short tuft tail. The head sits straight on top of the body and its mane is one ENORMOUS round fluffy afro covering the whole top and sides of the head, far bigger than the face. Two small pointed ears poke out of the afro, a soft rounded muzzle, simple black dot eyes. Thick black outline, flat colours.
+
+NEVER draw it as a four-legged horse, a pony or a foal. It is always a two-legged mascot, like a costumed character.
 ```
 
 ```text
