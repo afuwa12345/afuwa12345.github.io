@@ -133,6 +133,14 @@
       kick: [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0],
       hat:  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     },
+    /* アフロ盛り。ふくらんでいって、いつ弾けるか分からない感じ */
+    mori: {
+      bpm: 124, root: 262, scale: SCALE_MAJ, wave: 'triangle',
+      lead: [0, null, 1, null, 2, null, 3, null, 4, null, 5, null, 6, null, null, null],
+      bass: [0, null, null, 0, null, null, 0, null, 2, null, null, 2, null, null, 2, null],
+      kick: [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+      hat:  [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1]
+    },
     /* 追い比べ。前のめりで、ゴールまで押しきる感じ */
     race: {
       bpm: 168, root: 233, scale: SCALE_MIN, wave: 'square',
@@ -230,7 +238,7 @@
   var Sfx = {
     unlock: function () { ready(); },
 
-    /* BGMを鳴らす。名前は SONGS のキー（jump / catch / whack / memory / gate / pair / tower / dodge / find / race） */
+    /* BGMを鳴らす。名前は SONGS のキー（jump / catch / whack / memory / gate / pair / tower / dodge / find / race / mori） */
     bgm: function (name) {
       if (!SONGS[name]) return;
       this.bgmStop();

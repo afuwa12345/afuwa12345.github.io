@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アフロ盛り｜AFRO Horse</title>
+<meta name="description" content="押しているあいだアフロがふくらむ。大きいほど高得点、でも限界を超えると爆発して0点。5回の合計点を競うアフロ馬の無料チキンレースゲーム。">
+<link rel="canonical" href="https://afro-horse.com/game/mori.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/mori.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロ盛り｜AFRO Horse">
+<meta property="og:description" content="どこまで盛れる？ 限界を超えたら爆発して0点。5回の合計点で競う無料ゲーム。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  #scTitle { --bgt: url(../images/bgt/pair.webp); --veil: .66; }
+
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  #stage {
+    cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none;
+    --sveil: .34; --bgs: url(../images/bgt/pair.webp);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* アフロ。押しているあいだ、これが大きくなる */
+  .m-head {
+    width: 108px; height: auto; display: block;
+    transform-origin: center center;
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,.55));
+    will-change: transform;
+  }
+
+  /* あぶない合図 */
+  .m-warn {
+    position: absolute; left: 0; right: 0; top: 0; z-index: 12; padding: 6px 0;
+    text-align: center; font-weight: 900; font-size: 14px; letter-spacing: .06em;
+    color: #1a0e16; background: var(--gold);
+    opacity: 0; transition: opacity .1s;
+  }
+  #stage.is-warn .m-warn { opacity: 1; }
+  #stage.is-warn { box-shadow: inset 0 0 0 3px var(--red), 0 0 24px rgba(224,74,74,.4); }
+
+  /* 爆発のかけら */
+  .m-bit {
+    position: absolute; left: 50%; top: 50%; z-index: 20;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--ink, #3a2b24); pointer-events: none;
+    animation: mBit .62s ease-out forwards;
+  }
+  @keyframes mBit {
+    0%   { transform: translate(-50%, -50%) scale(.4); opacity: 1; }
+    100% { transform: translate(var(--bx), var(--by)) scale(1.15); opacity: 0; }
+  }
+
+  /* 盛れた高さの表示 */
+  .m-size {
+    position: absolute; left: 0; right: 0; bottom: 8px; z-index: 11; text-align: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 1;
+    color: var(--cyan); text-shadow: 0 0 16px rgba(0,240,255,.6);
+  }
+  #stage.is-warn .m-size { color: var(--gold); text-shadow: 0 0 18px var(--gold); }
+
+  /* 5回ぶんの記録 */
+  .m-laps { display: flex; gap: 5px; padding: 9px 0 2px; }
+  .m-lap {
+    flex: 1; text-align: center; padding: 6px 0;
+    border: 1px solid var(--grey2); border-radius: 7px; background: rgba(0,0,0,.35);
+    font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: #6f646a;
+  }
+  .m-lap.done { color: var(--cyan); border-color: rgba(0,240,255,.45); text-shadow: 0 0 8px var(--cyan); }
+  .m-lap.bomb { color: var(--red); border-color: rgba(224,74,74,.5); text-shadow: 0 0 8px var(--red); }
+  .m-lap.now  { border-color: var(--gold); box-shadow: 0 0 12px rgba(240,190,70,.4); }
+</style>
+</head>
+<body class="nav-game">
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">CHICKEN RACE</div>
+  <h1 class="at-logo"><img src="../images/icon/mori.svg" alt="アフロ盛り"></h1>
+  <p class="at-sub">どこまで盛れる？</p>
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
+    <li>画面を<b>押しているあいだ</b>アフロがふくらむ</li>
+    <li>手を離すと、そこまでの大きさが点になる。<b>大きいほど高得点</b></li>
+    <li>ただしアフロには限界がある。超えると<b>爆発して0点</b></li>
+    <li>限界は毎回ちがう。<b>ふるえ出してカチカチ鳴ったら、もう近い</b></li>
+    <li>5回やって、合計点が記録</li>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">かい</span><span class="ahud-val" id="hTurn">1/5</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">このかい</span><span class="ahud-val" id="hNow">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">ごうけい</span><span class="ahud-val gold" id="hSum">0</span></div>
+    </div>
+  </div>
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div class="m-warn" id="warn">はちきれそう！</div>
+      <img class="m-head" id="head" src="../images/find/afuwa_futsu.webp" alt="">
+      <div class="m-size" id="size"></div>
+      <div class="acue" id="cue" hidden>
+        <div class="acue-big" id="cueBig"></div>
+        <div class="acue-sub" id="cueSub"></div>
+      </div>
+    </div>
+    <div class="m-laps" id="laps"></div>
+    <p class="astage-note">押して盛る／離して確定</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
+<script>
+(function () {
+  /* ============================================================
+     アフロ盛り。
+     ・押しているあいだアフロがふくらむ。ふくらむ速さは、
+       大きくなるほど速くなる（終わりぎわほど一気にいく）
+     ・限界は毎回ちがう。限界の 70% を超えると、ふるえ出して
+       カチカチ鳴る。この音の速さだけが手がかり
+     ・離したら、その大きさが点。超えたら爆発して0点
+     ・5回の合計点が記録
+     ============================================================ */
+  var TURNS = 5;
+  var LIM_LO = 1.95, LIM_HI = 3.15;   /* 限界のばらつき */
+  var WARN_LO = 0.58, WARN_HI = 0.80; /* 限界の何割からふるえ出すか。毎回ばらつく。
+                                         早く出ても、まだ余裕があるとは限らない */
+  var G0 = 0.55, G1 = 0.35;           /* ふくらむ速さ = G0 + G1 * (大きさ-1) */
+  var MAXS = 3.6;
+
+  var CHARA = [
+    { nm: 'アフワ',   f: 'afuwa' },
+    { nm: 'ブルマ',   f: 'buruma' },
+    { nm: 'チャフワ', f: 'chafuwa' },
+    { nm: 'ギンマ',   f: 'ginma' }
+  ];
+  var FACE = { calm: 'futsu', fun: 'warai', oh: 'odoroki' };
+
+  /* 先に読ませておく。差しかわった瞬間に一拍おかないよう */
+  (function () {
+    for (var i = 0; i < CHARA.length; i++) {
+      for (var k in FACE) { var im = new Image(); im.src = '../images/find/' + CHARA[i].f + '_' + FACE[k] + '.webp'; }
+    }
+  })();
+
+  var stage  = document.getElementById('stage');
+  var head   = document.getElementById('head');
+  var sizeEl = document.getElementById('size');
+  var warnEl = document.getElementById('warn');
+  var cue    = document.getElementById('cue');
+  var cueBig = document.getElementById('cueBig');
+  var cueSub = document.getElementById('cueSub');
+  var turnEl = document.getElementById('hTurn');
+  var nowEl  = document.getElementById('hNow');
+  var sumEl  = document.getElementById('hSum');
+  var lapsEl = document.getElementById('laps');
+
+  var laps = [], turn = 0, sum = 0;
+  var s = 1, lim = 2.5, warn = 0.7, push = false, state = 'idle';
+  var raf = null, last = 0, tick = 0, chara = null, warned = false;
+
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('active', all[i].id === id);
+  }
+
+  AfroScore.setup({
+    game: 'mori',
+    title: 'アフロ盛り',
+    hash: 'アフロ盛り',
+    unit: '点',
+    lower: false,
+    grades: [
+      { v: 690, name: '神の盛り' },
+      { v: 540, name: 'アフロ名人' },
+      { v: 450, name: 'なかなか盛れる' },
+      { v: 340, name: 'まあまあ' },
+      { v: 200, name: 'こわがり' },
+      { v: 0,   name: 'ぜんぶ爆発' }
+    ],
+    onRetry: go
+  });
+
+  function pts(v) { return Math.round((v - 1) * 100); }
+
+  function face(kind) {
+    head.src = '../images/find/' + chara.f + '_' + FACE[kind] + '.webp';
+  }
+
+  function paintLaps() {
+    var h = '';
+    for (var i = 0; i < TURNS; i++) {
+      var l = laps[i];
+      var cls = l === undefined ? (i === turn ? ' now' : '')
+                                : (l === 0 ? ' bomb' : ' done');
+      h += '<div class="m-lap' + cls + '">' + (l === undefined ? '—' : (l === 0 ? '×' : l)) + '</div>';
+    }
+    lapsEl.innerHTML = h;
+    turnEl.textContent = Math.min(turn + 1, TURNS) + '/' + TURNS;
+    sumEl.textContent = sum;
+  }
+
+  function newTurn() {
+    chara = CHARA[turn % CHARA.length];
+    s = 1;
+    lim = LIM_LO + Math.random() * (LIM_HI - LIM_LO);
+    warn = WARN_LO + Math.random() * (WARN_HI - WARN_LO);
+    push = false;
+    tick = 0;
+    warned = false;
+    state = 'ready';
+    stage.classList.remove('is-warn');
+    head.style.transform = 'scale(1)';
+    face('calm');
+    sizeEl.textContent = '';
+    nowEl.textContent = '0';
+    paintLaps();
+    cue.hidden = false;
+    cueBig.textContent = chara.nm;
+    cueSub.textContent = '押して盛る';
+  }
+
+  function bank() {
+    var p = pts(s);
+    laps[turn] = p;
+    sum += p;
+    nowEl.textContent = p;
+    face('fun');
+    Sfx.good();
+    state = 'wait';
+    paintLaps();
+    cue.hidden = false;
+    cueBig.textContent = '+' + p;
+    cueSub.textContent = p >= 180 ? 'ようやった！' : p >= 110 ? 'ええ感じ' : 'ちょっと早いて';
+    setTimeout(next, 1000);
+  }
+
+  function boom() {
+    laps[turn] = 0;
+    state = 'wait';
+    face('oh');
+    Sfx.bad();
+    stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+    stage.classList.remove('is-warn');
+
+    for (var i = 0; i < 12; i++) {
+      var b = document.createElement('div');
+      b.className = 'm-bit';
+      var a = (Math.PI * 2 * i) / 12 + Math.random() * 0.4;
+      var d = 90 + Math.random() * 70;
+      b.style.setProperty('--bx', (Math.cos(a) * d - 11) + 'px');
+      b.style.setProperty('--by', (Math.sin(a) * d - 11) + 'px');
+      stage.appendChild(b);
+      (function (el) { setTimeout(function () { el.remove(); }, 700); })(b);
+    }
+    head.style.transform = 'scale(.82)';
+    sizeEl.textContent = '';
+    nowEl.textContent = '0';
+    paintLaps();
+    cue.hidden = false;
+    cueBig.textContent = 'ボンッ！';
+    cueSub.textContent = '盛りすぎた';
+    setTimeout(next, 1200);
+  }
+
+  function next() {
+    turn++;
+    if (turn >= TURNS) {
+      state = 'over';
+      cue.hidden = true;
+      AfroScore.finish(sum);
+      return;
+    }
+    newTurn();
+  }
+
+  function step(now) {
+    raf = requestAnimationFrame(step);
+    var dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    if (dt <= 0 || state !== 'grow') return;
+
+    s += (G0 + G1 * (s - 1)) * dt;
+
+    var r = s / lim;                 /* 限界までどれくらい来たか */
+    var danger = r >= warn;
+    stage.classList.toggle('is-warn', danger);
+    if (danger && !warned) { warned = true; face('oh'); }   /* 顔でも知らせる */
+
+    /* ふるえ。限界に近いほど大きくゆれる */
+    var sh = danger ? (r - warn) / (1 - warn) : 0;
+    var dx = sh ? (Math.random() - 0.5) * sh * 14 : 0;
+    var dy = sh ? (Math.random() - 0.5) * sh * 14 : 0;
+    head.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + Math.min(MAXS, s) + ')';
+    sizeEl.textContent = pts(s);
+
+    /* カチカチ。近いほど速くなる */
+    if (danger) {
+      tick -= dt;
+      if (tick <= 0) { Sfx.tap(); tick = 0.30 - 0.21 * sh; }
+    }
+
+    if (s >= lim) boom();
+  }
+
+  function down() {
+    if (state === 'ready') {
+      state = 'grow';
+      push = true;
+      cue.hidden = true;
+      face('calm');
+      Sfx.tap();
+    }
+  }
+  function up() {
+    if (state === 'grow') { push = false; bank(); }
+  }
+
+  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); down(); });
+  window.addEventListener('pointerup', up);
+  window.addEventListener('pointercancel', up);
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  window.addEventListener('keydown', function (e) {
+    if (e.code === 'Space' && !e.repeat) { e.preventDefault(); down(); }
+  });
+  window.addEventListener('keyup', function (e) {
+    if (e.code === 'Space') { e.preventDefault(); up(); }
+  });
+  window.addEventListener('blur', up);
+
+  function go() {
+    cancelAnimationFrame(raf);
+    laps = []; turn = 0; sum = 0;
+    newTurn();
+    screen('scPlay');
+    Sfx.bgm('mori');
+    last = performance.now();
+    raf = requestAnimationFrame(step);
+  }
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+  paintLaps();
+})();
+</script>
+</body>
+</html>
