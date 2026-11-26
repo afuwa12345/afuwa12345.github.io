@@ -261,8 +261,7 @@
   var staBar = document.getElementById('staBar');
   var staFill= document.getElementById('staFill');
 
-  /* 専用の絵ができるまでは、形の正しい元の絵を色だけ変えて使う。
-     （生成してもらった4頭は四つ足になっていたので、まだ入れていない） */
+  /* 本物のキャラの絵ができるまでは、サイトにある正しい絵を色だけ変えて使う */
   var HORSE = '../images/game/run_afuwa.webp';
   (function () { var i = new Image(); i.src = HORSE; })();
 
@@ -380,7 +379,7 @@
     for (var i = 0; i < els.length; i++) {
       var e = els[i];
       var px = (e.o.x - cam) * PPM;
-      var hw = (e.el.offsetWidth || 92) / 2;
+      var hw = (e.el.offsetWidth || 90) / 2;
       e.el.style.transform = 'translate(' + (px - hw) + 'px, 0)';
       e.el.classList.toggle('run', state === 'run');
     }

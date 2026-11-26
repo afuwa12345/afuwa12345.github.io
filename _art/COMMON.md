@@ -10,24 +10,26 @@
 
 ## 1. 参照画像
 
-生成のとき、必ず下の絵を参照として付ける。画風と体型の基準。
+**いちばん大事：`_art/ref/AFRO_MASTER.png` を Codex に必ず添付すること。**
+文章の説明だけだと、それっぽい別のキャラが出てくる。実際に出た。
+あの設定シートがキャラのデザインそのもので、文章はおまけ。
 
 | 記号 | パス | 役割 |
 |---|---|---|
-| RUN | `images/game/run_afuwa.webp` | 走っているアフワ。**走り方はこの絵が正解**。体は立ったまま、2本脚 |
-| JUMP | `images/game/jump_afuwa.webp` | 跳んでいるアフワ。腕と脚の付きかたの基準 |
-| FACE | `images/find/afuwa_futsu.webp` ほか `images/find/*_futsu.webp` | 各キャラの顔・アフロの色の基準 |
+| **MASTER** | `_art/ref/AFRO_MASTER.png` | **キャラのデザインの基準。毎回これを添付する** |
 | ICON | `images/icon/gate.webp` | ゲームアイコンの画風・丸バッジの作りの基準 |
 | BG | `images/bg/jump.webp` | 背景の画風・色味の基準 |
 
----
+設定シートは `python _art/tools/make_ref.py` で作り直せる（サイトにある絵から組み立てている）。
 
 ## 2. COMMON（キャラの2x2シート）
 
 ```text
 Use the built-in image_gen tool. Generate ONE square image, 1536x1536, laid out as a 2x2 grid of FOUR separate poses.
 
-REFERENCE: The attached images are the authoritative model. Copy the character design and art style EXACTLY: same proportions, same colors, same line quality, same size. Do NOT redesign. Do NOT copy any text, labels or layout from the references.
+REFERENCE: The attached character sheet (AFRO_MASTER) is the authoritative model and overrides anything written below. Study it first. Copy the character design EXACTLY: the same head shape, the same muzzle, the same eyes, the same body proportions, the same colours, the same line weight. Do NOT invent a new character, do NOT redesign, do NOT "improve" it. If the words below and the sheet disagree, the sheet wins. Do NOT copy the sheet's text, labels or layout.
+
+HEAD SHAPE (people keep getting this wrong): the head is a ROUND flat-faced head seen almost straight on, with the muzzle drawn as a small soft oval INSIDE the lower part of the face. The snout does NOT stick out forward like a real horse's. The enormous afro wraps all the way around that round head.
 
 STYLE: Cute chunky hand-drawn cartoon mascot. Very thick smooth black outlines, flat colors, almost no shading. Simple, friendly, a little goofy. NOT 3D, NOT realistic, NOT detailed, NOT anime.
 
@@ -43,34 +45,36 @@ ACTION: Each pose must read instantly at phone size, as a frozen frame of a big 
 
 ## 3. CHARACTERS（キャラの指定。必要なものだけ使う）
 
-```text
-ALL AFRO HORSES: a chibi cartoon horse MASCOT that stands and moves on TWO legs like a person, NOT on four legs. Body plan: an upright rounded body, TWO short arms with simple rounded hands, TWO short legs ending in dark hooves, and a short tuft tail. The head sits straight on top of the body and its mane is one ENORMOUS round fluffy afro covering the whole top and sides of the head, far bigger than the face. Two small pointed ears poke out of the afro, a soft rounded muzzle, simple black dot eyes. Thick black outline, flat colours.
+色や形で迷ったら、文章ではなく **MASTER の絵** を見ること。
 
-NEVER draw it as a four-legged horse, a pony or a foal. It is always a two-legged mascot, like a costumed character.
+```text
+ALL AFRO HORSES: a chibi cartoon horse MASCOT that stands and moves on TWO legs like a person, NOT on four legs. Body plan: an upright rounded body, TWO short arms with simple rounded hands, TWO short legs ending in dark hooves, and a short tuft tail. The head sits on top and is ROUND and flat-faced, with a small soft oval muzzle inside the lower face and two tiny nostril dots; the snout never sticks out forward. The mane is one ENORMOUS round fluffy afro wrapping the whole head, far bigger than the face, drawn as soft overlapping bumps. Two small pointed ears poke out of the afro. Simple black dot eyes. Thick even black outline, flat colours, almost no shading.
+
+NEVER draw it as a four-legged horse, a pony or a foal.
 ```
 
 ```text
-AFUWA (アフワ, main character): cream / pale ivory body, dark chocolate-brown afro and tail, pink cheek dots, gentle worried-but-trying face.
+AFUWA (アフワ, the main character): cream / pale ivory body and face, dark chocolate-brown afro and tail, pink round cheek dots, light brown muzzle, worried droopy eyebrows and a small frown. Timid but trying.
 ```
 
 ```text
-BURUMA (ブルマ): white body, bright sky-blue afro and tail, sharp confident eyebrows, cheeky grin.
+BURUMA (ブルマ): pure white body and face, bright sky-blue afro and tail, sharp angry-looking eyebrows, open cheeky grin. Cocky.
 ```
 
 ```text
-CHAFUWA (チャフワ): light milk-brown body with a cream muzzle, reddish-brown (terracotta) afro and tail, round happy open-mouth smile.
+CHAFUWA (チャフワ): warm milk-brown body, cream muzzle, reddish-brown terracotta afro and tail, big round open-mouth smile. Cheerful.
 ```
 
 ```text
-GINMA (ギンマ): pale off-white body with a grey muzzle, silver-grey afro and tail, heavy-lidded half-closed eyes, cool unimpressed face.
+GINMA (ギンマ): pale off-white body, grey muzzle, silver-grey afro and tail, heavy-lidded half-closed eyes and a flat mouth. Cool and unimpressed.
 ```
 
 ```text
-KUROFUWA (クロフワ): dark grey body, black afro and tail, serious stern face.
+KUROFUWA (クロフワ): dark grey body with a lighter grey muzzle, very dark NAVY-BLUE afro and tail (not pure black), thick angry eyebrows, stern frown. The scary one.
 ```
 
 ```text
-YANCHA (ヤンチャ): tan body, orange afro and tail, wild toothy grin, troublemaker face.
+YANCHA (ヤンチャ): cream body, GOLDEN-YELLOW afro and tail, narrowed mischievous eyes, a straw or grass stalk held in the corner of its mouth (allowed). The troublemaker.
 ```
 
 ## 4. COMMON_BG（背景。分割しない1枚もの）
