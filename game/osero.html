@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>アフロオセロ｜AFRO Horse</title>
+<meta name="description" content="アフワとブルマではさみ合う8×8のオセロ。ひっくり返した枚数が記録になる無料ゲーム。登録不要でブラウザからすぐ遊べます。">
+<link rel="canonical" href="https://afro-horse.com/game/osero.html">
+<link rel="icon" href="../favicon.ico">
+<meta name="theme-color" content="#08060a">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afro-horse.com/game/osero.html">
+<meta property="og:site_name" content="AFRO Horse">
+<meta property="og:title" content="アフロオセロ｜AFRO Horse">
+<meta property="og:description" content="アフワとブルマではさみ合うオセロ。最後に残った自分の枚数が記録。">
+<meta property="og:image" content="https://afro-horse.com/images/logo.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@AFUWA12345">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NV6044LPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NV6044LPZ');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../css/afro-arcade.css">
+
+<style>
+  #scTitle { --bgt: url(../images/bg/osero.webp); --veil: .60; }
+
+  /* ===== 場 =====
+     奥に部屋の絵をゆっくり流して、手前に盤を浮かせる。
+     盤だけ置くと一枚絵の上に駒が乗っているだけに見えるので、
+     奥と手前の両方を動かしている。 */
+  #scPlay { padding-bottom: 6px; }
+  #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  #stage {
+    --bgs: url(../images/bg/osero.webp);
+    --sveil: .50;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10px;
+    perspective: 900px;
+    overflow: hidden;
+    container-type: size;
+  }
+  /* 奥の部屋。ゆっくり寄ったり引いたりする */
+  #stage::after {
+    content: ''; position: absolute; inset: -6%;
+    background: radial-gradient(44% 38% at 50% 18%, rgba(255, 207, 130, .22), transparent 70%);
+    animation: oLamp 5.2s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes oLamp { from { opacity: .45; } to { opacity: 1; } }
+
+  /* 盤。置いた場所のほうへ傾いて、ゆっくり戻る */
+  .o-wrap {
+    position: relative;
+    width: min(100%, 420px);
+    width: min(100cqw, 100cqh, 420px);     /* 縦が足りないときは縦に合わせる */
+    aspect-ratio: 1 / 1;
+    transform-style: preserve-3d;
+    transition: transform .42s cubic-bezier(.22, 1.4, .36, 1);
+    will-change: transform;
+  }
+  .o-board {
+    position: absolute; inset: 0;
+    background: url(../images/osero/board.webp) center/100% 100% no-repeat;
+    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .62));
+  }
+  /* フェルトの照り。ずっと斜めに流れている */
+  .o-sheen {
+    position: absolute; inset: 5.2%;
+    border-radius: 4px; overflow: hidden; pointer-events: none;
+    mix-blend-mode: screen; opacity: .5;
+  }
+  .o-sheen::before {
+    content: ''; position: absolute; inset: -40%;
+    background: linear-gradient(118deg,
+      transparent 38%, rgba(190, 255, 205, .16) 47%,
+      rgba(255, 255, 255, .20) 50%, rgba(190, 255, 205, .16) 53%, transparent 62%);
+    animation: oSheen 7.5s linear infinite;
+  }
+  @keyframes oSheen {
+    from { transform: translateX(-62%); }
+    to   { transform: translateX(62%); }
+  }
+
+  /* マス目。盤の絵には線が描いていないので、ここで引く */
+  .o-grid {
+    position: absolute; inset: 5.2%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+  }
+  .o-c {
+    position: relative;
+    border-right: 1px solid rgba(0, 0, 0, .34);
+    border-bottom: 1px solid rgba(0, 0, 0, .34);
+    box-shadow: inset -1px -1px 0 rgba(255, 255, 255, .05);
+  }
+  .o-c:nth-child(8n) { border-right: 0; }
+  .o-c:nth-child(n+57) { border-bottom: 0; }
+
+  /* 四すみ。ここが強いマスだと見て分かるようにしておく */
+  /* ::before は「置ける場所」の光が使うので、こっちは背景で描く */
+  .o-c.cor {
+    background:
+      radial-gradient(circle at 50% 50%,
+        transparent 0 31%, rgba(255, 221, 120, .30) 31% 36%, transparent 36%);
+  }
+
+  /* 星（4つの打ち筋の目印）。オセロ盤にあるやつ */
+  .o-c.star::after {
+    content: ''; position: absolute; right: -3px; bottom: -3px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(0, 0, 0, .5);
+  }
+
+  /* 置ける場所。ゆっくり脈打つ */
+  .o-c.ok { cursor: pointer; }
+  .o-c.ok::before {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    width: 30%; height: 30%; margin: -15% 0 0 -15%;
+    border-radius: 50%;
+    background: rgba(255, 236, 140, .5);
+    box-shadow: 0 0 0 2px rgba(255, 236, 140, .28);
+    animation: oHint 1.25s ease-in-out infinite;
+  }
+  @keyframes oHint {
+    0%, 100% { transform: scale(.72); opacity: .45; }
+    50%      { transform: scale(1.1); opacity: .95; }
+  }
+
+  /* 駒。4枚の絵を差しかえてひっくり返す。
+     どの絵も同じ台紙（220x227）なので、位置あわせは要らない */
+  .o-p {
+    position: absolute; left: 4%; width: 92%; height: auto;
+    top: 50%; transform: translateY(-50%);
+    pointer-events: none;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .5));
+  }
+  .o-p.drop { animation: oDrop .3s cubic-bezier(.3, 1.6, .4, 1); }
+  @keyframes oDrop {
+    0%   { transform: translateY(-82%) scale(.55, 1.25); opacity: 0; }
+    55%  { transform: translateY(-44%) scale(1.14, .82); opacity: 1; }
+    100% { transform: translateY(-50%) scale(1, 1); }
+  }
+  /* ひっくり返る途中は、ちょっと浮く */
+  .o-p.hop { transform: translateY(-62%) scale(1.06, 1); }
+
+  /* 置いた瞬間の光 */
+  .o-c.flash::after {
+    content: ''; position: absolute; inset: -2px;
+    background: radial-gradient(circle, rgba(255, 255, 255, .92), transparent 68%);
+    animation: oFlash .32s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes oFlash { from { opacity: 1; } to { opacity: 0; transform: scale(1.5); } }
+
+  /* ひっくり返ったときに飛ぶ粒 */
+  .o-dust {
+    position: absolute; width: 5px; height: 5px; border-radius: 50%;
+    pointer-events: none; z-index: 5;
+  }
+
+  /* 画面ゆれ。返した枚数で強さを変える */
+  .o-wrap.sh1 { animation: oSh .22s ease-out; }
+  .o-wrap.sh2 { animation: oSh2 .3s ease-out; }
+  @keyframes oSh {
+    0%, 100% { translate: 0 0; } 25% { translate: -3px 2px; }
+    50% { translate: 3px -2px; } 75% { translate: -2px -1px; }
+  }
+  @keyframes oSh2 {
+    0%, 100% { translate: 0 0; } 15% { translate: -7px 4px; }
+    35% { translate: 7px -5px; } 55% { translate: -5px -3px; }
+    78% { translate: 4px 2px; }
+  }
+
+  /* 枚数のバー。どっちが押しているか一目で分かるように */
+  .o-bar {
+    display: flex; height: 13px; border-radius: 999px; overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, .22);
+    background: #1a1419; margin-top: 7px;
+  }
+  .o-bar i { display: block; transition: width .45s cubic-bezier(.3, 1, .4, 1); }
+  .o-bar .me { background: linear-gradient(180deg, #ffeccb, #e8c99a); }
+  .o-bar .cp { background: linear-gradient(180deg, #7ec6f5, #3f9fdc); }
+
+  /* いまどっちの番か */
+  .o-turn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
+    font-weight: 800; font-size: 15.5px; letter-spacing: .04em;
+    color: #f4eef1; margin-top: 8px; min-height: 22px;
+  }
+  .o-turn img { width: 26px; height: auto; vertical-align: middle; }
+  .o-turn.think b { color: #7ec6f5; }
+  .o-turn.think::after {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: #7ec6f5; animation: oThink .7s ease-in-out infinite;
+  }
+  @keyframes oThink { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+</style>
+</head>
+
+<body class="nav-game">
+
+<div class="abg"></div>
+
+<nav class="anav">
+  <a class="anav-logo" href="../game.html">AFRO<em>Horse</em></a>
+  <div class="anav-r">
+    <button class="anav-btn" type="button" id="sndBtn">SOUND</button>
+    <a class="anav-btn" href="../game.html">EXIT</a>
+  </div>
+</nav>
+
+<!-- ===== タイトル ===== -->
+<section class="ascreen active" id="scTitle">
+  <div class="at-eye">REVERSI</div>
+  <h1 class="at-logo"><img src="../images/icon/osero.webp" alt="アフロオセロ"></h1>
+  <p class="at-sub">ブルマをはさんで、ひっくり返せ</p>
+  <div class="at-best">自己ベスト <b id="gBest">—</b></div>
+  <button class="abtn" type="button" id="startBtn">スタート</button>
+  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+</section>
+
+<!-- ===== 説明 ===== -->
+<div class="ahow" id="howPop" hidden>
+  <div class="ahow-card">
+    <div class="ahow-t">あそびかた</div>
+    <ul class="at-how">
+      <li>ふつうのオセロ。<b>あなたがアフワ（茶）、ブルマ（青）が相手</b>。先手はアフワ</li>
+      <li><b>光っているマス</b>に置ける。置くと、はさんだブルマがぜんぶアフワに返る</li>
+      <li>置ける場所が無いときは<b>自動でパス</b></li>
+      <li>盤がうまったら終わり。<b>残ったアフワの枚数がそのまま記録</b>（最高64枚）</li>
+      <li>勝つだけでなく<b>どれだけ多く残すか</b>。四すみを取ると返されにくい</li>
+    </ul>
+    <button class="gr-btn primary" type="button" id="howClose">とじる</button>
+  </div>
+</div>
+
+<!-- ===== プレイ ===== -->
+<section class="ascreen" id="scPlay">
+  <div class="ain">
+    <div class="ahud">
+      <div class="ahud-cell"><span class="ahud-lbl">YOU</span><span class="ahud-val gold" id="hMe">2</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">CPU</span><span class="ahud-val" id="hCp">2</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">LEFT</span><span class="ahud-val" id="hLeft">60</span></div>
+    </div>
+    <div class="o-bar"><i class="me" id="barMe" style="width:50%"></i><i class="cp" id="barCp" style="width:50%"></i></div>
+  </div>
+
+  <div class="ain grow">
+    <div class="astage" id="stage">
+      <div class="o-wrap" id="wrap">
+        <div class="o-board"></div>
+        <div class="o-sheen"></div>
+        <div class="o-grid" id="grid"></div>
+      </div>
+      <div class="acue" id="cue" hidden>
+        <div class="acue-big" id="cueBig"></div>
+        <div class="acue-sub" id="cueSub"></div>
+      </div>
+    </div>
+    <div class="o-turn" id="turn"></div>
+    <p class="astage-note">光ったマスをタップして置く</p>
+  </div>
+</section>
+
+<div id="gResult"></div>
+
+<script src="../js/afro-rank-config.js"></script>
+<script src="../js/afro-sfx.js"></script>
+<script src="../js/afro-score.js"></script>
+<script src="../js/afro-ui.js"></script>
+<script>
+(function () {
+  /* ============================================================
+     アフロオセロ。ふつうの8x8リバーシ。
+     ・アフワ(ME)が先手、ブルマ(CP)が後手
+     ・記録は「最後に残ったアフワの枚数」。勝ち負けだけでなく
+       どれだけ多く残せたかを競う（最高64枚）
+     ・相手は定石っぽい重みづけ＋先読み3手。四すみを嫌がる
+     ============================================================ */
+  var N = 8;
+  var ME = 1, CP = 2;
+
+  /* マスの値うち。四すみが強く、その隣が弱い。相手の読みに使う */
+  var W = [
+    120, -20,  20,   5,   5,  20, -20, 120,
+    -20, -40,  -5,  -5,  -5,  -5, -40, -20,
+     20,  -5,  15,   3,   3,  15,  -5,  20,
+      5,  -5,   3,   3,   3,   3,  -5,   5,
+      5,  -5,   3,   3,   3,   3,  -5,   5,
+     20,  -5,  15,   3,   3,  15,  -5,  20,
+    -20, -40,  -5,  -5,  -5,  -5, -40, -20,
+    120, -20,  20,   5,   5,  20, -20, 120
+  ];
+  var DIR = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+
+  /* ひっくり返る4コマ。台紙がそろえてあるので src を差しかえるだけ */
+  var FR = {
+    1: ['p_afuwa', 'p_afuwa_t', 'p_buruma_t', 'p_buruma'],   /* 茶 → 青 */
+    2: ['p_buruma', 'p_buruma_t', 'p_afuwa_t', 'p_afuwa']    /* 青 → 茶 */
+  };
+  function img(n) { return '../images/osero/' + n + '.webp'; }
+  (function () {
+    var all = ['p_afuwa', 'p_buruma', 'p_afuwa_t', 'p_buruma_t', 'board'];
+    for (var i = 0; i < all.length; i++) { var im = new Image(); im.src = img(all[i]); }
+  })();
+
+  var grid   = document.getElementById('grid');
+  var wrap   = document.getElementById('wrap');
+  var cue    = document.getElementById('cue');
+  var cueBig = document.getElementById('cueBig');
+  var cueSub = document.getElementById('cueSub');
+  var meEl   = document.getElementById('hMe');
+  var cpEl   = document.getElementById('hCp');
+  var leftEl = document.getElementById('hLeft');
+  var barMe  = document.getElementById('barMe');
+  var barCp  = document.getElementById('barCp');
+  var turnEl = document.getElementById('turn');
+
+  var cells = [];
+  var bd = null;          /* 盤。0=空 1=アフワ 2=ブルマ */
+  var busy = true;        /* 演出中は触らせない */
+  var over = false;
+
+  /* マス目をつくる。1回だけ */
+  (function build() {
+    var STAR = [18, 21, 42, 45];      /* 星を打つ場所（2-2, 2-6, 6-2, 6-6 の角） */
+    for (var i = 0; i < N * N; i++) {
+      var c = document.createElement('div');
+      var cor = (i === 0 || i === 7 || i === 56 || i === 63);
+      c.className = 'o-c' + (STAR.indexOf(i) >= 0 ? ' star' : '') + (cor ? ' cor' : '');
+      c.setAttribute('data-i', i);
+      grid.appendChild(c);
+      cells.push(c);
+    }
+    grid.addEventListener('click', function (e) {
+      var c = e.target.closest('.o-c');
+      if (!c || busy || over) { return; }
+      var i = +c.getAttribute('data-i');
+      if (!c.classList.contains('ok')) { return; }
+      play(i, ME);
+    });
+  })();
+
+  /* ---------- 盤のきまり ---------- */
+
+  function other(p) { return p === ME ? CP : ME; }
+
+  /* i に p を置いたとき返る石。返らないなら空の配列 */
+  function gains(b, i, p) {
+    if (b[i] !== 0) { return []; }
+    var r = Math.floor(i / N), c = i % N, out = [];
+    for (var d = 0; d < DIR.length; d++) {
+      var dr = DIR[d][0], dc = DIR[d][1];
+      var rr = r + dr, cc = c + dc, line = [];
+      while (rr >= 0 && rr < N && cc >= 0 && cc < N) {
+        var j = rr * N + cc;
+        if (b[j] === other(p)) { line.push(j); }
+        else {
+          if (b[j] === p && line.length) { out = out.concat(line); }
+          break;
+        }
+        rr += dr; cc += dc;
+      }
+    }
+    return out;
+  }
+
+  function moves(b, p) {
+    var out = [];
+    for (var i = 0; i < N * N; i++) {
+      if (b[i] === 0 && gains(b, i, p).length) { out.push(i); }
+    }
+    return out;
+  }
+
+  function apply(b, i, p, g) {
+    var n = b.slice();
+    n[i] = p;
+    for (var k = 0; k < g.length; k++) { n[g[k]] = p; }
+    return n;
+  }
+
+  function count(b, p) {
+    var n = 0;
+    for (var i = 0; i < b.length; i++) { if (b[i] === p) { n++; } }
+    return n;
+  }
+
+  /* ---------- 相手の手を読む ---------- */
+
+  function score(b, p) {
+    var empty = count(b, 0);
+    var s = 0;
+    for (var i = 0; i < b.length; i++) {
+      if (b[i] === p) { s += W[i]; }
+      else if (b[i] === other(p)) { s -= W[i]; }
+    }
+    /* 終盤は枚数そのもの、序盤は置ける場所の多さが効く */
+    if (empty <= 12) { s += (count(b, p) - count(b, other(p))) * 14; }
+    else { s += (moves(b, p).length - moves(b, other(p)).length) * 9; }
+    return s;
+  }
+
+
+
+  /* ブルマの手。強くしすぎると誰も勝てなくなるので、
+     ・先読みはせず、1手打った形の良し悪しだけで決める
+     ・3回に1回くらいは、気まぐれに適当な場所へ打つ
+     ・ほぼ同じ点の手が並んだら、その中から適当に選ぶ（毎回ちがう将棋になる）
+     この強さだと、かどを意識して打てば勝てる。目先の枚数だけ追うと負ける。 */
+  var SLIP = 0.35;     /* 気まぐれ */
+  var SLACK = 8;       /* これくらいの差は「同じ」とみなす */
+
+  function think() {
+    var ms = moves(bd, CP);
+    if (!ms.length) { return -1; }
+    if (Math.random() < SLIP) { return ms[Math.floor(Math.random() * ms.length)]; }
+    var best = [], bv = -1e9;
+    for (var k = 0; k < ms.length; k++) {
+      var v = score(apply(bd, ms[k], CP, gains(bd, ms[k], CP)), CP);
+      if (v > bv + SLACK) { bv = v; best = [ms[k]]; }
+      else if (v >= bv - SLACK) { if (v > bv) { bv = v; } best.push(ms[k]); }
+    }
+    return best[Math.floor(Math.random() * best.length)];
+  }
+
+  /* ---------- 見せかた ---------- */
+
+  function disc(i) { return cells[i].querySelector('.o-p'); }
+
+  function put(i, p, drop) {
+    var el = disc(i);
+    if (!el) {
+      el = document.createElement('img');
+      el.className = 'o-p';
+      el.alt = '';
+      cells[i].appendChild(el);
+    }
+    el.src = img(p === ME ? 'p_afuwa' : 'p_buruma');
+    if (drop) {
+      el.classList.remove('drop');
+      void el.offsetWidth;
+      el.classList.add('drop');
+    }
+  }
+
+  /* 1枚ぶんのひっくり返し。4コマ送り＋浮き＋粒 */
+  function flip(i, to, delay) {
+    var el = disc(i);
+    if (!el) { return; }
+    var fr = FR[to === ME ? 2 : 1];     /* to に変わる＝いまは逆の色 */
+    setTimeout(function () {
+      el.classList.add('hop');
+      dust(i, to);
+      var k = 1;
+      var t = setInterval(function () {
+        el.src = img(fr[k]);
+        k++;
+        if (k >= fr.length) {
+          clearInterval(t);
+          el.classList.remove('hop');
+        }
+      }, 58);
+      el.src = img(fr[1]);
+    }, delay);
+  }
+
+  function dust(i, to) {
+    var col = to === ME ? '#f3e2c2' : '#8fd0f7';
+    for (var k = 0; k < 4; k++) {
+      var d = document.createElement('i');
+      d.className = 'o-dust';
+      d.style.background = col;
+      d.style.left = (28 + Math.random() * 44) + '%';
+      d.style.top = (30 + Math.random() * 40) + '%';
+      var dx = (Math.random() * 2 - 1) * 20, dy = -(8 + Math.random() * 18);
+      cells[i].appendChild(d);
+      (function (d, dx, dy) {
+        d.animate(
+          [{ transform: 'translate(0,0) scale(1)', opacity: 1 },
+           { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(.2)', opacity: 0 }],
+          { duration: 420, easing: 'cubic-bezier(.2,.8,.3,1)' }
+        ).onfinish = function () { d.remove(); };
+      })(d, dx, dy);
+    }
+  }
+
+  /* 盤を、置いた場所のほうへ傾ける */
+  function tilt(i) {
+    var r = Math.floor(i / N), c = i % N;
+    var ry = (c - 3.5) / 3.5 * 7, rx = -(r - 3.5) / 3.5 * 7;
+    wrap.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+    setTimeout(function () { wrap.style.transform = ''; }, 420);
+  }
+
+  function shake(n) {
+    var k = n >= 5 ? 'sh2' : 'sh1';
+    wrap.classList.remove('sh1', 'sh2');
+    void wrap.offsetWidth;
+    wrap.classList.add(k);
+    setTimeout(function () { wrap.classList.remove(k); }, 320);
+  }
+
+  function hints(list) {
+    for (var i = 0; i < cells.length; i++) { cells[i].classList.remove('ok'); }
+    for (var k = 0; k < list.length; k++) { cells[list[k]].classList.add('ok'); }
+  }
+
+  function paintHud() {
+    var m = count(bd, ME), c = count(bd, CP), e = count(bd, 0);
+    meEl.textContent = m;
+    cpEl.textContent = c;
+    leftEl.textContent = e;
+    var t = m + c;
+    barMe.style.width = (m / t * 100) + '%';
+    barCp.style.width = (c / t * 100) + '%';
+  }
+
+  function sayTurn(who, think_) {
+    turnEl.classList.toggle('think', !!think_);
+    turnEl.innerHTML = who === ME
+      ? '<img src="' + img('p_afuwa') + '" alt="">あなたの番'
+      : '<img src="' + img('p_buruma') + '" alt=""><b>ブルマが考えとる</b>';
+  }
+
+  function showCue(big, sub, ms) {
+    cueBig.textContent = big;
+    cueSub.textContent = sub || '';
+    cue.hidden = false;
+    setTimeout(function () { cue.hidden = true; }, ms || 900);
+  }
+
+  /* ---------- 進行 ---------- */
+
+  function play(i, p) {
+    var g = gains(bd, i, p);
+    if (!g.length) { return; }
+    busy = true;
+    hints([]);
+
+    var corner = (i === 0 || i === 7 || i === 56 || i === 63);
+
+    bd[i] = p;
+    put(i, p, true);
+    cells[i].classList.remove('flash');
+    void cells[i].offsetWidth;
+    cells[i].classList.add('flash');
+    Sfx.hit();
+    tilt(i);
+
+    /* ヒットストップ。置いた瞬間を一拍止めてから返しはじめる */
+    setTimeout(function () {
+      shake(g.length);
+
+      /* 置いた場所から遠い順に、波になって返っていく */
+      var r0 = Math.floor(i / N), c0 = i % N;
+      var maxd = 0;
+      for (var k = 0; k < g.length; k++) {
+        var d = Math.max(Math.abs(Math.floor(g[k] / N) - r0), Math.abs(g[k] % N - c0));
+        if (d > maxd) { maxd = d; }
+        bd[g[k]] = p;
+        flip(g[k], p, (d - 1) * 52);
+        (function (d) {
+          setTimeout(function () { Sfx.note(520 + d * 70); }, (d - 1) * 52);
+        })(d);
+      }
+      if (g.length >= 5) { setTimeout(function () { Sfx.up(); }, maxd * 52 + 120); }
+      /* かどは返されない。取れたら、ちゃんと分かるようにする */
+      if (corner && p === ME) {
+        setTimeout(function () { Sfx.record(); showCue('かど！', '四すみは返されへん', 900); }, 120);
+      }
+
+      setTimeout(function () {
+        paintHud();
+        next(other(p));
+      }, maxd * 52 + 260);
+    }, 70);
+  }
+
+  function next(p) {
+    if (!moves(bd, ME).length && !moves(bd, CP).length) { return done(); }
+
+    if (!moves(bd, p).length) {
+      showCue(p === ME ? 'パス' : 'ブルマ、パス',
+              p === ME ? '置ける場所が無い' : '置ける場所が無いらしい', 950);
+      Sfx.bad();
+      setTimeout(function () { next(other(p)); }, 1000);
+      return;
+    }
+
+    if (p === ME) {
+      busy = false;
+      sayTurn(ME);
+      hints(moves(bd, ME));
+    } else {
+      busy = true;
+      sayTurn(CP, true);
+      setTimeout(function () {
+        var i = think();
+        if (i < 0) { return next(ME); }
+        play(i, CP);
+      }, 380 + Math.random() * 280);
+    }
+  }
+
+  function done() {
+    over = true;
+    busy = true;
+    hints([]);
+    paintHud();
+    var m = count(bd, ME), c = count(bd, CP);
+    turnEl.classList.remove('think');
+    turnEl.innerHTML = m > c ? 'アフワの勝ち' : (m < c ? 'ブルマの勝ち' : 'ひきわけ');
+    Sfx.bgmStop();
+    if (m > c) { Sfx.record(); } else { Sfx.over(); }
+    showCue(m > c ? 'かった！' : (m < c ? 'まけた…' : 'ひきわけ'), m + ' 対 ' + c, 1300);
+    setTimeout(function () { AfroScore.finish(m); }, 1350);
+  }
+
+  function screen(id) {
+    var all = document.querySelectorAll('.ascreen');
+    for (var i = 0; i < all.length; i++) { all[i].classList.toggle('active', all[i].id === id); }
+  }
+
+  AfroScore.setup({
+    game: 'osero',
+    title: 'アフロオセロ',
+    hash: 'アフロオセロ',
+    unit: '枚',
+    lower: false,
+    grades: [
+      { v: 64, name: '全部とった' },
+      { v: 52, name: '圧勝' },
+      { v: 44, name: '大勝ち' },
+      { v: 33, name: '勝ち' },
+      { v: 25, name: 'あと一歩' },
+      { v: 0,  name: 'まけ' }
+    ],
+    onRetry: go
+  });
+
+  function go() {
+    over = false;
+    bd = [];
+    for (var i = 0; i < N * N; i++) { bd.push(0); }
+    bd[28] = ME; bd[35] = ME;     /* e4, d5 … 先手はここから（ふつうのオセロと同じ並び） */
+    bd[27] = CP; bd[36] = CP;     /* d4, e5 */
+
+    for (var k = 0; k < cells.length; k++) {
+      cells[k].classList.remove('ok', 'flash');
+      var d = disc(k);
+      if (d) { d.remove(); }
+    }
+    [28, 35].forEach(function (i) { put(i, ME, false); });
+    [27, 36].forEach(function (i) { put(i, CP, false); });
+
+    paintHud();
+    screen('scPlay');
+    Sfx.bgm('osero');
+    Sfx.start();
+    showCue('はじめ！', 'アフワ（茶）が先手', 800);
+    setTimeout(function () { next(ME); }, 820);
+  }
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+
+  var snd = document.getElementById('sndBtn');
+  function paintSnd() {
+    snd.classList.toggle('on', Sfx.enabled());
+    snd.textContent = Sfx.enabled() ? 'SOUND' : 'MUTED';
+  }
+  snd.addEventListener('click', function () { Sfx.toggle(); paintSnd(); });
+  paintSnd();
+})();
+</script>
+</body>
+</html>

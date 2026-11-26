@@ -112,6 +112,14 @@
           <p class="game-desc">光った順にタップ</p>
         </span>
       </a>
+      <a class="game-card" href="game/osero.html" data-game="osero">
+        <span class="game-badge">枚数</span>
+        <span class="game-shot icon"><img src="images/icon/osero.webp" alt="" loading="lazy"></span>
+        <span class="game-body">
+          <span class="game-name">アフロオセロ</span>
+          <p class="game-desc">ブルマをはさんでひっくり返す</p>
+        </span>
+      </a>
       <a class="game-card" href="game/mori.html" data-game="mori">
         <span class="game-badge">合計点</span>
         <span class="game-shot icon"><img src="images/icon/mori.webp" alt="" loading="lazy"></span>
@@ -257,6 +265,7 @@
     gate:   function (v) { return v + 'ms'; },
     race:   function (v) { return (v / 100).toFixed(2) + '秒'; },
     mori:   function (v) { return v + '点'; },
+    osero:  function (v) { return v + '枚'; },
     tower:  function (v) { return v + '段'; },
     find:   function (v) { return v + '問'; },
     pair:   function (v) { return (v / 10).toFixed(1) + '秒'; },
