@@ -23,6 +23,8 @@ var PER_PAGE = 21;   // 1ページあたりの話数（3列 × 7行）
 
 var COMICS = [
   // url を空にしておくと「近日公開」として並びます（投稿したらURLを入れる）
+  { no: 23, title: '何から生まれた？', img: 'images/comic/23.webp', url: '' },
+  { no: 22, title: 'アフワ、つけられる。', img: 'images/comic/22.webp', url: 'https://www.instagram.com/p/DgKZW23lFV3/' },
   { no: 21, title: 'この世界のはじまり', img: 'images/comic/21.webp', url: 'https://www.instagram.com/p/DgCtgdTFB90/' },
   { no: 20, title: '犬、デカくなる。', img: 'images/comic/20.webp', url: 'https://www.instagram.com/p/Df4Y4k4lPQ7/' },
   { no: 19, title: 'アフワ、貸す。', img: 'images/comic/19.webp', url: 'https://www.instagram.com/p/DfwoTOClHUh/' },
