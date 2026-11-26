@@ -89,6 +89,10 @@ RULES: No characters, no text, no letters, no numbers, no logos, no watermark. N
 
 ## 5. COMMON_ICON（ゲームアイコン。分割しない1枚もの）
 
+**題字も一緒に描いてもらう。** サイトにある `images/icon/gate.webp`（アフロ発走）や
+`images/icon/memory.webp`（アフロ記憶）が、まさにそうなっている。
+あとから code で帯を乗せるより、ずっとええ。
+
 ```text
 Use the built-in image_gen tool. Generate ONE square image, 1024x1024. This is a single icon, NOT a grid.
 
@@ -96,8 +100,14 @@ A round game-icon badge sticker, like a mobile game app icon: a bright blue oute
 
 BACKGROUND outside the circle: transparent (PNG alpha). The badge must be a perfect circle, fully inside the canvas with a small margin, nothing cut off.
 
-**NO TEXT AT ALL.** No Japanese characters, no letters, no numbers, no banner with writing. Leave the bottom third of the circle fairly plain and uncluttered — the title is added afterwards in code.
+TITLE: write the Japanese title <<ここに題字>> across the bottom of the badge, large and bold, overlapping the lower edge of the circle. Match the attached icon reference exactly: a heavy rounded Japanese gothic face, bright yellow fill, a thick black outline and a white outer outline around that, set on a gentle upward arc, with a soft drop shadow. The characters must be large, evenly spaced and perfectly legible. Spell it EXACTLY as given, with no extra characters and no other text anywhere in the image.
 ```
+
+`<<ここに題字>>` は、そのゲームの名前にさしかえる（例: `アフロ追い比べ`）。
+
+**日本語が崩れて出てきたら**、文字なしでもう一度描いてもらって、
+`python _art/tools/badge.py <元のPNG> <題字> images/icon/<key>.webp` で乗せる。
+そっちは保険。まずは生成でやってみること。
 
 ---
 

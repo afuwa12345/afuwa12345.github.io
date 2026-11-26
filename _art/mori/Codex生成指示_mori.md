@@ -46,12 +46,12 @@ BOTTOM-RIGHT MORI_04_POP:   the afro has just exploded. Only a small sad flat fr
 Keep the whole afro inside the cell in every stage, including the biggest one.
 ```
 
-### 3枚目 MORI_ICON　丸バッジ（文字なし）
+### 3枚目 MORI_ICON　丸バッジ（題字つき）
 
 ```text
 Inside the circular badge: one afro horse head seen from the front, filling most of the circle, with an ENORMOUS over-inflated afro that is stretched tight and about to burst. Little stress marks and a couple of stray strands around the afro (allowed), one big sweat drop on the face, huge panicking round eyes and an open mouth. Behind it, a pale yellow background with white radiating burst lines.
 
-Leave the bottom third of the circle fairly plain — the title is added afterwards in code.
+Leave room across the bottom of the circle for the title.
 
-Remember: NO TEXT ANYWHERE in the image.
+TITLE: write the Japanese title 「アフロ盛り」 across the bottom of the badge, exactly as described in COMMON_ICON — heavy rounded gothic, yellow fill, thick black outline with a white outer outline, on a gentle upward arc. Spell it exactly, and put no other text anywhere in the image.
 ```

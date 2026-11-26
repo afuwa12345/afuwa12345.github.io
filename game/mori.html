@@ -51,6 +51,12 @@
     will-change: transform;
   }
 
+  /* 合図はアフロと重なるので、上のほうに出す */
+  #stage .acue { justify-content: flex-start; padding-top: 42px; }
+  #stage .acue-sub {
+    background: rgba(8, 6, 10, .72); border-radius: 999px; padding: 5px 15px;
+  }
+
   /* あぶない合図 */
   .m-warn {
     position: absolute; left: 0; right: 0; top: 0; z-index: 12; padding: 6px 0;
@@ -76,7 +82,7 @@
   /* 盛れた高さの表示 */
   .m-size {
     position: absolute; left: 0; right: 0; bottom: 8px; z-index: 11; text-align: center;
-    font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 1;
+    font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-size: 52px; line-height: 1;
     color: var(--cyan); text-shadow: 0 0 16px rgba(0,240,255,.6);
   }
   #stage.is-warn .m-size { color: var(--gold); text-shadow: 0 0 18px var(--gold); }
@@ -86,7 +92,7 @@
   .m-lap {
     flex: 1; text-align: center; padding: 6px 0;
     border: 1px solid var(--grey2); border-radius: 7px; background: rgba(0,0,0,.35);
-    font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: #6f646a;
+    font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-size: 17px; color: #6f646a;
   }
   .m-lap.done { color: var(--cyan); border-color: rgba(0,240,255,.45); text-shadow: 0 0 8px var(--cyan); }
   .m-lap.bomb { color: var(--red); border-color: rgba(224,74,74,.5); text-shadow: 0 0 8px var(--red); }
@@ -123,8 +129,9 @@
     <li>画面を<b>押しているあいだ</b>アフロがふくらむ</li>
     <li>手を離すと、そこまでの大きさが点になる。<b>大きいほど高得点</b></li>
     <li>ただしアフロには限界がある。超えると<b>爆発して0点</b></li>
-    <li>限界は毎回ちがう。<b>ふるえ出してカチカチ鳴ったら、もう近い</b></li>
-    <li>5回やって、合計点が記録</li>
+    <li><b>ふるえ出してカチカチ鳴ったら、限界が近い</b></li>
+    <li>どこまで行けるかは<b>キャラで決まっている</b>。ブルマはようけ盛れるがふるえてからが短い。アフワははよ爆発するが、ふるえてからがわりと長い</li>
+    <li>5回やって合計点が記録。<b>さいごの1回だけ2倍</b></li>
     </ul>
     <button class="gr-btn primary" type="button" id="howClose">とじる</button>
   </div>
@@ -134,9 +141,9 @@
 <section class="ascreen" id="scPlay">
   <div class="ain">
     <div class="ahud">
-      <div class="ahud-cell"><span class="ahud-lbl">かい</span><span class="ahud-val" id="hTurn">1/5</span></div>
-      <div class="ahud-cell"><span class="ahud-lbl">このかい</span><span class="ahud-val" id="hNow">0</span></div>
-      <div class="ahud-cell"><span class="ahud-lbl">ごうけい</span><span class="ahud-val gold" id="hSum">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">TURN</span><span class="ahud-val" id="hTurn">1/5</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">THIS</span><span class="ahud-val" id="hNow">0</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">TOTAL</span><span class="ahud-val gold" id="hSum">0</span></div>
     </div>
   </div>
   <div class="ain grow">
@@ -166,21 +173,26 @@
      アフロ盛り。
      ・押しているあいだアフロがふくらむ。ふくらむ速さは、
        大きくなるほど速くなる（終わりぎわほど一気にいく）
-     ・限界は毎回ちがう。限界の 70% を超えると、ふるえ出して
-       カチカチ鳴る。この音の速さだけが手がかり
+     ・限界はキャラごとにちがう。ブルマはようけ盛れるが、
+       ふるえ出してからが短い。アフワははよ爆発するが、
+       ふるえ出してからがわりと長い。ここを覚えるのがこのゲーム
+     ・ふるえ出す割合はキャラ固定。だから手がかりとして信用できる
      ・離したら、その大きさが点。超えたら爆発して0点
-     ・5回の合計点が記録
+     ・5回の合計点が記録。さいごの1回だけ2倍
      ============================================================ */
   var TURNS = 5;
-  var LIM_LO = 1.95, LIM_HI = 3.15;   /* 限界のばらつき */
-  var WARN_LO = 0.58, WARN_HI = 0.80; /* 限界の何割からふるえ出すか。毎回ばらつく。
-                                         早く出ても、まだ余裕があるとは限らない */
+  var LAST_X = 2;                     /* さいごの1回は2倍 */
   var G0 = 0.55, G1 = 0.35;           /* ふくらむ速さ = G0 + G1 * (大きさ-1) */
   var MAXS = 3.6;
 
+  /* 限界と「ふるえ出す割合」はキャラごとに決まっている。
+     warn は固定なので、ふるえは手がかりとして信用できる。
+     どっちをどこまで押せるか覚えたぶんだけ、点が伸びる。 */
   var CHARA = [
-    { nm: 'アフワ', f: 'afuwa' },
-    { nm: 'ブルマ', f: 'buruma' }
+    { nm: 'ブルマ', f: 'buruma', lo: 2.45, hi: 3.25, warn: 0.88,
+      nat: 'ようけ盛れる。ふるえたら一瞬で離せ' },
+    { nm: 'アフワ', f: 'afuwa',  lo: 1.70, hi: 2.25, warn: 0.70,
+      nat: 'あんま盛れん。けど、ふるえてから余裕がある' }
   ];
   /* アフロそのものが4段階でふくらむ絵。台紙の大きさはそろえてある */
   var STAGE = ['calm', 'big', 'limit', 'pop'];
@@ -224,17 +236,18 @@
     unit: '点',
     lower: false,
     grades: [
-      { v: 690, name: '神の盛り' },
-      { v: 540, name: 'アフロ名人' },
-      { v: 450, name: 'なかなか盛れる' },
-      { v: 340, name: 'まあまあ' },
-      { v: 200, name: 'こわがり' },
+      { v: 920, name: '神の盛り' },
+      { v: 820, name: 'アフロ名人' },
+      { v: 700, name: 'なかなか盛れる' },
+      { v: 520, name: 'まあまあ' },
+      { v: 280, name: 'こわがり' },
       { v: 0,   name: 'ぜんぶ爆発' }
     ],
     onRetry: go
   });
 
   function pts(v) { return Math.round((v - 1) * 100); }
+  function mult() { return turn === TURNS - 1 ? LAST_X : 1; }
 
   var shown = '';
   function face(kind) {
@@ -252,7 +265,8 @@
       var l = laps[i];
       var cls = l === undefined ? (i === turn ? ' now' : '')
                                 : (l === 0 ? ' bomb' : ' done');
-      h += '<div class="m-lap' + cls + '">' + (l === undefined ? '—' : (l === 0 ? '×' : l)) + '</div>';
+      var txt = l === undefined ? (i === TURNS - 1 ? '2倍' : '—') : (l === 0 ? '×' : l);
+      h += '<div class="m-lap' + cls + '">' + txt + '</div>';
     }
     lapsEl.innerHTML = h;
     turnEl.textContent = Math.min(turn + 1, TURNS) + '/' + TURNS;
@@ -262,8 +276,8 @@
   function newTurn() {
     chara = CHARA[turn % CHARA.length];
     s = 1;
-    lim = LIM_LO + Math.random() * (LIM_HI - LIM_LO);
-    warn = WARN_LO + Math.random() * (WARN_HI - WARN_LO);
+    lim = chara.lo + Math.random() * (chara.hi - chara.lo);
+    warn = chara.warn;
     push = false;
     tick = 0;
     warned = false;
@@ -276,12 +290,12 @@
     nowEl.textContent = '0';
     paintLaps();
     cue.hidden = false;
-    cueBig.textContent = chara.nm;
-    cueSub.textContent = '押して盛る';
+    cueBig.textContent = chara.nm + (mult() > 1 ? '　2倍！' : '');
+    cueSub.textContent = chara.nat;
   }
 
   function bank() {
-    var p = pts(s);
+    var p = pts(s) * mult();
     laps[turn] = p;
     sum += p;
     nowEl.textContent = p;
@@ -291,7 +305,7 @@
     paintLaps();
     cue.hidden = false;
     cueBig.textContent = '+' + p;
-    cueSub.textContent = p >= 180 ? 'ようやった！' : p >= 110 ? 'ええ感じ' : 'ちょっと早いて';
+    cueSub.textContent = p >= 200 ? 'ようやった！' : p >= 120 ? 'ええ感じ' : 'ちょっと早いて';
     setTimeout(next, 1000);
   }
 

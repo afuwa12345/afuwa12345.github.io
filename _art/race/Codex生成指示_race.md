@@ -61,14 +61,14 @@ A horse racing course seen from the outside of the track, straight stretch, in t
 The turf must be plain and almost empty, with only very soft mowing stripes, because cartoon horses are drawn on top of it. The horizon and the rail must be perfectly horizontal and straight, and must continue all the way to both the left and the right edge so the picture can be repeated side by side.
 ```
 
-### 3枚目 RACE_ICON　丸バッジ（文字なし）
+### 3枚目 RACE_ICON　丸バッジ（題字つき）
 
 ```text
 Inside the circular badge: a green turf racecourse with a white running rail and a blue sky, white speed lines radiating out from the middle. Two of the afro horse mascots, seen from the side, running hard to the RIGHT ON TWO LEGS with their bodies upright and their arms swinging, neck and neck in a close finish, filling the upper two thirds of the circle. Copy the running pose of the attached RUN reference. The left one is AFUWA (cream body, dark brown afro), the right one is BURUMA (white body, sky-blue afro). Legs striding, arms pumping, tails flying, determined faces, dust flying behind them.
 
 They are two-legged mascots, NOT four-legged horses.
 
-Leave the bottom third of the circle as plain green turf with nothing on it.
+Leave room across the bottom of the circle for the title.
 
-Remember: NO TEXT ANYWHERE in the image.
+TITLE: write the Japanese title 「アフロ追い比べ」 across the bottom of the badge, exactly as described in COMMON_ICON — heavy rounded gothic, yellow fill, thick black outline with a white outer outline, on a gentle upward arc. Spell it exactly, and put no other text anywhere in the image.
 ```
