@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>アフロ追い比べ｜AFRO Horse</title>
-<meta name="description" content="直線400mの追い比べ。押している間だけムチが入るけれど、スタミナは減る。前の馬の後ろにつくと風よけで楽になる無料ゲーム。タイムでランキングに挑戦できます。">
+<meta name="description" content="ゴール前200mの叩き合い。脚が地についた瞬間にムチを入れると大きく伸びる。タイミングとスタミナで競うアフロ馬の無料ゲーム。タイムでランキングに挑戦できます。">
 <link rel="canonical" href="https://afro-horse.com/game/race.html">
 <link rel="icon" href="../favicon.ico">
 <meta name="theme-color" content="#08060a">
@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://afro-horse.com/game/race.html">
 <meta property="og:site_name" content="AFRO Horse">
 <meta property="og:title" content="アフロ追い比べ｜AFRO Horse">
-<meta property="og:description" content="直線400m。押せば伸びるがスタミナが減る。前の馬の後ろは風よけで楽。タイムを競う無料ゲーム。">
+<meta property="og:description" content="ゴール前200mの叩き合い。脚が地についた瞬間にムチ。タイミングで伸びが変わる無料ゲーム。">
 <meta property="og:image" content="https://afro-horse.com/images/logo.webp">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@AFUWA12345">
@@ -32,83 +32,92 @@
 <link rel="stylesheet" href="../css/afro-arcade.css">
 
 <style>
-  /* タイトル画面の背景。夕方のコースの絵。明るめなので薄膜は .62 */
   #scTitle { --bgt: url(../images/bg/jump.webp); --veil: .62; }
 
-  /* 絵がまだ無いので、題字は文字で組む。アイコンができたら
-     .at-logo の中身を <img src="../images/icon/race.webp"> に差しかえるだけ */
-  .r-logo {
-    font-family: 'Dela Gothic One', sans-serif; font-size: 30px; line-height: 1.25;
-    color: #fff; text-shadow: 0 0 18px rgba(0,0,0,.9), 0 3px 0 #1d1118;
-    animation: aBob 2.4s ease-in-out infinite;
-  }
-  .r-logo em { font-style: normal; color: var(--gold); display: block; }
-
-  /* ---- 馬場 ---- */
   #scPlay { padding-bottom: 6px; }
   #scPlay .ain.grow { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
   #stage { cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
 
-  /* 遠景。コースの絵をそのまま使う。遠くのものはほとんど流れないので動かさない */
+  /* 遠景。コースの絵をそのまま使う */
   .r-far {
     position: absolute; inset: 0; z-index: 0;
     background: url(../images/bg/jump.webp) center/cover no-repeat;
     filter: brightness(.88);
   }
-  /* 芝。絵の芝の上に刈り跡の縞だけを重ねて、横に流す */
+  /* 芝の刈り跡。これが流れて速さを見せる */
   .r-turf {
-    position: absolute; left: 0; right: 0; bottom: 0; height: 44%; z-index: 1;
+    position: absolute; left: 0; right: 0; bottom: 0; height: 46%; z-index: 1;
     background: repeating-linear-gradient(90deg,
-      rgba(255,255,255,.07) 0 48px, rgba(0,0,0,.09) 48px 96px);
+      rgba(255,255,255,.08) 0 40px, rgba(0,0,0,.10) 40px 80px);
     background-repeat: repeat-x;
     -webkit-mask-image: linear-gradient(to top, #000 62%, transparent);
     mask-image: linear-gradient(to top, #000 62%, transparent);
   }
-  /* 距離の標識 */
+  /* 横に流れる線。速いほど濃く出る */
+  .r-speed {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 46%; z-index: 7;
+    background: repeating-linear-gradient(90deg,
+      rgba(255,255,255,.5) 0 34px, transparent 34px 150px);
+    opacity: 0; pointer-events: none;
+    -webkit-mask-image: linear-gradient(to top, transparent, #000 40%, transparent);
+    mask-image: linear-gradient(to top, transparent, #000 40%, transparent);
+  }
   .r-pole {
-    position: absolute; bottom: 44%; z-index: 3; transform: translateX(-50%);
+    position: absolute; bottom: 46%; z-index: 3; transform: translateX(-50%);
     font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: #1a0e16;
     background: var(--gold); border-radius: 3px; padding: 1px 5px;
     box-shadow: 0 2px 0 rgba(0,0,0,.45);
   }
-  /* ゴール板 */
   .r-goal {
-    position: absolute; top: 4%; bottom: 0; width: 9px; z-index: 4;
+    position: absolute; top: 2%; bottom: 0; width: 11px; z-index: 4;
     transform: translateX(-50%);
-    background: repeating-linear-gradient(#fff 0 9px, #1a0e16 9px 18px);
-    box-shadow: 0 0 16px rgba(255,255,255,.75);
+    background: repeating-linear-gradient(#fff 0 10px, #1a0e16 10px 20px);
+    box-shadow: 0 0 18px rgba(255,255,255,.8);
   }
 
-  /* 馬。同じ絵を色だけ変えて並べる */
+  /* 馬 */
   .r-h {
-    position: absolute; z-index: 6; width: 70px; height: auto;
-    transform: translate(-50%, 0);
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,.55));
+    position: absolute; width: 92px; height: auto;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.6));
     will-change: transform;
   }
-  .r-h.me { z-index: 8; width: 80px; }
-  .r-h.run { animation: rBob .26s steps(2, end) infinite; }
-  @keyframes rBob {
-    0%   { margin-top: 0; }
-    100% { margin-top: -5px; }
-  }
-  /* アフロの色ちがい。いちど sepia で色をそろえてから回すと、
-     もとの絵が茶色でもはっきり別の色になる。黒いフチは黒のまま */
-  .r-h.c1 { filter: drop-shadow(0 3px 7px rgba(0,0,0,.6)) sepia(1) saturate(4.5) hue-rotate(172deg); }
-  .r-h.c2 { filter: drop-shadow(0 3px 7px rgba(0,0,0,.6)) sepia(1) saturate(5)   hue-rotate(312deg); }
-  .r-h.c3 { filter: drop-shadow(0 3px 7px rgba(0,0,0,.6)) grayscale(1) brightness(1.25) contrast(1.15); }
-  .r-h.me { filter: drop-shadow(0 3px 7px rgba(0,0,0,.6)) saturate(1.15); }
+  .r-h.me { width: 104px; }
+  .r-h.run { animation: rBob .24s steps(2, end) infinite; }
+  @keyframes rBob { 0% { margin-bottom: 0; } 100% { margin-bottom: 7px; } }
+  .r-h.c1 { filter: drop-shadow(0 4px 8px rgba(0,0,0,.6)) sepia(1) saturate(4.5) hue-rotate(172deg); }
+  .r-h.c2 { filter: drop-shadow(0 4px 8px rgba(0,0,0,.6)) sepia(1) saturate(5)   hue-rotate(312deg); }
+  .r-h.c3 { filter: drop-shadow(0 4px 8px rgba(0,0,0,.6)) grayscale(1) brightness(1.25) contrast(1.15); }
 
-  /* 風よけに入っているしるし。入っていれば出て、押している間はよく光る */
+  /* ムチの輪。縮んできて、点線に重なった瞬間が「脚が地につく」とき */
+  .r-ring, .r-mark {
+    position: absolute; z-index: 20; pointer-events: none;
+    border-radius: 50%; transform: translate(-50%, 50%);
+  }
+  .r-mark { width: 64px; height: 64px; border: 3px dashed rgba(255,255,255,.8); }
+  .r-ring { width: 64px; height: 64px; border: 5px solid var(--gold);
+            box-shadow: 0 0 14px rgba(240,190,70,.7), inset 0 0 10px rgba(240,190,70,.4); }
+  .r-ring.hot { border-color: var(--green); box-shadow: 0 0 22px rgba(18,209,122,.95); }
+  #stage.is-dead .r-ring, #stage.is-dead .r-mark { opacity: .25; }
+
+  /* 風よけ */
   .r-draft {
-    position: absolute; z-index: 9; transform: translate(-50%, -140%);
+    position: absolute; z-index: 22; transform: translate(-50%, 0);
     font-size: 11px; font-weight: 900; white-space: nowrap;
     color: #052; background: var(--green); border-radius: 999px; padding: 2px 9px;
-    opacity: .5; box-shadow: 0 0 8px rgba(18,209,122,.4);
-    transition: opacity .12s;
+    opacity: .55; box-shadow: 0 0 8px rgba(18,209,122,.4); transition: opacity .12s;
   }
   .r-draft.on { opacity: 1; box-shadow: 0 0 16px rgba(18,209,122,.9); }
+
+  /* 実況 */
+  .r-call {
+    position: absolute; left: 0; right: 0; top: 0; z-index: 30; padding: 7px 10px;
+    text-align: center; font-weight: 900; font-size: 15px;
+    color: #fff; background: rgba(26,14,22,.84);
+    border-bottom: 2px solid var(--gold);
+    opacity: 0; transform: translateY(-100%); transition: opacity .12s, transform .12s;
+  }
+  .r-call.on { opacity: 1; transform: translateY(0); }
 
   /* スタミナ */
   .r-sta { padding: 9px 0 2px; }
@@ -117,24 +126,14 @@
     font-size: 11px; color: #a1959c; padding-bottom: 4px;
   }
   .r-sta-top b { font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: var(--cyan); }
-  .r-bar {
-    height: 13px; border: 1px solid var(--grey2); border-radius: 999px;
-    background: rgba(0,0,0,.45); overflow: hidden;
-  }
-  .r-bar i {
-    display: block; height: 100%; width: 100%;
-    background: linear-gradient(90deg, #12d17a, #8ce05a);
-    transition: background .2s;
-  }
+  .r-bar { height: 13px; border: 1px solid var(--grey2); border-radius: 999px;
+           background: rgba(0,0,0,.45); overflow: hidden; }
+  .r-bar i { display: block; height: 100%; width: 100%;
+             background: linear-gradient(90deg, #12d17a, #8ce05a); }
   .r-bar.mid i { background: linear-gradient(90deg, #e8b53a, #f0d05a); }
   .r-bar.low i { background: linear-gradient(90deg, #e04a4a, #f07a5a); }
   .r-bar.out i { background: linear-gradient(90deg, #7a2a2a, #a03a3a); }
 
-  /* 押しているあいだ画面のふちが光る */
-  #stage.is-push { box-shadow: inset 0 0 0 2px var(--gold), 0 0 22px rgba(240,190,70,.35); }
-  #stage.is-dead .r-turf { filter: saturate(.4); }
-
-  /* 着順の出し方 */
   .r-fin { color: var(--gold); }
   .r-fin.lose { color: #cfc3c9; }
 </style>
@@ -153,9 +152,9 @@
 
 <!-- ===== タイトル ===== -->
 <section class="ascreen active" id="scTitle">
-  <div class="at-eye">STAMINA RACE</div>
+  <div class="at-eye">LAST 200M</div>
   <h1 class="at-logo"><img src="../images/icon/race.svg" alt="アフロ追い比べ"></h1>
-  <p class="at-sub">押せば伸びる。ただし、もたない</p>
+  <p class="at-sub">脚が地についた瞬間に、ムチ</p>
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
   <button class="abtn" type="button" id="startBtn">スタート</button>
   <button class="abtn ghost" type="button" id="howBtn">説明</button>
@@ -166,10 +165,11 @@
   <div class="ahow-card">
     <div class="ahow-t">あそびかた</div>
     <ul class="at-how">
-    <li>直線400m。<b>押しているあいだだけ</b>ムチが入って伸びる</li>
-    <li>押すとスタミナが減る。手を離すと少し戻る</li>
-    <li><b>前の馬のすぐ後ろ</b>につくと風よけになって、減りかたが半分以下になる</li>
-    <li>スタミナが0になると大失速。使いどころを考えて</li>
+    <li>ゴール前200mだけの叩き合い。最初から4頭が横並び</li>
+    <li>金の輪が点線に<b>重なった瞬間にタップ</b>＝ムチが決まって大きく伸びる</li>
+    <li>ずれると<b>から振り</b>。逆に遅くなる</li>
+    <li>ムチ1発ごとにスタミナが減る。全部は叩けないので、どこで叩くか</li>
+    <li><b>前の馬のすぐ後ろ</b>は風よけ。減りかたが半分になる</li>
     <li>記録はゴールまでのタイム</li>
     </ul>
     <button class="gr-btn primary" type="button" id="howClose">とじる</button>
@@ -180,8 +180,8 @@
 <section class="ascreen" id="scPlay">
   <div class="ain">
     <div class="ahud">
-      <div class="ahud-cell"><span class="ahud-lbl">のこり</span><span class="ahud-val" id="hLeft">400m</span></div>
-      <div class="ahud-cell"><span class="ahud-lbl">じゅんい</span><span class="ahud-val" id="hPos">4</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">のこり</span><span class="ahud-val" id="hLeft">200m</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl">じゅんい</span><span class="ahud-val" id="hPos">1/4</span></div>
       <div class="ahud-cell"><span class="ahud-lbl">タイム</span><span class="ahud-val gold" id="hTime">0.00</span></div>
     </div>
   </div>
@@ -189,6 +189,8 @@
     <div class="astage" id="stage">
       <div class="r-far"></div>
       <div class="r-turf" id="turf"></div>
+      <div class="r-speed" id="speed"></div>
+      <div class="r-call" id="call"></div>
       <div class="acue" id="cue" hidden>
         <div class="acue-big" id="cueBig"></div>
         <div class="acue-sub" id="cueSub"></div>
@@ -198,7 +200,7 @@
       <div class="r-sta-top"><span>スタミナ</span><b id="staTxt">100</b></div>
       <div class="r-bar" id="staBar"><i id="staFill"></i></div>
     </div>
-    <p class="astage-note">画面を押しているあいだ、追う</p>
+    <p class="astage-note">輪が重なった瞬間にタップ</p>
   </div>
 </section>
 
@@ -211,37 +213,44 @@
 <script>
 (function () {
   /* ============================================================
-     直線400mの追い比べ。
-     ・押している間だけ速くなる（スタミナが減る）
-     ・離すと巡航に落ちて、スタミナが戻る
-     ・前の馬の 2.5〜9.5m 後ろにいると、減りかたが 0.42 倍（風よけ）
-     ・スタミナが尽きると大失速。28 まで戻るまで立て直せない
+     ゴール前200mの叩き合い。
+     ・一定のリズムで「脚が地につく」。その瞬間にタップするとムチが決まる
+     ・ピッタリなら大きく、ちょっとずれたら半分、外したら逆に減速
+     ・ムチ1発ごとにスタミナが減る。全部は叩けない
+     ・前の馬のすぐ後ろ（1.5〜7m）は風よけで、減りが半分
+     ・速くなるほど脚の回転が速くなるので、終盤ほど難しい
      ============================================================ */
-  var DIST   = 400;      /* 距離（m） */
-  var V_RUN  = 15.7;     /* 手を離しているときの上限（m/s） */
-  var V_PUSH = 20.3;     /* 押しているときの上限 */
-  var V_DEAD = 11.8;     /* スタミナ切れの上限 */
-  var V0     = 14.6;     /* スタート時の脚 */
-  var BURN   = 9.6;      /* 押しているときのスタミナの減り（毎秒） */
-  var DRAFT  = 0.42;     /* 風よけに入っているときの倍率 */
-  var HEAL   = 5.4;      /* 離しているときの戻り（毎秒） */
-  var HEAL_D = 3.4;      /* 切れているときの戻り */
-  var BACK   = 28;       /* ここまで戻れば、また押せる */
-  var PPM    = 6.4;      /* 1m を何pxで描くか */
-  var LANE   = ['5%', '15%', '26%', '38%'];    /* 下からの高さ。絵の芝の中に収まる */
+  var DIST  = 200;       /* 距離（m） */
+  var V0    = 15.2;      /* はじめの脚 */
+  var VMAX  = 21.6;      /* これ以上は出ない */
+  var VMIN  = 11.0;
+  var DECAY = 0.75;      /* 何もしないと落ちていく速さ */
+  var FLOOR = 14.4;      /* 落ちていく先 */
+  var HIT   = 1.55;      /* ピッタリの伸び（m/s） */
+  var OK    = 1.05;      /* ちょいズレの伸び */
+  var MISS  = 0.55;      /* から振りの減速 */
+  var W_HIT = 0.075;     /* ピッタリと見なす幅（秒） */
+  var W_OK  = 0.150;     /* ちょいズレの幅 */
+  var COST  = 5.2;       /* ムチ1発のスタミナ */
+  var COST_M= 3.0;       /* から振りでも少し減る */
+  var DRAFT = 0.5;       /* 風よけのときの倍率 */
+  var PPM   = 11.5;      /* 1m を何pxで描くか */
+  var LANE  = ['3%', '15%', '27%', '39%'];
 
-  /* ライバル3頭。u は進んだ割合。脚色がそれぞれ違う */
+  /* ライバル3頭。u は進んだ割合。横並びから始まる */
   var RIVALS = [
-    { nm: 'ブルマ',   cls: 'c1', lane: 0, x0:  12,
-      v: function (u) { return 19.0 - 5.4 * u * u; } },          /* 逃げ。最後バテる */
-    { nm: 'チャフワ', cls: 'c2', lane: 1, x0:   4,
-      v: function (u) { return 17.6 - 1.1 * u; } },              /* 先行。ずっと同じ脚 */
-    { nm: 'ギンマ',   cls: 'c3', lane: 3, x0:  -7,
-      v: function (u) { return 16.2 + 4.5 * u * u; } }           /* 差し。最後だけ伸びる */
+    { nm: 'ブルマ',   cls: 'c1', lane: 0, x0:  3.0,
+      v: function (u) { return 19.8 - 4.6 * u * u; } },        /* 先に抜け出して、最後バテる */
+    { nm: 'チャフワ', cls: 'c2', lane: 1, x0:  1.2,
+      v: function (u) { return 17.9 - 0.5 * u; } },            /* ずっと同じ脚 */
+    { nm: 'ギンマ',   cls: 'c3', lane: 3, x0: -1.5,
+      v: function (u) { return 16.3 + 4.4 * u * u; } }         /* 最後だけ伸びる */
   ];
 
   var stage  = document.getElementById('stage');
   var turf   = document.getElementById('turf');
+  var speed  = document.getElementById('speed');
+  var call   = document.getElementById('call');
   var cue    = document.getElementById('cue');
   var cueBig = document.getElementById('cueBig');
   var cueSub = document.getElementById('cueSub');
@@ -255,8 +264,9 @@
   var HORSE = '../images/game/run_afuwa.webp';
   (function () { var i = new Image(); i.src = HORSE; })();
 
-  var me, foes, els, poles = [], goalEl = null, draftEl = null;
-  var push = false, state = 'idle', t0 = 0, last = 0, raf = null, cd = 0;
+  var me, foes, els, poles, goalEl, ringEl, markEl, draftEl;
+  var state = 'idle', t0 = 0, last = 0, raf = null, cd = 0;
+  var beat = 0, hits = 0, chain = 0, callT = 0, said = {};
 
   function screen(id) {
     var all = document.querySelectorAll('.ascreen');
@@ -270,118 +280,182 @@
     lower: true,
     format: function (v) { return (v / 100).toFixed(2) + '秒'; },
     grades: [
-      { v: 2100, name: 'レコード勝ち' },
-      { v: 2180, name: 'GI級の決め手' },
-      { v: 2280, name: 'オープン級' },
-      { v: 2400, name: '3勝クラス' },
-      { v: 2560, name: '1勝クラス' },
+      { v: 1060, name: 'レコード勝ち' },
+      { v: 1100, name: 'GI級の決め手' },
+      { v: 1150, name: 'オープン級' },
+      { v: 1210, name: '3勝クラス' },
+      { v: 1290, name: '1勝クラス' },
       { v: Infinity, name: '新馬' }
     ],
     onRetry: go
   });
 
-  /* ---------- 馬と標識を作る ---------- */
+  /* 速いほど脚の回転が速い。リズムの周期（秒） */
+  function period(v) {
+    var t = 0.52 - (v - 14) * 0.016;
+    return t < 0.30 ? 0.30 : (t > 0.56 ? 0.56 : t);
+  }
+
+  function shout(msg) {
+    call.textContent = msg;
+    call.classList.add('on');
+    callT = 1.25;
+  }
+
+  function pop(txt, kind) {
+    var el = document.createElement('div');
+    el.className = 'afloat ' + kind;
+    el.textContent = txt;
+    el.style.left = (stage.clientWidth * 0.34) + 'px';
+    el.style.bottom = 'calc(' + LANE[me.lane] + ' + 112px)';
+    stage.appendChild(el);
+    setTimeout(function () { el.remove(); }, 900);
+  }
+
   function build() {
-    stage.querySelectorAll('.r-h, .r-pole, .r-goal, .r-draft').forEach(function (n) { n.remove(); });
+    var junk = stage.querySelectorAll('.r-h, .r-pole, .r-goal, .r-ring, .r-mark, .r-draft, .afloat');
+    for (var i = 0; i < junk.length; i++) junk[i].remove();
     els = []; poles = [];
 
     me = { x: 0, v: V0, sta: 100, dead: false, fin: 0, lane: 2 };
     foes = RIVALS.map(function (r) {
-      return { r: r, x: r.x0, v: r.v(0), fin: 0, k: 0.985 + Math.random() * 0.03 };
+      return { r: r, x: r.x0, v: r.v(0), fin: 0, k: 0.99 + Math.random() * 0.02, passed: false };
     });
 
-    /* ライバル */
     foes.forEach(function (f) {
       var img = document.createElement('img');
       img.className = 'r-h ' + f.r.cls;
       img.src = HORSE; img.alt = '';
       img.style.bottom = LANE[f.r.lane];
+      img.style.zIndex = 10 - f.r.lane;
       stage.appendChild(img);
       els.push({ el: img, o: f });
     });
-    /* 自分 */
     var mine = document.createElement('img');
     mine.className = 'r-h me';
     mine.src = HORSE; mine.alt = 'あなたのアフロ馬';
     mine.style.bottom = LANE[me.lane];
+    mine.style.zIndex = 10 - me.lane;
     stage.appendChild(mine);
     els.push({ el: mine, o: me, mine: true });
 
-    /* 風よけのしるし */
+    markEl = document.createElement('div');
+    markEl.className = 'r-mark';
+    markEl.style.bottom = 'calc(' + LANE[me.lane] + ' + 36px)';
+    stage.appendChild(markEl);
+
+    ringEl = document.createElement('div');
+    ringEl.className = 'r-ring';
+    ringEl.style.bottom = 'calc(' + LANE[me.lane] + ' + 36px)';
+    stage.appendChild(ringEl);
+
     draftEl = document.createElement('div');
     draftEl.className = 'r-draft';
     draftEl.textContent = '風よけ';
     draftEl.hidden = true;
-    draftEl.style.bottom = 'calc(' + LANE[me.lane] + ' + 74px)';
+    draftEl.style.bottom = 'calc(' + LANE[me.lane] + ' + 108px)';
     stage.appendChild(draftEl);
 
-    /* 100mごとの標識 */
-    for (var m = 100; m < DIST; m += 100) {
+    for (var m = 50; m < DIST; m += 50) {
       var p = document.createElement('div');
       p.className = 'r-pole';
       p.textContent = (DIST - m) + 'm';
       stage.appendChild(p);
       poles.push({ el: p, m: m });
     }
-    /* ゴール板 */
     goalEl = document.createElement('div');
     goalEl.className = 'r-goal';
     stage.appendChild(goalEl);
+
+    beat = 0; hits = 0; chain = 0; said = {};
   }
 
-  /* ---------- 画面に写す ---------- */
   function draw() {
     var w = stage.clientWidth;
-    var cam = me.x - (w * 0.34) / PPM;         /* 自分は左から34%あたりに置く */
+    var camX = w * 0.34;
+    var cam = me.x - camX / PPM;
 
     for (var i = 0; i < els.length; i++) {
       var e = els[i];
       var px = (e.o.x - cam) * PPM;
-      var hw = (e.el.offsetWidth || 70) / 2;
+      var hw = (e.el.offsetWidth || 92) / 2;
       e.el.style.transform = 'translate(' + (px - hw) + 'px, 0)';
-      var moving = state === 'run' && (e.mine ? true : !e.o.fin);
-      e.el.classList.toggle('run', moving);
+      e.el.classList.toggle('run', state === 'run');
     }
     for (var j = 0; j < poles.length; j++) {
       poles[j].el.style.left = ((poles[j].m - cam) * PPM) + 'px';
     }
     goalEl.style.left = ((DIST - cam) * PPM) + 'px';
+    turf.style.backgroundPosition = (-(me.x * PPM) % 80) + 'px 0';
+    speed.style.backgroundPosition = (-(me.x * PPM * 2.1) % 184) + 'px 0';
+    speed.style.opacity = Math.max(0, Math.min(0.5, (me.v - 16) / 14));
 
-    /* 芝とラチを流す */
-    turf.style.backgroundPosition = (-(me.x * PPM) % 96) + 'px 0';
-
-    draftEl.style.left = ((me.x - cam) * PPM) + 'px';
+    markEl.style.left = camX + 'px';
+    ringEl.style.left = camX + 'px';
+    draftEl.style.left = camX + 'px';
   }
 
   function paintHud() {
-    var left = Math.max(0, DIST - me.x);
-    leftEl.textContent = Math.ceil(left) + 'm';
-
+    leftEl.textContent = Math.max(0, Math.ceil(DIST - me.x)) + 'm';
     var ahead = 0;
     for (var i = 0; i < foes.length; i++) if (foes[i].x > me.x) ahead++;
     posEl.textContent = (ahead + 1) + '/4';
-
     var s = Math.max(0, Math.round(me.sta));
     staTxt.textContent = s;
     staFill.style.width = s + '%';
     staBar.className = 'r-bar' + (me.dead ? ' out' : s < 20 ? ' low' : s < 45 ? ' mid' : '');
   }
 
-  /* 風よけに入っているか。2.5〜9.5m 前に誰かいればOK */
   function drafting() {
     for (var i = 0; i < foes.length; i++) {
       var d = foes[i].x - me.x;
-      if (d > 2.5 && d < 9.5) return true;
+      if (d > 1.5 && d < 7) return true;
     }
     return false;
   }
 
-  /* ---------- 1フレーム ---------- */
+  /* ムチ */
+  function whip() {
+    if (state !== 'run' || me.fin) return;
+    if (me.dead) { pop('バテた', 'minus'); return; }
+
+    var T = period(me.v);
+    var d = Math.min(beat, T - beat);          /* いちばん近い着地までの秒数 */
+
+    if (d <= W_HIT) {
+      me.v = Math.min(VMAX, me.v + HIT);
+      me.sta -= COST * (drafting() ? DRAFT : 1);
+      hits++; chain++;
+      pop(chain >= 3 ? 'ピッタリ ' + chain : 'ピッタリ', 'plus');
+      Sfx.good();
+    } else if (d <= W_OK) {
+      me.v = Math.min(VMAX, me.v + OK);
+      me.sta -= COST * (drafting() ? DRAFT : 1);
+      hits++; chain = 0;
+      pop('セーフ', 'plus');
+      Sfx.tap();
+    } else {
+      me.v = Math.max(VMIN, me.v - MISS);
+      me.sta -= COST_M;
+      chain = 0;
+      pop('から振り', 'minus');
+      Sfx.tap();
+    }
+    if (me.sta <= 0) {
+      me.sta = 0; me.dead = true;
+      shout('バテた！もう脚がない！');
+      Sfx.bad();
+      stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
+    }
+  }
+
   function step(now) {
     raf = requestAnimationFrame(step);
-    var dt = Math.min(0.05, (now - last) / 1000);     /* 裏に回って戻ったとき飛ばない */
+    var dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     if (dt <= 0) return;
+
+    if (callT > 0) { callT -= dt; if (callT <= 0) call.classList.remove('on'); }
 
     if (state === 'count') {
       cd -= dt;
@@ -393,11 +467,11 @@
         state = 'run';
         t0 = now;
         Sfx.start();
+        shout('さあ、ゴール前の叩き合いだ！');
       }
       draw();
       return;
     }
-
     if (state !== 'run') { draw(); return; }
 
     var el = (now - t0) / 1000;
@@ -405,28 +479,24 @@
 
     /* --- 自分 --- */
     if (!me.fin) {
+      var T = period(me.v);
+      beat += dt;
+      while (beat >= T) beat -= T;
+
+      /* 輪は、つぎの着地に向かって縮む */
+      var sc = 2.3 - 1.3 * (beat / T);
+      ringEl.style.width = ringEl.style.height = (64 * sc) + 'px';
+      var near = Math.min(beat, T - beat) <= W_OK;
+      ringEl.classList.toggle('hot', near && !me.dead);
+
       var dr = drafting();
       draftEl.hidden = !dr;
-      draftEl.classList.toggle('on', dr && push && !me.dead);
+      draftEl.classList.toggle('on', dr);
 
-      var cap;
-      if (me.dead) {
-        cap = V_DEAD;
-        me.sta += HEAL_D * dt;
-        if (me.sta >= BACK) me.dead = false;
-      } else if (push) {
-        cap = V_PUSH;
-        me.sta -= BURN * (dr ? DRAFT : 1) * dt;
-        if (me.sta <= 0) {
-          me.sta = 0; me.dead = true;
-          Sfx.bad();
-          stage.classList.remove('ashake'); void stage.offsetWidth; stage.classList.add('ashake');
-        }
-      } else {
-        cap = V_RUN;
-        me.sta = Math.min(100, me.sta + HEAL * dt);
-      }
-      me.v += (cap - me.v) * (push && !me.dead ? 2.6 : 1.9) * dt;
+      /* 何もしなければ落ちていく。バテていると落ちかたが速い */
+      var floor = me.dead ? VMIN : FLOOR;
+      me.v += (floor - me.v) * (me.dead ? 1.6 : 1) * DECAY * dt;
+      if (me.v > VMAX) me.v = VMAX;
       me.x += me.v * dt;
       if (me.x >= DIST) { me.x = DIST; me.fin = el; }
     }
@@ -434,24 +504,32 @@
     /* --- ライバル --- */
     for (var i = 0; i < foes.length; i++) {
       var f = foes[i];
-      if (f.fin) continue;
-      var u = Math.min(1, f.x / DIST);
-      f.v = f.r.v(u) * f.k;
-      f.x += f.v * dt;
-      if (f.x >= DIST) { f.x = DIST; f.fin = el; }
+      if (!f.fin) {
+        var u = Math.min(1, Math.max(0, f.x / DIST));
+        f.v = f.r.v(u) * f.k;
+        f.x += f.v * dt;
+        if (f.x >= DIST) { f.x = DIST; f.fin = el; }
+      }
+      /* 抜いた瞬間に実況 */
+      if (!f.passed && me.x > f.x + 0.6 && !me.fin) {
+        f.passed = true;
+        shout(f.r.nm + 'をかわした！');
+      } else if (f.passed && f.x > me.x + 0.6) {
+        f.passed = false;
+      }
     }
 
-    stage.classList.toggle('is-push', push && !me.dead && !me.fin);
-    stage.classList.toggle('is-dead', me.dead);
+    var leftm = DIST - me.x;
+    if (!said.h100 && leftm <= 100) { said.h100 = true; shout('のこり100！'); }
+    if (!said.h50  && leftm <= 50)  { said.h50  = true; shout('のこり50！ここだ！'); }
 
+    stage.classList.toggle('is-dead', me.dead);
     draw();
     paintHud();
 
-    /* 自分がゴールして、少し見せてから結果へ */
-    if (me.fin && el > me.fin + 1.1) finish();
+    if (me.fin && el > me.fin + 1.0) finish();
   }
 
-  /* ---------- 着差のことば ---------- */
   function sa(d) {
     if (d < 0.05) return 'ハナ';
     if (d < 0.18) return 'アタマ';
@@ -467,72 +545,55 @@
     if (state === 'over') return;
     state = 'over';
     cancelAnimationFrame(raf);
-    stage.classList.remove('is-push');
+    call.classList.remove('on');
 
-    /* まだ走っている馬は、そのままの脚で何秒かかるか計算して順位を出す */
-    var all = [{ nm: 'あなた', t: me.fin, x: DIST, mine: true }];
+    var all = [{ nm: 'あなた', t: me.fin, mine: true }];
     for (var i = 0; i < foes.length; i++) {
       var f = foes[i];
-      var t = f.fin;
-      if (!t) {
-        var rest = DIST - f.x;
-        t = me.fin + rest / Math.max(6, f.v);     /* 残りを今の脚で割る */
-      }
-      all.push({ nm: f.r.nm, t: t, x: f.x });
+      all.push({ nm: f.r.nm, t: f.fin || (me.fin + (DIST - f.x) / Math.max(6, f.v)) });
     }
     all.sort(function (a, b) { return a.t - b.t; });
 
     var rank = 0;
     for (var j = 0; j < all.length; j++) if (all[j].mine) rank = j + 1;
-
-    /* 1着なら2着との差、負けなら1着との差 */
     var other = rank === 1 ? all[1] : all[0];
-    var gap = Math.abs((other.t - me.fin)) * 17;   /* 秒差をおおよその馬身差に */
-    var word = rank === 1
-      ? sa(gap) + '差で1着'
-      : rank + '着（1着と ' + sa(gap) + '）';
+    var gap = Math.abs(other.t - me.fin) * 18;
+    var word = rank === 1 ? sa(gap) + '差で1着' : rank + '着（1着と ' + sa(gap) + '）';
 
     cue.hidden = false;
     cueBig.className = 'acue-big r-fin' + (rank === 1 ? '' : ' lose');
     cueBig.textContent = word;
-    cueSub.textContent = me.fin.toFixed(2) + '秒';
+    cueSub.textContent = me.fin.toFixed(2) + '秒　ムチ ' + hits + '発';
     if (rank === 1) Sfx.good(); else Sfx.tap();
 
-    setTimeout(function () {
-      AfroScore.finish(Math.round(me.fin * 100));
-    }, 1100);
+    setTimeout(function () { AfroScore.finish(Math.round(me.fin * 100)); }, 1100);
   }
 
   /* ---------- 操作 ---------- */
-  function hold(on) {
-    if (state !== 'run' || me.fin) { push = false; return; }
-    push = on;
-  }
-  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); hold(true); });
-  window.addEventListener('pointerup',     function () { hold(false); });
-  window.addEventListener('pointercancel', function () { hold(false); });
+  var viaPointer = false;
+  stage.addEventListener('pointerdown', function (e) { e.preventDefault(); viaPointer = true; whip(); });
+  stage.addEventListener('click', function () {
+    if (viaPointer) { viaPointer = false; return; }
+    whip();
+  });
   stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   window.addEventListener('keydown', function (e) {
-    if (e.code === 'Space' && !e.repeat) { e.preventDefault(); hold(true); }
+    if (e.code === 'Space' && !e.repeat) { e.preventDefault(); whip(); }
   });
-  window.addEventListener('keyup', function (e) {
-    if (e.code === 'Space') { e.preventDefault(); hold(false); }
-  });
-  window.addEventListener('blur', function () { push = false; });
   window.addEventListener('resize', function () { if (els) draw(); });
 
   function go() {
     cancelAnimationFrame(raf);
     build();
-    push = false;
     state = 'count';
     cd = 2.4;
     cue.hidden = false;
     cueBig.className = 'acue-big';
     cueBig.textContent = '3';
-    cueSub.textContent = '押しているあいだ、追う';
+    cueSub.textContent = '輪が重なった瞬間にタップ';
     timeEl.textContent = '0.00';
     stage.className = 'astage';
+    call.classList.remove('on');
     paintHud();
     draw();
     screen('scPlay');
