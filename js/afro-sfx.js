@@ -133,6 +133,14 @@
       kick: [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0],
       hat:  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     },
+    /* 追い比べ。前のめりで、ゴールまで押しきる感じ */
+    race: {
+      bpm: 168, root: 233, scale: SCALE_MIN, wave: 'square',
+      lead: [0, 2, 4, 2, 5, 4, 2, 4, 3, 5, 6, 5, 4, 2, 1, 2],
+      bass: [0, 0, null, 0, 4, null, 4, null, 3, 3, null, 3, 2, null, 0, null],
+      kick: [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+      hat:  [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1]
+    },
     /* 探しもの。こそこそ歩きまわる感じ */
     find: {
       bpm: 126, root: 175, scale: SCALE_MIN, wave: 'triangle',
@@ -222,7 +230,7 @@
   var Sfx = {
     unlock: function () { ready(); },
 
-    /* BGMを鳴らす。名前は SONGS のキー（jump / catch / whack / memory / gate / pair / tower / dodge / find） */
+    /* BGMを鳴らす。名前は SONGS のキー（jump / catch / whack / memory / gate / pair / tower / dodge / find / race） */
     bgm: function (name) {
       if (!SONGS[name]) return;
       this.bgmStop();

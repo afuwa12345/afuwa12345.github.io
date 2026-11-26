@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <defs>
+    <clipPath id="scene">
+      <circle cx="160" cy="160" r="140"/>
+    </clipPath>
+  </defs>
+
+  <circle cx="160" cy="160" r="156" fill="#087DFF" stroke="#111" stroke-width="7"/>
+  <circle cx="160" cy="160" r="144" fill="#FFF"/>
+
+  <g clip-path="url(#scene)" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="160" cy="160" r="140" fill="#76DCFF"/>
+    <path d="M12 170Q155 133 308 169V312H12Z" fill="#39C943"/>
+    <path d="M15 225Q161 168 307 195V312H15Z" fill="#0CAD47"/>
+
+    <g fill="none" stroke="#FFF" stroke-width="7">
+      <path d="M39 58L91 99M103 28L127 85M179 24L173 76M255 48L215 91M291 98L249 118"/>
+      <path d="M25 124L65 136M280 147L301 144M29 213L65 202M263 222L291 235"/>
+    </g>
+
+    <g fill="none" stroke="#187B68" stroke-width="10">
+      <path d="M27 175Q158 130 299 164"/>
+      <path d="M48 169V196M274 159V184"/>
+    </g>
+    <g fill="none" stroke="#FFF" stroke-width="7">
+      <path d="M23 168Q158 123 301 157"/>
+      <path d="M48 163V189M274 152V177"/>
+    </g>
+
+    <!-- Cream horse -->
+    <g stroke="#161212" stroke-width="7">
+      <path d="M68 166Q42 143 31 165Q45 160 43 183Q57 181 70 176" fill="#57301F"/>
+      <path d="M78 181L57 207L31 215L37 226L69 218L97 190" fill="#FFE2A0"/>
+      <path d="M111 183L133 207L160 203L164 214L130 222L100 197" fill="#FFE2A0"/>
+      <path d="M75 177L51 193L25 192L24 204L57 208L91 189" fill="#FFE2A0"/>
+      <path d="M111 179L137 185L156 170L164 180L143 201L111 197" fill="#FFE2A0"/>
+      <path d="M31 215L37 226L47 223L42 212Z" fill="#57301F"/>
+      <path d="M153 204L160 203L164 214L155 216Z" fill="#57301F"/>
+      <path d="M24 192L35 193L34 205L24 204Z" fill="#57301F"/>
+      <path d="M156 170L164 180L156 188L148 177Z" fill="#57301F"/>
+      <path d="M66 159Q79 145 108 154L123 128L146 124L156 143L143 169Q132 191 104 194L78 190Q60 182 66 159Z" fill="#FFE2A0"/>
+      <path d="M126 119L125 93Q140 96 143 116" fill="#FFE2A0"/>
+      <path d="M143 114L153 96L161 123" fill="#FFE2A0"/>
+      <path d="M128 119Q143 106 155 121L164 134L177 140Q184 145 179 156Q175 165 161 162L137 153Q124 146 128 119Z" fill="#FFE2A0"/>
+      <path d="M161 136L174 141Q184 145 179 156Q175 163 165 162" fill="#EDB873"/>
+      <path d="M60 116C48 102 56 86 69 84C65 67 82 57 96 65C105 49 124 53 132 65C149 59 162 72 158 87C175 96 170 115 157 121C158 137 141 147 128 138C116 153 97 147 91 136C74 144 59 134 60 116Z" fill="#57301F"/>
+      <path d="M75 91Q76 79 89 80M100 69Q111 65 117 74" fill="none" stroke="#865035" stroke-width="6"/>
+      <path d="M147 128L156 131" fill="none" stroke-width="5"/>
+      <path d="M165 152L171 152" fill="none" stroke-width="4"/>
+    </g>
+    <circle cx="152" cy="137" r="4" fill="#111"/>
+
+    <!-- White horse -->
+    <g stroke="#161212" stroke-width="7">
+      <path d="M163 180Q142 156 129 175Q145 174 137 194Q152 198 168 188" fill="#39BFFF"/>
+      <path d="M176 193L155 215L124 222L129 233L162 228L190 205" fill="#FFF"/>
+      <path d="M209 195L234 215L263 208L268 219L233 229L203 211" fill="#FFF"/>
+      <path d="M176 185L150 201L124 196L120 207L153 215L188 198" fill="#FFF"/>
+      <path d="M213 183L242 190L263 174L271 184L248 207L215 202" fill="#FFF"/>
+      <path d="M124 222L129 233L140 230L136 219Z" fill="#257DAD"/>
+      <path d="M258 210L263 208L268 219L258 222Z" fill="#257DAD"/>
+      <path d="M124 196L134 198L130 210L120 207Z" fill="#257DAD"/>
+      <path d="M263 174L271 184L263 192L255 181Z" fill="#257DAD"/>
+      <path d="M161 171Q176 157 204 165L217 139L240 134L252 153L238 181Q226 204 199 205L174 200Q156 194 161 171Z" fill="#FFF"/>
+      <path d="M221 130L221 104Q237 107 238 129" fill="#FFF"/>
+      <path d="M240 126L250 107L257 137" fill="#FFF"/>
+      <path d="M224 131Q241 118 253 131L261 146L277 151Q286 157 280 168Q276 176 263 173L238 165Q222 158 224 131Z" fill="#FFF"/>
+      <path d="M263 148L277 152Q286 157 280 168Q277 175 266 174" fill="#BAE9F7"/>
+      <path d="M154 127C142 113 150 97 164 95C159 79 176 68 190 76C200 60 219 64 226 77C242 70 257 83 253 98C269 107 264 125 251 132C252 148 236 157 222 149C211 163 191 159 185 146C168 155 152 145 154 127Z" fill="#39BFFF"/>
+      <path d="M169 102Q169 90 182 91M194 81Q205 76 212 85" fill="none" stroke="#99E8FF" stroke-width="6"/>
+      <path d="M244 139L253 142" fill="none" stroke-width="5"/>
+      <path d="M267 163L274 163" fill="none" stroke-width="4"/>
+    </g>
+    <circle cx="249" cy="148" r="4" fill="#111"/>
+
+    
+  </g>
+
+  <path d="M22 238Q160 212 298 238L288 276Q160 326 32 276Z" fill="#F44722" stroke="#111" stroke-width="7"/>
+    <path d="M44 242Q160 222 276 242" fill="none" stroke="#FF9D32" stroke-width="5"/>
+    <text x="160" y="276" font-family="'Dela Gothic One','Hiragino Sans','Yu Gothic',sans-serif" font-size="37" font-weight="900" fill="#fff" stroke="#111" stroke-width="8" paint-order="stroke fill" text-anchor="middle" textLength="214" lengthAdjust="spacingAndGlyphs">アフロ追い比べ</text>
+</svg>

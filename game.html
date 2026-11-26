@@ -112,6 +112,14 @@
           <p class="game-desc">光った順にタップ</p>
         </span>
       </a>
+      <a class="game-card" href="game/race.html" data-game="race">
+        <span class="game-badge">タイム</span>
+        <span class="game-shot icon"><img src="images/icon/race.svg" alt="" loading="lazy"></span>
+        <span class="game-body">
+          <span class="game-name">アフロ追い比べ</span>
+          <p class="game-desc">押せば伸びる。ただし、もたない</p>
+        </span>
+      </a>
       <a class="game-card" href="game/gate.html" data-game="gate">
         <span class="game-badge">平均 ms</span>
         <span class="game-shot icon"><img src="images/icon/gate.webp" alt="" loading="lazy"></span>
@@ -239,6 +247,7 @@
     whack:  function (v) { return v + '点'; },
     memory: function (v) { return v + '段'; },
     gate:   function (v) { return v + 'ms'; },
+    race:   function (v) { return (v / 100).toFixed(2) + '秒'; },
     tower:  function (v) { return v + '段'; },
     find:   function (v) { return v + '問'; },
     pair:   function (v) { return (v / 10).toFixed(1) + '秒'; },

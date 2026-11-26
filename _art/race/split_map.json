@@ -1,0 +1,11 @@
+{
+  "sheets_dir": "_art/race/sheets",
+  "out_dir": "_art/race/cut",
+  "padding": 8,
+  "sheets": [
+    {
+      "file": "RACE_RUN.png",
+      "names": ["run_afuwa", "run_buruma", "run_chafuwa", "run_ginma"]
+    }
+  ]
+}

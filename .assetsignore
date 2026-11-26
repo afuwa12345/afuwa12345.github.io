@@ -7,3 +7,4 @@ node_modules
 wrangler.jsonc
 .assetsignore
 CNAME
+_art
