@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>アフロオセロ｜AFRO Horse</title>
-<meta name="description" content="アフワとブルマではさみ合う8×8のオセロ。ひっくり返した枚数が記録になる無料ゲーム。登録不要でブラウザからすぐ遊べます。">
+<meta name="description" content="アフワとブルマではさみ合う8×8のオセロ。相手の強さは10段から選べて、1台を交代でまわすふたり対戦もできる無料ゲーム。登録不要でブラウザからすぐ遊べます。">
 <link rel="canonical" href="https://afro-horse.com/game/osero.html">
 <link rel="icon" href="../favicon.ico">
 <meta name="theme-color" content="#08060a">
@@ -207,6 +207,58 @@
     background: #7ec6f5; animation: oThink .7s ease-in-out infinite;
   }
   @keyframes oThink { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+  /* ===== タイトルのレベル選び =====
+     10段ぶんのボタンを1列に並べる。狭い画面でも1行に収まるように
+     幅は flex で分けあう */
+  #scTitle { overflow-y: auto; }
+  #scTitle .at-logo img { width: 160px; }
+  #scTitle .at-best { margin-top: 12px; }
+  #scTitle .abtn { margin-top: 14px; }
+
+  .o-lv { margin: 13px 0 0; width: 100%; max-width: 330px; }
+  .o-lv-h {
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    font-size: 12.5px; font-weight: 700; color: #f3ecf0;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, .9);
+  }
+  .o-lv-h b {
+    font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-weight: 800;
+    font-size: 21px; line-height: 1; color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+  }
+  .o-lv-h i { font-style: normal; color: var(--cyan); font-weight: 700; }
+  .o-lv-row { display: flex; gap: 4px; justify-content: center; margin: 8px 0 0; }
+  .o-lv-b {
+    flex: 1 1 0; min-width: 0; aspect-ratio: 1 / 1;
+    border: 1px solid rgba(255, 255, 255, .28); border-radius: 8px;
+    background: rgba(8, 6, 10, .58); color: #e8dfe4; cursor: pointer; padding: 0;
+    font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-weight: 800; font-size: 15px;
+    transition: transform .1s, background .15s, border-color .15s, color .15s;
+  }
+  .o-lv-b:active { transform: translateY(2px); }
+  .o-lv-b.on {
+    background: linear-gradient(180deg, #ffe88a, #f0b800);
+    border-color: #fff0a8; color: #2b1a04;
+    box-shadow: 0 0 14px rgba(255, 214, 10, .55);
+  }
+  .o-lv-note {
+    font-size: 11.5px; font-weight: 700; color: #cfc4ca; margin: 7px 0 0;
+    min-height: 17px; text-shadow: 0 2px 6px rgba(0, 0, 0, .9);
+  }
+  /* 「ふたりで」と「説明」は横に並べて、縦を節約する */
+  .o-btns { display: flex; gap: 9px; justify-content: center; }
+  .o-btns .abtn.ghost { padding: 11px 20px; font-size: 14.5px; }
+
+  /* ふたりで遊んでいるときの番の出しかた */
+  .o-turn.p2 b { color: #7ec6f5; }
+  .o-turn.p1 b { color: #ffd98a; }
+
+  @media (max-height: 620px) {
+    #scTitle .at-logo img { width: 128px; }
+    #scTitle .at-logo { margin: 2px 0 6px; }
+    #scTitle .at-sub { font-size: 14px; }
+  }
 </style>
 </head>
 
@@ -227,9 +279,19 @@
   <div class="at-eye">REVERSI</div>
   <h1 class="at-logo"><img src="../images/icon/osero.webp" alt="アフロオセロ"></h1>
   <p class="at-sub">ブルマをはさんで、ひっくり返せ</p>
+
+  <div class="o-lv">
+    <div class="o-lv-h">ブルマの強さ <b id="lvNo">5</b> <i id="lvNm"></i></div>
+    <div class="o-lv-row" id="lvRow"></div>
+    <p class="o-lv-note" id="lvNote"></p>
+  </div>
+
   <div class="at-best">自己ベスト <b id="gBest">—</b></div>
-  <button class="abtn" type="button" id="startBtn">スタート</button>
-  <button class="abtn ghost" type="button" id="howBtn">説明</button>
+  <button class="abtn" type="button" id="startBtn">ひとりで</button>
+  <div class="o-btns">
+    <button class="abtn ghost" type="button" id="twoBtn">ふたりで</button>
+    <button class="abtn ghost" type="button" id="howBtn">説明</button>
+  </div>
 </section>
 
 <!-- ===== 説明 ===== -->
@@ -242,7 +304,9 @@
       <li>置ける場所が無いときは<b>自動でパス</b></li>
       <li>盤がうまったら終わり。<b>残ったアフワの枚数がそのまま記録</b>（最高64枚）</li>
       <li>勝つだけでなく<b>どれだけ多く残すか</b>。四すみを取ると返されにくい</li>
-      <li><b>ブルマは終盤になると本気を出す</b>。序盤の差だけでは逃げきれん</li>
+      <li><b>ブルマの強さは1〜10</b>から選べる。レベル5以上は終盤に本気を出してくる</li>
+      <li>記録とランキングは<b>レベル5以上</b>のときだけつく。1〜4は練習用</li>
+      <li><b>「ふたりで」</b>を押すと、1台を交代でまわして人どうしで対戦できる（記録はつかない）</li>
     </ul>
     <button class="gr-btn primary" type="button" id="howClose">とじる</button>
   </div>
@@ -252,8 +316,8 @@
 <section class="ascreen" id="scPlay">
   <div class="ain">
     <div class="ahud">
-      <div class="ahud-cell"><span class="ahud-lbl">YOU</span><span class="ahud-val gold" id="hMe">2</span></div>
-      <div class="ahud-cell"><span class="ahud-lbl">CPU</span><span class="ahud-val" id="hCp">2</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl" id="lMe">YOU</span><span class="ahud-val gold" id="hMe">2</span></div>
+      <div class="ahud-cell"><span class="ahud-lbl" id="lCp">CPU</span><span class="ahud-val" id="hCp">2</span></div>
       <div class="ahud-cell"><span class="ahud-lbl">LEFT</span><span class="ahud-val" id="hLeft">60</span></div>
     </div>
     <div class="o-bar"><i class="me" id="barMe" style="width:50%"></i><i class="cp" id="barCp" style="width:50%"></i></div>
@@ -289,7 +353,8 @@
      ・アフワ(ME)が先手、ブルマ(CP)が後手
      ・記録は「最後に残ったアフワの枚数」。勝ち負けだけでなく
        どれだけ多く残せたかを競う（最高64枚）
-     ・相手は定石っぽい重みづけ＋先読み3手。四すみを嫌がる
+     ・ブルマの強さは1〜10で選ぶ。記録がつくのはレベル5以上だけ
+     ・「ふたりで」は1台を交代でまわす人どうしの対戦。記録はつかない
      ============================================================ */
   var N = 8;
   var ME = 1, CP = 2;
@@ -306,6 +371,39 @@
     120, -20,  20,   5,   5,  20, -20, 120
   ];
   var DIR = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+
+  /* ===== ブルマの強さ10段 =====
+       slip … 何割を気まぐれに打つか。[序盤, 中盤, 終盤]
+       ev   … 盤の見かた。'cnt' は枚数の差だけ（初心者の見かた。じつは弱い）
+                          'pos' はかど・辺の値うちと置ける場所の多さも見る
+       d    … 先読みの手数。[序盤, 中盤, 終盤]。0は読まない
+       sl   … ほぼ同じ点の手が複数あるとき、どれだけ雑に選ぶか。大きいほど雑
+
+     1段ずつ4通りの打ち手に打たせて測ってある（2026-11-27 実測。
+     Lv1〜8は各150局、Lv9・10は各60局）。
+     「かどを意識して打つ人 / 2手先を読む人」の勝率:
+       Lv1 89/95   Lv2 86/99   Lv3 85/98   Lv4 77/99   Lv5 48/87
+       Lv6 35/79   Lv7 19/73   Lv8  7/50   Lv9  2/25   Lv10 0/0
+     レベル5が、もとの強さ（ふつうに遊んで勝ったり負けたりする線）＝はじめの設定。
+     レベル10だけは意図的に壁。名前のとおり手加減しない。
+     考える時間は最長でも 0.25 秒ほど（Lv10・終盤）。 */
+  var LV = [
+    { nm: 'ねぼけ',   slip: [1.00, 1.00, 1.00], ev: 'pos', d: [0, 0, 0], sl: 0,  tx: 'でたらめに打つ' },
+    { nm: 'ひよっこ', slip: [0.90, 0.90, 0.90], ev: 'pos', d: [0, 0, 0], sl: 10, tx: 'ほとんど気まぐれ' },
+    { nm: 'みならい', slip: [0.75, 0.75, 0.70], ev: 'pos', d: [0, 0, 0], sl: 10, tx: '3回に2回は気まぐれ' },
+    { nm: 'かけだし', slip: [0.58, 0.45, 0.30], ev: 'pos', d: [0, 0, 0], sl: 9,  tx: 'かどは見るが、まだ雑' },
+    { nm: 'ふつう',   slip: [0.40, 0.15, 0.00], ev: 'pos', d: [0, 0, 2], sl: 8,  tx: 'かどと辺を見る。終盤だけ本気' },
+    { nm: 'なかなか', slip: [0.30, 0.10, 0.00], ev: 'pos', d: [0, 0, 3], sl: 6,  tx: '悪手が減り、終盤の読みが深い' },
+    { nm: 'つよい',   slip: [0.18, 0.05, 0.00], ev: 'pos', d: [0, 2, 3], sl: 5,  tx: '中盤から読んでくる' },
+    { nm: 'くろおび', slip: [0.10, 0.00, 0.00], ev: 'pos', d: [1, 2, 4], sl: 4,  tx: 'ほとんど隙が無い' },
+    { nm: 'おに',     slip: [0.04, 0.00, 0.00], ev: 'pos', d: [2, 3, 4], sl: 2,  tx: 'かどを渡さない' },
+    { nm: 'むそう',   slip: [0.00, 0.00, 0.00], ev: 'pos', d: [2, 3, 5], sl: 0,  tx: '手加減なし。勝てたら自慢していい' }
+  ];
+  var RANK_FROM = 5;      /* 記録とランキングがつく下限のレベル */
+
+  var lv = 5;             /* いま選んでいる強さ */
+  var mode = 1;           /* 1=ひとりで 2=ふたりで */
+  var turn = ME;          /* いま置く番の色。ふたりようで使う */
 
   /* ひっくり返る4コマ。台紙がそろえてあるので src を差しかえるだけ */
   var FR = {
@@ -329,6 +427,12 @@
   var barMe  = document.getElementById('barMe');
   var barCp  = document.getElementById('barCp');
   var turnEl = document.getElementById('turn');
+  var lMe    = document.getElementById('lMe');
+  var lCp    = document.getElementById('lCp');
+  var lvNo   = document.getElementById('lvNo');
+  var lvNm   = document.getElementById('lvNm');
+  var lvRow  = document.getElementById('lvRow');
+  var lvNote = document.getElementById('lvNote');
 
   var cells = [];
   var bd = null;          /* 盤。0=空 1=アフワ 2=ブルマ */
@@ -351,7 +455,7 @@
       if (!c || busy || over) { return; }
       var i = +c.getAttribute('data-i');
       if (!c.classList.contains('ok')) { return; }
-      play(i, ME);
+      play(i, turn);
     });
   })();
 
@@ -402,7 +506,8 @@
 
   /* ---------- 相手の手を読む ---------- */
 
-  function score(b, p) {
+  /* かど・辺の値うちと、置ける場所の多さまで見る見かた */
+  function evPos(b, p) {
     var empty = count(b, 0);
     var s = 0;
     for (var i = 0; i < b.length; i++) {
@@ -415,14 +520,19 @@
     return s;
   }
 
+  /* 枚数の差だけ見る見かた。初心者がやりがちで、じつはかなり弱い */
+  function evCnt(b, p) { return count(b, p) - count(b, other(p)); }
+
+  function ev(b, p) { return LV[lv - 1].ev === 'cnt' ? evCnt(b, p) : evPos(b, p); }
+
 
 
   /* 何手か先まで読む。終盤だけ使う */
   function nega(b, p, d, a, be) {
     var ms = moves(b, p);
-    if (d === 0) { return score(b, p); }
+    if (d === 0) { return ev(b, p); }
     if (!ms.length) {
-      if (!moves(b, other(p)).length) { return score(b, p); }
+      if (!moves(b, other(p)).length) { return ev(b, p); }
       return -nega(b, other(p), d - 1, -be, -a);
     }
     for (var k = 0; k < ms.length; k++) {
@@ -433,35 +543,39 @@
     return a;
   }
 
-  /* ブルマの手。強さは盤の埋まりぐあいで変える。
-     ・序盤  … 気まぐれ。だいたい好きに打たせてくれる
-     ・中盤  … そこそこ。悪い手は打たなくなる
-     ・終盤  … 本気。3手先まで読む
+  /* ブルマの手。盤の埋まりぐあいで3つの段に分け、
+     レベルごとに「気まぐれの割合」と「先読みの手数」を変える。
      ずっと本気だと誰も勝てず、ずっと弱いと最後まで気が抜けない。
-     終盤だけ本気にすると、せっかく作った差を守りきる勝負になる。
-     （実測：かどを意識して打つ人で勝率5割、ちゃんと読む人で7割） */
+     上のレベルは終盤だけ深く読むので、序盤でつけた差を守る勝負になる。 */
   var MID_AT = 30;     /* 空きがこれ以下になったら中盤 */
-  var END_AT = 12;     /* 空きがこれ以下になったら終盤＝本気 */
+  var END_AT = 12;     /* 空きがこれ以下になったら終盤 */
 
   function phase() {
     var e = count(bd, 0);
     return e > MID_AT ? 0 : (e > END_AT ? 1 : 2);
   }
 
+  /* 終盤にちゃんと強くなるレベルかどうか。「本気出した」を出すかの判定 */
+  function ramps() {
+    var L = LV[lv - 1];
+    return L.d[2] > L.d[1] || L.slip[2] < L.slip[1];
+  }
+
   function think() {
     var ms = moves(bd, CP);
     if (!ms.length) { return -1; }
-    var ph = phase();
-    var slip = ph === 0 ? 0.40 : (ph === 1 ? 0.15 : 0);
-    var slack = ph === 2 ? 4 : 8;
-    if (slip && Math.random() < slip) { return ms[Math.floor(Math.random() * ms.length)]; }
+    var L = LV[lv - 1], ph = phase();
+    if (L.slip[ph] && Math.random() < L.slip[ph]) {
+      return ms[Math.floor(Math.random() * ms.length)];
+    }
+    var d = L.d[ph], sl = L.sl;
 
     var best = [], bv = -1e9;
     for (var k = 0; k < ms.length; k++) {
       var nb = apply(bd, ms[k], CP, gains(bd, ms[k], CP));
-      var v = ph === 2 ? -nega(nb, ME, 2, -1e9, 1e9) : score(nb, CP);
-      if (v > bv + slack) { bv = v; best = [ms[k]]; }
-      else if (v >= bv - slack) { if (v > bv) { bv = v; } best.push(ms[k]); }
+      var v = d > 0 ? -nega(nb, ME, d, -1e9, 1e9) : ev(nb, CP);
+      if (v > bv + sl) { bv = v; best = [ms[k]]; }
+      else if (v >= bv - sl) { if (v > bv) { bv = v; } best.push(ms[k]); }
     }
     return best[Math.floor(Math.random() * best.length)];
   }
@@ -558,11 +672,23 @@
     barCp.style.width = (c / t * 100) + '%';
   }
 
+  function nameOf(p) { return p === ME ? 'アフワ' : 'ブルマ'; }
+
   function sayTurn(who, think_) {
     turnEl.classList.toggle('think', !!think_);
+    turnEl.classList.toggle('p1', mode === 2 && who === ME);
+    turnEl.classList.toggle('p2', mode === 2 && who === CP);
+    var ic = '<img src="' + img(who === ME ? 'p_afuwa' : 'p_buruma') + '" alt="">';
+    if (mode === 2) {
+      /* ふたりよう。だれの番かだけ、はっきり出す */
+      /* .o-turn は flex なので、ひとつの span にまとめないと
+         「アフワ」と「の番」のあいだに gap のすきまが入る */
+      turnEl.innerHTML = ic + '<span><b>' + nameOf(who) + '</b>の番</span>';
+      return;
+    }
     turnEl.innerHTML = who === ME
-      ? '<img src="' + img('p_afuwa') + '" alt="">あなたの番'
-      : '<img src="' + img('p_buruma') + '" alt=""><b>ブルマが考えとる</b>';
+      ? ic + 'あなたの番'
+      : ic + '<b>ブルマが考えとる</b>';
   }
 
   function showCue(big, sub, ms) {
@@ -608,8 +734,11 @@
       }
       if (g.length >= 5) { setTimeout(function () { Sfx.up(); }, maxd * 52 + 120); }
       /* かどは返されない。取れたら、ちゃんと分かるようにする */
-      if (corner && p === ME) {
-        setTimeout(function () { Sfx.record(); showCue('かど！', '四すみは返されへん', 900); }, 120);
+      if (corner && (mode === 2 || p === ME)) {
+        setTimeout(function () {
+          Sfx.record();
+          showCue('かど！', mode === 2 ? nameOf(p) + 'が四すみを取った' : '四すみは返されへん', 900);
+        }, 120);
       }
 
       setTimeout(function () {
@@ -625,7 +754,7 @@
     if (!moves(bd, ME).length && !moves(bd, CP).length) { return done(); }
 
     /* ブルマが本気を出すところ。だまって強くなると理不尽に見えるので、言う */
-    if (!toldEnd && phase() === 2) {
+    if (mode === 1 && !toldEnd && ramps() && phase() === 2) {
       toldEnd = true;
       Sfx.bad();
       showCue('ブルマが本気出した', 'ここからは手をぬかへん', 1100);
@@ -634,19 +763,26 @@
     }
 
     if (!moves(bd, p).length) {
-      showCue(p === ME ? 'パス' : 'ブルマ、パス',
-              p === ME ? '置ける場所が無い' : '置ける場所が無いらしい', 950);
+      if (mode === 2) {
+        showCue(nameOf(p) + '、パス', '置ける場所が無い', 950);
+      } else {
+        showCue(p === ME ? 'パス' : 'ブルマ、パス',
+                p === ME ? '置ける場所が無い' : '置ける場所が無いらしい', 950);
+      }
       Sfx.bad();
       setTimeout(function () { next(other(p)); }, 1000);
       return;
     }
 
-    if (p === ME) {
+    /* ふたりようは、どっちの番でも人が置く */
+    if (mode === 2 || p === ME) {
       busy = false;
-      sayTurn(ME);
-      hints(moves(bd, ME));
+      turn = p;
+      sayTurn(p);
+      hints(moves(bd, p));
     } else {
       busy = true;
+      turn = CP;
       sayTurn(CP, true);
       setTimeout(function () {
         var i = think();
@@ -656,17 +792,71 @@
     }
   }
 
+  /* 記録をつけない回の結果。ランキングの器（#gResult）を借りて出す */
+  function card(eye, big, grade, note) {
+    var box = document.getElementById('gResult');
+    box.innerHTML = '';
+    var c = document.createElement('div');
+    c.className = 'gr-card';
+    c.innerHTML =
+      '<div class="gr-eyebrow">' + eye + '</div>' +
+      '<div class="gr-score">' + big + '</div>' +
+      '<div class="gr-grade">' + grade + '</div>' +
+      '<p class="gr-best">' + note + '</p>' +
+      '<div class="gr-acts">' +
+        '<button class="gr-btn primary" type="button" data-a="go">もう一回</button>' +
+        '<button class="gr-btn" type="button" data-a="tt">えらびなおす</button>' +
+      '</div>' +
+      '<a class="gr-back" href="../game.html">&larr; ゲーム一覧にもどる</a>';
+    box.appendChild(c);
+    box.classList.add('on');
+    c.querySelector('[data-a="go"]').onclick = function () { box.classList.remove('on'); go(mode); };
+    c.querySelector('[data-a="tt"]').onclick = function () { box.classList.remove('on'); toTitle(); };
+  }
+
+  function toTitle() {
+    over = true;
+    busy = true;
+    Sfx.bgmStop();
+    hints([]);
+    screen('scTitle');
+  }
+
   function done() {
     over = true;
     busy = true;
     hints([]);
     paintHud();
     var m = count(bd, ME), c = count(bd, CP);
-    turnEl.classList.remove('think');
+    turnEl.classList.remove('think', 'p1', 'p2');
     turnEl.innerHTML = m > c ? 'アフワの勝ち' : (m < c ? 'ブルマの勝ち' : 'ひきわけ');
     Sfx.bgmStop();
+
+    /* ふたりようは、どっちが勝ったかだけ。記録はつけない */
+    if (mode === 2) {
+      if (m === c) { Sfx.over(); } else { Sfx.record(); }
+      showCue(m > c ? 'アフワの勝ち！' : (m < c ? 'ブルマの勝ち！' : 'ひきわけ'), m + ' 対 ' + c, 1300);
+      setTimeout(function () {
+        card('2 PLAYERS', m + ' 対 ' + c,
+             m > c ? 'アフワの勝ち' : (m < c ? 'ブルマの勝ち' : 'ひきわけ'),
+             'ふたりで遊んだぶんは記録にのこらへん');
+      }, 1350);
+      return;
+    }
+
     if (m > c) { Sfx.record(); } else { Sfx.over(); }
     showCue(m > c ? 'かった！' : (m < c ? 'まけた…' : 'ひきわけ'), m + ' 対 ' + c, 1300);
+
+    /* 弱いレベルで取った枚数を記録にすると、ランキングが意味を失う。
+       レベル1〜4は練習あつかいで、自己ベストにも残さない */
+    if (lv < RANK_FROM) {
+      setTimeout(function () {
+        card('PRACTICE', m + '枚',
+             m > c ? '勝ち' : (m < c ? 'まけ' : 'ひきわけ'),
+             'レベル' + lv + '（' + LV[lv - 1].nm + '）は練習。記録はレベル' + RANK_FROM + '以上から');
+      }, 1350);
+      return;
+    }
     setTimeout(function () { AfroScore.finish(m); }, 1350);
   }
 
@@ -692,9 +882,13 @@
     onRetry: go
   });
 
-  function go() {
+  function go(m) {
+    mode = m || mode;
     over = false;
     toldEnd = false;
+    turn = ME;
+    lMe.textContent = mode === 2 ? 'P1' : 'YOU';
+    lCp.textContent = mode === 2 ? 'P2' : 'CPU';
     bd = [];
     for (var i = 0; i < N * N; i++) { bd.push(0); }
     bd[28] = ME; bd[35] = ME;     /* e4, d5 … 先手はここから（ふつうのオセロと同じ並び） */
@@ -712,11 +906,53 @@
     screen('scPlay');
     Sfx.bgm('osero');
     Sfx.start();
-    showCue('はじめ！', 'アフワ（茶）が先手', 800);
+    showCue('はじめ！',
+            mode === 2 ? 'アフワ（茶）から。交代でまわす' : 'レベル' + lv + '　' + LV[lv - 1].nm,
+            900);
     setTimeout(function () { next(ME); }, 820);
   }
 
-  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(); });
+  /* ---------- レベル選び ---------- */
+
+  function paintLv() {
+    var L = LV[lv - 1];
+    lvNo.textContent = lv;
+    lvNm.textContent = L.nm;
+    lvNote.textContent = L.tx + (lv < RANK_FROM ? '　※練習（記録なし）' : '');
+    var bs = lvRow.children;
+    for (var i = 0; i < bs.length; i++) {
+      bs[i].classList.toggle('on', +bs[i].getAttribute('data-l') === lv);
+    }
+  }
+
+  (function buildLv() {
+    for (var i = 1; i <= LV.length; i++) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'o-lv-b';
+      b.textContent = i;
+      b.setAttribute('data-l', i);
+      b.setAttribute('aria-label', 'レベル' + i + ' ' + LV[i - 1].nm);
+      lvRow.appendChild(b);
+    }
+    lvRow.addEventListener('click', function (e) {
+      var b = e.target.closest('.o-lv-b');
+      if (!b) { return; }
+      lv = +b.getAttribute('data-l');
+      try { localStorage.setItem('afro.osero.lv', String(lv)); } catch (err) {}
+      Sfx.tap();
+      paintLv();
+    });
+    /* 前に選んだ強さを覚えておく */
+    var sv = null;
+    try { sv = localStorage.getItem('afro.osero.lv'); } catch (err) {}
+    var v = parseInt(sv, 10);
+    if (v >= 1 && v <= LV.length) { lv = v; }
+    paintLv();
+  })();
+
+  document.getElementById('startBtn').addEventListener('click', function () { Sfx.unlock(); go(1); });
+  document.getElementById('twoBtn').addEventListener('click', function () { Sfx.unlock(); go(2); });
 
   var snd = document.getElementById('sndBtn');
   function paintSnd() {
