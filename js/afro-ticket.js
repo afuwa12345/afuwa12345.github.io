@@ -23,6 +23,19 @@
 
 var TICKETS = [
   {
+    race: 'ジャパンカップ',
+    en: 'JAPAN CUP',
+    grade: 'GI',
+    date: '2026-11-29',
+    place: '東京競馬場',
+    course: '芝 2400m',
+    no: '5MGFBQSQ',
+    until: '2026-11-28 23:59',
+    paper: 'フォト用紙L・カラー',
+    qr: 'images/ticket/2026-11-29_qr.webp',
+    pics: ['images/ticket/2026-11-29.webp']
+  },
+  {
     race: 'マイルチャンピオンシップ',
     en: 'MILE CHAMPIONSHIP',
     grade: 'GI',
