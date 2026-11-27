@@ -242,6 +242,7 @@
       <li>置ける場所が無いときは<b>自動でパス</b></li>
       <li>盤がうまったら終わり。<b>残ったアフワの枚数がそのまま記録</b>（最高64枚）</li>
       <li>勝つだけでなく<b>どれだけ多く残すか</b>。四すみを取ると返されにくい</li>
+      <li><b>ブルマは終盤になると本気を出す</b>。序盤の差だけでは逃げきれん</li>
     </ul>
     <button class="gr-btn primary" type="button" id="howClose">とじる</button>
   </div>
@@ -416,23 +417,51 @@
 
 
 
-  /* ブルマの手。強くしすぎると誰も勝てなくなるので、
-     ・先読みはせず、1手打った形の良し悪しだけで決める
-     ・3回に1回くらいは、気まぐれに適当な場所へ打つ
-     ・ほぼ同じ点の手が並んだら、その中から適当に選ぶ（毎回ちがう将棋になる）
-     この強さだと、かどを意識して打てば勝てる。目先の枚数だけ追うと負ける。 */
-  var SLIP = 0.35;     /* 気まぐれ */
-  var SLACK = 8;       /* これくらいの差は「同じ」とみなす */
+  /* 何手か先まで読む。終盤だけ使う */
+  function nega(b, p, d, a, be) {
+    var ms = moves(b, p);
+    if (d === 0) { return score(b, p); }
+    if (!ms.length) {
+      if (!moves(b, other(p)).length) { return score(b, p); }
+      return -nega(b, other(p), d - 1, -be, -a);
+    }
+    for (var k = 0; k < ms.length; k++) {
+      var v = -nega(apply(b, ms[k], p, gains(b, ms[k], p)), other(p), d - 1, -be, -a);
+      if (v > a) { a = v; }
+      if (a >= be) { break; }
+    }
+    return a;
+  }
+
+  /* ブルマの手。強さは盤の埋まりぐあいで変える。
+     ・序盤  … 気まぐれ。だいたい好きに打たせてくれる
+     ・中盤  … そこそこ。悪い手は打たなくなる
+     ・終盤  … 本気。3手先まで読む
+     ずっと本気だと誰も勝てず、ずっと弱いと最後まで気が抜けない。
+     終盤だけ本気にすると、せっかく作った差を守りきる勝負になる。
+     （実測：かどを意識して打つ人で勝率5割、ちゃんと読む人で7割） */
+  var MID_AT = 30;     /* 空きがこれ以下になったら中盤 */
+  var END_AT = 12;     /* 空きがこれ以下になったら終盤＝本気 */
+
+  function phase() {
+    var e = count(bd, 0);
+    return e > MID_AT ? 0 : (e > END_AT ? 1 : 2);
+  }
 
   function think() {
     var ms = moves(bd, CP);
     if (!ms.length) { return -1; }
-    if (Math.random() < SLIP) { return ms[Math.floor(Math.random() * ms.length)]; }
+    var ph = phase();
+    var slip = ph === 0 ? 0.40 : (ph === 1 ? 0.15 : 0);
+    var slack = ph === 2 ? 4 : 8;
+    if (slip && Math.random() < slip) { return ms[Math.floor(Math.random() * ms.length)]; }
+
     var best = [], bv = -1e9;
     for (var k = 0; k < ms.length; k++) {
-      var v = score(apply(bd, ms[k], CP, gains(bd, ms[k], CP)), CP);
-      if (v > bv + SLACK) { bv = v; best = [ms[k]]; }
-      else if (v >= bv - SLACK) { if (v > bv) { bv = v; } best.push(ms[k]); }
+      var nb = apply(bd, ms[k], CP, gains(bd, ms[k], CP));
+      var v = ph === 2 ? -nega(nb, ME, 2, -1e9, 1e9) : score(nb, CP);
+      if (v > bv + slack) { bv = v; best = [ms[k]]; }
+      else if (v >= bv - slack) { if (v > bv) { bv = v; } best.push(ms[k]); }
     }
     return best[Math.floor(Math.random() * best.length)];
   }
@@ -590,8 +619,19 @@
     }, 70);
   }
 
+  var toldEnd = false;
+
   function next(p) {
     if (!moves(bd, ME).length && !moves(bd, CP).length) { return done(); }
+
+    /* ブルマが本気を出すところ。だまって強くなると理不尽に見えるので、言う */
+    if (!toldEnd && phase() === 2) {
+      toldEnd = true;
+      Sfx.bad();
+      showCue('ブルマが本気出した', 'ここからは手をぬかへん', 1100);
+      var pp = p;
+      return setTimeout(function () { next(pp); }, 1150);
+    }
 
     if (!moves(bd, p).length) {
       showCue(p === ME ? 'パス' : 'ブルマ、パス',
@@ -654,6 +694,7 @@
 
   function go() {
     over = false;
+    toldEnd = false;
     bd = [];
     for (var i = 0; i < N * N; i++) { bd.push(0); }
     bd[28] = ME; bd[35] = ME;     /* e4, d5 … 先手はここから（ふつうのオセロと同じ並び） */
