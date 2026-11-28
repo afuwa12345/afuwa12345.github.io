@@ -157,6 +157,14 @@
       kick: [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
       hat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1]
     },
+    /* ブロック崩し。はずむ、たたく、転がる。前のめりで休まない */
+    kuzushi: {
+      bpm: 150, root: 262, scale: SCALE_MAJ, wave: 'square',
+      lead: [0, 2, 4, null, 4, 2, 0, null, 1, 3, 5, null, 5, 3, 1, null],
+      bass: [0, null, 0, null, 4, null, 4, null, 5, null, 5, null, 3, null, 3, null],
+      kick: [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+      hat:  [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1]
+    },
     /* 探しもの。こそこそ歩きまわる感じ */
     find: {
       bpm: 126, root: 175, scale: SCALE_MIN, wave: 'triangle',
@@ -246,7 +254,7 @@
   var Sfx = {
     unlock: function () { ready(); },
 
-    /* BGMを鳴らす。名前は SONGS のキー（jump / catch / whack / memory / gate / pair / tower / dodge / find / race / mori / osero） */
+    /* BGMを鳴らす。名前は SONGS のキー（jump / catch / whack / memory / gate / pair / tower / dodge / find / race / mori / osero / kuzushi） */
     bgm: function (name) {
       if (!SONGS[name]) return;
       this.bgmStop();
