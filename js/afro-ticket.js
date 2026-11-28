@@ -29,8 +29,8 @@ var TICKETS = [
     date: '2026-11-29',
     place: '東京競馬場',
     course: '芝 2400m',
-    no: '5MGFBQSQ',
-    until: '2026-11-28 23:59',
+    no: 'JM86QPZX',
+    until: '2026-11-29 23:59',
     paper: 'フォト用紙L・カラー',
     qr: 'images/ticket/2026-11-29_qr.webp',
     pics: ['images/ticket/2026-11-29.webp']
