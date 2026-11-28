@@ -68,16 +68,6 @@
   <p class="hero-sub">馬って、もっと自由でいい</p>
 </header>
 
-<!-- 今週の記念チケットへの導線。受付が終わっている週は、下のスクリプトが丸ごと消す -->
-<a class="tkband" id="tkBand" href="ticket.html" hidden>
-  <img class="tkband-pic" src="images/ticket/banner.webp" alt="今週の記念チケットはこちら" loading="eager" decoding="async" width="1400" height="467">
-  <span class="tkband-bar">
-    <b class="tkband-race" id="tkBandRace"></b>
-    <i class="tkband-when" id="tkBandWhen"></i>
-    <span class="tkband-go">印刷する →</span>
-  </span>
-</a>
-
 <section id="board">
   <div class="wrap">
     <div class="sec-head">
@@ -173,6 +163,17 @@
       <span class="axis-ja">スタンプ・グッズ</span>
     </a>
   </nav>
+
+    <!-- 今週の記念チケットへの導線。メニューの一番下。
+         受付が終わっている週は、ページ下のスクリプトが hidden のままにする -->
+    <a class="tkband" id="tkBand" href="ticket.html" hidden>
+      <img class="tkband-pic" src="images/ticket/banner.webp" alt="今週の記念チケットはこちら" loading="lazy" decoding="async" width="1400" height="467">
+      <span class="tkband-bar">
+        <b class="tkband-race" id="tkBandRace"></b>
+        <i class="tkband-when" id="tkBandWhen"></i>
+        <span class="tkband-go">印刷する →</span>
+      </span>
+    </a>
 </div>
 </section>
 

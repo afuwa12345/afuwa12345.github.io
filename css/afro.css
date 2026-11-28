@@ -1344,15 +1344,19 @@ a.race:active { transform: translateY(0); }
 .kz-card.is-read { border-color: var(--turf-2); }
 
 /* ===== トップ：今週の記念チケットへの導線 =====
-   ヒーローのすぐ下に敷く帯。絵は原寸 1400x467 の webp。
-   受付が終わっている週は index.html のスクリプトが hidden のままにする */
+   メニューの一番下に置く帯。絵は原寸 1400x467 の webp。
+   受付が終わっている週は index.html のスクリプトが hidden のままにする。
+   よこ幅を 640px で打ち止めてあるのは、たてを低くするため。
+   1120px いっぱいに広げると高さが 360px を越えて、1枚で画面が埋まってしまう */
 .tkband {
   display: block; position: relative;
-  max-width: 1120px; margin: 18px auto 2px; padding: 0 16px;
+  max-width: 640px; margin: 26px auto 0;
   text-decoration: none; color: inherit;
   -webkit-tap-highlight-color: transparent;
 }
 .tkband-pic {
+  /* 上下を切るのは試してやめた。24px 落とすだけでアフワのひづめが切れる。
+     たてを低くするのは、よこ幅の打ち止め（640px）だけでやる */
   display: block; width: 100%; height: auto;
   border: 3px solid var(--ink); border-radius: 14px 14px 0 0;
   box-shadow: var(--sh-md);
@@ -1361,7 +1365,7 @@ a.race:active { transform: translateY(0); }
 /* 下にくっつく帯。レース名と期限は毎週変わるので、絵ではなく文字で出す */
 .tkband-bar {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-  padding: 9px 14px;
+  padding: 7px 14px;
   background: var(--ink); color: var(--paper);
   border: 3px solid var(--ink); border-top: 0; border-radius: 0 0 14px 14px;
   box-shadow: var(--sh-md);
@@ -1383,9 +1387,9 @@ a.race:active { transform: translateY(0); }
 .tkband:active { transform: translateY(1px); }
 
 @media (max-width: 560px) {
-  .tkband { margin-top: 14px; padding: 0 12px; }
+  .tkband { margin-top: 20px; }
   .tkband-pic { border-width: 2px; border-radius: 11px 11px 0 0; }
-  .tkband-bar { border-width: 2px; border-radius: 0 0 11px 11px; padding: 8px 11px; gap: 7px; }
+  .tkband-bar { border-width: 2px; border-radius: 0 0 11px 11px; padding: 6px 11px; gap: 7px; }
   .tkband-race { font-size: 14px; }
   .tkband-when { font-size: 11px; }
   .tkband-go { font-size: 12px; padding: 3px 11px; }
