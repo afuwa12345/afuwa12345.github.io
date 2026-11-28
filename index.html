@@ -68,6 +68,16 @@
   <p class="hero-sub">馬って、もっと自由でいい</p>
 </header>
 
+<!-- 今週の記念チケットへの導線。受付が終わっている週は、下のスクリプトが丸ごと消す -->
+<a class="tkband" id="tkBand" href="ticket.html" hidden>
+  <img class="tkband-pic" src="images/ticket/banner.webp" alt="今週の記念チケットはこちら" loading="eager" decoding="async" width="1400" height="467">
+  <span class="tkband-bar">
+    <b class="tkband-race" id="tkBandRace"></b>
+    <i class="tkband-when" id="tkBandWhen"></i>
+    <span class="tkband-go">印刷する →</span>
+  </span>
+</a>
+
 <section id="board">
   <div class="wrap">
     <div class="sec-head">
@@ -187,5 +197,34 @@
 </footer>
 
 <script src="js/afro-gate.js"></script>
+<script src="js/afro-ticket.js"></script>
+<script>
+/* 今週の記念チケットのバナー。
+   afro-ticket.js の TICKETS をそのまま読む（チケットの出し入れは1か所で済む）。
+   期限を過ぎた週や done の週は、バナーごと出さない。
+   ※ afro-ticket.js 本体は #tkNow / #tkAll が無いページでは何もしないので、
+     ここで読み込んでも副作用は無い */
+(function () {
+  var band = document.getElementById('tkBand');
+  if (!band || typeof TICKETS === 'undefined' || !TICKETS.length) { return; }
+
+  var now = TICKETS.slice().sort(function (a, b) {
+    return String(b.date).localeCompare(String(a.date));
+  })[0];
+
+  function over(s) {
+    var m = String(s || '').match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+    if (!m) { return false; }
+    return Date.now() > new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]).getTime();
+  }
+  if (now.done === true || over(now.until)) { return; }
+
+  var u = String(now.until || '').match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+  document.getElementById('tkBandRace').textContent = now.race;
+  document.getElementById('tkBandWhen').textContent =
+    u ? (+u[2]) + '月' + (+u[3]) + '日 ' + u[4] + ':' + u[5] + ' まで' : '';
+  band.hidden = false;
+})();
+</script>
 </body>
 </html>
